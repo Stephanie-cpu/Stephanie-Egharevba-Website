@@ -86,13 +86,28 @@ const DEFAULT_SITE_SETTINGS: CmsSiteSettings = {
   heroQuote: 'Disability is not the problem—design is the problem.',
   heroSubtext:
     'Scaling digital accessibility, inclusive systems, and global talent pipelines.',
-  seoTitle: 'Stephanie Egharevba — Portfolio',
+  seoTitle: 'Stephanie Egharevba | Disability Inclusion & Digital Accessibility Strategist',
   seoDescription:
     'Minimalist editorial portfolio of Stephanie Egharevba: Disability Inclusion Strategist, Digital Accessibility Advocate, Author, and Public Speaker.',
   linkedinUrl: DEFAULT_LINKEDIN_URL,
   instagramUrl: DEFAULT_INSTAGRAM_URL,
   bookingCalendarUrl: '',
 };
+
+function getInitialPage(): PageId {
+  if (typeof window === 'undefined') return 'overview';
+  const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
+  const search = new URLSearchParams(window.location.search);
+  const pageParam = search.get('page');
+
+  if (pageParam === 'cv' || pageParam === 'story' || path === '/story' || path === '/cv') return 'cv';
+  if (pageParam === 'work' || path === '/work') return 'work';
+  if (pageParam === 'speaking' || path === '/speaking') return 'speaking';
+  if (pageParam === 'books' || path === '/books') return 'books';
+  if (pageParam === 'gallery' || path === '/gallery') return 'gallery';
+  if (pageParam === 'contact' || path === '/contact') return 'contact';
+  return 'overview';
+}
 
 const APPROVED_100_WORD_BIO =
   'Stephanie Osasumwen Egharevba is a Nigerian Diversity & Inclusion Leader, Disability Inclusion Specialist, and Public Speaker based in Lagos. Ranked in the Top 3% of Global Speakers on Sessionize and named among ALX Nigeria’s Top 100 Women in Tech (2025), she serves as Associate Engagement Officer at Jobberman Nigeria and Talent Corp Ambassador for the Mastercard Foundation Project Initiative. Previously Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria—where she founded the 200+ member Alumni Disability Community—she audits digital platforms against WCAG usability standards for the African Disability Forum and Rushbox.';
@@ -122,7 +137,7 @@ interface SavedInquiry {
 const EASE_EDITORIAL: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export default function App() {
-  const [activePage, setActivePage] = useState<PageId>('overview');
+  const [activePage, setActivePage] = useState<PageId>(getInitialPage);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   // Accessibility & Theme Preferences (Light / Dark / Contrast + Font Scale + Motion)
@@ -279,13 +294,13 @@ export default function App() {
   // Dynamically update document <title> & meta description for SEO
   useEffect(() => {
     const pageLabels: Record<PageId, string> = {
-      overview: siteSettings.seoTitle,
-      cv: 'Story & CV — Stephanie Egharevba',
-      work: 'Projects & WCAG Contrast Lab — Stephanie Egharevba',
-      speaking: 'Keynote Speaking & Videos — Stephanie Egharevba',
-      books: 'Books & Accessibility Toolkits — Stephanie Egharevba',
-      gallery: 'Press Portraits & Media Kit — Stephanie Egharevba',
-      contact: 'Speaker & Consulting Enquiries — Stephanie Egharevba',
+      overview: 'Stephanie Egharevba | Disability Inclusion & Digital Accessibility Strategist',
+      cv: 'Stephanie’s Story & Executive CV | Stephanie Egharevba',
+      work: 'Work & WCAG Case Studies | Stephanie Egharevba',
+      speaking: 'Speaking & Keynotes | Stephanie Egharevba',
+      books: 'Books & Toolkits | Stephanie Egharevba',
+      gallery: 'Press Portraits & Media Kit | Stephanie Egharevba',
+      contact: 'Speaking & Advisory Enquiries | Stephanie Egharevba',
     };
     document.title = pageLabels[activePage] || siteSettings.seoTitle;
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -301,6 +316,15 @@ export default function App() {
       // ignore
     }
   }, [localProjects]);
+
+  // Handle browser back/forward buttons (smooth SSG / SPA navigation)
+  useEffect(() => {
+    const handlePopState = () => {
+      setActivePage(getInitialPage());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Discrete admin shortcut (Ctrl+Shift+A or Meta+Shift+A) to access CMS without public UI artifacts
   useEffect(() => {
@@ -318,6 +342,19 @@ export default function App() {
     setActivePage(page);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: a11yPrefs.reduceMotion ? 'auto' : 'smooth' });
+    const routeMap: Record<PageId, string> = {
+      overview: '/',
+      cv: '/story',
+      work: '/work',
+      speaking: '/speaking',
+      books: '/books',
+      gallery: '/gallery',
+      contact: '/contact',
+    };
+    const targetPath = routeMap[page] || '/';
+    if (typeof window !== 'undefined' && window.location.pathname !== targetPath) {
+      window.history.pushState({ page }, '', targetPath);
+    }
   };
 
   const handleInquireWithContext = (

@@ -21,6 +21,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
         <img
           src={customImageUrl}
           alt={title || 'Stephanie Egharevba portfolio visual'}
+          loading="lazy"
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover"
         />

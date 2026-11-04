@@ -199,7 +199,7 @@ ${pages
     });
   });
 
-  // Vite middleware for development / static assets for production
+  // Edge-Cached Static Site Generation (SSG) Serving & Vite Development Middleware
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -208,9 +208,64 @@ ${pages
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(__dirname, 'dist');
-    app.use(express.static(distPath));
+
+    // Static assets (hashed bundles, fonts, images) with 1-year immutable edge caching
+    app.use(
+      '/assets',
+      express.static(path.join(distPath, 'assets'), {
+        maxAge: '1y',
+        immutable: true,
+      })
+    );
+
+    // Static root assets with edge caching
+    app.use(
+      express.static(distPath, {
+        maxAge: '1h',
+        setHeaders: (res, filePath) => {
+          if (filePath.endsWith('.html')) {
+            // Edge-cache HTML files while ensuring immediate revalidation on updates
+            res.setHeader(
+              'Cache-Control',
+              'public, max-age=0, must-revalidate, s-maxage=86400, stale-while-revalidate=3600'
+            );
+          }
+        },
+      })
+    );
+
+    // Explicit Edge-Served SSG Routes (Eliminates cold-start lag for crawlers & visitors)
+    const sendHtmlRoute = (filePath: string, res: Response) => {
+      res.setHeader(
+        'Cache-Control',
+        'public, max-age=0, must-revalidate, s-maxage=86400, stale-while-revalidate=3600'
+      );
+      res.sendFile(filePath);
+    };
+
+    app.get('/', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'index.html'), res);
+    });
+
+    app.get('/work', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'work/index.html'), res);
+    });
+
+    app.get('/speaking', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'speaking/index.html'), res);
+    });
+
+    app.get('/story', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'story/index.html'), res);
+    });
+
+    app.get('/cv', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'story/index.html'), res);
+    });
+
+    // Fallback for dynamic routes
     app.get('*', (_req: Request, res: Response) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+      sendHtmlRoute(path.join(distPath, 'index.html'), res);
     });
   }
 

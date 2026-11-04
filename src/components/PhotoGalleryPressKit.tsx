@@ -174,6 +174,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                 <img
                   src={portrait.src}
                   alt={portrait.caption}
+                  loading="lazy"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                 />
@@ -298,6 +299,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                 <img
                   src={currentLightboxItem.src}
                   alt={currentLightboxItem.caption}
+                  loading="lazy"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-contain max-h-[65vh]"
                 />
