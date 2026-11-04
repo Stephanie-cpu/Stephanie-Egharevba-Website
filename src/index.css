@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Aeonik Trial";
+  src: local("Aeonik Trial"), local("Aeonik"), local("Plus Jakarta Sans");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
 @theme {
-  --font-display: "Bricolage Grotesque", sans-serif;
-  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-display: "Aeonik Trial", "Aeonik", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: "Aeonik Trial", "Aeonik", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: "Cormorant Garamond", serif;
   --font-mono: "JetBrains Mono", monospace;
 }
@@ -44,7 +51,7 @@ html[data-font-scale="xl"] {
 /* Accessibility: Dyslexia / Readable Typography Mode */
 html[data-readable-font="true"],
 html[data-readable-font="true"] * {
-  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif !important;
+  font-family: "Aeonik Trial", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif !important;
   letter-spacing: 0.025em !important;
   word-spacing: 0.06em !important;
 }
@@ -95,7 +102,8 @@ html[data-theme="dark"] .bg-white {
 }
 
 html[data-theme="dark"] .bg-\[\#F2EFE9\],
-html[data-theme="dark"] .bg-\[\#F2F0EB\] {
+html[data-theme="dark"] .bg-\[\#F2F0EB\],
+html[data-theme="dark"] .bg-\[\#F8FAFC\] {
   background-color: #1C2230 !important;
   color: #E2E8F0 !important;
 }
@@ -103,6 +111,7 @@ html[data-theme="dark"] .bg-\[\#F2F0EB\] {
 html[data-theme="dark"] .text-\[\#141413\],
 html[data-theme="dark"] .text-\[\#111111\],
 html[data-theme="dark"] .text-\[\#0B0B0B\],
+html[data-theme="dark"] .text-\[\#0F172A\],
 html[data-theme="dark"] .text-\[\#272725\] {
   color: #F8FAFC !important;
 }
@@ -110,11 +119,14 @@ html[data-theme="dark"] .text-\[\#272725\] {
 html[data-theme="dark"] .text-\[\#3F3E3A\],
 html[data-theme="dark"] .text-\[\#575652\],
 html[data-theme="dark"] .text-\[\#525252\],
-html[data-theme="dark"] .text-\[\#404040\] {
+html[data-theme="dark"] .text-\[\#404040\],
+html[data-theme="dark"] .text-\[\#334155\],
+html[data-theme="dark"] .text-\[\#475569\] {
   color: #CBD5E1 !important;
 }
 
-html[data-theme="dark"] .text-\[\#737373\] {
+html[data-theme="dark"] .text-\[\#737373\],
+html[data-theme="dark"] .text-\[\#64748B\] {
   color: #94A3B8 !important;
 }
 
@@ -125,6 +137,8 @@ html[data-theme="dark"] .text-\[\#1D4ED8\] {
 html[data-theme="dark"] .border-\[\#E6E4DD\],
 html[data-theme="dark"] .border-\[\#E5E4DF\],
 html[data-theme="dark"] .border-\[\#D4D2CC\],
+html[data-theme="dark"] .border-\[\#E2E8F0\],
+html[data-theme="dark"] .border-\[\#F1F5F9\],
 html[data-theme="dark"] .divide-\[\#E6E4DD\] > :not([hidden]) ~ :not([hidden]),
 html[data-theme="dark"] .divide-\[\#E5E4DF\] > :not([hidden]) ~ :not([hidden]) {
   border-color: #262C3A !important;
@@ -137,7 +151,8 @@ html[data-theme="contrast"] .bg-\[\#FAFAF8\],
 html[data-theme="contrast"] .bg-white,
 html[data-theme="contrast"] .bg-\[\#0B0B0B\],
 html[data-theme="contrast"] .bg-\[\#F2EFE9\],
-html[data-theme="contrast"] .bg-\[\#F2F0EB\] {
+html[data-theme="contrast"] .bg-\[\#F2F0EB\],
+html[data-theme="contrast"] .bg-\[\#F8FAFC\] {
   background-color: #000000 !important;
   color: #FFFFFF !important;
 }
@@ -150,10 +165,14 @@ html[data-theme="contrast"] .bg-\[\#FAFAF8\]\/90 {
 html[data-theme="contrast"] .text-\[\#141413\],
 html[data-theme="contrast"] .text-\[\#111111\],
 html[data-theme="contrast"] .text-\[\#0B0B0B\],
+html[data-theme="contrast"] .text-\[\#0F172A\],
 html[data-theme="contrast"] .text-\[\#3F3E3A\],
 html[data-theme="contrast"] .text-\[\#575652\],
 html[data-theme="contrast"] .text-\[\#525252\],
 html[data-theme="contrast"] .text-\[\#737373\],
+html[data-theme="contrast"] .text-\[\#334155\],
+html[data-theme="contrast"] .text-\[\#475569\],
+html[data-theme="contrast"] .text-\[\#64748B\],
 html[data-theme="contrast"] .text-neutral-300,
 html[data-theme="contrast"] .text-neutral-400 {
   color: #FFFFFF !important;
@@ -167,6 +186,8 @@ html[data-theme="contrast"] .text-\[\#60A5FA\] {
 html[data-theme="contrast"] .border-\[\#E6E4DD\],
 html[data-theme="contrast"] .border-\[\#E5E4DF\],
 html[data-theme="contrast"] .border-\[\#D4D2CC\],
+html[data-theme="contrast"] .border-\[\#E2E8F0\],
+html[data-theme="contrast"] .border-\[\#F1F5F9\],
 html[data-theme="contrast"] .border-neutral-800 {
   border-color: #FACC15 !important;
 }

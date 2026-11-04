@@ -55,6 +55,7 @@ import {
   STEPHANIE_PORTRAITS,
 } from './data/portfolioData';
 import { EditorialVisualPlate } from './components/VisualPlates';
+import { BookMockup } from './components/BookMockup';
 import { AccessibilitySandbox } from './components/AccessibilitySandbox';
 import {
   AddProjectModal,
@@ -62,6 +63,7 @@ import {
   SpeakingReaderModal,
 } from './components/ProjectModals';
 import { PhotoGalleryPressKit } from './components/PhotoGalleryPressKit';
+import { StoryAndCvView } from './components/StoryAndCvView';
 import {
   FloatingAccessibilityWidget,
   AccessibilityPreferences,
@@ -83,7 +85,7 @@ const DEFAULT_SITE_SETTINGS: CmsSiteSettings = {
   heroTagline: 'DIVERSITY & INCLUSION LEAD · SPEAKER · AUTHOR',
   heroQuote: 'Disability is not the problem—design is the problem.',
   heroSubtext:
-    'Scaling disability inclusion, WCAG accessibility, and inclusive talent pipelines across Africa.',
+    'Scaling digital accessibility, inclusive systems, and global talent pipelines.',
   seoTitle: 'Stephanie Egharevba — Portfolio',
   seoDescription:
     'Minimalist editorial portfolio of Stephanie Egharevba: Disability Inclusion Strategist, Digital Accessibility Advocate, Author, and Public Speaker.',
@@ -91,6 +93,9 @@ const DEFAULT_SITE_SETTINGS: CmsSiteSettings = {
   instagramUrl: DEFAULT_INSTAGRAM_URL,
   bookingCalendarUrl: '',
 };
+
+const APPROVED_100_WORD_BIO =
+  'Stephanie Osasumwen Egharevba is a Nigerian Diversity & Inclusion Leader, Disability Inclusion Specialist, and Public Speaker based in Lagos. Ranked in the Top 3% of Global Speakers on Sessionize and named among ALX Nigeria’s Top 100 Women in Tech (2025), she serves as Associate Engagement Officer at Jobberman Nigeria and Talent Corp Ambassador for the Mastercard Foundation Project Initiative. Previously Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria—where she founded the 200+ member Alumni Disability Community—she audits digital platforms against WCAG usability standards for the African Disability Forum and Rushbox.';
 
 const DEFAULT_A11Y_PREFS: AccessibilityPreferences = {
   theme: 'light',
@@ -161,18 +166,17 @@ export default function App() {
     }
   });
 
-  // Local + CMS Combined Projects
+  // Local + CMS Combined Projects (v5 ensures fresh schematic thumbnails & Client Africa spelling)
   const [localProjects, setLocalProjects] = useState<ProjectItem[]>(() => {
     try {
-      const saved = localStorage.getItem('stephanie_portfolio_projects_v3');
+      const saved = localStorage.getItem('stephanie_portfolio_projects_v5');
       return saved ? JSON.parse(saved) : INITIAL_PROJECTS;
     } catch {
       return INITIAL_PROJECTS;
     }
   });
 
-  const [heroPortraitIdx, setHeroPortraitIdx] = useState<number>(0);
-  const [hoveredGalleryIdx, setHoveredGalleryIdx] = useState<number>(0);
+  const [copiedPressBio, setCopiedPressBio] = useState<boolean>(false);
   const [showEmbeddedPdf, setShowEmbeddedPdf] = useState<boolean>(false);
 
   // Work page filter
@@ -289,11 +293,23 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('stephanie_portfolio_projects_v3', JSON.stringify(localProjects));
+      localStorage.setItem('stephanie_portfolio_projects_v5', JSON.stringify(localProjects));
     } catch {
       // ignore
     }
   }, [localProjects]);
+
+  // Discrete admin shortcut (Ctrl+Shift+A or Meta+Shift+A) to access CMS without public UI artifacts
+  useEffect(() => {
+    const handleAdminKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        setIsCmsModalOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleAdminKey);
+    return () => window.removeEventListener('keydown', handleAdminKey);
+  }, []);
 
   const navigateTo = (page: PageId) => {
     setActivePage(page);
@@ -491,7 +507,29 @@ export default function App() {
     { id: 'gallery', label: 'Gallery' },
   ];
 
-  const activeHeroPortrait = STEPHANIE_PORTRAITS[heroPortraitIdx] || STEPHANIE_PORTRAITS[0];
+  const handleCopyPressBio = () => {
+    navigator.clipboard?.writeText(APPROVED_100_WORD_BIO);
+    setCopiedPressBio(true);
+    setTimeout(() => setCopiedPressBio(false), 2500);
+  };
+
+  const handleDownloadPressKitBundle = () => {
+    const assetsToDownload = [
+      { url: CV_PDF_URL, filename: 'Stephanie_Egharevba_Executive_CV.pdf' },
+      { url: STEPHANIE_PORTRAITS[0].src, filename: 'Stephanie_Egharevba_Studio_Portrait_1.jpg' },
+      { url: STEPHANIE_PORTRAITS[1].src, filename: 'Stephanie_Egharevba_Speaker_Portrait_2.jpg' },
+    ];
+    assetsToDownload.forEach((asset, index) => {
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = asset.url;
+        link.download = asset.filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }, index * 250);
+    });
+  };
 
   const toggleDarkLightMode = () => {
     setA11yPrefs((prev) => ({
@@ -552,8 +590,31 @@ export default function App() {
             })}
           </nav>
 
-          {/* Zone 3: Theme Toggle, Enquiries CTA & Mobile Menu Toggle */}
+          {/* Zone 3: Relocated Social Icons, Theme Toggle, Enquiries CTA & Mobile Menu Toggle */}
           <div className="flex items-center gap-2 shrink-0">
+            <div className="hidden sm:flex items-center gap-1 pr-1 mr-1 border-r border-[#E6E4DD]">
+              <a
+                href={siteSettings.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Stephanie Egharevba on LinkedIn"
+                title="LinkedIn"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a
+                href={siteSettings.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Stephanie Egharevba on Instagram"
+                title="Instagram"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+            </div>
+
             {/* Quick Light / Dark Mode Switch */}
             <button
               type="button"
@@ -649,16 +710,6 @@ export default function App() {
                     <span>Instagram</span>
                   </a>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    setIsCmsModalOpen(true);
-                  }}
-                  className="text-xs font-mono uppercase text-[#1D4ED8] font-semibold cursor-pointer"
-                >
-                  CMS Portal
-                </button>
               </div>
             </motion.nav>
           )}
@@ -669,7 +720,7 @@ export default function App() {
       <main id="main-content" className="flex-1">
         <AnimatePresence mode="wait">
           {/* ================================================================= */}
-          {/* PAGE 1: HOME (STEVENBARTLETT.COM INSPIRED)                        */}
+          {/* PAGE 1: HOME (EXECUTIVE EDITORIAL HERO — AEONIK TRIAL)            */}
           {/* ================================================================= */}
           {activePage === 'overview' && (
             <motion.div
@@ -679,43 +730,42 @@ export default function App() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: EASE_EDITORIAL }}
             >
-              {/* HERO */}
+              {/* EXECUTIVE EDITORIAL HERO */}
               <section className="bg-[#0B0B0B] text-white">
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-16 lg:py-20">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
-                    {/* Left Column */}
-                    <div className="lg:col-span-7 flex flex-col justify-between space-y-8">
-                      <div className="space-y-4 sm:space-y-5">
-                        <motion.div
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-12 pb-6 sm:pt-20 sm:pb-10">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                    {/* Left Column: Aeonik Trial Hierarchy + 2 Simplified CTAs + Monochrome Partner Logos */}
+                    <div className="lg:col-span-7 flex flex-col justify-between space-y-9">
+                      <div className="space-y-5">
+                        {/* 1. Subdued Slate Eyebrow in Aeonik Regular/Medium */}
+                        <motion.p
                           initial={{ opacity: 0, y: 12 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.45, ease: EASE_EDITORIAL }}
-                          className="text-[11px] sm:text-xs font-mono text-[#60A5FA] tracking-wider uppercase"
+                          className="font-sans text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.08em] text-[#94A3B8]"
                         >
                           {siteSettings.heroTagline}
-                        </motion.div>
+                        </motion.p>
 
+                        {/* 2. Pure Aeonik Trial H1 (No Mixed Italic Serif) */}
                         <motion.h1
                           initial={{ opacity: 0, y: 16 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.55, delay: 0.08, ease: EASE_EDITORIAL }}
-                          className="font-display font-bold tracking-tight text-white leading-[1.03]"
+                          className="font-display font-bold tracking-[-0.03em] text-white leading-[1.04]"
                           style={{
-                            fontSize: 'clamp(2.35rem, 5vw, 4.4rem)',
-                            textWrap: 'balance',
+                            fontSize: 'clamp(2.75rem, 5.2vw, 4rem)',
                           }}
                         >
-                          Stephanie{' '}
-                          <span className="font-serif italic font-normal text-[#E6E4DD]">
-                            Egharevba.
-                          </span>
+                          Stephanie Egharevba
                         </motion.h1>
 
+                        {/* 3. Polished Sub-headline in Aeonik Regular (#CBD5E1, 18px-20px, 1.6 line-height) */}
                         <motion.p
                           initial={{ opacity: 0, y: 14 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.55, delay: 0.15, ease: EASE_EDITORIAL }}
-                          className="text-base sm:text-lg text-white/80 leading-relaxed max-w-[46ch]"
+                          className="font-sans text-[18px] sm:text-[20px] font-normal text-[#CBD5E1] leading-[1.6] max-w-[44ch]"
                         >
                           {siteSettings.heroSubtext}
                         </motion.p>
@@ -725,177 +775,159 @@ export default function App() {
                         initial={{ opacity: 0, y: 14 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.55, delay: 0.22, ease: EASE_EDITORIAL }}
-                        className="space-y-6"
+                        className="space-y-9"
                       >
-                        <div className="flex flex-wrap items-center gap-3">
+                        {/* 4. Simplified Two-Action CTA Row */}
+                        <div className="flex flex-wrap items-center gap-3.5">
                           <button
                             type="button"
-                            onClick={() => navigateTo('cv')}
-                            className="group px-5 py-3 text-xs sm:text-sm font-semibold text-[#0B0B0B] bg-white hover:bg-[#E6E4DD] rounded-lg transition-colors inline-flex items-center gap-2 cursor-pointer"
+                            onClick={() => navigateTo('work')}
+                            className="group px-7 py-3.5 text-sm font-semibold text-[#000000] bg-[#FFFFFF] hover:bg-[#E2E8F0] rounded-full transition-all inline-flex items-center gap-2 cursor-pointer"
                           >
-                            <span>Stephanie’s Story</span>
+                            <span>Explore Work &amp; Advisory</span>
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                           </button>
 
                           <button
                             type="button"
-                            onClick={() => navigateTo('books')}
-                            className="px-5 py-3 text-xs sm:text-sm font-semibold text-white border border-white/25 hover:border-white rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                            onClick={() => navigateTo('contact')}
+                            className="px-7 py-3.5 text-sm font-medium text-white bg-white/[0.04] border border-white/20 hover:bg-white/[0.1] hover:border-white/35 rounded-full transition-all inline-flex items-center gap-2 cursor-pointer"
                           >
-                            <BookOpen className="w-4 h-4" />
-                            <span>Books & Toolkits</span>
+                            <span>Book for Speaking</span>
                           </button>
-
-                          {/* Direct Social Links in Hero */}
-                          <a
-                            href={siteSettings.linkedinUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Connect with Stephanie Egharevba on LinkedIn"
-                            className="px-3.5 py-3 text-xs font-semibold text-white/90 border border-white/20 hover:border-[#60A5FA] hover:text-[#60A5FA] rounded-lg transition-colors inline-flex items-center gap-1.5"
-                          >
-                            <Linkedin className="w-4 h-4" />
-                            <span>LinkedIn</span>
-                          </a>
-
-                          <a
-                            href={siteSettings.instagramUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Follow Stephanie Egharevba on Instagram"
-                            className="px-3.5 py-3 text-xs font-semibold text-white/90 border border-white/20 hover:border-[#60A5FA] hover:text-[#60A5FA] rounded-lg transition-colors inline-flex items-center gap-1.5"
-                          >
-                            <Instagram className="w-4 h-4" />
-                            <span>Instagram</span>
-                          </a>
                         </div>
 
-                        <div className="pt-5 border-t border-white/15 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] font-mono text-white/55">
-                          <span>MASTERCARD FOUNDATION</span>
-                          <span>·</span>
-                          <span>JOBBERMAN</span>
-                          <span>·</span>
-                          <span>MICROSOFT</span>
-                          <span>·</span>
-                          <span>GOOGLE</span>
+                        {/* 5. Partner Proof Strip with Monochrome SVG Logos */}
+                        <div className="pt-7 border-t border-white/10">
+                          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+                            {/* Mastercard Foundation Monochrome SVG */}
+                            <div
+                              className="flex items-center gap-2.5 text-white opacity-45 hover:opacity-85 transition-opacity duration-300 select-none"
+                              title="Mastercard Foundation"
+                            >
+                              <svg
+                                className="h-5 w-7 shrink-0"
+                                viewBox="0 0 36 24"
+                                fill="none"
+                                aria-hidden="true"
+                              >
+                                <circle cx="13" cy="12" r="9" fill="currentColor" fillOpacity="0.85" />
+                                <circle cx="23" cy="12" r="9" fill="currentColor" fillOpacity="0.55" />
+                              </svg>
+                              <span className="font-sans text-xs font-semibold tracking-tight">
+                                Mastercard Foundation
+                              </span>
+                            </div>
+
+                            {/* Jobberman Monochrome SVG */}
+                            <div
+                              className="flex items-center gap-2 text-white opacity-45 hover:opacity-85 transition-opacity duration-300 select-none"
+                              title="Jobberman"
+                            >
+                              <svg
+                                className="h-4 w-4 shrink-0"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                aria-hidden="true"
+                              >
+                                <rect x="2" y="5" width="16" height="12" rx="2.5" fillOpacity="0.85" />
+                                <path d="M7 5V3.5A1.5 1.5 0 0 1 8.5 2h3A1.5 1.5 0 0 1 13 3.5V5" stroke="currentColor" strokeWidth="1.8" fill="none" />
+                              </svg>
+                              <span className="font-sans text-xs font-bold tracking-tight">
+                                Jobberman
+                              </span>
+                            </div>
+
+                            {/* Microsoft Monochrome SVG */}
+                            <div
+                              className="flex items-center gap-2 text-white opacity-45 hover:opacity-85 transition-opacity duration-300 select-none"
+                              title="Microsoft"
+                            >
+                              <svg
+                                className="h-4 w-4 shrink-0"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                aria-hidden="true"
+                              >
+                                <rect x="2" y="2" width="7.2" height="7.2" />
+                                <rect x="10.8" y="2" width="7.2" height="7.2" />
+                                <rect x="2" y="10.8" width="7.2" height="7.2" />
+                                <rect x="10.8" y="10.8" width="7.2" height="7.2" />
+                              </svg>
+                              <span className="font-sans text-xs font-semibold tracking-tight">
+                                Microsoft
+                              </span>
+                            </div>
+
+                            {/* Google Monochrome SVG */}
+                            <div
+                              className="flex items-center gap-1.5 text-white opacity-45 hover:opacity-85 transition-opacity duration-300 select-none"
+                              title="Google"
+                            >
+                              <svg
+                                className="h-4 w-4 shrink-0"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                aria-hidden="true"
+                              >
+                                <path d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z" />
+                              </svg>
+                              <span className="font-sans text-xs font-semibold tracking-tight">
+                                Google
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </motion.div>
                     </div>
 
-                    {/* Right Column: Portrait */}
+                    {/* Right Column: Pure Magazine Portrait (No Widget/Carousel Clutter) */}
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.97 }}
+                      initial={{ opacity: 0, scale: 0.98 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.6, delay: 0.1, ease: EASE_EDITORIAL }}
+                      transition={{ duration: 0.65, delay: 0.1, ease: EASE_EDITORIAL }}
                       className="lg:col-span-5"
                     >
-                      <div className="relative h-[380px] sm:h-[460px] lg:h-full rounded-2xl overflow-hidden bg-[#141413] border border-white/15 flex flex-col justify-between">
-                        <AnimatePresence mode="wait">
-                          <motion.img
-                            key={activeHeroPortrait.src}
-                            src={activeHeroPortrait.src}
-                            alt={activeHeroPortrait.caption}
-                            referrerPolicy="no-referrer"
-                            initial={{ opacity: 0, scale: 1.04 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.4, ease: EASE_EDITORIAL }}
-                            className="absolute inset-0 w-full h-full object-cover object-top"
-                          />
-                        </AnimatePresence>
-
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-
-                        <div className="relative z-10 p-4 flex items-center justify-between">
-                          <span className="font-mono text-[11px] text-white/80 bg-black/50 backdrop-blur-xs px-2.5 py-1 rounded-md">
-                            0{heroPortraitIdx + 1} / 0{STEPHANIE_PORTRAITS.length}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => navigateTo('gallery')}
-                            className="text-[11px] font-mono text-white/85 bg-black/50 backdrop-blur-xs px-2.5 py-1 rounded-md cursor-pointer"
-                          >
-                            Gallery ↗
-                          </button>
-                        </div>
-
-                        <div className="relative z-10 p-4 flex items-end justify-between gap-3">
-                          <div className="text-xs font-display font-semibold text-white truncate">
-                            {activeHeroPortrait.title}
-                          </div>
-
-                          <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-md p-1 rounded-lg border border-white/15 shrink-0">
-                            {STEPHANIE_PORTRAITS.map((p, idx) => (
-                              <button
-                                key={p.id}
-                                type="button"
-                                onClick={() => setHeroPortraitIdx(idx)}
-                                aria-label={`Switch portrait ${idx + 1}: ${p.title}`}
-                                className={`w-7 h-7 rounded overflow-hidden border transition-all cursor-pointer ${
-                                  heroPortraitIdx === idx
-                                    ? 'border-[#60A5FA] scale-105'
-                                    : 'border-white/20 opacity-55 hover:opacity-100'
-                                }`}
-                              >
-                                <img
-                                  src={p.src}
-                                  alt={p.title}
-                                  referrerPolicy="no-referrer"
-                                  className="w-full h-full object-cover object-top"
-                                />
-                              </button>
-                            ))}
-                          </div>
-                        </div>
+                      <div className="relative h-[420px] sm:h-[490px] lg:h-[520px] rounded-3xl overflow-hidden bg-[#141413] border border-white/[0.08] shadow-[0_24px_60px_-15px_rgba(0,0,0,0.75)]">
+                        <img
+                          src={STEPHANIE_PORTRAITS[0].src}
+                          alt={STEPHANIE_PORTRAITS[0].caption}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover object-top"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent pointer-events-none" />
                       </div>
                     </motion.div>
                   </div>
 
-                  {/* 4 Key Stats */}
-                  <div className="mt-10 sm:mt-14 pt-8 border-t border-white/15 grid grid-cols-2 lg:grid-cols-4 gap-6">
+                  {/* 6. Stats Row with Generous Breathing Room & Vertical Dividers */}
+                  <div className="mt-14 pt-12 pb-12 border-t border-white/10 grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-6 lg:gap-x-0 lg:divide-x lg:divide-white/10">
                     {[
                       { stat: 'Top 3%', label: 'Global Speaker (Sessionize)' },
                       { stat: 'Top 100', label: 'Women in Tech (ALX 2025)' },
                       { stat: '200+', label: 'Alumni Community Founded' },
                       { stat: '3,000+', label: 'Students & Builders Reached' },
-                    ].map((item) => (
-                      <div key={item.stat}>
-                        <div className="text-2xl sm:text-3xl font-display font-bold text-white tabular-nums">
+                    ].map((item, index) => (
+                      <div
+                        key={item.stat}
+                        className={index > 0 ? 'lg:pl-10' : 'lg:pr-6'}
+                      >
+                        <div className="font-display text-[36px] sm:text-[40px] font-bold tracking-tight text-white tabular-nums leading-none">
                           {item.stat}
                         </div>
-                        <div className="text-xs text-white/65 mt-0.5">{item.label}</div>
+                        <div className="font-sans text-[13px] sm:text-[14px] font-normal text-[#94A3B8] mt-2.5">
+                          {item.label}
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
               </section>
 
-              {/* Marquee Ticker */}
-              <div
-                aria-hidden="true"
-                className="border-b border-[#E6E4DD] bg-[#F2EFE9] py-3 overflow-hidden select-none"
-              >
-                <div className="animate-marquee flex items-center gap-8 text-xs font-mono text-[#575652]">
-                  {Array.from({ length: 3 }).map((_, idx) => (
-                    <React.Fragment key={idx}>
-                      <span className="text-[#141413] font-semibold">TOP 3% GLOBAL SPEAKER</span>
-                      <span>·</span>
-                      <span>TOP 100 WOMEN IN TECH</span>
-                      <span>·</span>
-                      <span>MASTERCARD FOUNDATION</span>
-                      <span>·</span>
-                      <span>JOBBERMAN NIGERIA</span>
-                      <span>·</span>
-                      <span>AUTHOR OF 3 ACCESSIBILITY BOOKS</span>
-                      <span>·</span>
-                    </React.Fragment>
-                  ))}
-                </div>
-              </div>
-
-              {/* SECTION 2: Stephanie's Story */}
-              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-14 sm:py-24">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+              {/* SECTION 2: THE STORY SECTION (FORMAL STUDIO PORTRAIT + ANCHOR THESIS QUOTE) */}
+              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-16 sm:py-24">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+                  {/* Left: Formal Studio Portrait in Dark Teal Blazer */}
                   <div className="lg:col-span-5">
                     <div
                       onClick={() => navigateTo('cv')}
@@ -907,259 +939,446 @@ export default function App() {
                           navigateTo('cv');
                         }
                       }}
-                      className="group relative h-[340px] sm:h-[440px] rounded-2xl overflow-hidden bg-[#141413] border border-[#E6E4DD] cursor-pointer"
+                      className="group relative h-[380px] sm:h-[460px] rounded-2xl overflow-hidden bg-[#0F172A] border border-[#E2E8F0] shadow-[0_20px_50px_-20px_rgba(15,23,42,0.18)] cursor-pointer"
                     >
                       <img
-                        src={STEPHANIE_PORTRAITS[3].src}
-                        alt={STEPHANIE_PORTRAITS[3].caption}
+                        src={STEPHANIE_PORTRAITS[2].src}
+                        alt={STEPHANIE_PORTRAITS[2].caption}
                         loading="lazy"
                         referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
                       />
                     </div>
                   </div>
 
-                  <div className="lg:col-span-7 space-y-5">
-                    <div className="text-xs font-mono text-[#1D4ED8] font-medium">
+                  {/* Right: High-Impact Aeonik Thesis Quote + Simplified CTAs */}
+                  <div className="lg:col-span-7 space-y-6">
+                    <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
                       STEPHANIE’S STORY
                     </div>
-                    <h2 className="text-2xl sm:text-4xl font-display font-bold tracking-tight text-[#141413] leading-tight">
+
+                    <h2
+                      className="font-display font-bold tracking-[-0.03em] text-[#0F172A] leading-[1.12]"
+                      style={{
+                        fontSize: 'clamp(2.25rem, 3.8vw, 2.75rem)',
+                      }}
+                    >
                       “{siteSettings.heroQuote}”
                     </h2>
-                    <p className="text-base sm:text-lg text-[#3F3E3A] leading-relaxed max-w-[54ch]">
+
+                    <p className="font-sans text-[17px] sm:text-[19px] text-[#334155] leading-[1.65] max-w-[54ch]">
                       Born with Osteogenesis Imperfecta in Lagos, Stephanie leads disability
                       inclusion, WCAG platform auditing, and workforce programs across the
                       Mastercard Foundation, Jobberman, Google, and Microsoft ecosystems.
                     </p>
 
-                    <div className="pt-2 flex flex-wrap items-center gap-3">
+                    <div className="pt-3 flex flex-wrap items-center gap-6">
                       <button
                         type="button"
                         onClick={() => navigateTo('cv')}
-                        className="px-5 py-2.5 text-xs sm:text-sm font-semibold text-white bg-[#141413] hover:bg-[#1D4ED8] rounded-lg transition-colors inline-flex items-center gap-2 cursor-pointer"
+                        className="group px-7 py-3.5 text-sm font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-all inline-flex items-center gap-2.5 cursor-pointer"
                       >
-                        <span>Read Full Story & CV</span>
-                        <ArrowRight className="w-4 h-4" />
+                        <span>Read Full Story &amp; CV</span>
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </button>
+
                       <a
                         href={CV_PDF_URL}
                         download="Stephanie_Egharevba_CV.pdf"
-                        className="px-4 py-2.5 text-xs sm:text-sm font-medium text-[#575652] hover:text-[#141413] inline-flex items-center gap-1.5"
+                        className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-2 py-2"
                       >
-                        <Download className="w-4 h-4" />
-                        CV PDF
+                        <Download className="w-4 h-4 text-[#64748B]" />
+                        <span>Download CV (PDF)</span>
                       </a>
                     </div>
                   </div>
                 </div>
               </section>
 
-              {/* SECTION 3: 4 Core Focus Cards */}
-              <section className="border-t border-[#E6E4DD] bg-white py-14 sm:py-24">
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-8 sm:space-y-10">
-                  <div className="flex items-end justify-between gap-4">
-                    <div>
-                      <div className="text-xs font-mono text-[#575652]">THE ECOSYSTEM</div>
-                      <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]">
+              {/* SECTION 3: "WHAT STEPHANIE DOES" — BESPOKE EDITORIAL PRACTICE CARDS */}
+              <section className="border-t border-[#E2E8F0] bg-white py-16 sm:py-24">
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-10">
+                  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div className="space-y-1.5">
+                      <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                        EXECUTIVE PRACTICE &amp; ADVISORY
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#0F172A]">
                         What Stephanie Does
                       </h2>
                     </div>
                     <button
                       type="button"
                       onClick={() => navigateTo('work')}
-                      className="text-xs sm:text-sm font-semibold text-[#1D4ED8] inline-flex items-center gap-1 cursor-pointer"
+                      className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                     >
-                      <span>View Work & Contrast Lab</span>
+                      <span>View Case Studies &amp; Contrast Lab</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                    {[
-                      {
-                        num: '01',
-                        tag: 'ADF · RUSHBOX',
-                        title: 'WCAG & Digital Accessibility',
-                        desc: 'Auditing web platforms against international WCAG usability standards.',
-                        target: 'work' as PageId,
-                      },
-                      {
-                        num: '02',
-                        tag: 'MASTERCARD FOUNDATION · CLENT',
-                        title: 'D&I Strategy & Policy',
-                        desc: 'Scaling disability inclusion frameworks and 200+ member peer networks.',
-                        target: 'work' as PageId,
-                      },
-                      {
-                        num: '03',
-                        tag: 'TOP 3% GLOBAL SPEAKER',
-                        title: 'Keynote Speaking & Videos',
-                        desc: 'Speaking at InAble, InnovateAI, TechCabal Moonshot, and AISEN.',
-                        target: 'speaking' as PageId,
-                      },
-                      {
-                        num: '04',
-                        tag: '3 PUBLISHED RESOURCES ON SELAR',
-                        title: 'Books & Accessibility Toolkits',
-                        desc: 'Practical books and WCAG starter kits for founders, designers, and developers.',
-                        target: 'books' as PageId,
-                      },
-                    ].map((card) => (
-                      <motion.div
-                        key={card.num}
-                        whileHover={{ y: -4 }}
-                        onClick={() => navigateTo(card.target)}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            navigateTo(card.target);
-                          }
-                        }}
-                        className="group p-6 sm:p-8 rounded-2xl bg-[#FAF9F6] border border-[#E6E4DD] hover:border-[#141413] hover:bg-white flex flex-col justify-between space-y-5 transition-colors cursor-pointer"
-                      >
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between text-xs font-mono text-[#575652]">
-                            <span>{card.tag}</span>
-                            <span className="font-serif italic text-lg text-[#1D4ED8]">
-                              {card.num}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Card 1: WCAG & Digital Accessibility (Deliverables-Focused) */}
+                    <div
+                      onClick={() => navigateTo('work')}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          navigateTo('work');
+                        }
+                      }}
+                      className="group p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
+                    >
+                      <div className="space-y-4">
+                        <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                          AFRICAN DISABILITY FORUM · RUSHBOX
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
+                          WCAG &amp; Digital Accessibility
+                        </h3>
+                        <p className="text-[15px] text-[#475569] leading-relaxed">
+                          End-to-end accessibility engineering for web and mobile platforms—uncovering
+                          usability barriers and shipping remediated, compliant user journeys.
+                        </p>
+                        <div className="pt-1 flex flex-wrap gap-2">
+                          {[
+                            'WCAG 2.2 AA/AAA Audits',
+                            'Engineering Teardowns',
+                            'Compliance Roadmaps',
+                          ].map((deliverable) => (
+                            <span
+                              key={deliverable}
+                              className="px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-medium text-[#334155]"
+                            >
+                              {deliverable}
                             </span>
-                          </div>
-                          <h3 className="text-xl font-display font-bold text-[#141413] group-hover:text-[#1D4ED8] transition-colors">
-                            {card.title}
-                          </h3>
-                          <p className="text-sm text-[#575652]">{card.desc}</p>
+                          ))}
                         </div>
+                      </div>
 
-                        <div className="flex items-center justify-between text-xs font-semibold text-[#141413] group-hover:text-[#1D4ED8] pt-3 border-t border-[#E6E4DD]">
-                          <span>Explore</span>
-                          <ArrowUpRight className="w-4 h-4" />
+                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                        <span>Inspect Audits &amp; Contrast Lab</span>
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </div>
+
+                    {/* Card 2: D&I Strategy & Policy (Institutional Scale) */}
+                    <div
+                      onClick={() => navigateTo('work')}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          navigateTo('work');
+                        }
+                      }}
+                      className="group p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
+                    >
+                      <div className="space-y-4">
+                        <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                          MASTERCARD FOUNDATION · PARTNER
                         </div>
-                      </motion.div>
-                    ))}
+                        <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
+                          D&amp;I Strategy &amp; Policy
+                        </h3>
+                        <p className="text-[15px] text-[#475569] leading-relaxed">
+                          Institutional inclusion architecture designed for the Mastercard Foundation
+                          and national workforce pipelines—from recruitment policy to the 200+
+                          member Alumni Disability Community.
+                        </p>
+                        <div className="pt-1 grid grid-cols-2 gap-3">
+                          <div className="p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
+                            <div className="font-display text-lg font-bold text-[#0F172A]">
+                              200+ Alumni
+                            </div>
+                            <div className="text-xs text-[#64748B]">
+                              Peer &amp; Policy Network Founded
+                            </div>
+                          </div>
+                          <div className="p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
+                            <div className="font-display text-lg font-bold text-[#0F172A]">
+                              3,000+ Youth
+                            </div>
+                            <div className="text-xs text-[#64748B]">
+                              Workforce &amp; Career Pipelines
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                        <span>Review Institutional Programmes</span>
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </div>
+
+                    {/* Card 3: Keynotes & Speaking (Stage Proof Points) */}
+                    <div
+                      onClick={() => navigateTo('speaking')}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          navigateTo('speaking');
+                        }
+                      }}
+                      className="group p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
+                    >
+                      <div className="space-y-4">
+                        <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                          TOP 3% GLOBAL SPEAKER · SESSIONIZE
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
+                          Keynotes &amp; Executive Stages
+                        </h3>
+                        <p className="text-[15px] text-[#475569] leading-relaxed">
+                          High-authority keynotes on AI accessibility, inclusive product leadership,
+                          and resilient ecosystems delivered across Africa’s premier technology stages.
+                        </p>
+                        <div className="pt-1 flex flex-wrap items-center gap-2">
+                          {[
+                            'TechCabal Moonshot',
+                            'InAble Africa',
+                            'AISEN Summit',
+                            'InnovateAI Lagos',
+                          ].map((stage) => (
+                            <span
+                              key={stage}
+                              className="px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-semibold text-[#0F172A]"
+                            >
+                              {stage}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                        <span>Watch Keynotes &amp; Speaking Topics</span>
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </div>
+
+                    {/* Card 4: Frameworks & Toolkits (Direct to Resources & Downloads) */}
+                    <div
+                      onClick={() => navigateTo('books')}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          navigateTo('books');
+                        }
+                      }}
+                      className="group p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
+                    >
+                      <div className="space-y-4">
+                        <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                          PUBLISHED FRAMEWORKS &amp; SELAR EDITIONS
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
+                          Frameworks &amp; Accessibility Toolkits
+                        </h3>
+                        <p className="text-[15px] text-[#475569] leading-relaxed">
+                          Ready-to-deploy WCAG audit checklists, semantic HTML engineering guides,
+                          and executive playbooks built for product teams and founders.
+                        </p>
+                        <div className="pt-1 flex flex-wrap gap-2">
+                          {[
+                            'Executive Briefing',
+                            'Developer Blueprint',
+                            'WCAG Audit Starter Kit',
+                          ].map((item) => (
+                            <span
+                              key={item}
+                              className="px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-medium text-[#334155]"
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                        <span>Access Frameworks &amp; Downloads</span>
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </section>
 
-              {/* SECTION 4: Books & Toolkits Teaser */}
-              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-14 sm:py-24 space-y-8 border-t border-[#E6E4DD]">
-                <div className="flex items-end justify-between gap-4">
-                  <div>
-                    <div className="text-xs font-mono text-[#575652]">AUTHOR & CREATOR</div>
-                    <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]">
-                      Books & Toolkits
+              {/* SECTION 4: BOOKS & TOOLKITS (SINGLE-SURFACE CARDS + 3D BOOK MOCKUPS) */}
+              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-16 sm:py-24 space-y-10 border-t border-[#E2E8F0]">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                  <div className="space-y-1.5">
+                    <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                      AUTHOR &amp; CREATOR
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#0F172A]">
+                      Books &amp; Toolkits
                     </h2>
                   </div>
                   <button
                     type="button"
                     onClick={() => navigateTo('books')}
-                    className="text-xs sm:text-sm font-semibold text-[#1D4ED8] inline-flex items-center gap-1 cursor-pointer"
+                    className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                   >
-                    <span>Explore All Books</span>
+                    <span>View Complete Publication Details</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {STEPHANIE_BOOKS.map((book) => (
-                    <motion.a
+                    <a
                       key={book.id}
                       href={book.selarUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ y: -5 }}
-                      className="group bg-white border border-[#E6E4DD] hover:border-[#141413] rounded-2xl overflow-hidden flex flex-col justify-between transition-colors"
+                      className="group p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6"
                     >
-                      <div
-                        className="p-6 h-48 flex flex-col justify-between text-white"
-                        style={{ backgroundColor: book.coverBg }}
-                      >
-                        <div className="flex items-center justify-between text-[11px] font-mono text-white/65">
-                          <span>{book.tag}</span>
-                          <span style={{ color: book.accentColor }}>SELAR EDITION ↗</span>
+                      <div className="space-y-6">
+                        {/* Distinct Category Tag Only */}
+                        <div className="flex items-center justify-between">
+                          <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                            {book.tag}
+                          </span>
                         </div>
-                        <div className="space-y-1">
-                          <div className="text-lg font-display font-bold leading-snug text-white">
+
+                        {/* Physical 2D/3D Hardcover Book Mockup */}
+                        <BookMockup book={book} />
+
+                        {/* Title & Complete Two-Sentence Description (Never Truncated) */}
+                        <div className="space-y-2.5 pt-1">
+                          <h3 className="text-xl font-display font-bold tracking-tight text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
                             {book.title}
-                          </div>
-                          <div className="text-xs text-white/70 font-serif italic">
-                            {book.subtitle}
-                          </div>
+                          </h3>
+                          <p className="text-sm text-[#475569] leading-relaxed">
+                            {book.description}
+                          </p>
                         </div>
                       </div>
 
-                      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                        <p className="text-xs sm:text-sm text-[#575652] line-clamp-2 leading-relaxed">
-                          {book.description}
-                        </p>
-                        <div className="pt-3 border-t border-[#E6E4DD] flex items-center justify-between text-xs font-semibold text-[#141413] group-hover:text-[#1D4ED8]">
-                          <span>Get on Selar</span>
-                          <ArrowUpRight className="w-4 h-4" />
-                        </div>
+                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                        <span>Get on Selar</span>
+                        <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </div>
-                    </motion.a>
+                    </a>
                   ))}
                 </div>
               </section>
 
-              {/* SECTION 5: Portrait Lookbook */}
-              <section className="border-t border-[#E6E4DD] bg-white py-14 sm:py-24">
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-8">
-                  <div className="flex items-end justify-between gap-4">
-                    <div>
-                      <div className="text-xs font-mono text-[#575652]">PRESS & MEDIA KIT</div>
-                      <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]">
-                        Portraits
+              {/* SECTION 5: PRESS & MEDIA KIT (EXECUTIVE MEDIA LAYOUT) */}
+              <section className="border-t border-[#E2E8F0] bg-white py-16 sm:py-24">
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-10">
+                  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div className="space-y-1.5">
+                      <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                        PRESS &amp; MEDIA KIT
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#0F172A]">
+                        Official Portraits &amp; Speaker Bio
                       </h2>
                     </div>
                     <button
                       type="button"
                       onClick={() => navigateTo('gallery')}
-                      className="text-xs sm:text-sm font-semibold text-[#1D4ED8] inline-flex items-center gap-1 cursor-pointer"
+                      className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                     >
-                      <span>All Photos</span>
+                      <span>Open Full Media Kit &amp; Rider</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-row gap-3 sm:gap-4 lg:h-[400px]">
-                    {STEPHANIE_PORTRAITS.map((portrait, idx) => {
-                      const isExpanded = hoveredGalleryIdx === idx;
-                      return (
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+                    {/* Left: Two Distinct High-Resolution Studio Portraits Side by Side */}
+                    <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      {[STEPHANIE_PORTRAITS[0], STEPHANIE_PORTRAITS[1]].map((portrait) => (
                         <div
                           key={portrait.id}
-                          onMouseEnter={() => setHoveredGalleryIdx(idx)}
-                          onClick={() => navigateTo('gallery')}
-                          role="button"
-                          tabIndex={0}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              navigateTo('gallery');
-                            }
-                          }}
-                          className={`group relative h-56 sm:h-72 lg:h-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#141413] border border-[#E6E4DD] cursor-pointer transition-all duration-500 ${
-                            idx === 0 ? 'col-span-2 sm:col-span-1' : ''
-                          } ${isExpanded ? 'lg:flex-[2]' : 'lg:flex-1'}`}
+                          className="group relative h-[360px] sm:h-full min-h-[360px] rounded-2xl overflow-hidden bg-[#0F172A] border border-[#E2E8F0] flex flex-col justify-end"
                         >
                           <img
                             src={portrait.src}
                             alt={portrait.caption}
                             loading="lazy"
                             referrerPolicy="no-referrer"
-                            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                            className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                          <div className="absolute bottom-3 left-3 right-3 text-white">
-                            <div className="font-mono text-[10px] text-white/70">0{idx + 1}</div>
-                            <div className="text-xs sm:text-sm font-display font-bold truncate">
-                              {portrait.title}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
+                          <div className="relative z-10 p-5 flex items-end justify-between gap-3 text-white">
+                            <div>
+                              <div className="font-sans text-[11px] font-medium uppercase tracking-[0.08em] text-white/70">
+                                {portrait.usage}
+                              </div>
+                              <div className="text-base font-display font-bold">
+                                {portrait.title}
+                              </div>
                             </div>
+                            <a
+                              href={portrait.src}
+                              download={`Stephanie_Egharevba_${portrait.title.replace(/\s+/g, '_')}.jpg`}
+                              aria-label={`Download ${portrait.title}`}
+                              title="Download high-res portrait"
+                              className="w-9 h-9 rounded-full bg-white/15 hover:bg-white text-white hover:text-[#0F172A] backdrop-blur-sm flex items-center justify-center transition-colors shrink-0"
+                            >
+                              <Download className="w-4 h-4" />
+                            </a>
                           </div>
                         </div>
-                      );
-                    })}
+                      ))}
+                    </div>
+
+                    {/* Right: Approved 100-Word Conference Bio + Prominent Press Kit Download CTA */}
+                    <div className="lg:col-span-5 p-8 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] flex flex-col justify-between space-y-6">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                            APPROVED 100-WORD SPEAKER BIO
+                          </span>
+                          <button
+                            type="button"
+                            onClick={handleCopyPressBio}
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors cursor-pointer"
+                          >
+                            {copiedPressBio ? (
+                              <>
+                                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                <span className="text-emerald-700">Copied</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3.5 h-3.5" />
+                                <span>Copy Bio</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+
+                        <p className="text-sm sm:text-[15px] text-[#334155] leading-[1.7] font-sans">
+                          {APPROVED_100_WORD_BIO}
+                        </p>
+                      </div>
+
+                      <div className="pt-5 border-t border-[#E2E8F0] space-y-3">
+                        <button
+                          type="button"
+                          onClick={handleDownloadPressKitBundle}
+                          className="w-full py-3.5 px-5 text-xs sm:text-sm font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <Download className="w-4 h-4 shrink-0" />
+                          <span>Download Press Kit &amp; High-Res Headshots (ZIP)</span>
+                        </button>
+                        <p className="text-[12px] text-[#64748B] text-center">
+                          Includes print-ready studio portraits (300 DPI) and executive CV for event
+                          organizers.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -1178,42 +1397,38 @@ export default function App() {
               transition={{ duration: 0.3, ease: EASE_EDITORIAL }}
               className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12"
             >
-              {/* Compact Header & Filter Bar */}
-              <div className="space-y-6 border-b border-[#E6E4DD] pb-6">
+              {/* Executive Header & Filter Bar (No Public CMS/Staging Controls) */}
+              <div className="space-y-6 border-b border-[#E2E8F0] pb-7">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                  <div className="space-y-1">
-                    <div className="text-xs font-mono text-[#575652]">SELECTED WORK & AUDITS</div>
-                    <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-[#141413]">
-                      Projects & Case Studies
+                  <div className="space-y-1.5">
+                    <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                      SELECTED WORK &amp; TECHNICAL AUDITS
+                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-[#0F172A]">
+                      Projects &amp; Case Studies
                     </h1>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsCmsModalOpen(true)}
-                      className="px-3.5 py-2 text-xs font-medium text-[#1D4ED8] bg-white border border-[#E6E4DD] hover:border-[#1D4ED8] rounded-lg inline-flex items-center gap-1.5 w-fit cursor-pointer"
-                    >
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      Manage in CMS
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setIsAddProjectOpen(true)}
-                      className="px-3.5 py-2 text-xs font-medium text-[#141413] bg-white border border-[#E6E4DD] hover:border-[#141413] rounded-lg inline-flex items-center gap-1.5 w-fit cursor-pointer"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      Quick Add
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInquireWithContext(
+                        'WCAG 2.2 Platform Audit & D&I Advisory',
+                        'WCAG Accessibility Audit'
+                      )
+                    }
+                    className="group px-5 py-2.5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center gap-2 w-fit cursor-pointer"
+                  >
+                    <span>Commission an Audit or Advisory</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </button>
                 </div>
 
                 {/* Clean Filter Tabs */}
                 <div
                   role="group"
                   aria-label="Filter projects"
-                  className="flex flex-wrap items-center gap-1.5 p-1 bg-[#F2EFE9] rounded-xl w-fit border border-[#E6E4DD]"
+                  className="flex flex-wrap items-center gap-1.5 p-1.5 bg-[#F1F5F9] rounded-xl w-fit border border-[#E2E8F0]"
                 >
                   {(
                     ['All', 'WCAG & Accessibility', 'D&I Strategy', 'Workforce & Tech'] as const
@@ -1224,10 +1439,10 @@ export default function App() {
                         key={cat}
                         type="button"
                         onClick={() => setSelectedCategory(cat)}
-                        className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer ${
+                        className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer ${
                           isActive
-                            ? 'bg-white text-[#141413] shadow-xs font-semibold'
-                            : 'text-[#575652] hover:text-[#141413]'
+                            ? 'bg-white text-[#0F172A] shadow-xs font-semibold'
+                            : 'text-[#64748B] hover:text-[#0F172A]'
                         }`}
                       >
                         {cat}
@@ -1237,8 +1452,8 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Clean, Uncluttered 2-Column Project Cards */}
-              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Clean, Uncluttered 2-Column Case Study Cards */}
+              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7">
                 <AnimatePresence mode="popLayout">
                   {filteredProjects.map((project, idx) => (
                     <motion.article
@@ -1258,39 +1473,41 @@ export default function App() {
                       }}
                       tabIndex={0}
                       role="button"
-                      aria-label={`Inspect ${project.title}`}
-                      className="group bg-white border border-[#E6E4DD] hover:border-[#141413] rounded-2xl overflow-hidden flex flex-col justify-between transition-colors cursor-pointer"
+                      aria-label={`Read case study: ${project.title}`}
+                      className="group bg-white border border-[#E2E8F0] hover:border-[#0F172A] rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-200 cursor-pointer"
                     >
                       <EditorialVisualPlate
                         theme={project.visualTheme}
                         customImageUrl={project.customImageUrl}
                         title={project.title}
-                        className="h-48 sm:h-56 w-full"
+                        className="h-48 sm:h-52 w-full border-b border-[#E2E8F0]"
                       />
 
-                      <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
-                        <div className="space-y-1.5">
-                          <div className="flex items-center justify-between gap-2 text-xs text-[#575652] font-mono">
-                            <span className="truncate">{project.organization}</span>
-                            <span className="tabular-nums shrink-0">{project.year}</span>
+                      <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-5">
+                        <div className="space-y-2">
+                          {/* Combined Organization · Role Tag */}
+                          <div className="text-xs font-medium text-[#64748B] truncate">
+                            {project.organization} · {project.role}
                           </div>
 
-                          <h2 className="text-lg sm:text-xl font-display font-bold tracking-tight text-[#141413] group-hover:text-[#1D4ED8] transition-colors">
+                          {/* Bold Aeonik Medium/Semibold 20px Project Title */}
+                          <h2 className="text-[20px] font-display font-semibold tracking-tight text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors leading-snug">
                             {project.title}
                           </h2>
 
-                          <p className="text-xs sm:text-sm text-[#575652] line-clamp-2 leading-relaxed">
+                          {/* Concise Two-Line Description */}
+                          <p className="text-sm text-[#475569] line-clamp-2 leading-relaxed">
                             {project.summary}
                           </p>
                         </div>
 
-                        <div className="pt-3 border-t border-[#E6E4DD] flex items-center justify-between text-xs font-medium text-[#141413] group-hover:text-[#1D4ED8]">
-                          <span className="text-[#575652] font-normal truncate">
-                            {project.role}
+                        <div className="pt-3.5 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                          <span className="font-mono text-[11px] font-normal text-[#64748B] tabular-nums">
+                            {project.year}
                           </span>
                           <span className="inline-flex items-center gap-1 whitespace-nowrap shrink-0">
-                            Case Study
-                            <ArrowUpRight className="w-3.5 h-3.5" />
+                            <span>View Case Study</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                           </span>
                         </div>
                       </div>
@@ -1299,7 +1516,7 @@ export default function App() {
                 </AnimatePresence>
               </motion.div>
 
-              {/* Restored Interactive WCAG Contrast Lab */}
+              {/* Signature Interactive WCAG Contrast Lab */}
               <div id="contrast-lab-section">
                 <AccessibilitySandbox />
               </div>
@@ -1464,19 +1681,12 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Publications & CMS Press / Testimonials Grid */}
+              {/* Publications & Press Grid */}
               <section className="space-y-5">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl sm:text-2xl font-display font-bold text-[#141413]">
-                    Publications, Press & Testimonials
+                    Publications, Press &amp; Testimonials
                   </h2>
-                  <button
-                    type="button"
-                    onClick={() => setIsCmsModalOpen(true)}
-                    className="text-xs font-mono text-[#1D4ED8] hover:underline cursor-pointer"
-                  >
-                    + Add via CMS
-                  </button>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1538,7 +1748,7 @@ export default function App() {
                 </p>
               </div>
 
-              {/* 3 Featured Books Showcase */}
+              {/* 3 Featured Books Showcase (Cohesive Single-Surface Cards + Physical Book Mockups) */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
                 {STEPHANIE_BOOKS.map((book, idx) => (
                   <motion.article
@@ -1546,59 +1756,47 @@ export default function App() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: idx * 0.08, ease: EASE_EDITORIAL }}
-                    whileHover={{ y: -6 }}
-                    className="bg-white border border-[#E6E4DD] hover:border-[#141413] rounded-2xl overflow-hidden flex flex-col justify-between transition-colors"
+                    className="p-8 bg-white border border-[#E2E8F0] hover:border-[#0F172A] rounded-2xl flex flex-col justify-between space-y-6 transition-colors"
                   >
-                    {/* Editorial Book Cover Visual */}
-                    <div
-                      className="p-7 sm:p-8 min-h-[260px] flex flex-col justify-between text-white relative overflow-hidden"
-                      style={{ backgroundColor: book.coverBg }}
-                    >
-                      <div className="relative z-10 flex items-center justify-between text-xs font-mono text-white/70 border-b border-white/15 pb-3">
-                        <span>{book.tag}</span>
-                        <span style={{ color: book.accentColor }}>STEPHANIE EGHAREVBA</span>
+                    <div className="space-y-6">
+                      {/* Distinct Top Category Tag */}
+                      <div className="flex items-center justify-between">
+                        <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                          {book.tag}
+                        </span>
                       </div>
 
-                      <div className="relative z-10 my-6 space-y-2">
-                        <h2 className="text-2xl font-display font-bold leading-snug text-white">
+                      {/* Physical 3D Book Mockup */}
+                      <BookMockup book={book} />
+
+                      {/* Book Title, Subtitle & Untruncated Description */}
+                      <div className="space-y-3">
+                        <h2 className="text-2xl font-display font-bold tracking-tight text-[#0F172A]">
                           {book.title}
                         </h2>
-                        <p className="font-serif italic text-base text-white/80">{book.subtitle}</p>
-                      </div>
+                        <p className="text-xs font-medium text-[#64748B]">{book.subtitle}</p>
+                        <p className="text-sm text-[#334155] leading-relaxed">{book.description}</p>
 
-                      <div className="relative z-10 pt-3 border-t border-white/15 flex items-center justify-between text-[11px] font-mono text-white/60">
-                        <span>DIGITAL EDITION</span>
-                        <span>SELAR.COM</span>
-                      </div>
-                    </div>
-
-                    {/* Book Details & Direct Selar Link */}
-                    <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-6">
-                      <div className="space-y-4">
-                        <p className="text-sm text-[#3F3E3A] leading-relaxed">{book.description}</p>
-
-                        <ul className="space-y-2 pt-2 border-t border-[#E6E4DD]">
+                        <ul className="space-y-2 pt-3 border-t border-[#F1F5F9]">
                           {book.highlights.map((hl, i) => (
-                            <li key={i} className="text-xs text-[#575652] flex items-start gap-2">
-                              <span className="font-mono text-[#1D4ED8] font-semibold">
-                                0{i + 1}
-                              </span>
+                            <li key={i} className="text-xs text-[#475569] flex items-start gap-2.5">
+                              <span className="font-sans text-[#1D4ED8] font-bold">•</span>
                               <span>{hl}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
-
-                      <a
-                        href={book.selarUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-3 px-4 text-xs font-semibold text-white bg-[#141413] hover:bg-[#1D4ED8] rounded-xl transition-colors inline-flex items-center justify-center gap-2"
-                      >
-                        <span>Get This Book on Selar</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
                     </div>
+
+                    <a
+                      href={book.selarUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-3.5 px-5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center justify-center gap-2"
+                    >
+                      <span>Get on Selar</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </a>
                   </motion.article>
                 ))}
               </div>
@@ -1625,7 +1823,7 @@ export default function App() {
           )}
 
           {/* ================================================================= */}
-          {/* PAGE 6: STORY & CV (SCANNABLE, COMPACT & MOBILE-READY)            */}
+          {/* PAGE 6: STORY & CV (INTERACTIVE STORY VS. CV EXPERIENCE)          */}
           {/* ================================================================= */}
           {activePage === 'cv' && (
             <motion.div
@@ -1634,173 +1832,11 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: EASE_EDITORIAL }}
-              className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12"
             >
-              {/* Compact Header */}
-              <section className="border-b border-[#E6E4DD] pb-8 space-y-6">
-                <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
-                  <div className="space-y-2 max-w-2xl">
-                    <div className="text-xs font-mono text-[#575652]">
-                      CURRICULUM VITAE · LAGOS, NIGERIA
-                    </div>
-                    <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-[#141413]">
-                      Stephanie Osasumwen Egharevba
-                    </h1>
-                    <p className="text-sm font-medium text-[#1D4ED8]">
-                      Diversity & Inclusion Lead · Disability Inclusion Specialist · Tech Strategist
-                    </p>
-                    <p className="text-sm sm:text-base text-[#3F3E3A] leading-relaxed pt-1">
-                      Designing and scaling disability inclusion frameworks, WCAG platform audits,
-                      and technical communities across the Mastercard Foundation, Jobberman,
-                      Microsoft, and Google ecosystems.
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => setShowEmbeddedPdf((prev) => !prev)}
-                      className="px-3.5 py-2.5 text-xs font-medium text-[#141413] bg-white border border-[#E6E4DD] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                      {showEmbeddedPdf ? 'Hide PDF' : 'Preview PDF'}
-                    </button>
-
-                    <a
-                      href={CV_PDF_URL}
-                      download="EGHAREVBA_STEPHANIE_CV.pdf"
-                      className="px-4 py-2.5 text-xs font-medium text-white bg-[#1D4ED8] rounded-lg inline-flex items-center gap-1.5"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      Download CV
-                    </a>
-                  </div>
-                </div>
-
-                {/* Embedded PDF Viewer */}
-                <AnimatePresence>
-                  {showEmbeddedPdf && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="bg-white border border-[#E6E4DD] rounded-2xl overflow-hidden"
-                    >
-                      <div className="px-4 py-2.5 bg-[#F2EFE9] border-b border-[#E6E4DD] flex items-center justify-between text-xs font-mono text-[#575652]">
-                        <span>EGHAREVBA_STEPHANIE_CV.PDF</span>
-                        <a
-                          href={CV_PDF_URL}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#1D4ED8] inline-flex items-center gap-1"
-                        >
-                          Open Fullscreen
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-                      <iframe
-                        src={CV_PDF_URL}
-                        title="Official CV PDF"
-                        className="w-full h-[520px] sm:h-[680px] border-0"
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Core Competencies */}
-                <div className="text-xs text-[#575652] font-mono pt-1">
-                  {CORE_COMPETENCIES.join(' · ')}
-                </div>
-              </section>
-
-              {/* Scannable Experience List */}
-              <section className="space-y-6">
-                <h2 className="text-xl sm:text-2xl font-display font-bold text-[#141413]">
-                  Experience
-                </h2>
-
-                <div className="divide-y divide-[#E6E4DD] border-y border-[#E6E4DD]">
-                  {PROFESSIONAL_EXPERIENCE.map((exp) => (
-                    <div
-                      key={exp.id}
-                      className="py-5 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-baseline"
-                    >
-                      <div className="sm:col-span-3 text-xs font-mono text-[#1D4ED8] tabular-nums">
-                        {exp.period}
-                      </div>
-
-                      <div className="sm:col-span-9 space-y-1">
-                        <div className="flex flex-wrap items-baseline justify-between gap-2">
-                          <h3 className="text-base sm:text-lg font-display font-bold text-[#141413]">
-                            {exp.role}
-                          </h3>
-                          <span className="text-xs font-medium text-[#575652]">
-                            {exp.organization}
-                          </span>
-                        </div>
-                        <p className="text-xs sm:text-sm text-[#3F3E3A] leading-relaxed">
-                          {exp.summary}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* Compact Education & Honors Grid */}
-              <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white border border-[#E6E4DD] rounded-2xl p-6 space-y-4">
-                  <div className="flex items-center justify-between border-b border-[#E6E4DD] pb-3">
-                    <h2 className="text-lg font-display font-bold text-[#141413]">Education</h2>
-                    <GraduationCap className="w-4 h-4 text-[#1D4ED8]" />
-                  </div>
-                  <div className="divide-y divide-[#E6E4DD]">
-                    {EDUCATION_HISTORY.map((edu, idx) => (
-                      <div
-                        key={idx}
-                        className="py-3 first:pt-0 last:pb-0 flex items-baseline justify-between gap-3"
-                      >
-                        <div>
-                          <div className="text-sm font-display font-bold text-[#141413]">
-                            {edu.degree}
-                          </div>
-                          <div className="text-xs text-[#575652]">{edu.institution}</div>
-                        </div>
-                        <span className="text-xs font-mono text-[#1D4ED8] shrink-0">
-                          {edu.period}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="bg-white border border-[#E6E4DD] rounded-2xl p-6 space-y-4">
-                  <div className="flex items-center justify-between border-b border-[#E6E4DD] pb-3">
-                    <h2 className="text-lg font-display font-bold text-[#141413]">
-                      Honors & Awards
-                    </h2>
-                    <Award className="w-4 h-4 text-[#1D4ED8]" />
-                  </div>
-                  <div className="divide-y divide-[#E6E4DD]">
-                    {HONORS_AND_RECOGNITION.map((honor) => (
-                      <div
-                        key={honor.id}
-                        className="py-3 first:pt-0 last:pb-0 flex items-baseline justify-between gap-3"
-                      >
-                        <div>
-                          <div className="text-sm font-display font-bold text-[#141413]">
-                            {honor.title}
-                          </div>
-                          <div className="text-xs text-[#575652]">{honor.issuer}</div>
-                        </div>
-                        <span className="text-xs font-mono text-[#1D4ED8] shrink-0">
-                          {honor.year}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
+              <StoryAndCvView
+                onNavigateToContact={() => navigateTo('contact')}
+                onNavigateToWork={() => navigateTo('work')}
+              />
             </motion.div>
           )}
 
@@ -2421,15 +2457,6 @@ export default function App() {
               >
                 Sitemap.xml
               </a>
-              <span>·</span>
-              <button
-                type="button"
-                onClick={() => setIsCmsModalOpen(true)}
-                className="inline-flex items-center gap-1 text-[#60A5FA] hover:underline cursor-pointer"
-              >
-                <Lock className="w-3 h-3" />
-                <span>CMS &amp; Backend Brief</span>
-              </button>
             </div>
           </div>
         </div>

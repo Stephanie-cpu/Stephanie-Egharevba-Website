@@ -1,4 +1,5 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -113,7 +114,6 @@ ${pages
 
     // Accessible Honeypot Check (no visual/cognitive CAPTCHA puzzles)
     if (honeypotWebsite && String(honeypotWebsite).trim().length > 0) {
-      // Silently accept to fool bots without saving
       return res.status(200).json({
         ok: true,
         spamFiltered: true,

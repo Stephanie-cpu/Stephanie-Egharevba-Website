@@ -14,6 +14,7 @@ export interface BookItem {
   selarUrl: string;
   accentColor: string;
   coverBg: string;
+  coverImageUrl: string;
   description: string;
   highlights: string[];
 }
@@ -91,12 +92,14 @@ export interface HonorItem {
   title: string;
   year: string;
   issuer: string;
+  detail: string;
 }
 
 export interface EducationItem {
   degree: string;
   institution: string;
   period: string;
+  highlight: string;
 }
 
 export const CV_PDF_URL = '/assets/aistudio/EGHAREVBA_STEPHANIE_CV_592c7c87.pdf';
@@ -174,7 +177,6 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
     organization: 'Mastercard Foundation',
     role: 'Diversity & Inclusion Lead',
     visualTheme: 'council',
-    customImageUrl: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
     summary:
       'Founded and scaled the Alumni Disability Community from 0 to 200+ members and led Ogun State lab infrastructure.',
     challenge:
@@ -270,12 +272,12 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
     ]
   },
   {
-    id: 'clent-africa-disability-gender',
+    id: 'client-africa-disability-gender',
     title: 'Disability Rights & Gender Equity Strategy',
     subtitle: 'Inclusive Governance & Regional Program Delivery',
     category: 'D&I Strategy',
     year: '2024 — 2025',
-    organization: 'Clent Africa',
+    organization: 'Client Africa',
     role: 'Head of Disability & Gender Equality',
     visualTheme: 'clent',
     summary:
@@ -330,8 +332,9 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     summary:
       'Delivering Mastercard Foundation workforce training, career readiness, and job transitions across West Africa.',
     highlights: [
-      'Collaborate with the Mastercard Foundation team to deliver workforce training across West Africa.',
-      'Spearhead end-to-end talent engagement and transitions into long-term roles.'
+      'Collaborate directly with the Mastercard Foundation delivery team to scale equitable workforce training pipelines across West Africa.',
+      'Spearhead end-to-end talent readiness, candidate assessment, and employer transitions into sustainable long-term roles.',
+      'Audit candidate onboarding journeys to remove friction for job seekers with physical and sensory disabilities.'
     ]
   },
   {
@@ -343,8 +346,9 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     summary:
       'Driving disability inclusion frameworks, accessible training modules, and corporate placement for youth with disabilities.',
     highlights: [
-      'Embed universal accessibility standards into training modules and candidate processes.',
-      'Facilitate targeted job placement for persons with disabilities with corporate partners.'
+      'Embed universal WCAG accessibility standards into regional training curricula and candidate evaluation workflows.',
+      'Facilitate targeted corporate job placements for young professionals with disabilities across partner employers.',
+      'Advise hiring managers on workplace accommodation policy and inclusive onboarding standards.'
     ]
   },
   {
@@ -356,7 +360,9 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     summary:
       'Audited the Forum’s primary digital platform against WCAG standards and delivered executive remediation guidelines.',
     highlights: [
-      'Conducted in-depth WCAG usability audit and strategic remediation roadmap.'
+      'Audited multi-page continental web portals against WCAG 2.1/2.2 AA usability and screen-reader parity benchmarks.',
+      'Delivered a prioritized engineering remediation roadmap to executive leadership to resolve DOM, contrast, and keyboard traps.',
+      'Established accessible content-publishing standards for pan-African member organizations.'
     ]
   },
   {
@@ -368,7 +374,9 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     summary:
       'Secured corporate and NGO partnerships integrating inclusive design and diversity benchmarks.',
     highlights: [
-      'Led cross-sector stakeholder engagement focused on diversity, equity, and accessibility.'
+      'Negotiated and closed cross-sector partnerships between corporate sponsors and NGOs centered on inclusive product design.',
+      'Embedded measurable disability inclusion KPIs into partner program agreements and delivery charters.',
+      'Expanded institutional reach across Nigerian technology and social-impact ecosystems.'
     ]
   },
   {
@@ -380,7 +388,9 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     summary:
       'Evaluated web architecture, navigation, and content against WCAG standards for physical, sensory, and cognitive access.',
     highlights: [
-      'Produced technical WCAG audit report and engineering remediation roadmap.'
+      'Conducted a full-stack WCAG technical teardown covering keyboard navigation trees, ARIA landmarks, and visual contrast.',
+      'Resolved critical physical, sensory, and cognitive usability bottlenecks across core customer user flows.',
+      'Authored a long-term inclusive product engineering playbook adopted by the core frontend and UX teams.'
     ]
   },
   {
@@ -392,20 +402,23 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     summary:
       'Founded the 200+ member Alumni Disability Community, moderated the global 2024 IDPD panel, and led Ogun State lab give-back.',
     highlights: [
-      'Scaled Alumni Disability Community from 0 to 200+ active members.',
-      'Designed baseline accessibility guidelines and directed Ogun State computer lab project.'
+      'Founded and scaled the Alumni Disability Community from 0 to 200+ active members across Nigeria.',
+      'Moderated the globally broadcast 2024 International Day of Persons with Disabilities (IDPD) panel for the Mastercard Foundation.',
+      'Directed the Ogun State secondary school infrastructure project—delivering desktop computers, backup power, and hands-on digital literacy.'
     ]
   },
   {
-    id: 'exp-clent',
+    id: 'exp-client-africa',
     period: 'Jul 2024 – May 2025',
     role: 'Head of Disability & Gender Equality',
-    organization: 'Clent Africa',
+    organization: 'Client Africa',
     location: 'Nigeria',
     summary:
       'Integrated disability rights and gender equity into organizational decision-making and regional impact programs.',
     highlights: [
-      'Led regional advocacy campaigns increasing participation of underrepresented groups.'
+      'Embedded disability rights and gender equity mandates directly into executive governance and program budgets.',
+      'Designed and led regional advocacy campaigns that significantly increased representation of women and persons with disabilities.',
+      'Trained program coordinators on inclusive event standards and accessible community outreach.'
     ]
   },
   {
@@ -417,7 +430,9 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     summary:
       'Grew campus developer community to 100+ active members; appointed Special Adviser to the Student Union President.',
     highlights: [
-      'Led technical skill-building tracks and collaborative student engineering projects.'
+      'Scaled the Microsoft Student Ambassador campus chapter to 100+ active student engineers and builders.',
+      'Appointed Special Adviser to the Student Union President on disability policy, campus accessibility, and student inclusion.',
+      'Directed technical bootcamps on cloud engineering, accessibility fundamentals, and collaborative software development.'
     ]
   },
   {
@@ -429,7 +444,9 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     summary:
       'Led campus-wide advocacy for academic accommodations, physical accessibility, and disabled student leadership.',
     highlights: [
-      'Bridged student advocacy and institutional administration for campus accessibility.'
+      'Spearheaded institutional policy reform securing examination accommodations and physical access pathways for students with disabilities.',
+      'Served as the primary liaison between disabled student cohorts and senior college administration.',
+      'Mentored disabled students into campus leadership, engineering tracks, and national fellowships.'
     ]
   },
   {
@@ -441,7 +458,9 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     summary:
       'Established and led a 200+ student developer community focused on data literacy and inclusive tech education.',
     highlights: [
-      'Facilitated technical workshops empowering underrepresented groups in tech.'
+      'Built and led a 200+ member Google Developer Student Club (GDSC) chapter focused on web engineering and data literacy.',
+      'Designed barrier-free technical workshops that brought first-time disabled and female builders into software development.',
+      'Partnered with regional ecosystem leaders across DataFest Africa and CHAOSS Africa to connect students to open-source careers.'
     ]
   }
 ];
@@ -450,17 +469,16 @@ export const EDUCATION_HISTORY: EducationItem[] = [
   {
     degree: 'B.Sc. in Computer Science',
     institution: 'Miva Open University',
-    period: 'Present'
+    period: 'Present',
+    highlight:
+      'Focus on Human-Computer Interaction (HCI), accessible software architecture, and inclusive systems engineering.'
   },
   {
     degree: 'National Diploma in Computer Science',
-    institution: 'Yaba College of Technology',
-    period: '2022 – 2024'
-  },
-  {
-    degree: 'Senior Secondary School Certificate (SSCE)',
-    institution: 'TrustyChild College, Lagos',
-    period: '2013 – 2019'
+    institution: 'Yaba College of Technology (Yabatech)',
+    period: '2022 – 2024',
+    highlight:
+      'Led Google GDSC (200+ members) & Microsoft Student Ambassadors (100+ members); appointed Special Adviser to the Student Union President.'
   }
 ];
 
@@ -469,25 +487,29 @@ export const HONORS_AND_RECOGNITION: HonorItem[] = [
     id: 'honor-sessionize',
     title: 'Top 3% Global Speaker',
     year: '2024',
-    issuer: 'Sessionize Worldwide'
+    issuer: 'Sessionize Worldwide',
+    detail: 'Ranked in the top 3% of active international conference speakers globally across technology and inclusion stages.'
   },
   {
     id: 'honor-alx',
     title: 'Top 100 Women in Tech',
     year: '2025',
-    issuer: 'ALX Nigeria'
+    issuer: 'ALX Nigeria',
+    detail: 'Recognized among Nigeria’s 100 most impactful women shaping software engineering, policy, and digital inclusion.'
   },
   {
     id: 'honor-mcf-delegate',
     title: 'Mastercard Foundation Global Delegate',
     year: '2024',
-    issuer: 'Mastercard Foundation'
+    issuer: 'Mastercard Foundation',
+    detail: 'Selected to represent Nigerian youth and lead continental conversations on disability-inclusive workforce systems.'
   },
   {
     id: 'honor-special-adviser',
     title: 'Special Adviser to the Student Union President',
     year: '2024',
-    issuer: 'Yaba College of Technology'
+    issuer: 'Yaba College of Technology',
+    detail: 'Appointed to advise executive student governance on statutory disability accommodations and campus accessibility.'
   }
 ];
 
@@ -693,12 +715,13 @@ export const STEPHANIE_BOOKS: BookItem[] = [
     id: 'book-excluding-15-percent',
     title: 'Is Your Product Excluding 15% of Nigerians?',
     subtitle: 'The Business & Market Case for Digital Inclusion',
-    tag: 'BOOK · 01',
+    tag: 'EXECUTIVE BRIEFING',
     selarUrl: 'https://selar.com/4bqls9k68c',
-    accentColor: '#60A5FA',
-    coverBg: '#0B0B0B',
+    accentColor: '#F59E0B',
+    coverBg: '#13543A',
+    coverImageUrl: '/assets/aistudio/is-your-product-excluding-selar.com-6970b1110bd40_12dcffed.jpg',
     description:
-      'How ignoring accessibility leaves millions of users and massive market share behind—and how founders and product teams can build for everyone.',
+      'Inaccessible digital products lock out over 30 million Nigerians and cost African enterprises significant market share. This executive briefing gives founders and product leaders a clear commercial roadmap to build inclusive products that scale.',
     highlights: [
       'Why 15%+ of the market is locked out by inaccessible digital products',
       'Turning disability compliance into market growth and customer trust',
@@ -709,12 +732,13 @@ export const STEPHANIE_BOOKS: BookItem[] = [
     id: 'book-code-for-everybody',
     title: 'Code for Every Body',
     subtitle: 'Engineering Digital Products That Leave No One Behind',
-    tag: 'BOOK · 02',
+    tag: 'DEVELOPER GUIDE',
     selarUrl: 'https://selar.com/codeforeverybody',
-    accentColor: '#34D399',
-    coverBg: '#0F172A',
+    accentColor: '#2563EB',
+    coverBg: '#F8FAFC',
+    coverImageUrl: '/assets/aistudio/code-for-everybody-selar.com-69619fb1197c5_3dffc49d.png',
     description:
-      'A practical developer and designer guide to writing semantic, keyboard-friendly, and screen-reader compatible code for every human body.',
+      'A hands-on engineering manual for building semantic, keyboard-navigable, and screen-reader compatible web and mobile interfaces. Designed for frontend engineers and UX teams shipping accessible code in production.',
     highlights: [
       'Semantic HTML, ARIA patterns, and keyboard-first engineering',
       'Eliminating physical, visual, and cognitive barriers in code',
@@ -725,12 +749,13 @@ export const STEPHANIE_BOOKS: BookItem[] = [
     id: 'book-accessibility-made-easy',
     title: 'Accessibility Made Easy Toolkit',
     subtitle: 'Starter Kit for Founders, Designers & Developers',
-    tag: 'BOOK & TOOLKIT · 03',
+    tag: 'AUDIT STARTER KIT',
     selarUrl: 'https://selar.com/accessibilitymadeeasy',
-    accentColor: '#FBBF24',
-    coverBg: '#18181B',
+    accentColor: '#34D399',
+    coverBg: '#0F623D',
+    coverImageUrl: '/assets/aistudio/accessibility-made-easy-selar.com-695fe90b3bd5c_cd1a13b3.png',
     description:
-      'A curated starter kit featuring WCAG audit checklists, Nigerian Disability Act (NCPWD) compliance guidance, and inclusive design frameworks.',
+      'A ready-to-use audit toolkit featuring WCAG 2.2 AA checklists, contrast benchmarks, and Nigerian Disability Act compliance templates. Built to help product teams run structured accessibility reviews from day one.',
     highlights: [
       'Ready-to-use WCAG 2.2 AA audit checklists and contrast rules',
       'Nigerian Disability Act & NCPWD compliance guidance',
