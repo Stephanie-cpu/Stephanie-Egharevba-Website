@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -134,6 +134,10 @@ export default function App() {
       return DEFAULT_A11Y_PREFS;
     }
   });
+
+  // WCAG AA Motion Sensitivity: OS prefers-reduced-motion hook + in-app toggle
+  const systemPrefersReducedMotion = useReducedMotion();
+  const prefersReduced = Boolean(systemPrefersReducedMotion || a11yPrefs.reduceMotion);
 
   // Apply Accessibility & Theme Preferences to <html> attributes
   useEffect(() => {
@@ -590,7 +594,7 @@ export default function App() {
               </a>
             </div>
 
-            {/* Quick Light / Dark Mode Switch */}
+            {/* Quick Light / Dark Mode Switch (Desktop/Tablet) */}
             <button
               type="button"
               onClick={toggleDarkLightMode}
@@ -598,7 +602,7 @@ export default function App() {
                 a11yPrefs.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
               }
               title={a11yPrefs.theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              className="w-9 h-9 rounded-lg border border-[#E6E4DD] bg-white flex items-center justify-center text-[#141413] hover:border-[#1D4ED8] transition-colors cursor-pointer"
+              className="hidden sm:flex w-9 h-9 rounded-lg border border-[#E6E4DD] bg-white items-center justify-center text-[#141413] hover:border-[#1D4ED8] transition-colors cursor-pointer"
             >
               {a11yPrefs.theme === 'dark' ? (
                 <Sun className="w-4 h-4 text-[#60A5FA]" />
@@ -607,10 +611,11 @@ export default function App() {
               )}
             </button>
 
+            {/* Enquiries CTA (Desktop/Tablet) */}
             <button
               type="button"
               onClick={() => navigateTo('contact')}
-              className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`hidden sm:inline-flex px-4 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activePage === 'contact'
                   ? 'bg-[#1D4ED8] text-white'
                   : 'bg-[#141413] text-white hover:bg-[#1D4ED8]'
@@ -619,14 +624,15 @@ export default function App() {
               Enquiries
             </button>
 
+            {/* Mobile Menu Toggle Button (Prominent & Uncrowded on mobile) */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileMenuOpen}
-              className="md:hidden w-10 h-10 rounded-lg border border-[#E6E4DD] bg-white flex items-center justify-center text-[#141413] cursor-pointer"
+              className="md:hidden w-10 h-10 rounded-xl border border-[#E6E4DD] bg-white flex items-center justify-center text-[#141413] hover:border-[#1D4ED8] transition-colors cursor-pointer shrink-0"
             >
-              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -640,7 +646,7 @@ export default function App() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden border-t border-[#E6E4DD] bg-white px-4 py-3 space-y-1 overflow-hidden"
+              className="md:hidden border-t border-[#E6E4DD] bg-white px-4 py-3 space-y-1.5 overflow-hidden shadow-lg"
             >
               {navItems.map((item) => {
                 const isActive = activePage === item.id;
@@ -661,9 +667,25 @@ export default function App() {
                 );
               })}
 
-              {/* Social Links & CMS inside Mobile Drawer */}
-              <div className="pt-3 mt-2 border-t border-[#E6E4DD] flex items-center justify-between px-3.5 py-2">
-                <div className="flex items-center gap-4">
+              {/* Mobile Enquiries Primary Action Button */}
+              <div className="pt-2 pb-1 px-0.5">
+                <button
+                  type="button"
+                  onClick={() => navigateTo('contact')}
+                  className={`w-full py-3 px-4 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors shadow-xs cursor-pointer ${
+                    activePage === 'contact'
+                      ? 'bg-[#1D4ED8] text-white'
+                      : 'bg-[#141413] text-white hover:bg-[#1D4ED8]'
+                  }`}
+                >
+                  <span>Book / Enquiries</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Social Links & Theme Switch inside Mobile Drawer Footer */}
+              <div className="pt-3 mt-2 border-t border-[#E6E4DD] flex items-center justify-between px-1 py-1">
+                <div className="flex items-center gap-3">
                   <a
                     href={siteSettings.linkedinUrl}
                     target="_blank"
@@ -685,6 +707,19 @@ export default function App() {
                     <span>Instagram</span>
                   </a>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={toggleDarkLightMode}
+                  className="px-2.5 py-1.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-medium text-[#141413] flex items-center gap-1.5 cursor-pointer"
+                >
+                  {a11yPrefs.theme === 'dark' ? (
+                    <Sun className="w-3.5 h-3.5 text-[#60A5FA]" />
+                  ) : (
+                    <Moon className="w-3.5 h-3.5" />
+                  )}
+                  <span>{a11yPrefs.theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                </button>
               </div>
             </motion.nav>
           )}
@@ -794,7 +829,13 @@ export default function App() {
                   </div>
 
                   {/* Stats Row with Generous Breathing Room & Vertical Dividers */}
-                  <div className="mt-10 sm:mt-14 pt-8 sm:pt-12 pb-6 sm:pb-10 border-t border-white/10 grid grid-cols-2 lg:grid-cols-4 gap-y-7 gap-x-4 sm:gap-x-6 lg:gap-x-0 lg:divide-x lg:divide-white/10">
+                  <motion.div
+                    initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{ duration: 0.65, delay: 0.1, ease: EASE_EDITORIAL }}
+                    className="mt-10 sm:mt-14 pt-8 sm:pt-12 pb-6 sm:pb-10 border-t border-white/10 grid grid-cols-2 lg:grid-cols-4 gap-y-7 gap-x-4 sm:gap-x-6 lg:gap-x-0 lg:divide-x lg:divide-white/10"
+                  >
                     {[
                       { stat: 'Top 3%', label: 'Global Speaker (Sessionize)' },
                       { stat: 'Top 100', label: 'Women in Tech (ALX 2025)' },
@@ -813,15 +854,27 @@ export default function App() {
                         </div>
                       </div>
                     ))}
-                  </div>
+                  </motion.div>
                 </div>
               </section>
 
               {/* SECTION 2: THE STORY SECTION (SPEAKER PORTRAIT IN SKY-BLUE BLAZER + ANCHOR THESIS QUOTE) */}
-              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-20 lg:py-24">
+              <motion.section
+                initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 36 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-70px' }}
+                transition={{ duration: 0.75, ease: EASE_EDITORIAL }}
+                className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-20 lg:py-24"
+              >
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-16 items-center">
                   {/* Left: Speaker Portrait in Sky-Blue Blazer */}
-                  <div className="lg:col-span-5">
+                  <motion.div
+                    initial={a11yPrefs.reduceMotion ? false : { opacity: 0, scale: 0.96 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{ duration: 0.7, delay: 0.08, ease: EASE_EDITORIAL }}
+                    className="lg:col-span-5"
+                  >
                     <div
                       onClick={() => navigateTo('cv')}
                       role="button"
@@ -842,10 +895,16 @@ export default function App() {
                         className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
                       />
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Right: High-Impact Aeonik Thesis Quote + Simplified CTAs */}
-                  <div className="lg:col-span-7 space-y-5 sm:space-y-6">
+                  <motion.div
+                    initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{ duration: 0.7, delay: 0.16, ease: EASE_EDITORIAL }}
+                    className="lg:col-span-7 space-y-5 sm:space-y-6"
+                  >
                     <div className="font-sans text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
                       STEPHANIE’S STORY
                     </div>
@@ -884,14 +943,26 @@ export default function App() {
                         <span>Download CV (PDF)</span>
                       </a>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
-              </section>
+              </motion.section>
 
               {/* SECTION 3: "WHAT STEPHANIE DOES" — BESPOKE EDITORIAL PRACTICE CARDS */}
-              <section className="border-t border-[#E2E8F0] bg-white py-12 sm:py-20 lg:py-24">
+              <motion.section
+                initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 36 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-70px' }}
+                transition={{ duration: 0.75, ease: EASE_EDITORIAL }}
+                className="border-t border-[#E2E8F0] bg-white py-12 sm:py-20 lg:py-24"
+              >
                 <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-8 sm:space-y-10">
-                  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                  <motion.div
+                    initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{ duration: 0.6, ease: EASE_EDITORIAL }}
+                    className="flex flex-col sm:flex-row sm:items-end justify-between gap-4"
+                  >
                     <div className="space-y-1.5">
                       <div className="font-sans text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
                         EXECUTIVE PRACTICE &amp; ADVISORY
@@ -908,11 +979,19 @@ export default function App() {
                       <span>View Case Studies &amp; Contrast Lab</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
-                  </div>
+                  </motion.div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
                     {/* Card 1: WCAG & Digital Accessibility (Deliverables-Focused) */}
-                    <div
+                    <motion.div
+                      initial={prefersReduced ? false : { opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={
+                        prefersReduced
+                          ? { duration: 0 }
+                          : { duration: 0.38, delay: 0, ease: EASE_EDITORIAL }
+                      }
                       onClick={() => navigateTo('work')}
                       role="button"
                       tabIndex={0}
@@ -955,10 +1034,18 @@ export default function App() {
                         <span>Inspect Audits &amp; Contrast Lab</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
-                    </div>
+                    </motion.div>
 
                     {/* Card 2: D&I Strategy & Policy (Institutional Scale) */}
-                    <div
+                    <motion.div
+                      initial={prefersReduced ? false : { opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={
+                        prefersReduced
+                          ? { duration: 0 }
+                          : { duration: 0.38, delay: 0.08, ease: EASE_EDITORIAL }
+                      }
                       onClick={() => navigateTo('work')}
                       role="button"
                       tabIndex={0}
@@ -1006,10 +1093,18 @@ export default function App() {
                         <span>Review Institutional Programmes</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
-                    </div>
+                    </motion.div>
 
                     {/* Card 3: Keynotes & Speaking (Stage Proof Points) */}
-                    <div
+                    <motion.div
+                      initial={prefersReduced ? false : { opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={
+                        prefersReduced
+                          ? { duration: 0 }
+                          : { duration: 0.38, delay: 0.16, ease: EASE_EDITORIAL }
+                      }
                       onClick={() => navigateTo('speaking')}
                       role="button"
                       tabIndex={0}
@@ -1053,10 +1148,18 @@ export default function App() {
                         <span>Watch Keynotes &amp; Speaking Topics</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
-                    </div>
+                    </motion.div>
 
                     {/* Card 4: Frameworks & Toolkits (Direct to Resources & Downloads) */}
-                    <div
+                    <motion.div
+                      initial={prefersReduced ? false : { opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={
+                        prefersReduced
+                          ? { duration: 0 }
+                          : { duration: 0.38, delay: 0.24, ease: EASE_EDITORIAL }
+                      }
                       onClick={() => navigateTo('books')}
                       role="button"
                       tabIndex={0}
@@ -1099,14 +1202,26 @@ export default function App() {
                         <span>Access Frameworks &amp; Downloads</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
-              </section>
+              </motion.section>
 
               {/* SECTION 4: BOOKS & TOOLKITS (SINGLE-SURFACE CARDS + 3D BOOK MOCKUPS) */}
-              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-20 lg:py-24 space-y-8 sm:space-y-10 border-t border-[#E2E8F0]">
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <motion.section
+                initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 36 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-70px' }}
+                transition={{ duration: 0.75, ease: EASE_EDITORIAL }}
+                className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-20 lg:py-24 space-y-8 sm:space-y-10 border-t border-[#E2E8F0]"
+              >
+                <motion.div
+                  initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.6, ease: EASE_EDITORIAL }}
+                  className="flex flex-col sm:flex-row sm:items-end justify-between gap-4"
+                >
                   <div className="space-y-1.5">
                     <div className="font-sans text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
                       AUTHOR &amp; CREATOR
@@ -1123,15 +1238,19 @@ export default function App() {
                     <span>View Complete Publication Details</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
-                </div>
+                </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {STEPHANIE_BOOKS.map((book) => (
-                    <a
+                  {STEPHANIE_BOOKS.map((book, idx) => (
+                    <motion.a
                       key={book.id}
                       href={book.selarUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 28 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-50px' }}
+                      transition={{ duration: 0.65, delay: idx * 0.12, ease: EASE_EDITORIAL }}
                       className="group p-6 sm:p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6"
                     >
                       <div className="space-y-6">
@@ -1160,10 +1279,10 @@ export default function App() {
                         <span>Get on Selar</span>
                         <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </div>
-                    </a>
+                    </motion.a>
                   ))}
                 </div>
-              </section>
+              </motion.section>
             </motion.div>
           )}
 

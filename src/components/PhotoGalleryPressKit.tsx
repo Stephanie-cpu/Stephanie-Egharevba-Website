@@ -121,19 +121,13 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          <label className="px-3.5 py-2.5 text-xs font-medium text-[#141413] bg-white border border-[#E6E4DD] hover:border-[#141413] rounded-lg inline-flex items-center gap-1.5 cursor-pointer">
-            <Upload className="w-3.5 h-3.5" />
-            <span>Add Photo</span>
-            <input type="file" accept="image/*" onChange={handleUploadNewPhoto} className="sr-only" />
-          </label>
-
           <a
             href={CV_PDF_URL}
             download="Stephanie_Egharevba_CV.pdf"
-            className="px-4 py-2.5 text-xs font-medium text-white bg-[#141413] hover:bg-[#1D4ED8] rounded-lg inline-flex items-center gap-1.5"
+            className="px-4 py-2.5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full inline-flex items-center gap-2 transition-colors cursor-pointer shadow-xs"
           >
             <Download className="w-3.5 h-3.5" />
-            Download CV
+            <span>Download Executive CV</span>
           </a>
         </div>
       </motion.section>
