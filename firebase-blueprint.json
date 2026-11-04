@@ -1,0 +1,420 @@
+{
+  "entities": {
+    "CmsSetting": {
+      "title": "CmsSetting",
+      "description": "Global site settings, hero copy, SEO metadata, and social links.",
+      "type": "object",
+      "properties": {
+        "heroTagline": {
+          "type": "string",
+          "maxLength": 160,
+          "description": "Tagline displayed above the hero headline."
+        },
+        "heroQuote": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Main hero statement quote."
+        },
+        "heroSubtext": {
+          "type": "string",
+          "maxLength": 600,
+          "description": "Supporting hero biography paragraph."
+        },
+        "seoTitle": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Default SEO page title."
+        },
+        "seoDescription": {
+          "type": "string",
+          "maxLength": 320,
+          "description": "Default SEO meta description."
+        },
+        "linkedinUrl": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Official LinkedIn profile URL."
+        },
+        "instagramUrl": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Official Instagram profile URL."
+        },
+        "bookingCalendarUrl": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Optional external booking calendar link."
+        },
+        "authorUid": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "UID of the admin who updated settings."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last update."
+        }
+      },
+      "required": [
+        "heroTagline",
+        "heroQuote",
+        "heroSubtext",
+        "seoTitle",
+        "seoDescription",
+        "linkedinUrl",
+        "instagramUrl",
+        "authorUid",
+        "updatedAt"
+      ]
+    },
+    "CmsProject": {
+      "title": "CmsProject",
+      "description": "Portfolio case study project with mandatory accessible image alt text and publishing state.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 160,
+          "description": "Project title."
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Project subtitle."
+        },
+        "category": {
+          "type": "string",
+          "enum": ["WCAG & Accessibility", "D&I Strategy", "Workforce & Tech"],
+          "maxLength": 60,
+          "description": "Portfolio category."
+        },
+        "year": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "Year or period."
+        },
+        "organization": {
+          "type": "string",
+          "maxLength": 140,
+          "description": "Client or partner organization."
+        },
+        "role": {
+          "type": "string",
+          "maxLength": 140,
+          "description": "Stephanie's role on the project."
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 600,
+          "description": "Short project summary."
+        },
+        "challenge": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Core challenge addressed."
+        },
+        "intervention": {
+          "type": "string",
+          "maxLength": 1200,
+          "description": "Strategic intervention executed."
+        },
+        "impactMetrics": {
+          "type": "string",
+          "maxLength": 800,
+          "description": "Pipe-separated impact metrics."
+        },
+        "imageUrl": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Image asset path or URL."
+        },
+        "imageAlt": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300,
+          "description": "Mandatory accessible alt text for project visual."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "published", "scheduled"],
+          "maxLength": 20,
+          "description": "Publication workflow status."
+        },
+        "scheduledDate": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "ISO date string for scheduled publishing."
+        },
+        "authorUid": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "UID of the creator."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp."
+        }
+      },
+      "required": [
+        "title",
+        "subtitle",
+        "category",
+        "year",
+        "organization",
+        "role",
+        "summary",
+        "challenge",
+        "intervention",
+        "impactMetrics",
+        "imageUrl",
+        "imageAlt",
+        "status",
+        "authorUid",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "CmsArticle": {
+      "title": "CmsArticle",
+      "description": "News, media features, articles, and testimonials managed via the CMS.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 200,
+          "description": "Headline or testimonial title."
+        },
+        "publisher": {
+          "type": "string",
+          "maxLength": 140,
+          "description": "Publication name or testimonial author."
+        },
+        "year": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Year of publication."
+        },
+        "category": {
+          "type": "string",
+          "enum": ["Feature", "Profile", "Interview", "Op-Ed", "Testimonial"],
+          "maxLength": 40,
+          "description": "Content classification."
+        },
+        "excerpt": {
+          "type": "string",
+          "maxLength": 800,
+          "description": "Summary excerpt or testimonial quote."
+        },
+        "externalUrl": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Optional external article link."
+        },
+        "imageAlt": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300,
+          "description": "Accessible alt text description."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "published", "scheduled"],
+          "maxLength": 20,
+          "description": "Publication state."
+        },
+        "authorUid": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "UID of author."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp."
+        }
+      },
+      "required": [
+        "title",
+        "publisher",
+        "year",
+        "category",
+        "excerpt",
+        "imageAlt",
+        "status",
+        "authorUid",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Enquiry": {
+      "title": "Enquiry",
+      "description": "Contact and speaker booking enquiries with NDPA/GDPR consent.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120,
+          "description": "Sender full name."
+        },
+        "email": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 160,
+          "description": "Sender email address."
+        },
+        "organization": {
+          "type": "string",
+          "maxLength": 160,
+          "description": "Organization or event name."
+        },
+        "inquiryType": {
+          "type": "string",
+          "enum": [
+            "Keynote Speaking",
+            "WCAG Accessibility Audit",
+            "D&I Strategy Advisory",
+            "Speaking Fee & Availability Request",
+            "Media & Press"
+          ],
+          "maxLength": 80,
+          "description": "Nature of the enquiry."
+        },
+        "eventDateOrTimeline": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Proposed event date or project timeline."
+        },
+        "budgetRange": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Optional speaking fee or consulting budget tier."
+        },
+        "message": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 2000,
+          "description": "Detailed enquiry message."
+        },
+        "ndpaConsent": {
+          "type": "boolean",
+          "description": "Explicit GDPR and Nigeria Data Protection Act consent."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["new", "replied", "archived"],
+          "maxLength": 20,
+          "description": "Processing status of the enquiry."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when submitted."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when status updated."
+        }
+      },
+      "required": [
+        "name",
+        "email",
+        "organization",
+        "inquiryType",
+        "message",
+        "ndpaConsent",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "NewsletterSubscriber": {
+      "title": "NewsletterSubscriber",
+      "description": "Newsletter subscription entry with explicit privacy consent.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 160,
+          "description": "Subscriber email."
+        },
+        "consent": {
+          "type": "boolean",
+          "description": "Explicit consent to receive updates."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of subscription."
+        }
+      },
+      "required": ["email", "consent", "createdAt"]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Role-based access control document for admins and editors.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "maxLength": 160,
+          "description": "User email."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin", "editor"],
+          "maxLength": 20,
+          "description": "Assigned CMS role."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp."
+        }
+      },
+      "required": ["email", "role", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/cms_settings/{settingId}": {
+      "schema": "CmsSetting",
+      "description": "Global homepage text, SEO metadata, and social links."
+    },
+    "/cms_projects/{projectId}": {
+      "schema": "CmsProject",
+      "description": "CMS-managed portfolio projects with draft/published/scheduled workflow."
+    },
+    "/cms_articles/{articleId}": {
+      "schema": "CmsArticle",
+      "description": "CMS-managed articles, media features, and testimonials."
+    },
+    "/enquiries/{enquiryId}": {
+      "schema": "Enquiry",
+      "description": "Speaker and consulting enquiries (PII isolated to admin only)."
+    },
+    "/newsletter_subscribers/{subscriberId}": {
+      "schema": "NewsletterSubscriber",
+      "description": "Newsletter subscribers (PII isolated to admin only)."
+    },
+    "/admins/{adminId}": {
+      "schema": "AdminUser",
+      "description": "Trusted admin and editor role records."
+    }
+  }
+}

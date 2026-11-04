@@ -28,8 +28,147 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee {
-    animation: none;
+    animation: none !important;
   }
+}
+
+/* Accessibility: Font Scaling */
+html[data-font-scale="lg"] {
+  font-size: 108%;
+}
+
+html[data-font-scale="xl"] {
+  font-size: 116%;
+}
+
+/* Accessibility: Dyslexia / Readable Typography Mode */
+html[data-readable-font="true"],
+html[data-readable-font="true"] * {
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif !important;
+  letter-spacing: 0.025em !important;
+  word-spacing: 0.06em !important;
+}
+
+/* Accessibility: Highlight Links & Interactive Controls */
+html[data-highlight-links="true"] a,
+html[data-highlight-links="true"] button {
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+  text-decoration-thickness: 2px !important;
+}
+
+html[data-highlight-links="true"] *:focus-visible {
+  outline: 3px solid #FACC15 !important;
+  outline-offset: 3px !important;
+}
+
+/* Accessibility: Reduce Motion Override */
+html[data-reduce-motion="true"] .animate-marquee {
+  animation: none !important;
+}
+
+html[data-reduce-motion="true"] *,
+html[data-reduce-motion="true"] *::before,
+html[data-reduce-motion="true"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Dark Mode Theme Overrides */
+html[data-theme="dark"] body,
+html[data-theme="dark"] .bg-\[\#FAF9F6\],
+html[data-theme="dark"] .bg-\[\#FAFAF8\] {
+  background-color: #0B0D13 !important;
+  color: #F8FAFC !important;
+}
+
+html[data-theme="dark"] .bg-\[\#FAF9F6\]\/95,
+html[data-theme="dark"] .bg-\[\#FAFAF8\]\/90 {
+  background-color: rgba(11, 13, 19, 0.94) !important;
+}
+
+html[data-theme="dark"] .bg-white {
+  background-color: #131722 !important;
+  color: #F8FAFC !important;
+}
+
+html[data-theme="dark"] .bg-\[\#F2EFE9\],
+html[data-theme="dark"] .bg-\[\#F2F0EB\] {
+  background-color: #1C2230 !important;
+  color: #E2E8F0 !important;
+}
+
+html[data-theme="dark"] .text-\[\#141413\],
+html[data-theme="dark"] .text-\[\#111111\],
+html[data-theme="dark"] .text-\[\#0B0B0B\],
+html[data-theme="dark"] .text-\[\#272725\] {
+  color: #F8FAFC !important;
+}
+
+html[data-theme="dark"] .text-\[\#3F3E3A\],
+html[data-theme="dark"] .text-\[\#575652\],
+html[data-theme="dark"] .text-\[\#525252\],
+html[data-theme="dark"] .text-\[\#404040\] {
+  color: #CBD5E1 !important;
+}
+
+html[data-theme="dark"] .text-\[\#737373\] {
+  color: #94A3B8 !important;
+}
+
+html[data-theme="dark"] .text-\[\#1D4ED8\] {
+  color: #60A5FA !important;
+}
+
+html[data-theme="dark"] .border-\[\#E6E4DD\],
+html[data-theme="dark"] .border-\[\#E5E4DF\],
+html[data-theme="dark"] .border-\[\#D4D2CC\],
+html[data-theme="dark"] .divide-\[\#E6E4DD\] > :not([hidden]) ~ :not([hidden]),
+html[data-theme="dark"] .divide-\[\#E5E4DF\] > :not([hidden]) ~ :not([hidden]) {
+  border-color: #262C3A !important;
+}
+
+/* High-Contrast AAA Mode Overrides */
+html[data-theme="contrast"] body,
+html[data-theme="contrast"] .bg-\[\#FAF9F6\],
+html[data-theme="contrast"] .bg-\[\#FAFAF8\],
+html[data-theme="contrast"] .bg-white,
+html[data-theme="contrast"] .bg-\[\#0B0B0B\],
+html[data-theme="contrast"] .bg-\[\#F2EFE9\],
+html[data-theme="contrast"] .bg-\[\#F2F0EB\] {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="contrast"] .bg-\[\#FAF9F6\]\/95,
+html[data-theme="contrast"] .bg-\[\#FAFAF8\]\/90 {
+  background-color: rgba(0, 0, 0, 0.96) !important;
+}
+
+html[data-theme="contrast"] .text-\[\#141413\],
+html[data-theme="contrast"] .text-\[\#111111\],
+html[data-theme="contrast"] .text-\[\#0B0B0B\],
+html[data-theme="contrast"] .text-\[\#3F3E3A\],
+html[data-theme="contrast"] .text-\[\#575652\],
+html[data-theme="contrast"] .text-\[\#525252\],
+html[data-theme="contrast"] .text-\[\#737373\],
+html[data-theme="contrast"] .text-neutral-300,
+html[data-theme="contrast"] .text-neutral-400 {
+  color: #FFFFFF !important;
+}
+
+html[data-theme="contrast"] .text-\[\#1D4ED8\],
+html[data-theme="contrast"] .text-\[\#60A5FA\] {
+  color: #FACC15 !important;
+}
+
+html[data-theme="contrast"] .border-\[\#E6E4DD\],
+html[data-theme="contrast"] .border-\[\#E5E4DF\],
+html[data-theme="contrast"] .border-\[\#D4D2CC\],
+html[data-theme="contrast"] .border-neutral-800 {
+  border-color: #FACC15 !important;
 }
 
 .tabular-nums {
@@ -56,4 +195,3 @@
   transform: scaleX(1);
   transform-origin: left;
 }
-

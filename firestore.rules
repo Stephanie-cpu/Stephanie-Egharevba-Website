@@ -1,0 +1,359 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net: Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Reusable Global Helpers
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isBootstrappedAdmin() {
+      return isSignedIn() && request.auth.token.email == 'stephanieegharevba83@gmail.com';
+    }
+
+    function isAdmin() {
+      return isBootstrappedAdmin() || (
+        isSignedIn() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin'
+      );
+    }
+
+    function isEditorOrAdmin() {
+      return isBootstrappedAdmin() || (
+        isSignedIn() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role in ['admin', 'editor']
+      );
+    }
+
+    // Validation Blueprints
+    function isValidCmsSetting(data) {
+      return data.keys().hasAll([
+        'heroTagline',
+        'heroQuote',
+        'heroSubtext',
+        'seoTitle',
+        'seoDescription',
+        'linkedinUrl',
+        'instagramUrl',
+        'authorUid',
+        'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'heroTagline',
+        'heroQuote',
+        'heroSubtext',
+        'seoTitle',
+        'seoDescription',
+        'linkedinUrl',
+        'instagramUrl',
+        'bookingCalendarUrl',
+        'authorUid',
+        'updatedAt'
+      ]) &&
+      data.heroTagline is string && data.heroTagline.size() >= 1 && data.heroTagline.size() <= 160 &&
+      data.heroQuote is string && data.heroQuote.size() >= 1 && data.heroQuote.size() <= 300 &&
+      data.heroSubtext is string && data.heroSubtext.size() >= 1 && data.heroSubtext.size() <= 600 &&
+      data.seoTitle is string && data.seoTitle.size() >= 1 && data.seoTitle.size() <= 120 &&
+      data.seoDescription is string && data.seoDescription.size() >= 1 && data.seoDescription.size() <= 320 &&
+      data.linkedinUrl is string && data.linkedinUrl.size() >= 1 && data.linkedinUrl.size() <= 300 &&
+      data.instagramUrl is string && data.instagramUrl.size() >= 1 && data.instagramUrl.size() <= 300 &&
+      (!('bookingCalendarUrl' in data) || (data.bookingCalendarUrl is string && data.bookingCalendarUrl.size() <= 300)) &&
+      data.authorUid is string && data.authorUid.size() >= 1 && data.authorUid.size() <= 128 &&
+      data.authorUid == request.auth.uid &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidCmsProject(data) {
+      return data.keys().hasAll([
+        'title',
+        'subtitle',
+        'category',
+        'year',
+        'organization',
+        'role',
+        'summary',
+        'challenge',
+        'intervention',
+        'impactMetrics',
+        'imageUrl',
+        'imageAlt',
+        'status',
+        'authorUid',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'title',
+        'subtitle',
+        'category',
+        'year',
+        'organization',
+        'role',
+        'summary',
+        'challenge',
+        'intervention',
+        'impactMetrics',
+        'imageUrl',
+        'imageAlt',
+        'status',
+        'scheduledDate',
+        'authorUid',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.title is string && data.title.size() >= 2 && data.title.size() <= 160 &&
+      data.subtitle is string && data.subtitle.size() <= 200 &&
+      data.category is string && data.category.size() <= 60 &&
+      data.category in ['WCAG & Accessibility', 'D&I Strategy', 'Workforce & Tech'] &&
+      data.year is string && data.year.size() <= 40 &&
+      data.organization is string && data.organization.size() <= 140 &&
+      data.role is string && data.role.size() <= 140 &&
+      data.summary is string && data.summary.size() <= 600 &&
+      data.challenge is string && data.challenge.size() <= 1000 &&
+      data.intervention is string && data.intervention.size() <= 1200 &&
+      data.impactMetrics is string && data.impactMetrics.size() <= 800 &&
+      data.imageUrl is string && data.imageUrl.size() <= 500 &&
+      data.imageAlt is string && data.imageAlt.size() >= 3 && data.imageAlt.size() <= 300 &&
+      data.status is string && data.status.size() <= 20 &&
+      data.status in ['draft', 'published', 'scheduled'] &&
+      (!('scheduledDate' in data) || (data.scheduledDate is string && data.scheduledDate.size() <= 40)) &&
+      data.authorUid is string && data.authorUid.size() >= 1 && data.authorUid.size() <= 128 &&
+      data.authorUid == request.auth.uid &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidCmsArticle(data) {
+      return data.keys().hasAll([
+        'title',
+        'publisher',
+        'year',
+        'category',
+        'excerpt',
+        'imageAlt',
+        'status',
+        'authorUid',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'title',
+        'publisher',
+        'year',
+        'category',
+        'excerpt',
+        'externalUrl',
+        'imageAlt',
+        'status',
+        'authorUid',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.title is string && data.title.size() >= 2 && data.title.size() <= 200 &&
+      data.publisher is string && data.publisher.size() <= 140 &&
+      data.year is string && data.year.size() <= 30 &&
+      data.category is string && data.category.size() <= 40 &&
+      data.category in ['Feature', 'Profile', 'Interview', 'Op-Ed', 'Testimonial'] &&
+      data.excerpt is string && data.excerpt.size() <= 800 &&
+      (!('externalUrl' in data) || (data.externalUrl is string && data.externalUrl.size() <= 500)) &&
+      data.imageAlt is string && data.imageAlt.size() >= 3 && data.imageAlt.size() <= 300 &&
+      data.status is string && data.status.size() <= 20 &&
+      data.status in ['draft', 'published', 'scheduled'] &&
+      data.authorUid is string && data.authorUid.size() >= 1 && data.authorUid.size() <= 128 &&
+      data.authorUid == request.auth.uid &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidEnquiry(data) {
+      return data.keys().hasAll([
+        'name',
+        'email',
+        'organization',
+        'inquiryType',
+        'message',
+        'ndpaConsent',
+        'status',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'name',
+        'email',
+        'organization',
+        'inquiryType',
+        'eventDateOrTimeline',
+        'budgetRange',
+        'message',
+        'ndpaConsent',
+        'status',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.name is string && data.name.size() >= 2 && data.name.size() <= 120 &&
+      data.email is string && data.email.size() >= 5 && data.email.size() <= 160 &&
+      data.organization is string && data.organization.size() <= 160 &&
+      data.inquiryType is string && data.inquiryType.size() <= 80 &&
+      data.inquiryType in [
+        'Keynote Speaking',
+        'WCAG Accessibility Audit',
+        'D&I Strategy Advisory',
+        'Speaking Fee & Availability Request',
+        'Media & Press'
+      ] &&
+      (!('eventDateOrTimeline' in data) || (data.eventDateOrTimeline is string && data.eventDateOrTimeline.size() <= 100)) &&
+      (!('budgetRange' in data) || (data.budgetRange is string && data.budgetRange.size() <= 100)) &&
+      data.message is string && data.message.size() >= 10 && data.message.size() <= 2000 &&
+      data.ndpaConsent is bool && data.ndpaConsent == true &&
+      data.status is string && data.status.size() <= 20 &&
+      data.status in ['new', 'replied', 'archived'] &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidNewsletterSubscriber(data) {
+      return data.keys().hasAll(['email', 'consent', 'createdAt']) &&
+      data.keys().hasOnly(['email', 'consent', 'createdAt']) &&
+      data.email is string && data.email.size() >= 5 && data.email.size() <= 160 &&
+      data.consent is bool && data.consent == true &&
+      data.createdAt is timestamp;
+    }
+
+    function isValidAdminUser(data) {
+      return data.keys().hasAll(['email', 'role', 'createdAt']) &&
+      data.keys().hasOnly(['email', 'role', 'createdAt']) &&
+      data.email is string && data.email.size() >= 5 && data.email.size() <= 160 &&
+      data.role is string && data.role.size() <= 20 &&
+      data.role in ['admin', 'editor'] &&
+      data.createdAt is timestamp;
+    }
+
+    // Collection 1: Global CMS Settings (/cms_settings/{settingId})
+    match /cms_settings/{settingId} {
+      allow get: if isValidId(settingId);
+      allow create: if isSignedIn() && isValidId(settingId) && isValidCmsSetting(incoming()) && incoming().updatedAt == request.time && isEditorOrAdmin();
+      allow update: if isSignedIn() && isValidId(settingId) && isValidCmsSetting(incoming()) && incoming().updatedAt == request.time && (
+        isAdmin() || (
+          isEditorOrAdmin() &&
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'heroTagline',
+            'heroQuote',
+            'heroSubtext',
+            'seoTitle',
+            'seoDescription',
+            'linkedinUrl',
+            'instagramUrl',
+            'bookingCalendarUrl',
+            'authorUid',
+            'updatedAt'
+          ])
+        )
+      );
+      allow delete: if isSignedIn() && isValidId(settingId) && isAdmin();
+    }
+
+    // Collection 2: CMS Projects (/cms_projects/{projectId})
+    match /cms_projects/{projectId} {
+      allow get: if isValidId(projectId) && (existing().status == 'published' || isEditorOrAdmin());
+      allow list: if existing().status == 'published' || isBootstrappedAdmin();
+      allow create: if isSignedIn() && isValidId(projectId) && isValidCmsProject(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time && isEditorOrAdmin();
+      allow update: if isSignedIn() && isValidId(projectId) && isValidCmsProject(incoming()) && incoming().createdAt == existing().createdAt && incoming().authorUid == existing().authorUid && incoming().updatedAt == request.time && (
+        isAdmin() || (
+          isEditorOrAdmin() &&
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'title',
+            'subtitle',
+            'category',
+            'year',
+            'organization',
+            'role',
+            'summary',
+            'challenge',
+            'intervention',
+            'impactMetrics',
+            'imageUrl',
+            'imageAlt',
+            'status',
+            'scheduledDate',
+            'updatedAt'
+          ])
+        )
+      );
+      allow delete: if isSignedIn() && isValidId(projectId) && isAdmin();
+    }
+
+    // Collection 3: CMS Articles & Testimonials (/cms_articles/{articleId})
+    match /cms_articles/{articleId} {
+      allow get: if isValidId(articleId) && (existing().status == 'published' || isEditorOrAdmin());
+      allow list: if existing().status == 'published' || isBootstrappedAdmin();
+      allow create: if isSignedIn() && isValidId(articleId) && isValidCmsArticle(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time && isEditorOrAdmin();
+      allow update: if isSignedIn() && isValidId(articleId) && isValidCmsArticle(incoming()) && incoming().createdAt == existing().createdAt && incoming().authorUid == existing().authorUid && incoming().updatedAt == request.time && (
+        isAdmin() || (
+          isEditorOrAdmin() &&
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'title',
+            'publisher',
+            'year',
+            'category',
+            'excerpt',
+            'externalUrl',
+            'imageAlt',
+            'status',
+            'updatedAt'
+          ])
+        )
+      );
+      allow delete: if isSignedIn() && isValidId(articleId) && isAdmin();
+    }
+
+    // Collection 4: Enquiries (/enquiries/{enquiryId}) - PII isolated to Admin only
+    match /enquiries/{enquiryId} {
+      allow get: if isSignedIn() && isValidId(enquiryId) && isAdmin();
+      allow list: if isBootstrappedAdmin() && existing().ndpaConsent == true;
+      allow create: if isValidId(enquiryId) && isValidEnquiry(incoming()) && incoming().status == 'new' && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isSignedIn() && isValidId(enquiryId) && isValidEnquiry(incoming()) && incoming().createdAt == existing().createdAt && incoming().email == existing().email && incoming().name == existing().name && incoming().updatedAt == request.time && (
+        isAdmin() &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt'])
+      );
+      allow delete: if isSignedIn() && isValidId(enquiryId) && isAdmin();
+    }
+
+    // Collection 5: Newsletter Subscribers (/newsletter_subscribers/{subscriberId}) - PII isolated
+    match /newsletter_subscribers/{subscriberId} {
+      allow get: if isSignedIn() && isValidId(subscriberId) && isAdmin();
+      allow list: if isBootstrappedAdmin() && existing().consent == true;
+      allow create: if isValidId(subscriberId) && isValidNewsletterSubscriber(incoming()) && incoming().createdAt == request.time;
+      allow delete: if isSignedIn() && isValidId(subscriberId) && isAdmin();
+    }
+
+    // Collection 6: Admin & Editor Roles (/admins/{adminId})
+    match /admins/{adminId} {
+      allow get: if isSignedIn() && isValidId(adminId) && (request.auth.uid == adminId || isAdmin());
+      allow create: if isSignedIn() && isValidId(adminId) && isValidAdminUser(incoming()) && incoming().createdAt == request.time && isAdmin();
+      allow update: if isSignedIn() && isValidId(adminId) && isValidAdminUser(incoming()) && incoming().createdAt == existing().createdAt && (
+        isAdmin() &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['role'])
+      );
+      allow delete: if isSignedIn() && isValidId(adminId) && isAdmin();
+    }
+  }
+}
