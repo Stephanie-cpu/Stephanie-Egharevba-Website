@@ -853,7 +853,7 @@ export default function App() {
               <motion.section
                 initial={prefersReduced ? false : { opacity: 0.95, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: EASE_EDITORIAL }}
+                transition={{ duration: 0.85, ease: EASE_EDITORIAL }}
                 className="bg-[#0B0B0B] text-white origin-center"
               >
                 <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-10 pb-8 sm:pt-20 sm:pb-12">
