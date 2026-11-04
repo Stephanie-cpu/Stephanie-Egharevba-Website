@@ -325,7 +325,7 @@ export default function App() {
           'Stephanie Egharevba is a Digital Accessibility Consultant in Nigeria & West Africa, WCAG 2.1 / 2.2 AA Compliance Auditor, and Disability Inclusion Speaker in Africa specializing in Inclusive Digital Product Design.',
         keywords:
           'Digital Accessibility Consultant Nigeria, Digital Accessibility Consultant West Africa, WCAG 2.1 2.2 AA Compliance Auditor, Disability Inclusion Speaker Africa, Inclusive Digital Product Design, Stephanie Egharevba',
-        image: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
+        image: '/og_social_preview.jpg',
         path: '/',
       },
       cv: {
@@ -334,7 +334,7 @@ export default function App() {
           'Executive story and career trajectory of Stephanie Egharevba: Digital Accessibility Consultant, Disability Inclusion Lead, and WCAG Auditor across West Africa.',
         keywords:
           'Stephanie Egharevba CV, Digital Accessibility Consultant Nigeria, Disability Inclusion Lead West Africa, WCAG Compliance Auditor, Tech Accessibility Africa',
-        image: '/assets/aistudio/Headshot_5_8e90ef75.jpg',
+        image: '/og_social_preview.jpg',
         path: '/story',
       },
       work: {
@@ -343,7 +343,7 @@ export default function App() {
           'Featured case studies and audits by Stephanie Egharevba: WCAG 2.1 / 2.2 AA compliance auditing, inclusive digital product design, and accessibility remediation.',
         keywords:
           'Case Studies & WCAG Audits, WCAG 2.1 2.2 AA Compliance Auditor, Digital Accessibility Audit Nigeria, Inclusive Digital Product Design, Platform Accessibility Audit',
-        image: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
+        image: '/og_social_preview.jpg',
         path: '/work',
       },
       speaking: {
@@ -352,7 +352,7 @@ export default function App() {
           'Book Stephanie Egharevba: Disability Inclusion Speaker in Africa and Top 3% Global Speaker delivering keynotes on digital inclusion, assistive tech, and AI accessibility.',
         keywords:
           'Disability Inclusion Speaker Africa, Keynote Speaker Digital Inclusion, Assistive Tech Speaker Nigeria, Top 3% Speaker Sessionize, Tech Inclusion Keynote',
-        image: '/assets/aistudio/Headshot_1_1e1bde4f.jpg',
+        image: '/og_social_preview.jpg',
         path: '/speaking',
       },
       books: {
@@ -361,7 +361,7 @@ export default function App() {
           'Published engineering manuals and audit starter kits by Stephanie Egharevba: Is Your Product Excluding 15% of Nigerians?, Code for Every Body, and Accessibility Made Easy.',
         keywords:
           'Code for Every Body, Is Your Product Excluding 15% of Nigerians, Accessibility Made Easy Toolkit, WCAG 2.2 Starter Kit, Digital Accessibility Books',
-        image: '/assets/aistudio/is-your-product-excluding-selar.com-6970b1110bd40_12dcffed.jpg',
+        image: '/og_social_preview.jpg',
         path: '/books',
       },
       gallery: {
@@ -370,7 +370,7 @@ export default function App() {
           'High-resolution press portraits, speaker headshots, and media kit for Stephanie Egharevba — Digital Accessibility Consultant & Disability Inclusion Speaker.',
         keywords:
           'Stephanie Egharevba Press Photos, Speaker Headshots, Media Kit Digital Accessibility Consultant, Disability Inclusion Speaker Africa',
-        image: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
+        image: '/og_social_preview.jpg',
         path: '/gallery',
       },
       contact: {
@@ -379,7 +379,7 @@ export default function App() {
           'Commission a WCAG 2.1 / 2.2 AA platform audit or book Stephanie Egharevba as a Disability Inclusion Speaker and Digital Accessibility Consultant.',
         keywords:
           'Commission WCAG Audit, Book Digital Accessibility Consultant, Disability Inclusion Speaker Booking, Request Speaking Fee, Stephanie Egharevba Contact',
-        image: '/assets/aistudio/Headshot_2_fbb50a76.jpg',
+        image: '/og_social_preview.jpg',
         path: '/contact',
       },
     };

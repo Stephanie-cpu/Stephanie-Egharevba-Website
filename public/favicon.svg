@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E40AF" />
+      <stop offset="50%" stop-color="#1D4ED8" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#60A5FA" />
+      <stop offset="100%" stop-color="#34D399" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded Square Tile -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+
+  <!-- Subtle Accessibility Inclusion Ring Accent -->
+  <circle cx="256" cy="256" r="210" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="12" />
+  <circle cx="390" cy="122" r="16" fill="url(#accentGrad)" />
+
+  <!-- Stylized Executive SE Monogram -->
+  <g fill="#FFFFFF" font-family="'Aeonik Pro', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="800">
+    <!-- Letter S -->
+    <text x="145" y="325" font-size="240" letter-spacing="-12" text-anchor="middle">S</text>
+    <!-- Letter E -->
+    <text x="355" y="325" font-size="240" letter-spacing="-12" text-anchor="middle" fill="url(#accentGrad)">E</text>
+  </g>
+
+  <!-- Base Inclusion Indicator Line -->
+  <rect x="126" y="380" width="260" height="16" rx="8" fill="url(#accentGrad)" />
+</svg>
