@@ -641,6 +641,7 @@ export default function App() {
           <button
             type="button"
             onClick={() => navigateTo('overview')}
+            aria-label="Stephanie Egharevba - Return to Homepage"
             className="text-base sm:text-lg font-display font-bold tracking-tight text-[#141413] whitespace-nowrap shrink-0 cursor-pointer text-left"
           >
             Stephanie Egharevba
@@ -658,6 +659,7 @@ export default function App() {
                   key={item.id}
                   type="button"
                   onClick={() => navigateTo(item.id)}
+                  aria-label={`Navigate to ${item.label} page`}
                   aria-current={isActive ? 'page' : undefined}
                   className={`relative py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                     isActive ? 'text-[#141413] font-semibold' : 'hover:text-[#141413]'
@@ -683,7 +685,7 @@ export default function App() {
                 href={siteSettings.linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Stephanie Egharevba on LinkedIn"
+                aria-label="Open Stephanie Egharevba's LinkedIn profile in a new tab"
                 title="LinkedIn"
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
               >
@@ -693,7 +695,7 @@ export default function App() {
                 href={siteSettings.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Stephanie Egharevba on Instagram"
+                aria-label="Open Stephanie Egharevba's Instagram profile in a new tab"
                 title="Instagram"
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
               >
@@ -722,6 +724,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => navigateTo('contact')}
+              aria-label="Navigate to Enquiries and Contact page"
               className={`hidden sm:inline-flex px-4 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activePage === 'contact'
                   ? 'bg-[#1D4ED8] text-white'
@@ -903,6 +906,7 @@ export default function App() {
                           <button
                             type="button"
                             onClick={() => navigateTo('contact')}
+                            aria-label="Book Stephanie Egharevba for speaking - Navigate to enquiries"
                             className="group px-7 py-3.5 text-sm font-semibold text-[#000000] bg-[#FFFFFF] hover:bg-[#E2E8F0] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm w-fit"
                           >
                             <span>Book for Speaking</span>
@@ -912,6 +916,7 @@ export default function App() {
                           <button
                             type="button"
                             onClick={() => navigateTo('work')}
+                            aria-label="Explore Stephanie's case studies and advisory work"
                             className="group px-7 py-3.5 text-sm font-semibold text-white border border-white/25 hover:border-white/60 hover:bg-white/10 active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer w-fit"
                           >
                             <span>Explore Work &amp; Advisory</span>
@@ -963,6 +968,7 @@ export default function App() {
                       onClick={() => navigateTo('cv')}
                       role="button"
                       tabIndex={0}
+                      aria-label="View Stephanie's story and executive CV"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
@@ -1012,6 +1018,7 @@ export default function App() {
                       <button
                         type="button"
                         onClick={() => navigateTo('cv')}
+                        aria-label="Read Stephanie's full story and executive CV"
                         className="group px-7 py-3.5 text-sm font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
                       >
                         <span>Read Full Story &amp; CV</span>
@@ -1021,6 +1028,7 @@ export default function App() {
                       <a
                         href={CV_PDF_URL}
                         download="Stephanie_Egharevba_CV.pdf"
+                        aria-label="Download Stephanie Egharevba's official CV in PDF format"
                         className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center justify-center sm:justify-start gap-2 py-2"
                       >
                         <Download className="w-4 h-4 text-[#64748B]" />
@@ -1058,6 +1066,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={() => navigateTo('work')}
+                      aria-label="View case studies and open accessibility contrast lab"
                       className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                     >
                       <span>View Case Studies &amp; Contrast Lab</span>
@@ -1079,6 +1088,7 @@ export default function App() {
                       onClick={() => navigateTo('work')}
                       role="button"
                       tabIndex={0}
+                      aria-label="Explore WCAG and Digital Accessibility case studies"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
@@ -1119,6 +1129,7 @@ export default function App() {
                       onClick={() => navigateTo('work')}
                       role="button"
                       tabIndex={0}
+                      aria-label="Explore Diversity and Inclusion Strategy and Policy case studies"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
@@ -1158,6 +1169,7 @@ export default function App() {
                       onClick={() => navigateTo('speaking')}
                       role="button"
                       tabIndex={0}
+                      aria-label="Explore Keynotes and Executive Stages speaking engagements"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
@@ -1198,6 +1210,7 @@ export default function App() {
                       onClick={() => navigateTo('books')}
                       role="button"
                       tabIndex={0}
+                      aria-label="Explore Published Frameworks and Accessibility Toolkits"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
@@ -1252,6 +1265,7 @@ export default function App() {
                         href="https://bwbhq.vercel.app/"
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label="Explore Build Without Barriers platform website (opens in new tab)"
                         className="px-6 py-3.5 text-xs font-bold text-white bg-[#1D4ED8] hover:bg-[#2563EB] active:scale-[0.98] rounded-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                       >
                         <span>Explore Build Without Barriers</span>
@@ -1261,6 +1275,7 @@ export default function App() {
                       <button
                         type="button"
                         onClick={() => handleInquireWithContext('Build Without Barriers Partnership', 'D&I Strategy Advisory')}
+                        aria-label="Partner with Build Without Barriers initiative - opens enquiry form"
                         className="px-6 py-3.5 text-xs font-semibold text-[#0F172A] bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] rounded-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <span>Partner with BWB</span>
@@ -1299,6 +1314,7 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => navigateTo('books')}
+                    aria-label="View complete publication details and Selar book list"
                     className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                   >
                     <span>View Complete Publication Details</span>
@@ -1313,6 +1329,7 @@ export default function App() {
                       href={book.selarUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`Get ${book.title} on Selar (opens in new tab)`}
                       initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 28 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: '-50px' }}
@@ -1384,6 +1401,7 @@ export default function App() {
                         'WCAG Accessibility Audit'
                       )
                     }
+                    aria-label="Commission a WCAG 2.2 platform audit or D&I strategy advisory"
                     className="group px-5 py-2.5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center gap-2 w-fit cursor-pointer"
                   >
                     <span>Commission an Audit or Advisory</span>
@@ -1406,6 +1424,8 @@ export default function App() {
                         key={cat}
                         type="button"
                         onClick={() => setSelectedCategory(cat)}
+                        aria-label={`Filter case studies by ${cat}`}
+                        aria-pressed={isActive}
                         className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer ${
                           isActive
                             ? 'bg-white text-[#0F172A] shadow-xs font-semibold'
@@ -1841,6 +1861,7 @@ export default function App() {
                       <Mail className="w-4 h-4 text-[#1D4ED8] shrink-0" />
                       <a
                         href="mailto:stephanieegharevba83@gmail.com"
+                        aria-label="Send email to stephanieegharevba83@gmail.com"
                         className="font-medium text-[#141413] hover:text-[#1D4ED8] break-all"
                       >
                         stephanieegharevba83@gmail.com
@@ -1851,6 +1872,7 @@ export default function App() {
                       <Phone className="w-4 h-4 text-[#1D4ED8] shrink-0" />
                       <a
                         href="tel:+2348162447467"
+                        aria-label="Call Stephanie Egharevba at +234 816 244 7467"
                         className="font-mono font-medium text-[#141413] hover:text-[#1D4ED8]"
                       >
                         +234 816 244 7467
@@ -1872,6 +1894,7 @@ export default function App() {
                           href={siteSettings.linkedinUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          aria-label="Open Stephanie Egharevba's LinkedIn profile in a new tab"
                           className="flex items-center justify-center gap-2 rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] py-2.5 px-3 text-xs font-semibold text-[#141413] hover:border-[#1D4ED8] hover:text-[#1D4ED8] transition-colors"
                         >
                           <Linkedin className="w-4 h-4 text-[#1D4ED8]" />
@@ -1881,6 +1904,7 @@ export default function App() {
                           href={siteSettings.instagramUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          aria-label="Open Stephanie Egharevba's Instagram profile in a new tab"
                           className="flex items-center justify-center gap-2 rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] py-2.5 px-3 text-xs font-semibold text-[#141413] hover:border-[#1D4ED8] hover:text-[#1D4ED8] transition-colors"
                         >
                           <Instagram className="w-4 h-4 text-[#1D4ED8]" />
@@ -1895,6 +1919,7 @@ export default function App() {
                           href={siteSettings.bookingCalendarUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          aria-label="Book discovery call on calendar (opens in new tab)"
                           className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#111111] py-3 px-4 text-xs font-semibold text-white hover:bg-[#1D4ED8] transition-colors"
                         >
                           <Calendar className="w-4 h-4" />
@@ -2366,6 +2391,7 @@ export default function App() {
                   key={item.id}
                   type="button"
                   onClick={() => navigateTo(item.id)}
+                  aria-label={`Footer navigation to ${item.label} page`}
                   className="hover:text-white transition-colors cursor-pointer"
                 >
                   {item.label}
@@ -2374,6 +2400,7 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => navigateTo('contact')}
+                aria-label="Footer navigation to Enquiries and Contact page"
                 className="hover:text-white transition-colors cursor-pointer"
               >
                 Enquiries
@@ -2386,7 +2413,7 @@ export default function App() {
                 href={siteSettings.linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Stephanie Egharevba on LinkedIn"
+                aria-label="Open Stephanie Egharevba's LinkedIn profile in a new tab"
                 className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-xs font-medium text-white hover:border-[#60A5FA] hover:text-[#60A5FA] transition-colors"
               >
                 <Linkedin className="w-3.5 h-3.5" />
@@ -2396,7 +2423,7 @@ export default function App() {
                 href={siteSettings.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Stephanie Egharevba on Instagram"
+                aria-label="Open Stephanie Egharevba's Instagram profile in a new tab"
                 className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-xs font-medium text-white hover:border-[#60A5FA] hover:text-[#60A5FA] transition-colors"
               >
                 <Instagram className="w-3.5 h-3.5" />
@@ -2412,6 +2439,7 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => setIsPrivacyModalOpen(true)}
+                aria-label="Open NDPA and GDPR Privacy Policy modal"
                 className="hover:text-white transition-colors cursor-pointer"
               >
                 NDPA &amp; GDPR Privacy Policy
@@ -2421,6 +2449,7 @@ export default function App() {
                 href="/api/sitemap.xml"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="View XML Sitemap (opens in new tab)"
                 className="hover:text-white transition-colors"
               >
                 Sitemap.xml
