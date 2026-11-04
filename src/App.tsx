@@ -1230,7 +1230,69 @@ export default function App() {
                 </div>
               </motion.section>
 
-              {/* SECTION 4: BOOKS & TOOLKITS (SINGLE-SURFACE CARDS + 3D BOOK MOCKUPS) */}
+              {/* FLAGSHIP INITIATIVE SPOTLIGHT: BUILD WITHOUT BARRIERS (BWB) */}
+              <motion.section
+                initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 36 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-70px' }}
+                transition={{ duration: 0.75, ease: EASE_EDITORIAL }}
+                className="bg-[#0B0F19] text-white py-12 sm:py-16 lg:py-20 border-y border-[#1E293B]"
+              >
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+                  <div className="max-w-3xl space-y-6">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1D4ED8]/20 border border-[#1D4ED8]/40 text-[#60A5FA] font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+                      <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse" />
+                      <span>CURRENT FOCUS · FOUNDED INITIATIVE</span>
+                    </div>
+
+                    <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold tracking-tight text-white leading-[1.12]">
+                      Building products that refuse to leave anyone behind.
+                    </h2>
+
+                    <p className="text-[15px] sm:text-[17px] text-[#94A3B8] leading-relaxed">
+                      Build Without Barriers is an open masterclass platform training founders, engineers, and product teams across Africa to build accessible software from sprint zero. From live WCAG architectural audits to community cohort sessions, BWB translates complex compliance guidelines into practical engineering habits.
+                    </p>
+
+                    {/* Key Badges */}
+                    <div className="flex flex-wrap items-center gap-2 pt-1">
+                      <span className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-[#CBD5E1]">
+                        Monthly Masterclasses
+                      </span>
+                      <span className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-[#CBD5E1]">
+                        Free Open-Source Checklists
+                      </span>
+                      <span className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-[#CBD5E1]">
+                        500+ Engineers Trained
+                      </span>
+                    </div>
+
+                    {/* Action CTAs */}
+                    <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                      <a
+                        href="https://bwbhq.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-6 py-3.5 text-xs font-bold text-white bg-[#1D4ED8] hover:bg-[#2563EB] active:scale-[0.98] rounded-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-[#1D4ED8]/20"
+                      >
+                        <span>Explore Build Without Barriers</span>
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+
+                      <button
+                        type="button"
+                        onClick={() => handleInquireWithContext('Build Without Barriers Partnership', 'D&I Strategy Advisory')}
+                        className="px-6 py-3.5 text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <span>Partner with BWB</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </motion.section>
+
+
+              {/* SECTION 4: BOOKS & ONGOING INITIATIVES */}
               <motion.section
                 initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 36 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -1250,9 +1312,10 @@ export default function App() {
                       AUTHOR &amp; CREATOR
                     </div>
                     <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#0F172A]">
-                      Books &amp; Toolkits
+                      Books &amp; Ongoing Initiatives
                     </h2>
                   </div>
+
                   <button
                     type="button"
                     onClick={() => navigateTo('books')}

@@ -175,13 +175,13 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                       setSelectedPhoto(photo);
                     }
                   }}
-                  className="group relative w-[290px] sm:w-[370px] lg:w-[430px] h-[250px] sm:h-[290px] rounded-2xl overflow-hidden bg-[#141413] border border-[#E6E4DD] shrink-0 cursor-pointer"
+                  className="group relative w-[290px] sm:w-[370px] lg:w-[430px] h-[250px] sm:h-[290px] rounded-2xl overflow-hidden bg-[#FAF9F6] border border-[#E6E4DD] shrink-0 cursor-pointer"
                 >
                   <img
                     src={photo.src}
                     alt={photo.title}
                     loading="lazy"
-                    className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
+                    className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
                   />
                 </div>
               ))}
@@ -213,7 +213,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                       setSelectedPhoto(photo);
                     }
                   }}
-                  className="group relative w-[290px] sm:w-[370px] lg:w-[430px] h-[250px] sm:h-[290px] rounded-2xl overflow-hidden bg-[#141413] border border-[#E6E4DD] shrink-0 cursor-pointer"
+                  className="group relative w-[290px] sm:w-[370px] lg:w-[430px] h-[250px] sm:h-[290px] rounded-2xl overflow-hidden bg-[#FAF9F6] border border-[#E6E4DD] shrink-0 cursor-pointer"
                 >
                   <img
                     src={photo.src}
@@ -245,7 +245,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                   setSelectedPhoto(photo);
                 }
               }}
-              className="group relative w-full h-[280px] sm:h-[310px] rounded-2xl overflow-hidden bg-[#141413] border border-[#E6E4DD] cursor-pointer"
+              className="group relative w-full h-[280px] sm:h-[310px] rounded-2xl overflow-hidden bg-[#FAF9F6] border border-[#E6E4DD] cursor-pointer"
             >
               <img
                 src={photo.src}

@@ -1037,6 +1037,23 @@ export const STEPHANIE_BOOKS: BookItem[] = [
       'Nigerian Disability Act & NCPWD compliance guidance',
       'Practical workflows for designers, developers, and creators'
     ]
+  },
+  {
+    id: 'bwb-initiative',
+    title: 'Build Without Barriers (BWB)',
+    subtitle: 'Open Masterclass Platform & Engineering Initiative',
+    tag: 'FOUNDED INITIATIVE',
+    selarUrl: 'https://bwbhq.vercel.app/',
+    accentColor: '#60A5FA',
+    coverBg: '#0B0F19',
+    coverImageUrl: '',
+    description:
+      'Stephanie’s flagship initiative and masterclass platform training founders, engineers, and product teams across Africa to build accessible software from sprint zero.',
+    highlights: [
+      'Monthly live WCAG engineering masterclasses & cohort sessions',
+      'Free open-source checklists and enterprise audit frameworks',
+      'Direct masterclass platform access at bwbhq.vercel.app'
+    ]
   }
 ];
 
