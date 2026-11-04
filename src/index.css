@@ -221,6 +221,22 @@ html[data-theme="contrast"] .border-neutral-800 {
   font-variant-numeric: tabular-nums;
 }
 
+/* Universal WCAG 2.4.7 Focus Visible & WCAG 2.4.13 Focus Appearance Rings */
+*:focus-visible {
+  outline: 2px solid #1D4ED8 !important;
+  outline-offset: 2px !important;
+}
+
+html[data-theme="dark"] *:focus-visible {
+  outline: 2px solid #60A5FA !important;
+  outline-offset: 2px !important;
+}
+
+html[data-theme="contrast"] *:focus-visible {
+  outline: 3px solid #FACC15 !important;
+  outline-offset: 3px !important;
+}
+
 /* Smooth editorial link underline grow */
 .editorial-link {
   position: relative;

@@ -14,12 +14,10 @@ import {
   Copy,
   Download,
   ExternalLink,
-  Eye,
   GraduationCap,
   Sparkles,
 } from 'lucide-react';
 import {
-  CORE_COMPETENCIES,
   CV_PDF_URL,
   EDUCATION_HISTORY,
   HONORS_AND_RECOGNITION,
@@ -148,7 +146,6 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
   onNavigateToWork,
 }) => {
   const [activeMode, setActiveMode] = useState<'story' | 'cv'>('story');
-  const [showEmbeddedPdf, setShowEmbeddedPdf] = useState<boolean>(false);
   const [copiedQuote, setCopiedQuote] = useState<boolean>(false);
 
   // Interactive Timeline Hover & Accordion State
@@ -285,15 +282,6 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
             transition={{ duration: 0.45, delay: 0.15, ease: EASE_EDITORIAL }}
             className="flex flex-wrap items-center gap-2.5 shrink-0"
           >
-            <button
-              type="button"
-              onClick={() => setShowEmbeddedPdf((prev) => !prev)}
-              className="px-4 py-2.5 text-xs font-semibold text-[#0F172A] bg-white border border-[#E2E8F0] hover:border-[#0F172A] rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer"
-            >
-              <Eye className="w-3.5 h-3.5 text-[#64748B]" />
-              <span>{showEmbeddedPdf ? 'Hide PDF' : 'Preview PDF'}</span>
-            </button>
-
             <a
               href={CV_PDF_URL}
               download="Stephanie_Egharevba_CV.pdf"
@@ -313,62 +301,6 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
             </button>
           </motion.div>
         </div>
-
-        {/* Staggered Competency Chips (Highlight dynamically when hovering a role in CV mode) */}
-        <div className="flex flex-wrap items-center gap-2 pt-1">
-          {CORE_COMPETENCIES.map((chip, index) => {
-            const isHighlighted = activeHoveredSkills.includes(chip);
-            return (
-              <motion.span
-                key={chip}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.35,
-                  delay: 0.15 + index * 0.05,
-                  ease: EASE_EDITORIAL,
-                }}
-                className={`px-3.5 py-1 rounded-full text-xs font-medium border transition-all duration-200 ${
-                  isHighlighted
-                    ? 'bg-[#1D4ED8] text-white border-[#1D4ED8] shadow-xs scale-[1.03]'
-                    : 'bg-white text-[#334155] border-[#E2E8F0]'
-                }`}
-              >
-                {chip}
-              </motion.span>
-            );
-          })}
-        </div>
-
-        {/* Collapsible Embedded PDF Viewer */}
-        <AnimatePresence>
-          {showEmbeddedPdf && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden shadow-xs"
-            >
-              <div className="px-4 py-3 bg-[#F8FAFC] border-b border-[#E2E8F0] flex items-center justify-between text-xs font-mono text-[#64748B]">
-                <span>STEPHANIE_EGHAREVBA_CV.PDF</span>
-                <a
-                  href={CV_PDF_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#1D4ED8] font-sans font-semibold inline-flex items-center gap-1"
-                >
-                  <span>Open Fullscreen</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              </div>
-              <iframe
-                src={CV_PDF_URL}
-                title="Stephanie Egharevba Official CV PDF"
-                className="w-full h-[520px] sm:h-[680px] border-0"
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* ================================================================= */}
         {/* 2. TOP MODE SWITCHER: [ Editorial Story ] vs [ Complete CV / Timeline ] */}
