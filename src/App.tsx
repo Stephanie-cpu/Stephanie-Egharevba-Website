@@ -81,18 +81,19 @@ const DEFAULT_LINKEDIN_URL =
   'https://www.linkedin.com/in/egharevbastephanie?utm_source=share_via&utm_content=profile&utm_medium=member_android';
 const DEFAULT_INSTAGRAM_URL =
   'https://www.instagram.com/egharevba_stephanie?psln=ODI1cDZpbHk2MjNz';
+const DEFAULT_BOOKING_CALENDAR_URL = 'https://calendar.app.google/HMDVYAq5z6YdywrE9';
 
 const DEFAULT_SITE_SETTINGS: CmsSiteSettings = {
   heroTagline: 'DIVERSITY & INCLUSION LEAD · SPEAKER · AUTHOR',
   heroQuote: 'Disability is not the problem—design is the problem.',
   heroSubtext:
     'Scaling digital accessibility, inclusive systems, and global talent pipelines.',
-  seoTitle: 'Stephanie Egharevba | Disability Inclusion & Digital Accessibility Strategist',
+  seoTitle: 'Stephanie Egharevba | Digital Accessibility Consultant & WCAG Strategist',
   seoDescription:
     'Minimalist editorial portfolio of Stephanie Egharevba: Disability Inclusion Strategist, Digital Accessibility Advocate, Author, and Public Speaker.',
   linkedinUrl: DEFAULT_LINKEDIN_URL,
   instagramUrl: DEFAULT_INSTAGRAM_URL,
-  bookingCalendarUrl: '',
+  bookingCalendarUrl: DEFAULT_BOOKING_CALENDAR_URL,
 };
 
 function getInitialPage(): PageId {
@@ -2002,20 +2003,29 @@ export default function App() {
                       </div>
                     </div>
 
-                    {siteSettings.bookingCalendarUrl && (
-                      <div className="border-t border-[#E6E4DD] pt-4">
-                        <a
-                          href={siteSettings.bookingCalendarUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="Book discovery call on calendar (opens in new tab)"
-                          className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#111111] py-3 px-4 text-xs font-semibold text-white hover:bg-[#1D4ED8] transition-colors"
-                        >
-                          <Calendar className="w-4 h-4" />
-                          <span>Book Discovery Call Calendar</span>
-                        </a>
+                    {/* Prominent Direct Google Calendar Booking Card */}
+                    <div className="bg-[#111622] text-white rounded-2xl p-5 sm:p-6 space-y-3.5 border border-white/10 shadow-lg">
+                      <div className="flex items-center gap-2 text-[11px] font-mono font-semibold uppercase tracking-wider text-[#60A5FA]">
+                        <Calendar className="w-4 h-4 text-[#60A5FA]" />
+                        <span>GOOGLE CALENDAR BOOKING</span>
                       </div>
-                    )}
+                      <h2 className="text-lg sm:text-xl font-display font-bold text-white">
+                        Book a 1-on-1 Session with Me
+                      </h2>
+                      <p className="text-xs text-[#CBD5E1] leading-relaxed">
+                        Schedule a 1-on-1 WCAG Strategy Consultation, Keynote Planning Briefing, or Advisory Call directly on Google Calendar.
+                      </p>
+                      <a
+                        href={siteSettings.bookingCalendarUrl || 'https://calendar.app.google/HMDVYAq5z6YdywrE9'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Book a 1-on-1 session with Stephanie Egharevba on Google Calendar (opens in new tab)"
+                        className="w-full min-h-[44px] flex items-center justify-center gap-2 px-5 py-3 text-xs font-semibold text-[#0B0B0B] bg-white hover:bg-[#1D4ED8] hover:text-white rounded-xl transition-all cursor-pointer shadow-sm"
+                      >
+                        <span>Book a Session on Google Calendar</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
+                    </div>
                   </div>
                 </div>
 
@@ -2199,6 +2209,9 @@ export default function App() {
                             }
                             className="w-full px-3.5 py-2.5 text-sm bg-[#FAF9F6] border border-[#E6E4DD] rounded-lg"
                           >
+                            <option value="1-on-1 Advisory Session">
+                              1-on-1 Advisory / Consultation Session
+                            </option>
                             <option value="Keynote Speaking">Keynote Speaking</option>
                             <option value="Speaking Fee & Availability Request">
                               Speaking Fee & Availability Request
