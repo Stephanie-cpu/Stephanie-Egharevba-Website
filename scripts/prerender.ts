@@ -105,33 +105,13 @@ function renderHomeContent(): string {
         <p style="font-size: 1.25rem; line-height: 1.6; color: #334155; max-width: 44ch; margin-bottom: 28px;">
           Scaling digital accessibility, inclusive systems, and global talent pipelines.
         </p>
-        <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px;">
-          <a href="/work" style="background: #111111; color: #ffffff; padding: 12px 24px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
+        <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px;">
+          <a href="/?page=contact" style="background: #111111; color: #ffffff; padding: 12px 28px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
+            Book for Speaking &rarr;
+          </a>
+          <a href="/work" style="border: 1px solid #CBD5E1; color: #141413; padding: 12px 28px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
             Explore Work &amp; Advisory &rarr;
           </a>
-          <a href="/?page=contact" style="background: transparent; color: #141413; border: 1px solid #CBD5E1; padding: 12px 24px; border-radius: 9999px; text-decoration: none; font-weight: 500; font-size: 0.875rem;">
-            Book for Speaking
-          </a>
-        </div>
-
-        <!-- Key Credentials -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; padding-top: 24px; border-top: 1px solid #E2E8F0;">
-          <div>
-            <div style="font-size: 2rem; font-weight: 700; color: #0F172A;">Top 3%</div>
-            <div style="font-size: 0.875rem; color: #64748B; margin-top: 4px;">Global Speaker (Sessionize)</div>
-          </div>
-          <div>
-            <div style="font-size: 2rem; font-weight: 700; color: #0F172A;">Top 100</div>
-            <div style="font-size: 0.875rem; color: #64748B; margin-top: 4px;">Women in Tech (ALX 2025)</div>
-          </div>
-          <div>
-            <div style="font-size: 2rem; font-weight: 700; color: #0F172A;">200+</div>
-            <div style="font-size: 0.875rem; color: #64748B; margin-top: 4px;">Alumni Community Founded</div>
-          </div>
-          <div>
-            <div style="font-size: 2rem; font-weight: 700; color: #0F172A;">3,000+</div>
-            <div style="font-size: 0.875rem; color: #64748B; margin-top: 4px;">Students &amp; Builders Reached</div>
-          </div>
         </div>
       </section>
 
@@ -166,7 +146,7 @@ function renderHomeContent(): string {
           </article>
           <article style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 16px; padding: 24px;">
             <h3 style="font-size: 1.125rem; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;">D&amp;I Strategy &amp; Policy</h3>
-            <p style="font-size: 0.875rem; color: #475569; line-height: 1.6;">Formulating disability inclusion governance, accommodation charters, and statutory compliance frameworks.</p>
+            <p style="font-size: 0.875rem; color: #475569; line-height: 1.6;">Promoting disability inclusion across the Youth Advisory Council through accessible events, inclusive communication, and advocacy that ensures young people with disabilities are meaningfully represented and included.</p>
           </article>
           <article style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 16px; padding: 24px;">
             <h3 style="font-size: 1.125rem; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;">Keynotes &amp; Executive Stages</h3>

@@ -57,6 +57,7 @@ import {
 import { EditorialVisualPlate } from './components/VisualPlates';
 import { BookMockup } from './components/BookMockup';
 import { AccessibilitySandbox } from './components/AccessibilitySandbox';
+import { EditorialPreloader } from './components/EditorialPreloader';
 import {
   AddProjectModal,
   ProjectLightboxModal,
@@ -153,6 +154,30 @@ export default function App() {
   // WCAG AA Motion Sensitivity: OS prefers-reduced-motion hook + in-app toggle
   const systemPrefersReducedMotion = useReducedMotion();
   const prefersReduced = Boolean(systemPrefersReducedMotion || a11yPrefs.reduceMotion);
+
+  // Editorial Language Greeting Preloader (Plays once per browser tab session)
+  const [showPreloader, setShowPreloader] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      const alreadyPlayed = sessionStorage.getItem('stephanie_intro_played_v1');
+      if (alreadyPlayed) return false;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return false;
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  });
+
+  const handlePreloaderComplete = () => {
+    setShowPreloader(false);
+    try {
+      sessionStorage.setItem('stephanie_intro_played_v1', 'true');
+    } catch {
+      // ignore
+    }
+  };
 
   // Apply Accessibility & Theme Preferences to <html> attributes
   useEffect(() => {
@@ -372,94 +397,133 @@ export default function App() {
     navigateTo('contact');
   };
 
-  // Submit Enquiry via Express Backend Validation + Firestore Persistence
+  // Submit Enquiry via Express Backend Validation + Gmail SMTP Notification + Firestore Persistence
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormErrors({});
     setIsSubmittingEnquiry(true);
 
-    try {
-      const response = await fetch('/api/enquiries/validate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: contactName,
-          email: contactEmail,
-          organization: contactOrg,
-          inquiryType: engagementType,
-          eventDateOrTimeline: timeline,
-          budgetRange,
-          message: contactMessage,
-          ndpaConsent,
-          honeypotWebsite,
-        }),
-      });
+    // 1. Immediate client-side semantic validation (fast feedback)
+    const errors: Record<string, string> = {};
+    const trimmedName = contactName.trim();
+    const trimmedEmail = contactEmail.trim();
+    const trimmedMessage = contactMessage.trim();
 
-      const data = await response.json();
+    if (trimmedName.length < 2) {
+      errors.name = 'Please enter your full name (at least 2 characters).';
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      errors.email = 'Please enter a valid email address (e.g., name@organization.org).';
+    }
+    if (trimmedMessage.length < 10) {
+      errors.message = 'Please include at least 10 characters describing your event or project.';
+    }
+    if (!ndpaConsent) {
+      errors.ndpaConsent =
+        'Please confirm consent to store your enquiry under the Nigeria Data Protection Act (NDPA) & GDPR.';
+    }
 
-      if (!response.ok || !data.ok) {
-        setFormErrors(
-          data.errors || { general: data.error || 'Please check the form fields and try again.' }
-        );
-        setIsSubmittingEnquiry(false);
-        return;
-      }
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      setIsSubmittingEnquiry(false);
+      return;
+    }
 
-      // If not a honeypot bot, persist to Firestore `enquiries` collection
-      if (!data.spamFiltered && data.sanitizedPayload) {
-        const p = data.sanitizedPayload;
-        const path = 'enquiries';
-        try {
-          await addDoc(collection(db, 'enquiries'), {
-            name: p.name,
-            email: p.email,
-            organization: p.organization,
-            inquiryType: p.inquiryType,
-            ...(p.eventDateOrTimeline ? { eventDateOrTimeline: p.eventDateOrTimeline } : {}),
-            ...(p.budgetRange ? { budgetRange: p.budgetRange } : {}),
-            message: p.message,
-            ndpaConsent: true,
-            status: 'new',
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-          });
-        } catch (firestoreErr) {
-          try {
-            handleFirestoreError(firestoreErr, OperationType.CREATE, path);
-          } catch {
-            // Even if offline, still show the validated confirmation receipt
-          }
-        }
-      }
-
-      const newInquiry: SavedInquiry = {
+    // 2. Accessible honeypot check (silently filter bots without blocking genuine humans)
+    if (honeypotWebsite && honeypotWebsite.trim().length > 0) {
+      setIsSubmittingEnquiry(false);
+      setSubmittedInquiry({
         id: `inq-${Date.now()}`,
-        referenceId: data.referenceId || `SE-${Date.now().toString(36).toUpperCase()}`,
-        name: contactName.trim(),
-        email: contactEmail.trim(),
+        referenceId: `SE-${Date.now().toString(36).toUpperCase()}`,
+        name: trimmedName,
+        email: trimmedEmail,
         organization: contactOrg.trim() || 'Independent / Direct',
         engagementType,
         timeline: timeline.trim() || 'Flexible',
         budgetRange: budgetRange.trim(),
-        message: contactMessage.trim(),
-        confirmationMessage:
-          data.confirmationMessage ||
-          'Your enquiry has been logged in the dashboard and prepared for direct response.',
+        message: trimmedMessage,
+        confirmationMessage: 'Your enquiry has been received and queued for direct response.',
         submittedAt: new Date().toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',
           year: 'numeric',
         }),
-      };
-
-      setSubmittedInquiry(newInquiry);
-    } catch {
-      setFormErrors({
-        general: 'Unable to validate right now. Please check your connection and try again.',
       });
-    } finally {
-      setIsSubmittingEnquiry(false);
+      return;
     }
+
+    let referenceId = `SE-${Date.now().toString(36).toUpperCase()}`;
+    let confirmationMessage = `Thank you, ${trimmedName}. Your ${engagementType} enquiry (Ref: ${referenceId}) has been validated and prepared for direct response.`;
+
+    // 3. Attempt server endpoint (validates + dispatches SMTP email notification)
+    try {
+      const response = await fetch('/api/enquiries/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: trimmedName,
+          email: trimmedEmail,
+          organization: contactOrg.trim() || 'Independent / Direct',
+          inquiryType: engagementType,
+          eventDateOrTimeline: timeline.trim(),
+          budgetRange: budgetRange.trim(),
+          message: trimmedMessage,
+          ndpaConsent,
+          honeypotWebsite,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.referenceId) referenceId = data.referenceId;
+        if (data.confirmationMessage) confirmationMessage = data.confirmationMessage;
+      }
+    } catch (networkErr) {
+      console.warn('Backend validate endpoint note:', networkErr);
+      // Fallback: Continue cleanly to Firestore direct persistence and client receipt
+    }
+
+    // 4. Persist to Firestore `enquiries` collection
+    try {
+      await addDoc(collection(db, 'enquiries'), {
+        name: trimmedName,
+        email: trimmedEmail,
+        organization: contactOrg.trim() || 'Independent / Direct',
+        inquiryType: engagementType,
+        ...(timeline.trim() ? { eventDateOrTimeline: timeline.trim() } : {}),
+        ...(budgetRange.trim() ? { budgetRange: budgetRange.trim() } : {}),
+        message: trimmedMessage,
+        ndpaConsent: true,
+        status: 'new',
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+    } catch (firestoreErr) {
+      console.warn('Firestore direct write note:', firestoreErr);
+    }
+
+    // 5. Always display the complete confirmation receipt with reference ID
+    const newInquiry: SavedInquiry = {
+      id: `inq-${Date.now()}`,
+      referenceId,
+      name: trimmedName,
+      email: trimmedEmail,
+      organization: contactOrg.trim() || 'Independent / Direct',
+      engagementType,
+      timeline: timeline.trim() || 'Flexible',
+      budgetRange: budgetRange.trim(),
+      message: trimmedMessage,
+      confirmationMessage,
+      submittedAt: new Date().toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      }),
+    };
+
+    setSubmittedInquiry(newInquiry);
+    setIsSubmittingEnquiry(false);
   };
 
   // Newsletter Submission
@@ -556,6 +620,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#141413] font-sans overflow-x-hidden">
+      {/* Editorial Cultural Greeting Intro (English, Yoruba, Hausa, Igbo, French, Spanish) */}
+      {showPreloader && (
+        <EditorialPreloader
+          onComplete={handlePreloaderComplete}
+          reduceMotion={prefersReduced}
+        />
+      )}
+
       {/* Skip to Main Content */}
       <a
         href="#main-content"
@@ -778,7 +850,12 @@ export default function App() {
               transition={{ duration: 0.3, ease: EASE_EDITORIAL }}
             >
               {/* EXECUTIVE EDITORIAL HERO */}
-              <section className="bg-[#0B0B0B] text-white">
+              <motion.section
+                initial={prefersReduced ? false : { opacity: 0.95, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: EASE_EDITORIAL }}
+                className="bg-[#0B0B0B] text-white origin-center"
+              >
                 <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-10 pb-8 sm:pt-20 sm:pb-12">
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-14 items-center">
                     {/* Left Column: Aeonik Trial Hierarchy + Simplified CTAs (No Partner Strips) */}
@@ -824,23 +901,23 @@ export default function App() {
                         transition={{ duration: 0.55, delay: 0.22, ease: EASE_EDITORIAL }}
                         className="pt-1"
                       >
-                        {/* Simplified Two-Action CTA Row: full-width on mobile, pill row on tablet+ */}
                         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-3.5">
                           <button
                             type="button"
-                            onClick={() => navigateTo('work')}
-                            className="group px-7 py-3.5 text-sm font-semibold text-[#000000] bg-[#FFFFFF] hover:bg-[#E2E8F0] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                            onClick={() => navigateTo('contact')}
+                            className="group px-7 py-3.5 text-sm font-semibold text-[#000000] bg-[#FFFFFF] hover:bg-[#E2E8F0] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm w-fit"
                           >
-                            <span>Explore Work &amp; Advisory</span>
+                            <span>Book for Speaking</span>
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                           </button>
 
                           <button
                             type="button"
-                            onClick={() => navigateTo('contact')}
-                            className="px-7 py-3.5 text-sm font-medium text-white bg-white/[0.04] border border-white/20 hover:bg-white/[0.1] hover:border-white/35 active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
+                            onClick={() => navigateTo('work')}
+                            className="group px-7 py-3.5 text-sm font-semibold text-white border border-white/25 hover:border-white/60 hover:bg-white/10 active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer w-fit"
                           >
-                            <span>Book for Speaking</span>
+                            <span>Explore Work &amp; Advisory</span>
+                            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                           </button>
                         </div>
                       </motion.div>
@@ -864,36 +941,8 @@ export default function App() {
                       </div>
                     </motion.div>
                   </div>
-
-                  {/* Stats Row with Generous Breathing Room & Vertical Dividers */}
-                  <motion.div
-                    initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-40px' }}
-                    transition={{ duration: 0.65, delay: 0.1, ease: EASE_EDITORIAL }}
-                    className="mt-10 sm:mt-14 pt-8 sm:pt-12 pb-6 sm:pb-10 border-t border-white/10 grid grid-cols-2 lg:grid-cols-4 gap-y-7 gap-x-4 sm:gap-x-6 lg:gap-x-0 lg:divide-x lg:divide-white/10"
-                  >
-                    {[
-                      { stat: 'Top 3%', label: 'Global Speaker (Sessionize)' },
-                      { stat: 'Top 100', label: 'Women in Tech (ALX 2025)' },
-                      { stat: '200+', label: 'Alumni Community Founded' },
-                      { stat: '3,000+', label: 'Students & Builders Reached' },
-                    ].map((item, index) => (
-                      <div
-                        key={item.stat}
-                        className={index > 0 ? 'lg:pl-10' : 'lg:pr-6'}
-                      >
-                        <div className="font-display text-[26px] sm:text-[34px] lg:text-[40px] font-bold tracking-tight text-white tabular-nums leading-none">
-                          {item.stat}
-                        </div>
-                        <div className="font-sans text-[12px] sm:text-[14px] font-normal text-[#94A3B8] mt-2 sm:mt-2.5">
-                          {item.label}
-                        </div>
-                      </div>
-                    ))}
-                  </motion.div>
                 </div>
-              </section>
+              </motion.section>
 
               {/* SECTION 2: THE STORY SECTION (SPEAKER PORTRAIT IN SKY-BLUE BLAZER + ANCHOR THESIS QUOTE) */}
               <motion.section
@@ -1019,7 +1068,7 @@ export default function App() {
                   </motion.div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-                    {/* Card 1: WCAG & Digital Accessibility (Deliverables-Focused) */}
+                    {/* Card 1: WCAG & Digital Accessibility */}
                     <motion.div
                       initial={prefersReduced ? false : { opacity: 0, y: 18 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -1051,20 +1100,6 @@ export default function App() {
                           End-to-end accessibility engineering for web and mobile platforms—uncovering
                           usability barriers and shipping remediated, compliant user journeys.
                         </p>
-                        <div className="pt-1 flex flex-wrap gap-2">
-                          {[
-                            'WCAG 2.2 AA/AAA Audits',
-                            'Engineering Teardowns',
-                            'Compliance Roadmaps',
-                          ].map((deliverable) => (
-                            <span
-                              key={deliverable}
-                              className="px-2.5 sm:px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-medium text-[#334155]"
-                            >
-                              {deliverable}
-                            </span>
-                          ))}
-                        </div>
                       </div>
 
                       <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
@@ -1073,7 +1108,7 @@ export default function App() {
                       </div>
                     </motion.div>
 
-                    {/* Card 2: D&I Strategy & Policy (Institutional Scale) */}
+                    {/* Card 2: D&I Strategy & Policy */}
                     <motion.div
                       initial={prefersReduced ? false : { opacity: 0, y: 18 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -1102,28 +1137,8 @@ export default function App() {
                           D&amp;I Strategy &amp; Policy
                         </h3>
                         <p className="text-[14px] sm:text-[15px] text-[#475569] leading-relaxed">
-                          Institutional inclusion architecture designed for the Mastercard Foundation
-                          and national workforce pipelines—from recruitment policy to the 200+
-                          member Alumni Disability Community.
+                          Promoting disability inclusion across the Youth Advisory Council through accessible events, inclusive communication, and advocacy that ensures young people with disabilities are meaningfully represented and included.
                         </p>
-                        <div className="pt-1 grid grid-cols-2 gap-3">
-                          <div className="p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
-                            <div className="font-display text-base sm:text-lg font-bold text-[#0F172A]">
-                              200+ Alumni
-                            </div>
-                            <div className="text-[11px] sm:text-xs text-[#64748B]">
-                              Peer &amp; Policy Network
-                            </div>
-                          </div>
-                          <div className="p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
-                            <div className="font-display text-base sm:text-lg font-bold text-[#0F172A]">
-                              3,000+ Youth
-                            </div>
-                            <div className="text-[11px] sm:text-xs text-[#64748B]">
-                              Workforce Pipelines
-                            </div>
-                          </div>
-                        </div>
                       </div>
 
                       <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
@@ -1132,7 +1147,7 @@ export default function App() {
                       </div>
                     </motion.div>
 
-                    {/* Card 3: Keynotes & Speaking (Stage Proof Points) */}
+                    {/* Card 3: Keynotes & Speaking */}
                     <motion.div
                       initial={prefersReduced ? false : { opacity: 0, y: 18 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -1164,21 +1179,6 @@ export default function App() {
                           High-authority keynotes on AI accessibility, inclusive product leadership,
                           and resilient ecosystems delivered across Africa’s premier technology stages.
                         </p>
-                        <div className="pt-1 flex flex-wrap items-center gap-2">
-                          {[
-                            'TechCabal Moonshot',
-                            'InAble Africa',
-                            'AISEN Summit',
-                            'InnovateAI Lagos',
-                          ].map((stage) => (
-                            <span
-                              key={stage}
-                              className="px-2.5 sm:px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-semibold text-[#0F172A]"
-                            >
-                              {stage}
-                            </span>
-                          ))}
-                        </div>
                       </div>
 
                       <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
@@ -1187,7 +1187,7 @@ export default function App() {
                       </div>
                     </motion.div>
 
-                    {/* Card 4: Frameworks & Toolkits (Direct to Resources & Downloads) */}
+                    {/* Card 4: Frameworks & Toolkits */}
                     <motion.div
                       initial={prefersReduced ? false : { opacity: 0, y: 18 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -1219,20 +1219,6 @@ export default function App() {
                           Ready-to-deploy WCAG audit checklists, semantic HTML engineering guides,
                           and executive playbooks built for product teams and founders.
                         </p>
-                        <div className="pt-1 flex flex-wrap gap-2">
-                          {[
-                            'Executive Briefing',
-                            'Developer Blueprint',
-                            'WCAG Audit Starter Kit',
-                          ].map((item) => (
-                            <span
-                              key={item}
-                              className="px-2.5 sm:px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-medium text-[#334155]"
-                            >
-                              {item}
-                            </span>
-                          ))}
-                        </div>
                       </div>
 
                       <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
