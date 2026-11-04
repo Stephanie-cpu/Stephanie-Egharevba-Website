@@ -314,22 +314,107 @@ export default function App() {
     };
   }, []);
 
-  // Dynamically update document <title> & meta description for SEO
+  // Dynamically update document <title>, page-specific keywords, OpenGraph & Twitter Cards for social media
   useEffect(() => {
-    const pageLabels: Record<PageId, string> = {
-      overview: 'Stephanie Egharevba | Disability Inclusion & Digital Accessibility Strategist',
-      cv: 'Stephanie’s Story & Executive CV | Stephanie Egharevba',
-      work: 'Work & WCAG Case Studies | Stephanie Egharevba',
-      speaking: 'Speaking & Keynotes | Stephanie Egharevba',
-      books: 'Books & Toolkits | Stephanie Egharevba',
-      gallery: 'Press Portraits & Media Kit | Stephanie Egharevba',
-      contact: 'Speaking & Advisory Enquiries | Stephanie Egharevba',
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://stephanieegharevba.com';
+
+    const PAGE_SEO: Record<PageId, { title: string; description: string; keywords: string; image: string; path: string }> = {
+      overview: {
+        title: 'Stephanie Egharevba | Disability Inclusion & Digital Accessibility Strategist',
+        description:
+          'Executive portfolio of Stephanie Egharevba: Diversity & Inclusion Lead, Disability Inclusion Specialist, WCAG Auditor, Author, and Top 3% Global Speaker.',
+        keywords:
+          'Stephanie Egharevba, Disability Inclusion, Digital Accessibility, WCAG 2.2 Auditor, Diversity and Inclusion Lead, Public Speaker Nigeria, Mastercard Foundation, Jobberman',
+        image: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
+        path: '/',
+      },
+      cv: {
+        title: 'Stephanie’s Story & Executive CV | Stephanie Egharevba',
+        description:
+          'The story and complete chronological career dossier of Stephanie Egharevba. Born with Osteogenesis Imperfecta in Lagos, leading disability inclusion across West Africa.',
+        keywords:
+          'Stephanie Egharevba CV, Disability Inclusion Lead, Osteogenesis Imperfecta Advocate, WCAG Specialist Lagos, Yabatech Special Adviser, Tech Accessibility Africa',
+        image: '/assets/aistudio/Headshot_5_8e90ef75.jpg',
+        path: '/story',
+      },
+      work: {
+        title: 'Work & WCAG Case Studies | Stephanie Egharevba',
+        description:
+          'Selected WCAG 2.2 accessibility engineering audits, D&I strategy frameworks, and inclusive workforce placement case studies for enterprise tech and continental forums.',
+        keywords:
+          'WCAG 2.2 Audit, Digital Accessibility Case Studies, African Disability Forum Audit, Rushbox Accessibility, Inclusive Workplace Policy, Accessibility Engineering',
+        image: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
+        path: '/work',
+      },
+      speaking: {
+        title: 'Speaking & Keynotes | Stephanie Egharevba',
+        description:
+          'Top 3% Global Speaker on Sessionize. Keynote presentations, panels, and fireside chats on AI accessibility, inclusive design, and tech ecosystems across Africa.',
+        keywords:
+          'Top 3% Speaker Sessionize, Keynote Speaker Nigeria, AI Accessibility Talk, InAble Inclusive Africa, TechCabal Moonshot, Public Speaker Disability Rights',
+        image: '/assets/aistudio/Headshot_1_1e1bde4f.jpg',
+        path: '/speaking',
+      },
+      books: {
+        title: 'Books & Toolkits | Stephanie Egharevba',
+        description:
+          'Published books and WCAG starter kits by Stephanie Egharevba: Is Your Product Excluding 15% of Nigerians?, Code for Every Body, and Accessibility Made Easy Toolkit.',
+        keywords:
+          'Code for Every Body, Is Your Product Excluding 15% of Nigerians, Accessibility Made Easy, Selar Books Stephanie Egharevba, WCAG Toolkit, Developer Guide Accessibility',
+        image: '/assets/aistudio/is-your-product-excluding-selar.com-6970b1110bd40_12dcffed.jpg',
+        path: '/books',
+      },
+      gallery: {
+        title: 'Press Portraits & Media Kit | Stephanie Egharevba',
+        description:
+          'Official press headshots, studio portraits, and kinetic photo gallery of Stephanie Egharevba for conference agendas and media publications.',
+        keywords:
+          'Stephanie Egharevba Press Photos, Executive Headshots, Speaker Portraits, Media Kit Disability Advocate, Lagos Conference Gallery',
+        image: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
+        path: '/gallery',
+      },
+      contact: {
+        title: 'Speaking & Advisory Enquiries | Stephanie Egharevba',
+        description:
+          'Book Stephanie Egharevba for keynote addresses, request official speaking fee schedules, or commission a comprehensive WCAG 2.2 platform accessibility audit.',
+        keywords:
+          'Book Stephanie Egharevba, Request Speaking Fee, Commission WCAG Audit, D&I Strategy Consulting, Contact Disability Inclusion Specialist',
+        image: '/assets/aistudio/Headshot_2_fbb50a76.jpg',
+        path: '/contact',
+      },
     };
-    document.title = pageLabels[activePage] || siteSettings.seoTitle;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', siteSettings.seoDescription);
-    }
+
+    const currentSeo = PAGE_SEO[activePage] || PAGE_SEO.overview;
+    const finalTitle = currentSeo.title;
+    const finalDesc = siteSettings.seoDescription || currentSeo.description;
+    const fullImageUrl = currentSeo.image.startsWith('http')
+      ? currentSeo.image
+      : `${origin}${currentSeo.image}`;
+    const fullPageUrl = `${origin}${currentSeo.path}`;
+
+    document.title = finalTitle;
+
+    const setOrUpdateMeta = (selector: string, attrName: string, attrVal: string, content: string) => {
+      let el = document.querySelector(selector);
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(attrName, attrVal);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+
+    setOrUpdateMeta('meta[name="description"]', 'name', 'description', finalDesc);
+    setOrUpdateMeta('meta[name="keywords"]', 'name', 'keywords', currentSeo.keywords);
+    setOrUpdateMeta('meta[property="og:title"]', 'property', 'og:title', finalTitle);
+    setOrUpdateMeta('meta[property="og:description"]', 'property', 'og:description', finalDesc);
+    setOrUpdateMeta('meta[property="og:image"]', 'property', 'og:image', fullImageUrl);
+    setOrUpdateMeta('meta[property="og:url"]', 'property', 'og:url', fullPageUrl);
+    setOrUpdateMeta('meta[property="og:type"]', 'property', 'og:type', 'website');
+    setOrUpdateMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
+    setOrUpdateMeta('meta[name="twitter:title"]', 'name', 'twitter:title', finalTitle);
+    setOrUpdateMeta('meta[name="twitter:description"]', 'name', 'twitter:description', finalDesc);
+    setOrUpdateMeta('meta[name="twitter:image"]', 'name', 'twitter:image', fullImageUrl);
   }, [activePage, siteSettings]);
 
   useEffect(() => {
@@ -687,7 +772,7 @@ export default function App() {
                 rel="noopener noreferrer"
                 aria-label="Open Stephanie Egharevba's LinkedIn profile in a new tab"
                 title="LinkedIn"
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
+                className="min-w-[44px] min-h-[44px] rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
               >
                 <Linkedin className="w-4 h-4" />
               </a>
@@ -697,7 +782,7 @@ export default function App() {
                 rel="noopener noreferrer"
                 aria-label="Open Stephanie Egharevba's Instagram profile in a new tab"
                 title="Instagram"
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
+                className="min-w-[44px] min-h-[44px] rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
               >
                 <Instagram className="w-4 h-4" />
               </a>
@@ -711,7 +796,7 @@ export default function App() {
                 a11yPrefs.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
               }
               title={a11yPrefs.theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              className="hidden sm:flex w-9 h-9 rounded-lg border border-[#E6E4DD] bg-white items-center justify-center text-[#141413] hover:border-[#1D4ED8] transition-colors cursor-pointer"
+              className="hidden sm:flex min-w-[44px] min-h-[44px] rounded-lg border border-[#E6E4DD] bg-white items-center justify-center text-[#141413] hover:border-[#1D4ED8] transition-colors cursor-pointer"
             >
               {a11yPrefs.theme === 'dark' ? (
                 <Sun className="w-4 h-4 text-[#60A5FA]" />
@@ -725,7 +810,7 @@ export default function App() {
               type="button"
               onClick={() => navigateTo('contact')}
               aria-label="Navigate to Enquiries and Contact page"
-              className={`hidden sm:inline-flex px-4 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`hidden sm:inline-flex min-h-[44px] px-4 py-2.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap items-center shrink-0 cursor-pointer ${
                 activePage === 'contact'
                   ? 'bg-[#1D4ED8] text-white'
                   : 'bg-[#141413] text-white hover:bg-[#1D4ED8]'
@@ -734,13 +819,13 @@ export default function App() {
               Enquiries
             </button>
 
-            {/* Mobile Menu Toggle Button (Prominent & Uncrowded on mobile) */}
+            {/* Mobile Menu Toggle Button (Prominent & Uncrowded 44x44px target on mobile) */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileMenuOpen}
-              className="md:hidden w-10 h-10 rounded-xl border border-[#E6E4DD] bg-white flex items-center justify-center text-[#141413] hover:border-[#1D4ED8] transition-colors cursor-pointer shrink-0"
+              className="md:hidden min-w-[44px] min-h-[44px] w-11 h-11 rounded-xl border border-[#E6E4DD] bg-white flex items-center justify-center text-[#141413] hover:border-[#1D4ED8] transition-colors cursor-pointer shrink-0"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -756,7 +841,7 @@ export default function App() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden border-t border-[#E6E4DD] bg-white px-4 py-3 space-y-1.5 overflow-hidden shadow-lg"
+              className="md:hidden border-t border-[#E6E4DD] bg-white px-4 py-3 space-y-2 overflow-hidden shadow-lg"
             >
               {navItems.map((item) => {
                 const isActive = activePage === item.id;
@@ -765,9 +850,11 @@ export default function App() {
                     key={item.id}
                     type="button"
                     onClick={() => navigateTo(item.id)}
-                    className={`w-full text-left px-3.5 py-3 rounded-lg text-sm font-medium flex items-center justify-between cursor-pointer ${
+                    aria-label={`Navigate to ${item.label} page`}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`w-full min-h-[44px] text-left px-4 py-3 rounded-xl text-sm font-medium flex items-center justify-between cursor-pointer transition-colors ${
                       isActive
-                        ? 'bg-[#FAF9F6] text-[#1D4ED8] font-semibold'
+                        ? 'bg-[#FAF9F6] text-[#1D4ED8] font-semibold border border-[#1D4ED8]/20'
                         : 'text-[#141413] hover:bg-[#FAF9F6]'
                     }`}
                   >
@@ -777,12 +864,13 @@ export default function App() {
                 );
               })}
 
-              {/* Mobile Enquiries Primary Action Button */}
+              {/* Mobile Enquiries Primary Action Button (Minimum 44px Hit Area) */}
               <div className="pt-2 pb-1 px-0.5">
                 <button
                   type="button"
                   onClick={() => navigateTo('contact')}
-                  className={`w-full py-3 px-4 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors shadow-xs cursor-pointer ${
+                  aria-label="Navigate to Enquiries and Contact page"
+                  className={`w-full min-h-[48px] py-3.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors shadow-xs cursor-pointer ${
                     activePage === 'contact'
                       ? 'bg-[#1D4ED8] text-white'
                       : 'bg-[#141413] text-white hover:bg-[#1D4ED8]'
@@ -793,15 +881,15 @@ export default function App() {
                 </button>
               </div>
 
-              {/* Social Links & Theme Switch inside Mobile Dropdown Footer */}
-              <div className="pt-3 mt-2 border-t border-[#E6E4DD] flex items-center justify-between px-1 py-1">
-                <div className="flex items-center gap-3">
+              {/* Social Links & Theme Switch inside Mobile Dropdown Footer (Minimum 44px Touch Targets) */}
+              <div className="pt-3 mt-2 border-t border-[#E6E4DD] flex flex-wrap items-center justify-between gap-2 px-1 py-1">
+                <div className="flex items-center gap-2">
                   <a
                     href={siteSettings.linkedinUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Stephanie Egharevba on LinkedIn"
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#141413] hover:text-[#1D4ED8]"
+                    aria-label="Open Stephanie Egharevba's LinkedIn profile in a new tab"
+                    className="inline-flex min-h-[44px] items-center gap-1.5 px-3 py-2.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-semibold text-[#141413] hover:text-[#1D4ED8]"
                   >
                     <Linkedin className="w-4 h-4 text-[#1D4ED8]" />
                     <span>LinkedIn</span>
@@ -810,8 +898,8 @@ export default function App() {
                     href={siteSettings.instagramUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Stephanie Egharevba on Instagram"
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#141413] hover:text-[#1D4ED8]"
+                    aria-label="Open Stephanie Egharevba's Instagram profile in a new tab"
+                    className="inline-flex min-h-[44px] items-center gap-1.5 px-3 py-2.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-semibold text-[#141413] hover:text-[#1D4ED8]"
                   >
                     <Instagram className="w-4 h-4 text-[#1D4ED8]" />
                     <span>Instagram</span>
@@ -821,12 +909,13 @@ export default function App() {
                 <button
                   type="button"
                   onClick={toggleDarkLightMode}
-                  className="px-2.5 py-1.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-medium text-[#141413] flex items-center gap-1.5 cursor-pointer"
+                  aria-label={a11yPrefs.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                  className="min-h-[44px] px-3.5 py-2.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-medium text-[#141413] flex items-center gap-1.5 cursor-pointer"
                 >
                   {a11yPrefs.theme === 'dark' ? (
-                    <Sun className="w-3.5 h-3.5 text-[#60A5FA]" />
+                    <Sun className="w-4 h-4 text-[#60A5FA]" />
                   ) : (
-                    <Moon className="w-3.5 h-3.5" />
+                    <Moon className="w-4 h-4" />
                   )}
                   <span>{a11yPrefs.theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
                 </button>
