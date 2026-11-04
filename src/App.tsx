@@ -176,7 +176,6 @@ export default function App() {
     }
   });
 
-  const [copiedPressBio, setCopiedPressBio] = useState<boolean>(false);
   const [showEmbeddedPdf, setShowEmbeddedPdf] = useState<boolean>(false);
 
   // Work page filter
@@ -507,30 +506,6 @@ export default function App() {
     { id: 'gallery', label: 'Gallery' },
   ];
 
-  const handleCopyPressBio = () => {
-    navigator.clipboard?.writeText(APPROVED_100_WORD_BIO);
-    setCopiedPressBio(true);
-    setTimeout(() => setCopiedPressBio(false), 2500);
-  };
-
-  const handleDownloadPressKitBundle = () => {
-    const assetsToDownload = [
-      { url: CV_PDF_URL, filename: 'Stephanie_Egharevba_Executive_CV.pdf' },
-      { url: STEPHANIE_PORTRAITS[0].src, filename: 'Stephanie_Egharevba_Studio_Portrait_1.jpg' },
-      { url: STEPHANIE_PORTRAITS[1].src, filename: 'Stephanie_Egharevba_Speaker_Portrait_2.jpg' },
-    ];
-    assetsToDownload.forEach((asset, index) => {
-      setTimeout(() => {
-        const link = document.createElement('a');
-        link.href = asset.url;
-        link.download = asset.filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }, index * 250);
-    });
-  };
-
   const toggleDarkLightMode = () => {
     setA11yPrefs((prev) => ({
       ...prev,
@@ -732,29 +707,29 @@ export default function App() {
             >
               {/* EXECUTIVE EDITORIAL HERO */}
               <section className="bg-[#0B0B0B] text-white">
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-12 pb-6 sm:pt-20 sm:pb-10">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-                    {/* Left Column: Aeonik Trial Hierarchy + 2 Simplified CTAs + Monochrome Partner Logos */}
-                    <div className="lg:col-span-7 flex flex-col justify-between space-y-9">
-                      <div className="space-y-5">
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-10 pb-8 sm:pt-20 sm:pb-12">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-14 items-center">
+                    {/* Left Column: Aeonik Trial Hierarchy + Simplified CTAs (No Partner Strips) */}
+                    <div className="lg:col-span-7 flex flex-col justify-between space-y-6 sm:space-y-8">
+                      <div className="space-y-4 sm:space-y-5">
                         {/* 1. Subdued Slate Eyebrow in Aeonik Regular/Medium */}
                         <motion.p
                           initial={{ opacity: 0, y: 12 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.45, ease: EASE_EDITORIAL }}
-                          className="font-sans text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.08em] text-[#94A3B8]"
+                          className="font-sans text-[11px] sm:text-[13px] font-medium uppercase tracking-[0.08em] text-[#94A3B8]"
                         >
                           {siteSettings.heroTagline}
                         </motion.p>
 
-                        {/* 2. Pure Aeonik Trial H1 (No Mixed Italic Serif) */}
+                        {/* 2. Pure Aeonik Trial H1 (Fluid, Mobile-Safe Sizing) */}
                         <motion.h1
                           initial={{ opacity: 0, y: 16 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.55, delay: 0.08, ease: EASE_EDITORIAL }}
-                          className="font-display font-bold tracking-[-0.03em] text-white leading-[1.04]"
+                          className="font-display font-bold tracking-[-0.03em] text-white leading-[1.05]"
                           style={{
-                            fontSize: 'clamp(2.75rem, 5.2vw, 4rem)',
+                            fontSize: 'clamp(2.35rem, 6.5vw, 4rem)',
                           }}
                         >
                           Stephanie Egharevba
@@ -765,7 +740,7 @@ export default function App() {
                           initial={{ opacity: 0, y: 14 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.55, delay: 0.15, ease: EASE_EDITORIAL }}
-                          className="font-sans text-[18px] sm:text-[20px] font-normal text-[#CBD5E1] leading-[1.6] max-w-[44ch]"
+                          className="font-sans text-[16px] sm:text-[19px] lg:text-[20px] font-normal text-[#CBD5E1] leading-[1.6] max-w-[44ch]"
                         >
                           {siteSettings.heroSubtext}
                         </motion.p>
@@ -775,14 +750,14 @@ export default function App() {
                         initial={{ opacity: 0, y: 14 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.55, delay: 0.22, ease: EASE_EDITORIAL }}
-                        className="space-y-9"
+                        className="pt-1"
                       >
-                        {/* 4. Simplified Two-Action CTA Row */}
-                        <div className="flex flex-wrap items-center gap-3.5">
+                        {/* Simplified Two-Action CTA Row: full-width on mobile, pill row on tablet+ */}
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-3.5">
                           <button
                             type="button"
                             onClick={() => navigateTo('work')}
-                            className="group px-7 py-3.5 text-sm font-semibold text-[#000000] bg-[#FFFFFF] hover:bg-[#E2E8F0] rounded-full transition-all inline-flex items-center gap-2 cursor-pointer"
+                            className="group px-7 py-3.5 text-sm font-semibold text-[#000000] bg-[#FFFFFF] hover:bg-[#E2E8F0] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                           >
                             <span>Explore Work &amp; Advisory</span>
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -791,117 +766,35 @@ export default function App() {
                           <button
                             type="button"
                             onClick={() => navigateTo('contact')}
-                            className="px-7 py-3.5 text-sm font-medium text-white bg-white/[0.04] border border-white/20 hover:bg-white/[0.1] hover:border-white/35 rounded-full transition-all inline-flex items-center gap-2 cursor-pointer"
+                            className="px-7 py-3.5 text-sm font-medium text-white bg-white/[0.04] border border-white/20 hover:bg-white/[0.1] hover:border-white/35 active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
                           >
                             <span>Book for Speaking</span>
                           </button>
                         </div>
-
-                        {/* 5. Partner Proof Strip with Monochrome SVG Logos */}
-                        <div className="pt-7 border-t border-white/10">
-                          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-                            {/* Mastercard Foundation Monochrome SVG */}
-                            <div
-                              className="flex items-center gap-2.5 text-white opacity-45 hover:opacity-85 transition-opacity duration-300 select-none"
-                              title="Mastercard Foundation"
-                            >
-                              <svg
-                                className="h-5 w-7 shrink-0"
-                                viewBox="0 0 36 24"
-                                fill="none"
-                                aria-hidden="true"
-                              >
-                                <circle cx="13" cy="12" r="9" fill="currentColor" fillOpacity="0.85" />
-                                <circle cx="23" cy="12" r="9" fill="currentColor" fillOpacity="0.55" />
-                              </svg>
-                              <span className="font-sans text-xs font-semibold tracking-tight">
-                                Mastercard Foundation
-                              </span>
-                            </div>
-
-                            {/* Jobberman Monochrome SVG */}
-                            <div
-                              className="flex items-center gap-2 text-white opacity-45 hover:opacity-85 transition-opacity duration-300 select-none"
-                              title="Jobberman"
-                            >
-                              <svg
-                                className="h-4 w-4 shrink-0"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                aria-hidden="true"
-                              >
-                                <rect x="2" y="5" width="16" height="12" rx="2.5" fillOpacity="0.85" />
-                                <path d="M7 5V3.5A1.5 1.5 0 0 1 8.5 2h3A1.5 1.5 0 0 1 13 3.5V5" stroke="currentColor" strokeWidth="1.8" fill="none" />
-                              </svg>
-                              <span className="font-sans text-xs font-bold tracking-tight">
-                                Jobberman
-                              </span>
-                            </div>
-
-                            {/* Microsoft Monochrome SVG */}
-                            <div
-                              className="flex items-center gap-2 text-white opacity-45 hover:opacity-85 transition-opacity duration-300 select-none"
-                              title="Microsoft"
-                            >
-                              <svg
-                                className="h-4 w-4 shrink-0"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                aria-hidden="true"
-                              >
-                                <rect x="2" y="2" width="7.2" height="7.2" />
-                                <rect x="10.8" y="2" width="7.2" height="7.2" />
-                                <rect x="2" y="10.8" width="7.2" height="7.2" />
-                                <rect x="10.8" y="10.8" width="7.2" height="7.2" />
-                              </svg>
-                              <span className="font-sans text-xs font-semibold tracking-tight">
-                                Microsoft
-                              </span>
-                            </div>
-
-                            {/* Google Monochrome SVG */}
-                            <div
-                              className="flex items-center gap-1.5 text-white opacity-45 hover:opacity-85 transition-opacity duration-300 select-none"
-                              title="Google"
-                            >
-                              <svg
-                                className="h-4 w-4 shrink-0"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                aria-hidden="true"
-                              >
-                                <path d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z" />
-                              </svg>
-                              <span className="font-sans text-xs font-semibold tracking-tight">
-                                Google
-                              </span>
-                            </div>
-                          </div>
-                        </div>
                       </motion.div>
                     </div>
 
-                    {/* Right Column: Pure Magazine Portrait (No Widget/Carousel Clutter) */}
+                    {/* Right Column: Pure Magazine Portrait */}
                     <motion.div
                       initial={{ opacity: 0, scale: 0.98 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.65, delay: 0.1, ease: EASE_EDITORIAL }}
                       className="lg:col-span-5"
                     >
-                      <div className="relative h-[420px] sm:h-[490px] lg:h-[520px] rounded-3xl overflow-hidden bg-[#141413] border border-white/[0.08] shadow-[0_24px_60px_-15px_rgba(0,0,0,0.75)]">
+                      <div className="relative h-[340px] sm:h-[480px] lg:h-[520px] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#141413] border border-white/[0.08] shadow-[0_24px_60px_-15px_rgba(0,0,0,0.75)]">
                         <img
-                          src={STEPHANIE_PORTRAITS[0].src}
-                          alt={STEPHANIE_PORTRAITS[0].caption}
+                          src={STEPHANIE_PORTRAITS[2].src}
+                          alt={STEPHANIE_PORTRAITS[2].caption}
                           referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover object-top"
+                          className="w-full h-full object-cover object-center"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent pointer-events-none" />
                       </div>
                     </motion.div>
                   </div>
 
-                  {/* 6. Stats Row with Generous Breathing Room & Vertical Dividers */}
-                  <div className="mt-14 pt-12 pb-12 border-t border-white/10 grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-6 lg:gap-x-0 lg:divide-x lg:divide-white/10">
+                  {/* Stats Row with Generous Breathing Room & Vertical Dividers */}
+                  <div className="mt-10 sm:mt-14 pt-8 sm:pt-12 pb-6 sm:pb-10 border-t border-white/10 grid grid-cols-2 lg:grid-cols-4 gap-y-7 gap-x-4 sm:gap-x-6 lg:gap-x-0 lg:divide-x lg:divide-white/10">
                     {[
                       { stat: 'Top 3%', label: 'Global Speaker (Sessionize)' },
                       { stat: 'Top 100', label: 'Women in Tech (ALX 2025)' },
@@ -912,10 +805,10 @@ export default function App() {
                         key={item.stat}
                         className={index > 0 ? 'lg:pl-10' : 'lg:pr-6'}
                       >
-                        <div className="font-display text-[36px] sm:text-[40px] font-bold tracking-tight text-white tabular-nums leading-none">
+                        <div className="font-display text-[26px] sm:text-[34px] lg:text-[40px] font-bold tracking-tight text-white tabular-nums leading-none">
                           {item.stat}
                         </div>
-                        <div className="font-sans text-[13px] sm:text-[14px] font-normal text-[#94A3B8] mt-2.5">
+                        <div className="font-sans text-[12px] sm:text-[14px] font-normal text-[#94A3B8] mt-2 sm:mt-2.5">
                           {item.label}
                         </div>
                       </div>
@@ -924,10 +817,10 @@ export default function App() {
                 </div>
               </section>
 
-              {/* SECTION 2: THE STORY SECTION (FORMAL STUDIO PORTRAIT + ANCHOR THESIS QUOTE) */}
-              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-16 sm:py-24">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-                  {/* Left: Formal Studio Portrait in Dark Teal Blazer */}
+              {/* SECTION 2: THE STORY SECTION (SPEAKER PORTRAIT IN SKY-BLUE BLAZER + ANCHOR THESIS QUOTE) */}
+              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-20 lg:py-24">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-16 items-center">
+                  {/* Left: Speaker Portrait in Sky-Blue Blazer */}
                   <div className="lg:col-span-5">
                     <div
                       onClick={() => navigateTo('cv')}
@@ -939,11 +832,11 @@ export default function App() {
                           navigateTo('cv');
                         }
                       }}
-                      className="group relative h-[380px] sm:h-[460px] rounded-2xl overflow-hidden bg-[#0F172A] border border-[#E2E8F0] shadow-[0_20px_50px_-20px_rgba(15,23,42,0.18)] cursor-pointer"
+                      className="group relative h-[320px] sm:h-[440px] lg:h-[480px] rounded-2xl overflow-hidden bg-[#0F172A] border border-[#E2E8F0] shadow-[0_20px_50px_-20px_rgba(15,23,42,0.18)] cursor-pointer"
                     >
                       <img
-                        src={STEPHANIE_PORTRAITS[2].src}
-                        alt={STEPHANIE_PORTRAITS[2].caption}
+                        src={STEPHANIE_PORTRAITS[1].src}
+                        alt={STEPHANIE_PORTRAITS[1].caption}
                         loading="lazy"
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
@@ -952,31 +845,31 @@ export default function App() {
                   </div>
 
                   {/* Right: High-Impact Aeonik Thesis Quote + Simplified CTAs */}
-                  <div className="lg:col-span-7 space-y-6">
-                    <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                  <div className="lg:col-span-7 space-y-5 sm:space-y-6">
+                    <div className="font-sans text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
                       STEPHANIE’S STORY
                     </div>
 
                     <h2
                       className="font-display font-bold tracking-[-0.03em] text-[#0F172A] leading-[1.12]"
                       style={{
-                        fontSize: 'clamp(2.25rem, 3.8vw, 2.75rem)',
+                        fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
                       }}
                     >
                       “{siteSettings.heroQuote}”
                     </h2>
 
-                    <p className="font-sans text-[17px] sm:text-[19px] text-[#334155] leading-[1.65] max-w-[54ch]">
+                    <p className="font-sans text-[15px] sm:text-[18px] text-[#334155] leading-[1.65] max-w-[54ch]">
                       Born with Osteogenesis Imperfecta in Lagos, Stephanie leads disability
                       inclusion, WCAG platform auditing, and workforce programs across the
                       Mastercard Foundation, Jobberman, Google, and Microsoft ecosystems.
                     </p>
 
-                    <div className="pt-3 flex flex-wrap items-center gap-6">
+                    <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-6">
                       <button
                         type="button"
                         onClick={() => navigateTo('cv')}
-                        className="group px-7 py-3.5 text-sm font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-all inline-flex items-center gap-2.5 cursor-pointer"
+                        className="group px-7 py-3.5 text-sm font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
                       >
                         <span>Read Full Story &amp; CV</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -985,7 +878,7 @@ export default function App() {
                       <a
                         href={CV_PDF_URL}
                         download="Stephanie_Egharevba_CV.pdf"
-                        className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-2 py-2"
+                        className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center justify-center sm:justify-start gap-2 py-2"
                       >
                         <Download className="w-4 h-4 text-[#64748B]" />
                         <span>Download CV (PDF)</span>
@@ -996,11 +889,11 @@ export default function App() {
               </section>
 
               {/* SECTION 3: "WHAT STEPHANIE DOES" — BESPOKE EDITORIAL PRACTICE CARDS */}
-              <section className="border-t border-[#E2E8F0] bg-white py-16 sm:py-24">
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-10">
+              <section className="border-t border-[#E2E8F0] bg-white py-12 sm:py-20 lg:py-24">
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-8 sm:space-y-10">
                   <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                     <div className="space-y-1.5">
-                      <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                      <div className="font-sans text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
                         EXECUTIVE PRACTICE &amp; ADVISORY
                       </div>
                       <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#0F172A]">
@@ -1017,7 +910,7 @@ export default function App() {
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
                     {/* Card 1: WCAG & Digital Accessibility (Deliverables-Focused) */}
                     <div
                       onClick={() => navigateTo('work')}
@@ -1029,7 +922,7 @@ export default function App() {
                           navigateTo('work');
                         }
                       }}
-                      className="group p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
+                      className="group p-6 sm:p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
                     >
                       <div className="space-y-4">
                         <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
@@ -1038,7 +931,7 @@ export default function App() {
                         <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
                           WCAG &amp; Digital Accessibility
                         </h3>
-                        <p className="text-[15px] text-[#475569] leading-relaxed">
+                        <p className="text-[14px] sm:text-[15px] text-[#475569] leading-relaxed">
                           End-to-end accessibility engineering for web and mobile platforms—uncovering
                           usability barriers and shipping remediated, compliant user journeys.
                         </p>
@@ -1050,7 +943,7 @@ export default function App() {
                           ].map((deliverable) => (
                             <span
                               key={deliverable}
-                              className="px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-medium text-[#334155]"
+                              className="px-2.5 sm:px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-medium text-[#334155]"
                             >
                               {deliverable}
                             </span>
@@ -1075,7 +968,7 @@ export default function App() {
                           navigateTo('work');
                         }
                       }}
-                      className="group p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
+                      className="group p-6 sm:p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
                     >
                       <div className="space-y-4">
                         <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
@@ -1084,26 +977,26 @@ export default function App() {
                         <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
                           D&amp;I Strategy &amp; Policy
                         </h3>
-                        <p className="text-[15px] text-[#475569] leading-relaxed">
+                        <p className="text-[14px] sm:text-[15px] text-[#475569] leading-relaxed">
                           Institutional inclusion architecture designed for the Mastercard Foundation
                           and national workforce pipelines—from recruitment policy to the 200+
                           member Alumni Disability Community.
                         </p>
                         <div className="pt-1 grid grid-cols-2 gap-3">
                           <div className="p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
-                            <div className="font-display text-lg font-bold text-[#0F172A]">
+                            <div className="font-display text-base sm:text-lg font-bold text-[#0F172A]">
                               200+ Alumni
                             </div>
-                            <div className="text-xs text-[#64748B]">
-                              Peer &amp; Policy Network Founded
+                            <div className="text-[11px] sm:text-xs text-[#64748B]">
+                              Peer &amp; Policy Network
                             </div>
                           </div>
                           <div className="p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
-                            <div className="font-display text-lg font-bold text-[#0F172A]">
+                            <div className="font-display text-base sm:text-lg font-bold text-[#0F172A]">
                               3,000+ Youth
                             </div>
-                            <div className="text-xs text-[#64748B]">
-                              Workforce &amp; Career Pipelines
+                            <div className="text-[11px] sm:text-xs text-[#64748B]">
+                              Workforce Pipelines
                             </div>
                           </div>
                         </div>
@@ -1126,7 +1019,7 @@ export default function App() {
                           navigateTo('speaking');
                         }
                       }}
-                      className="group p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
+                      className="group p-6 sm:p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
                     >
                       <div className="space-y-4">
                         <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
@@ -1135,7 +1028,7 @@ export default function App() {
                         <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
                           Keynotes &amp; Executive Stages
                         </h3>
-                        <p className="text-[15px] text-[#475569] leading-relaxed">
+                        <p className="text-[14px] sm:text-[15px] text-[#475569] leading-relaxed">
                           High-authority keynotes on AI accessibility, inclusive product leadership,
                           and resilient ecosystems delivered across Africa’s premier technology stages.
                         </p>
@@ -1148,7 +1041,7 @@ export default function App() {
                           ].map((stage) => (
                             <span
                               key={stage}
-                              className="px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-semibold text-[#0F172A]"
+                              className="px-2.5 sm:px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-semibold text-[#0F172A]"
                             >
                               {stage}
                             </span>
@@ -1173,7 +1066,7 @@ export default function App() {
                           navigateTo('books');
                         }
                       }}
-                      className="group p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
+                      className="group p-6 sm:p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6 cursor-pointer"
                     >
                       <div className="space-y-4">
                         <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
@@ -1182,7 +1075,7 @@ export default function App() {
                         <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
                           Frameworks &amp; Accessibility Toolkits
                         </h3>
-                        <p className="text-[15px] text-[#475569] leading-relaxed">
+                        <p className="text-[14px] sm:text-[15px] text-[#475569] leading-relaxed">
                           Ready-to-deploy WCAG audit checklists, semantic HTML engineering guides,
                           and executive playbooks built for product teams and founders.
                         </p>
@@ -1194,7 +1087,7 @@ export default function App() {
                           ].map((item) => (
                             <span
                               key={item}
-                              className="px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-medium text-[#334155]"
+                              className="px-2.5 sm:px-3 py-1 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-medium text-[#334155]"
                             >
                               {item}
                             </span>
@@ -1212,10 +1105,10 @@ export default function App() {
               </section>
 
               {/* SECTION 4: BOOKS & TOOLKITS (SINGLE-SURFACE CARDS + 3D BOOK MOCKUPS) */}
-              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-16 sm:py-24 space-y-10 border-t border-[#E2E8F0]">
+              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-20 lg:py-24 space-y-8 sm:space-y-10 border-t border-[#E2E8F0]">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                   <div className="space-y-1.5">
-                    <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
+                    <div className="font-sans text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
                       AUTHOR &amp; CREATOR
                     </div>
                     <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#0F172A]">
@@ -1239,7 +1132,7 @@ export default function App() {
                       href={book.selarUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6"
+                      className="group p-6 sm:p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors duration-200 flex flex-col justify-between space-y-6"
                     >
                       <div className="space-y-6">
                         {/* Distinct Category Tag Only */}
@@ -1269,117 +1162,6 @@ export default function App() {
                       </div>
                     </a>
                   ))}
-                </div>
-              </section>
-
-              {/* SECTION 5: PRESS & MEDIA KIT (EXECUTIVE MEDIA LAYOUT) */}
-              <section className="border-t border-[#E2E8F0] bg-white py-16 sm:py-24">
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-10">
-                  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                    <div className="space-y-1.5">
-                      <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
-                        PRESS &amp; MEDIA KIT
-                      </div>
-                      <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#0F172A]">
-                        Official Portraits &amp; Speaker Bio
-                      </h2>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => navigateTo('gallery')}
-                      className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
-                    >
-                      <span>Open Full Media Kit &amp; Rider</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
-                    {/* Left: Two Distinct High-Resolution Studio Portraits Side by Side */}
-                    <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
-                      {[STEPHANIE_PORTRAITS[0], STEPHANIE_PORTRAITS[1]].map((portrait) => (
-                        <div
-                          key={portrait.id}
-                          className="group relative h-[360px] sm:h-full min-h-[360px] rounded-2xl overflow-hidden bg-[#0F172A] border border-[#E2E8F0] flex flex-col justify-end"
-                        >
-                          <img
-                            src={portrait.src}
-                            alt={portrait.caption}
-                            loading="lazy"
-                            referrerPolicy="no-referrer"
-                            className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
-                          <div className="relative z-10 p-5 flex items-end justify-between gap-3 text-white">
-                            <div>
-                              <div className="font-sans text-[11px] font-medium uppercase tracking-[0.08em] text-white/70">
-                                {portrait.usage}
-                              </div>
-                              <div className="text-base font-display font-bold">
-                                {portrait.title}
-                              </div>
-                            </div>
-                            <a
-                              href={portrait.src}
-                              download={`Stephanie_Egharevba_${portrait.title.replace(/\s+/g, '_')}.jpg`}
-                              aria-label={`Download ${portrait.title}`}
-                              title="Download high-res portrait"
-                              className="w-9 h-9 rounded-full bg-white/15 hover:bg-white text-white hover:text-[#0F172A] backdrop-blur-sm flex items-center justify-center transition-colors shrink-0"
-                            >
-                              <Download className="w-4 h-4" />
-                            </a>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Right: Approved 100-Word Conference Bio + Prominent Press Kit Download CTA */}
-                    <div className="lg:col-span-5 p-8 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] flex flex-col justify-between space-y-6">
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
-                            APPROVED 100-WORD SPEAKER BIO
-                          </span>
-                          <button
-                            type="button"
-                            onClick={handleCopyPressBio}
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors cursor-pointer"
-                          >
-                            {copiedPressBio ? (
-                              <>
-                                <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                <span className="text-emerald-700">Copied</span>
-                              </>
-                            ) : (
-                              <>
-                                <Copy className="w-3.5 h-3.5" />
-                                <span>Copy Bio</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-
-                        <p className="text-sm sm:text-[15px] text-[#334155] leading-[1.7] font-sans">
-                          {APPROVED_100_WORD_BIO}
-                        </p>
-                      </div>
-
-                      <div className="pt-5 border-t border-[#E2E8F0] space-y-3">
-                        <button
-                          type="button"
-                          onClick={handleDownloadPressKitBundle}
-                          className="w-full py-3.5 px-5 text-xs sm:text-sm font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
-                        >
-                          <Download className="w-4 h-4 shrink-0" />
-                          <span>Download Press Kit &amp; High-Res Headshots (ZIP)</span>
-                        </button>
-                        <p className="text-[12px] text-[#64748B] text-center">
-                          Includes print-ready studio portraits (300 DPI) and executive CV for event
-                          organizers.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </section>
             </motion.div>
