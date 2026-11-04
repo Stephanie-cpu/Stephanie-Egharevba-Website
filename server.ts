@@ -162,35 +162,81 @@ async function startServer() {
     });
   });
 
-  // 2. Dynamic SEO XML Sitemap Endpoint
-  app.get('/api/sitemap.xml', (req: Request, res: Response) => {
-    const baseUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
-    const pages = [
-      { path: '/', priority: '1.0', changefreq: 'weekly' },
-      { path: '/?page=cv', priority: '0.9', changefreq: 'monthly' },
-      { path: '/?page=work', priority: '0.9', changefreq: 'weekly' },
-      { path: '/?page=speaking', priority: '0.9', changefreq: 'weekly' },
-      { path: '/?page=books', priority: '0.9', changefreq: 'monthly' },
-      { path: '/?page=gallery', priority: '0.8', changefreq: 'monthly' },
-      { path: '/?page=contact', priority: '0.8', changefreq: 'monthly' },
-    ];
+  // 2. Direct & Dynamic SEO XML Sitemap & Robots.txt Endpoints
+  const handleSitemap = (_req: Request, res: Response) => {
+    const sitemapPath = path.join(__dirname, 'public', 'sitemap.xml');
+    const distSitemapPath = path.join(__dirname, 'dist', 'sitemap.xml');
+    
+    res.header('Content-Type', 'application/xml; charset=utf-8');
+    if (require('fs').existsSync(sitemapPath)) {
+      return res.sendFile(sitemapPath);
+    } else if (require('fs').existsSync(distSitemapPath)) {
+      return res.sendFile(distSitemapPath);
+    }
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages
-  .map(
-    (p) => `  <url>
-    <loc>${baseUrl}${p.path}</loc>
+  <url>
+    <loc>https://stephanieegharevba.com/</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>${p.changefreq}</changefreq>
-    <priority>${p.priority}</priority>
-  </url>`
-  )
-  .join('\n')}
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://stephanieegharevba.com/story</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://stephanieegharevba.com/work</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://stephanieegharevba.com/speaking</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://stephanieegharevba.com/books</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://stephanieegharevba.com/gallery</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stephanieegharevba.com/contact</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>`;
-
-    res.header('Content-Type', 'application/xml');
     res.send(xml);
+  };
+
+  app.get('/sitemap.xml', handleSitemap);
+  app.get('/api/sitemap.xml', handleSitemap);
+
+  app.get('/robots.txt', (_req: Request, res: Response) => {
+    const robotsPath = path.join(__dirname, 'public', 'robots.txt');
+    const distRobotsPath = path.join(__dirname, 'dist', 'robots.txt');
+
+    res.header('Content-Type', 'text/plain; charset=utf-8');
+    if (require('fs').existsSync(robotsPath)) {
+      return res.sendFile(robotsPath);
+    } else if (require('fs').existsSync(distRobotsPath)) {
+      return res.sendFile(distRobotsPath);
+    }
+
+    res.send(`User-agent: *\nAllow: /\nSitemap: https://stephanieegharevba.com/sitemap.xml\n`);
   });
 
   // 3. Server-Side Validated Enquiries & Speaker Booking Endpoint (Honeypot Spam Protection)

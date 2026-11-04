@@ -320,65 +320,65 @@ export default function App() {
 
     const PAGE_SEO: Record<PageId, { title: string; description: string; keywords: string; image: string; path: string }> = {
       overview: {
-        title: 'Stephanie Egharevba | Disability Inclusion & Digital Accessibility Strategist',
+        title: 'Stephanie Egharevba | Digital Accessibility Consultant & WCAG Strategist',
         description:
-          'Executive portfolio of Stephanie Egharevba: Diversity & Inclusion Lead, Disability Inclusion Specialist, WCAG Auditor, Author, and Top 3% Global Speaker.',
+          'Stephanie Egharevba is a Digital Accessibility Consultant in Nigeria & West Africa, WCAG 2.1 / 2.2 AA Compliance Auditor, and Disability Inclusion Speaker in Africa specializing in Inclusive Digital Product Design.',
         keywords:
-          'Stephanie Egharevba, Disability Inclusion, Digital Accessibility, WCAG 2.2 Auditor, Diversity and Inclusion Lead, Public Speaker Nigeria, Mastercard Foundation, Jobberman',
+          'Digital Accessibility Consultant Nigeria, Digital Accessibility Consultant West Africa, WCAG 2.1 2.2 AA Compliance Auditor, Disability Inclusion Speaker Africa, Inclusive Digital Product Design, Stephanie Egharevba',
         image: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
         path: '/',
       },
       cv: {
-        title: 'Stephanie’s Story & Executive CV | Stephanie Egharevba',
+        title: 'Story & Executive CV | Stephanie Egharevba',
         description:
-          'The story and complete chronological career dossier of Stephanie Egharevba. Born with Osteogenesis Imperfecta in Lagos, leading disability inclusion across West Africa.',
+          'Executive story and career trajectory of Stephanie Egharevba: Digital Accessibility Consultant, Disability Inclusion Lead, and WCAG Auditor across West Africa.',
         keywords:
-          'Stephanie Egharevba CV, Disability Inclusion Lead, Osteogenesis Imperfecta Advocate, WCAG Specialist Lagos, Yabatech Special Adviser, Tech Accessibility Africa',
+          'Stephanie Egharevba CV, Digital Accessibility Consultant Nigeria, Disability Inclusion Lead West Africa, WCAG Compliance Auditor, Tech Accessibility Africa',
         image: '/assets/aistudio/Headshot_5_8e90ef75.jpg',
         path: '/story',
       },
       work: {
-        title: 'Work & WCAG Case Studies | Stephanie Egharevba',
+        title: 'Case Studies & WCAG Audits | Stephanie Egharevba',
         description:
-          'Selected WCAG 2.2 accessibility engineering audits, D&I strategy frameworks, and inclusive workforce placement case studies for enterprise tech and continental forums.',
+          'Featured case studies and audits by Stephanie Egharevba: WCAG 2.1 / 2.2 AA compliance auditing, inclusive digital product design, and accessibility remediation.',
         keywords:
-          'WCAG 2.2 Audit, Digital Accessibility Case Studies, African Disability Forum Audit, Rushbox Accessibility, Inclusive Workplace Policy, Accessibility Engineering',
+          'Case Studies & WCAG Audits, WCAG 2.1 2.2 AA Compliance Auditor, Digital Accessibility Audit Nigeria, Inclusive Digital Product Design, Platform Accessibility Audit',
         image: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
         path: '/work',
       },
       speaking: {
-        title: 'Speaking & Keynotes | Stephanie Egharevba',
+        title: 'Keynote Speaker on Digital Inclusion & Assistive Tech | Stephanie Egharevba',
         description:
-          'Top 3% Global Speaker on Sessionize. Keynote presentations, panels, and fireside chats on AI accessibility, inclusive design, and tech ecosystems across Africa.',
+          'Book Stephanie Egharevba: Disability Inclusion Speaker in Africa and Top 3% Global Speaker delivering keynotes on digital inclusion, assistive tech, and AI accessibility.',
         keywords:
-          'Top 3% Speaker Sessionize, Keynote Speaker Nigeria, AI Accessibility Talk, InAble Inclusive Africa, TechCabal Moonshot, Public Speaker Disability Rights',
+          'Disability Inclusion Speaker Africa, Keynote Speaker Digital Inclusion, Assistive Tech Speaker Nigeria, Top 3% Speaker Sessionize, Tech Inclusion Keynote',
         image: '/assets/aistudio/Headshot_1_1e1bde4f.jpg',
         path: '/speaking',
       },
       books: {
         title: 'Books & Toolkits | Stephanie Egharevba',
         description:
-          'Published books and WCAG starter kits by Stephanie Egharevba: Is Your Product Excluding 15% of Nigerians?, Code for Every Body, and Accessibility Made Easy Toolkit.',
+          'Published engineering manuals and audit starter kits by Stephanie Egharevba: Is Your Product Excluding 15% of Nigerians?, Code for Every Body, and Accessibility Made Easy.',
         keywords:
-          'Code for Every Body, Is Your Product Excluding 15% of Nigerians, Accessibility Made Easy, Selar Books Stephanie Egharevba, WCAG Toolkit, Developer Guide Accessibility',
+          'Code for Every Body, Is Your Product Excluding 15% of Nigerians, Accessibility Made Easy Toolkit, WCAG 2.2 Starter Kit, Digital Accessibility Books',
         image: '/assets/aistudio/is-your-product-excluding-selar.com-6970b1110bd40_12dcffed.jpg',
         path: '/books',
       },
       gallery: {
         title: 'Press Portraits & Media Kit | Stephanie Egharevba',
         description:
-          'Official press headshots, studio portraits, and kinetic photo gallery of Stephanie Egharevba for conference agendas and media publications.',
+          'High-resolution press portraits, speaker headshots, and media kit for Stephanie Egharevba — Digital Accessibility Consultant & Disability Inclusion Speaker.',
         keywords:
-          'Stephanie Egharevba Press Photos, Executive Headshots, Speaker Portraits, Media Kit Disability Advocate, Lagos Conference Gallery',
+          'Stephanie Egharevba Press Photos, Speaker Headshots, Media Kit Digital Accessibility Consultant, Disability Inclusion Speaker Africa',
         image: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
         path: '/gallery',
       },
       contact: {
         title: 'Speaking & Advisory Enquiries | Stephanie Egharevba',
         description:
-          'Book Stephanie Egharevba for keynote addresses, request official speaking fee schedules, or commission a comprehensive WCAG 2.2 platform accessibility audit.',
+          'Commission a WCAG 2.1 / 2.2 AA platform audit or book Stephanie Egharevba as a Disability Inclusion Speaker and Digital Accessibility Consultant.',
         keywords:
-          'Book Stephanie Egharevba, Request Speaking Fee, Commission WCAG Audit, D&I Strategy Consulting, Contact Disability Inclusion Specialist',
+          'Commission WCAG Audit, Book Digital Accessibility Consultant, Disability Inclusion Speaker Booking, Request Speaking Fee, Stephanie Egharevba Contact',
         image: '/assets/aistudio/Headshot_2_fbb50a76.jpg',
         path: '/contact',
       },
