@@ -746,7 +746,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Dropdown */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.nav
@@ -792,7 +792,7 @@ export default function App() {
                 </button>
               </div>
 
-              {/* Social Links & Theme Switch inside Mobile Drawer Footer */}
+              {/* Social Links & Theme Switch inside Mobile Dropdown Footer */}
               <div className="pt-3 mt-2 border-t border-[#E6E4DD] flex items-center justify-between px-1 py-1">
                 <div className="flex items-center gap-3">
                   <a
@@ -1742,6 +1742,7 @@ export default function App() {
               <PhotoGalleryPressKit
                 onNavigateToCV={() => navigateTo('cv')}
                 onNavigateToContact={() => navigateTo('contact')}
+                reduceMotion={prefersReduced}
               />
             </motion.div>
           )}

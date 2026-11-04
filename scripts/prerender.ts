@@ -550,10 +550,10 @@ async function runSSG() {
       `<link rel="canonical" href="${route.canonical}" />`
     );
 
-    // Insert rich semantic route markup inside <div id="root">
+    // Ensure <div id="root"></div> remains clean without duplicate static body/footer injection
     customized = customized.replace(
       /<div id="root">[\s\S]*?<\/div>/i,
-      `<div id="root">${pageHtml}</div>`
+      `<div id="root"></div>`
     );
 
     if (route.path === '/') {

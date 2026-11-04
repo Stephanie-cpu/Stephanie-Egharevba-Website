@@ -38,6 +38,18 @@ export interface PortraitAsset {
   usageRecommendation: string;
 }
 
+export interface KineticGalleryItem {
+  id: string;
+  src: string;
+  title: string;
+  eventTag: string;
+  location: string;
+  year: string;
+  caption: string;
+  track: 'stage' | 'advisory';
+  aspectRatio?: 'landscape' | 'portrait' | 'square';
+}
+
 export interface ProjectItem {
   id: string;
   title: string;
@@ -155,6 +167,270 @@ export const STEPHANIE_PORTRAITS: PortraitAsset[] = [
     resolutionLabel: 'Media · 3:4',
     usageRecommendation: 'Fireside Chats & Features'
   }
+];
+
+export const KINETIC_STAGE_PHOTOS: KineticGalleryItem[] = [
+  {
+    id: 'kinetic-stage-jobberman',
+    src: '/assets/aistudio/1000473901-01_2216da6a.jpeg',
+    title: 'Mastercard Foundation & Jobberman Plenary Panel',
+    eventTag: 'Jobberman Lagos Career Fair',
+    location: 'Lagos, Nigeria',
+    year: '2024',
+    caption: 'Stephanie delivering key insights on mainstreaming talent with disabilities into enterprise tech hiring pipelines.',
+    track: 'stage',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-stage-terra-kulture',
+    src: '/assets/aistudio/IMG-20240125-WA0242_db1d38c7.jpg',
+    title: 'National Youth Leadership Delegation Arrival',
+    eventTag: 'Mastercard Foundation YAC · Terra Kulture',
+    location: 'Lagos, Nigeria',
+    year: '2024',
+    caption: 'Arrival with the youth leadership delegation for the Mastercard Foundation national summit.',
+    track: 'stage',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-stage-keynote-plenary',
+    src: '/assets/aistudio/20251015_151930_f8ceff89.jpg',
+    title: 'Keynote Address on Digital Accessibility Standards',
+    eventTag: 'National Tech Inclusion Assembly',
+    location: 'Abuja, Nigeria',
+    year: '2025',
+    caption: 'Delivering keynote on eliminating algorithmic and UI barriers for 1.3 billion persons with disabilities.',
+    track: 'stage',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-stage-summit-awards',
+    src: '/assets/aistudio/20251015_184848_9c33e1c3.jpg',
+    title: 'Tech Inclusion Honors & Evening Plenary',
+    eventTag: 'ALX Women in Tech Plenary',
+    location: 'Lagos, Nigeria',
+    year: '2025',
+    caption: 'Celebrating high-impact milestones in accessibility advocacy and digital inclusion across West Africa.',
+    track: 'stage',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-stage-sessionize-panel',
+    src: '/assets/aistudio/20260212_154541_161bcbb6.jpg',
+    title: 'Executive Panel on Global Digital Ecosystems',
+    eventTag: 'Sessionize Top 3% Global Speaker Series',
+    location: 'Lagos, Nigeria',
+    year: '2026',
+    caption: 'Guiding enterprise engineering leaders on building accessible web applications from day zero.',
+    track: 'stage',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-stage-global-youth',
+    src: '/assets/aistudio/20260603_133832_0b986b42.jpg',
+    title: 'Global Youth & Disability Rights Assembly',
+    eventTag: 'Mastercard Foundation Continental Forum',
+    location: 'Kigali, Rwanda',
+    year: '2026',
+    caption: 'Presenting policy recommendations for continental disability-inclusive education and workforce readiness.',
+    track: 'stage',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-stage-adf-summit',
+    src: '/assets/aistudio/20260326_145104_740025f4.jpg',
+    title: 'African Disability Forum Strategic Plenary',
+    eventTag: 'ADF Strategic Assembly',
+    location: 'Addis Ababa, Ethiopia',
+    year: '2026',
+    caption: 'Championing unified continental digital accessibility legislation and assistive device subsidization.',
+    track: 'stage',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-stage-workforce-dialogue',
+    src: '/assets/aistudio/20260604_132032_b273a6a3.jpg',
+    title: 'Workforce Transition Plenary Dialogue',
+    eventTag: 'Youth Advisory Council Forum',
+    location: 'Lagos, Nigeria',
+    year: '2026',
+    caption: 'Stephanie moderating high-level stakeholder dialogue on school-to-workplace transitions for youth with disabilities.',
+    track: 'stage',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-stage-alumni-launch',
+    src: '/assets/aistudio/20260604_125726_9a7ac23d.jpg',
+    title: 'Alumni Disability Network Continental Stage',
+    eventTag: 'Mastercard Foundation YAC',
+    location: 'Lagos, Nigeria',
+    year: '2026',
+    caption: 'Unveiling the 200+ member peer disability community and regional tech accessibility hubs.',
+    track: 'stage',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-stage-symposium',
+    src: '/assets/aistudio/20260909_134526_3dc4aa6c.jpg',
+    title: 'Pan-African Accessibility & Policy Symposium',
+    eventTag: 'Digital Inclusion Policy Symposium',
+    location: 'Lagos, Nigeria',
+    year: '2026',
+    caption: 'Keynote presentation on bridging the digital divide through public-private assistive tech infrastructure.',
+    track: 'stage',
+    aspectRatio: 'landscape'
+  }
+];
+
+export const KINETIC_ADVISORY_PHOTOS: KineticGalleryItem[] = [
+  {
+    id: 'kinetic-advisory-bilateral',
+    src: '/assets/aistudio/IMG-20240126-WA0128_ec2bd45d.jpg',
+    title: 'Executive Bilateral Strategy Consultation',
+    eventTag: 'Strategic Leadership Advisory',
+    location: 'Lagos, Nigeria',
+    year: '2024',
+    caption: 'In-depth advisory session with international leadership on designing inclusive workplace accommodations.',
+    track: 'advisory',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-advisory-yac-retreat',
+    src: '/assets/aistudio/20250604_134819_e52f7594.jpg',
+    title: 'Youth Advisory Council Strategic Working Session',
+    eventTag: 'Mastercard Foundation YAC',
+    location: 'Lagos, Nigeria',
+    year: '2025',
+    caption: 'Co-creating nationwide disability youth inclusion frameworks and accessible event benchmarks.',
+    track: 'advisory',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-advisory-roundtable-morning',
+    src: '/assets/aistudio/20250605_082358_c2127c67.jpg',
+    title: 'Inclusive Employment Employer Consultation',
+    eventTag: 'Jobberman Diversity Advisory',
+    location: 'Lagos, Nigeria',
+    year: '2025',
+    caption: 'Advising corporate recruiters on eliminating bias and accessibility barriers in interview stages.',
+    track: 'advisory',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-advisory-roundtable-dialogue',
+    src: '/assets/aistudio/20250605_082332_545d884d.jpg',
+    title: 'Disability Inclusion Working Group Roundtable',
+    eventTag: 'Workforce Advisory Group',
+    location: 'Lagos, Nigeria',
+    year: '2025',
+    caption: 'Evaluating real-world physical and digital accessibility roadblocks facing young Nigerian professionals.',
+    track: 'advisory',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-advisory-tech-leaders-1',
+    src: '/assets/aistudio/20260220_115034_3591bfd3.jpg',
+    title: 'ALX Tech Leaders Strategy Clinic',
+    eventTag: 'ALX Tech Fellowship',
+    location: 'Lagos, Nigeria',
+    year: '2026',
+    caption: 'Hands-on strategy clinic auditing product prototypes against WCAG 2.2 Level AA requirements.',
+    track: 'advisory',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-advisory-tech-leaders-2',
+    src: '/assets/aistudio/20260220_115033_30f9129f.jpg',
+    title: 'Enterprise Tech Consultation & Briefing',
+    eventTag: 'Executive Consultation',
+    location: 'Lagos, Nigeria',
+    year: '2026',
+    caption: 'Briefing engineering stakeholders on integrating assistive testing into automated CI/CD pipelines.',
+    track: 'advisory',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-advisory-wcag-clinic-1',
+    src: '/assets/aistudio/20260509_131243_de9962f5.jpg',
+    title: 'Screen Reader Usability Testing Clinic',
+    eventTag: 'WCAG Engineering Clinic',
+    location: 'Lagos, Nigeria',
+    year: '2026',
+    caption: 'Live screen reader and contrast verification clinic with software engineers and product designers.',
+    track: 'advisory',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-advisory-wcag-clinic-2',
+    src: '/assets/aistudio/20260509_131448_e8051972.jpg',
+    title: 'Digital Accessibility Architecture Review',
+    eventTag: 'ADF · Rushbox Audit Clinic',
+    location: 'Lagos, Nigeria',
+    year: '2026',
+    caption: 'Auditing DOM hierarchy, ARIA live-regions, and keyboard navigation flows across client web apps.',
+    track: 'advisory',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-advisory-community-leadership',
+    src: '/assets/aistudio/20260604_125652_ee30817c.jpg',
+    title: 'Community Leadership & Mentorship Roundtable',
+    eventTag: 'Disability Advocacy Mentorship',
+    location: 'Lagos, Nigeria',
+    year: '2026',
+    caption: 'Mentoring emerging disability leaders on policy advocacy, public speaking, and institutional change.',
+    track: 'advisory',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-advisory-bilateral-alignment',
+    src: '/assets/aistudio/20260604_125724_9696bed8.jpg',
+    title: 'Institutional Strategic Alignment Session',
+    eventTag: 'Multilateral Partnership Advisory',
+    location: 'Lagos, Nigeria',
+    year: '2026',
+    caption: 'Finalizing multilateral partnership roadmap for community tech access and assistive digital infrastructure.',
+    track: 'advisory',
+    aspectRatio: 'landscape'
+  },
+  {
+    id: 'kinetic-portrait-emerald',
+    src: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
+    title: 'Official Executive Portrait (Emerald Lapel)',
+    eventTag: 'Official Studio Portrait',
+    location: 'Lagos, Nigeria',
+    year: '2025',
+    caption: 'Primary official press portrait of Stephanie Egharevba for international keynote announcements.',
+    track: 'advisory',
+    aspectRatio: 'portrait'
+  },
+  {
+    id: 'kinetic-portrait-sky-blazer',
+    src: '/assets/aistudio/Headshot_5_8e90ef75.jpg',
+    title: 'Speaker Portrait (Sky Blazer)',
+    eventTag: 'Speaker Press Asset',
+    location: 'Lagos, Nigeria',
+    year: '2025',
+    caption: 'Warm studio portrait approved for conference agendas, speaker rosters, and event programs.',
+    track: 'advisory',
+    aspectRatio: 'portrait'
+  },
+  {
+    id: 'kinetic-portrait-white-shirt',
+    src: '/assets/aistudio/Headshot_3_ab4f5e1e.jpg',
+    title: 'Editorial Studio Portrait',
+    eventTag: 'Editorial Feature',
+    location: 'Lagos, Nigeria',
+    year: '2025',
+    caption: 'Editorial portrait in crisp white shirt for feature profiles and published thought leadership.',
+    track: 'advisory',
+    aspectRatio: 'portrait'
+  }
+];
+
+export const ALL_KINETIC_PHOTOS: KineticGalleryItem[] = [
+  ...KINETIC_STAGE_PHOTOS,
+  ...KINETIC_ADVISORY_PHOTOS
 ];
 
 export const CORE_COMPETENCIES: string[] = [

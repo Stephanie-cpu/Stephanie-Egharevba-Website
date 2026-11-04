@@ -3,5 +3,6 @@ import App from './App.tsx';
 import './index.css';
 
 const rootElement = document.getElementById('root')!;
+rootElement.innerHTML = '';
 createRoot(rootElement).render(<App />);
 
