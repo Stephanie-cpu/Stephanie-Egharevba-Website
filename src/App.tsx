@@ -67,6 +67,7 @@ import {
 import { PhotoGalleryPressKit } from './components/PhotoGalleryPressKit';
 import { StoryAndCvView } from './components/StoryAndCvView';
 import { BlogView } from './components/BlogView';
+import NavigationDrawer from './components/NavigationDrawer';
 import {
   FloatingAccessibilityWidget,
   AccessibilityPreferences,
@@ -112,7 +113,14 @@ function getInitialPage(): PageId {
   if (pageParam === 'books' || path === '/books') return 'books';
   if (pageParam === 'blog' || path === '/blog' || path === '/blog-admin') return 'blog';
   if (pageParam === 'gallery' || path === '/gallery') return 'gallery';
-  if (pageParam === 'contact' || path === '/contact') return 'contact';
+  if (
+    pageParam === 'contact' ||
+    pageParam === 'enquiries' ||
+    path === '/contact' ||
+    path === '/enquiries'
+  ) {
+    return 'contact';
+  }
   return 'overview';
 }
 
@@ -821,231 +829,16 @@ export default function App() {
         Skip to main content
       </a>
 
-      {/* Strict 3-Zone Top Bar Contract + Clean Mobile Nav Drawer */}
-      <header className="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md border-b border-[#E6E4DD]">
-        <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5 sm:py-4">
-          {/* Zone 1: Brand Wordmark */}
-          <button
-            type="button"
-            onClick={() => navigateTo('overview')}
-            aria-label="Stephanie Egharevba - Return to Homepage"
-            className="text-base sm:text-lg font-display font-bold tracking-tight text-[#141413] whitespace-nowrap shrink-0 cursor-pointer text-left"
-          >
-            Stephanie Egharevba
-          </button>
-
-          {/* Zone 2: Desktop Navigation Links */}
-          <nav
-            aria-label="Primary navigation"
-            className="hidden md:flex items-center gap-6 lg:gap-7 text-sm font-medium text-[#575652]"
-          >
-            {navItems.map((item) => {
-              const isActive = activePage === item.id;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => navigateTo(item.id)}
-                  aria-label={`Navigate to ${item.label} page`}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`relative py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                    isActive ? 'text-[#141413] font-semibold' : 'hover:text-[#141413]'
-                  }`}
-                >
-                  {item.label}
-                  {isActive && (
-                    <motion.div
-                      layoutId="active-nav-underline"
-                      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                      className="absolute bottom-0 inset-x-0 h-[2px] bg-[#1D4ED8]"
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Zone 3: Relocated Social Icons, Theme Toggle, Enquiries CTA & Mobile Menu Toggle */}
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="hidden sm:flex items-center gap-1 pr-1 mr-1 border-r border-[#E6E4DD]">
-              <a
-                href={siteSettings.linkedinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Stephanie Egharevba's LinkedIn profile in a new tab"
-                title="LinkedIn"
-                className="min-w-[44px] min-h-[44px] rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a
-                href={siteSettings.instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Stephanie Egharevba's Instagram profile in a new tab"
-                title="Instagram"
-                className="min-w-[44px] min-h-[44px] rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Stephanie Egharevba's Substack (The Unbias Project) in a new tab"
-                title="Substack — The Unbias Project"
-                className="min-w-[44px] min-h-[44px] rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
-              >
-                <BookOpen className="w-4 h-4" />
-              </a>
-            </div>
-
-            {/* Quick Light / Dark Mode Switch (Desktop/Tablet) */}
-            <button
-              type="button"
-              onClick={toggleDarkLightMode}
-              aria-label={
-                a11yPrefs.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-              }
-              title={a11yPrefs.theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              className="hidden sm:flex min-w-[44px] min-h-[44px] rounded-lg border border-[#E6E4DD] bg-white items-center justify-center text-[#141413] hover:border-[#1D4ED8] transition-colors cursor-pointer"
-            >
-              {a11yPrefs.theme === 'dark' ? (
-                <Sun className="w-4 h-4 text-[#60A5FA]" />
-              ) : (
-                <Moon className="w-4 h-4" />
-              )}
-            </button>
-
-            {/* Enquiries CTA (Desktop/Tablet) */}
-            <button
-              type="button"
-              onClick={() => navigateTo('contact')}
-              aria-label="Navigate to Enquiries and Contact page"
-              className={`hidden sm:inline-flex min-h-[44px] px-4 py-2.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap items-center shrink-0 cursor-pointer ${
-                activePage === 'contact'
-                  ? 'bg-[#1D4ED8] text-white'
-                  : 'bg-[#141413] text-white hover:bg-[#1D4ED8]'
-              }`}
-            >
-              Enquiries
-            </button>
-
-            {/* Mobile Menu Toggle Button (Prominent & Uncrowded 44x44px target on mobile) */}
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen((prev) => !prev)}
-              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-              aria-expanded={mobileMenuOpen}
-              className="md:hidden min-w-[44px] min-h-[44px] w-11 h-11 rounded-xl border border-[#E6E4DD] bg-white flex items-center justify-center text-[#141413] hover:border-[#1D4ED8] transition-colors cursor-pointer shrink-0"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation Dropdown */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.nav
-              aria-label="Mobile navigation"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              className="md:hidden border-t border-[#E6E4DD] bg-white px-4 py-3 space-y-2 overflow-hidden shadow-lg"
-            >
-              {navItems.map((item) => {
-                const isActive = activePage === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => navigateTo(item.id)}
-                    aria-label={`Navigate to ${item.label} page`}
-                    aria-current={isActive ? 'page' : undefined}
-                    className={`w-full min-h-[44px] text-left px-4 py-3 rounded-xl text-sm font-medium flex items-center justify-between cursor-pointer transition-colors ${
-                      isActive
-                        ? 'bg-[#FAF9F6] text-[#1D4ED8] font-semibold border border-[#1D4ED8]/20'
-                        : 'text-[#141413] hover:bg-[#FAF9F6]'
-                    }`}
-                  >
-                    <span>{item.label}</span>
-                    <ArrowRight className="w-4 h-4 opacity-50" />
-                  </button>
-                );
-              })}
-
-              {/* Mobile Enquiries Primary Action Button (Minimum 44px Hit Area) */}
-              <div className="pt-2 pb-1 px-0.5">
-                <button
-                  type="button"
-                  onClick={() => navigateTo('contact')}
-                  aria-label="Navigate to Enquiries and Contact page"
-                  className={`w-full min-h-[48px] py-3.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors shadow-xs cursor-pointer ${
-                    activePage === 'contact'
-                      ? 'bg-[#1D4ED8] text-white'
-                      : 'bg-[#141413] text-white hover:bg-[#1D4ED8]'
-                  }`}
-                >
-                  <span>Book / Enquiries</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Social Links & Theme Switch inside Mobile Dropdown Footer (Minimum 44px Touch Targets) */}
-              <div className="pt-3 mt-2 border-t border-[#E6E4DD] flex flex-wrap items-center justify-between gap-2 px-1 py-1">
-                <div className="flex items-center gap-2">
-                  <a
-                    href={siteSettings.linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Open Stephanie Egharevba's LinkedIn profile in a new tab"
-                    className="inline-flex min-h-[44px] items-center gap-1.5 px-3 py-2.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-semibold text-[#141413] hover:text-[#1D4ED8]"
-                  >
-                    <Linkedin className="w-4 h-4 text-[#1D4ED8]" />
-                    <span>LinkedIn</span>
-                  </a>
-                  <a
-                    href={siteSettings.instagramUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Open Stephanie Egharevba's Instagram profile in a new tab"
-                    className="inline-flex min-h-[44px] items-center gap-1.5 px-3 py-2.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-semibold text-[#141413] hover:text-[#1D4ED8]"
-                  >
-                    <Instagram className="w-4 h-4 text-[#1D4ED8]" />
-                    <span>Instagram</span>
-                  </a>
-                  <a
-                    href={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Open Stephanie Egharevba's Substack (The Unbias Project) in a new tab"
-                    className="inline-flex min-h-[44px] items-center gap-1.5 px-3 py-2.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-semibold text-[#141413] hover:text-[#1D4ED8]"
-                  >
-                    <BookOpen className="w-4 h-4 text-[#1D4ED8]" />
-                    <span>Substack</span>
-                  </a>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={toggleDarkLightMode}
-                  aria-label={a11yPrefs.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-                  className="min-h-[44px] px-3.5 py-2.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-medium text-[#141413] flex items-center gap-1.5 cursor-pointer"
-                >
-                  {a11yPrefs.theme === 'dark' ? (
-                    <Sun className="w-4 h-4 text-[#60A5FA]" />
-                  ) : (
-                    <Moon className="w-4 h-4" />
-                  )}
-                  <span>{a11yPrefs.theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-                </button>
-              </div>
-            </motion.nav>
-          )}
-        </AnimatePresence>
-      </header>
+      {/* Global Right Slide-Out Navigation Drawer (Steven Bartlett Style) */}
+      <NavigationDrawer
+        activePage={activePage}
+        onNavigate={navigateTo}
+        isDarkMode={a11yPrefs.theme === 'dark'}
+        toggleDarkMode={toggleDarkLightMode}
+        linkedinUrl={siteSettings.linkedinUrl}
+        instagramUrl={siteSettings.instagramUrl}
+        substackUrl={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
+      />
 
       {/* Main Content */}
       <main id="main-content" className="flex-1">
