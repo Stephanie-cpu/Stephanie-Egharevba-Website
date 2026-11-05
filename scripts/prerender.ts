@@ -502,6 +502,27 @@ const routes: RouteConfig[] = [
     canonical: 'https://stephanieegharevba.com/story',
     renderContent: renderStoryContent,
   },
+  {
+    path: '/blog',
+    title: 'Blog & Field Notes | Stephanie Egharevba',
+    description: 'Relaxed, human-first field notes and essays by Stephanie Egharevba on digital accessibility, WCAG in practice, and disability inclusion.',
+    canonical: 'https://stephanieegharevba.com/blog',
+    renderContent: renderHomeContent,
+  },
+  {
+    path: '/contact',
+    title: 'Speaking & Advisory Enquiries | Stephanie Egharevba',
+    description: 'Commission a WCAG 2.1 / 2.2 AA platform audit or book Stephanie Egharevba as a Disability Inclusion Speaker.',
+    canonical: 'https://stephanieegharevba.com/contact',
+    renderContent: renderHomeContent,
+  },
+  {
+    path: '/enquiries',
+    title: 'Speaking & Advisory Enquiries | Stephanie Egharevba',
+    description: 'Commission a WCAG 2.1 / 2.2 AA platform audit or book Stephanie Egharevba as a Disability Inclusion Speaker.',
+    canonical: 'https://stephanieegharevba.com/enquiries',
+    renderContent: renderHomeContent,
+  },
 ];
 
 async function runSSG() {

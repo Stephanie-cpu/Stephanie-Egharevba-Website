@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/api/enquiries/validate", "destination": "/api/enquiries" },
     { "source": "/api/newsletter/validate", "destination": "/api/subscribe" },
@@ -7,8 +9,10 @@
     { "source": "/speaking", "destination": "/speaking/index.html" },
     { "source": "/story", "destination": "/story/index.html" },
     { "source": "/cv", "destination": "/cv/index.html" },
-    { "source": "/blog", "destination": "/index.html" },
+    { "source": "/blog", "destination": "/blog/index.html" },
     { "source": "/blog-admin", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/contact/index.html" },
+    { "source": "/enquiries", "destination": "/enquiries/index.html" },
     { "source": "/((?!api/|assets/|favicon\\.svg|og_social_preview\\.jpg|robots\\.txt|sitemap\\.xml).*)", "destination": "/index.html" }
   ]
 }
