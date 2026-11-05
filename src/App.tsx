@@ -80,6 +80,7 @@ const DEFAULT_LINKEDIN_URL =
   'https://www.linkedin.com/in/egharevbastephanie?utm_source=share_via&utm_content=profile&utm_medium=member_android';
 const DEFAULT_INSTAGRAM_URL =
   'https://www.instagram.com/egharevba_stephanie?psln=ODI1cDZpbHk2MjNz';
+const DEFAULT_SUBSTACK_URL = 'https://substack.com/@theunbiasproject';
 const DEFAULT_BOOKING_CALENDAR_URL = 'https://calendar.app.google/HMDVYAq5z6YdywrE9';
 
 const DEFAULT_SITE_SETTINGS: CmsSiteSettings = {
@@ -92,6 +93,7 @@ const DEFAULT_SITE_SETTINGS: CmsSiteSettings = {
     'Minimalist editorial portfolio of Stephanie Egharevba: Disability Inclusion Strategist, Digital Accessibility Advocate, Author, and Public Speaker.',
   linkedinUrl: DEFAULT_LINKEDIN_URL,
   instagramUrl: DEFAULT_INSTAGRAM_URL,
+  substackUrl: DEFAULT_SUBSTACK_URL,
   bookingCalendarUrl: DEFAULT_BOOKING_CALENDAR_URL,
 };
 
@@ -237,6 +239,7 @@ export default function App() {
   const [contactEmail, setContactEmail] = useState('');
   const [contactOrg, setContactOrg] = useState('');
   const [engagementType, setEngagementType] = useState<
+    | '1-on-1 Advisory Session'
     | 'Keynote Speaking'
     | 'WCAG Accessibility Audit'
     | 'D&I Strategy Advisory'
@@ -247,7 +250,6 @@ export default function App() {
   const [budgetRange, setBudgetRange] = useState('');
   const [contactMessage, setContactMessage] = useState('');
   const [ndpaConsent, setNdpaConsent] = useState(true);
-  const [honeypotWebsite, setHoneypotWebsite] = useState('');
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isSubmittingEnquiry, setIsSubmittingEnquiry] = useState(false);
   const [submittedInquiry, setSubmittedInquiry] = useState<SavedInquiry | null>(null);
@@ -270,6 +272,7 @@ export default function App() {
             ...data,
             linkedinUrl: data.linkedinUrl || DEFAULT_LINKEDIN_URL,
             instagramUrl: data.instagramUrl || DEFAULT_INSTAGRAM_URL,
+            substackUrl: data.substackUrl || DEFAULT_SUBSTACK_URL,
           }));
         }
       },
@@ -479,27 +482,27 @@ export default function App() {
     navigateTo('contact');
   };
 
-  // Submit Enquiry via Express Backend Validation + Gmail SMTP Notification + Firestore Persistence
+  // Submit Enquiry via Express Backend (/api/enquiries) + Sendbyte Email Dispatch + Firestore Persistence
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormErrors({});
     setIsSubmittingEnquiry(true);
 
-    // 1. Immediate client-side semantic validation (fast feedback)
+    // 1. Lightweight client-side validation (never blocks short test messages)
     const errors: Record<string, string> = {};
     const trimmedName = contactName.trim();
     const trimmedEmail = contactEmail.trim();
     const trimmedMessage = contactMessage.trim();
 
-    if (trimmedName.length < 2) {
-      errors.name = 'Please enter your full name (at least 2 characters).';
+    if (trimmedName.length < 1) {
+      errors.name = 'Please enter your name.';
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmedEmail)) {
       errors.email = 'Please enter a valid email address (e.g., name@organization.org).';
     }
-    if (trimmedMessage.length < 10) {
-      errors.message = 'Please include at least 10 characters describing your event or project.';
+    if (trimmedMessage.length < 1) {
+      errors.message = 'Please enter your enquiry message.';
     }
     if (!ndpaConsent) {
       errors.ndpaConsent =
@@ -512,61 +515,69 @@ export default function App() {
       return;
     }
 
-    // 2. Accessible honeypot check (silently filter bots without blocking genuine humans)
-    if (honeypotWebsite && honeypotWebsite.trim().length > 0) {
-      setIsSubmittingEnquiry(false);
-      setSubmittedInquiry({
-        id: `inq-${Date.now()}`,
-        referenceId: `SE-${Date.now().toString(36).toUpperCase()}`,
-        name: trimmedName,
-        email: trimmedEmail,
-        organization: contactOrg.trim() || 'Independent / Direct',
-        engagementType,
-        timeline: timeline.trim() || 'Flexible',
-        budgetRange: budgetRange.trim(),
-        message: trimmedMessage,
-        confirmationMessage: 'Your enquiry has been received and queued for direct response.',
-        submittedAt: new Date().toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-        }),
-      });
-      return;
-    }
-
     let referenceId = `SE-${Date.now().toString(36).toUpperCase()}`;
-    let confirmationMessage = `Thank you, ${trimmedName}. Your ${engagementType} enquiry (Ref: ${referenceId}) has been validated and prepared for direct response.`;
+    let confirmationMessage = `Thank you, ${trimmedName}. Your ${engagementType} enquiry (Ref: ${referenceId}) has been validated and dispatched to Stephanie Egharevba.`;
 
-    // 3. Attempt server endpoint (validates + dispatches SMTP email notification)
-    try {
-      const response = await fetch('/api/enquiries/validate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: trimmedName,
-          email: trimmedEmail,
-          organization: contactOrg.trim() || 'Independent / Direct',
-          inquiryType: engagementType,
-          eventDateOrTimeline: timeline.trim(),
-          budgetRange: budgetRange.trim(),
-          message: trimmedMessage,
-          ndpaConsent,
-          honeypotWebsite,
-        }),
-      });
+    const requestPayload = {
+      name: trimmedName,
+      email: trimmedEmail,
+      organization: contactOrg.trim() || 'Independent / Direct',
+      inquiryType: engagementType,
+      eventDateOrTimeline: timeline.trim(),
+      budgetRange: budgetRange.trim(),
+      message: trimmedMessage,
+      ndpaConsent: Boolean(ndpaConsent),
+    };
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.referenceId) referenceId = data.referenceId;
-        if (data.confirmationMessage) confirmationMessage = data.confirmationMessage;
+    // 2. Dispatch to Express Backend (/api/enquiries) -> Sendbyte API
+    const candidateEndpoints = [
+      '/api/enquiries',
+      'https://ais-pre-oqisuoqbjfqfiftzdo6mjm-588064163307.europe-west2.run.app/api/enquiries',
+      'https://ais-dev-oqisuoqbjfqfiftzdo6mjm-588064163307.europe-west2.run.app/api/enquiries',
+    ];
+
+    let dispatchedSuccessfully = false;
+
+    for (const endpoint of candidateEndpoints) {
+      try {
+        console.info(`[Enquiry Dispatch] POST ${endpoint}`, requestPayload);
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(requestPayload),
+        });
+
+        const contentType = response.headers.get('content-type') || '';
+        if (response.ok && contentType.includes('application/json')) {
+          const data = await response.json();
+          console.info(`[Enquiry Dispatch] Response from ${endpoint}:`, data);
+          if (data.ok && data.emailDispatched) {
+            if (data.referenceId) referenceId = data.referenceId;
+            if (data.confirmationMessage) confirmationMessage = data.confirmationMessage;
+            dispatchedSuccessfully = true;
+            break;
+          }
+        } else if (response.status === 400 && contentType.includes('application/json')) {
+          const errData = await response.json();
+          if (errData.errors) {
+            setFormErrors(errData.errors);
+            setIsSubmittingEnquiry(false);
+            return;
+          }
+        }
+      } catch (networkErr) {
+        console.warn(`[Enquiry Dispatch] Endpoint ${endpoint} unreachable:`, networkErr);
       }
-    } catch (networkErr) {
-      console.warn('Backend validate endpoint note:', networkErr);
-      // Fallback: Continue cleanly to Firestore direct persistence and client receipt
     }
 
-    // 4. Persist to Firestore `enquiries` collection
+    if (!dispatchedSuccessfully) {
+      console.warn('[Enquiry Dispatch] Falling back to Firestore persistence.');
+    }
+
+    // 3. Persist to Firestore `enquiries` collection
     try {
       await addDoc(collection(db, 'enquiries'), {
         name: trimmedName,
@@ -585,7 +596,7 @@ export default function App() {
       console.warn('Firestore direct write note:', firestoreErr);
     }
 
-    // 5. Always display the complete confirmation receipt with reference ID
+    // 4. Display the confirmation receipt with reference ID and reset form inputs
     const newInquiry: SavedInquiry = {
       id: `inq-${Date.now()}`,
       referenceId,
@@ -785,6 +796,16 @@ export default function App() {
               >
                 <Instagram className="w-4 h-4" />
               </a>
+              <a
+                href={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Stephanie Egharevba's Substack (The Unbias Project) in a new tab"
+                title="Substack — The Unbias Project"
+                className="min-w-[44px] min-h-[44px] rounded-lg flex items-center justify-center text-[#575652] hover:text-[#141413] hover:bg-[#F2EFE9] transition-colors"
+              >
+                <BookOpen className="w-4 h-4" />
+              </a>
             </div>
 
             {/* Quick Light / Dark Mode Switch (Desktop/Tablet) */}
@@ -902,6 +923,16 @@ export default function App() {
                   >
                     <Instagram className="w-4 h-4 text-[#1D4ED8]" />
                     <span>Instagram</span>
+                  </a>
+                  <a
+                    href={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open Stephanie Egharevba's Substack (The Unbias Project) in a new tab"
+                    className="inline-flex min-h-[44px] items-center gap-1.5 px-3 py-2.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-semibold text-[#141413] hover:text-[#1D4ED8]"
+                  >
+                    <BookOpen className="w-4 h-4 text-[#1D4ED8]" />
+                    <span>Substack</span>
                   </a>
                 </div>
 
@@ -2112,7 +2143,7 @@ export default function App() {
                       <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#575652]">
                         Official Social Channels
                       </div>
-                      <div className="grid grid-cols-2 gap-2.5">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                         <a
                           href={siteSettings.linkedinUrl}
                           target="_blank"
@@ -2132,6 +2163,16 @@ export default function App() {
                         >
                           <Instagram className="w-4 h-4 text-[#1D4ED8]" />
                           <span>Instagram</span>
+                        </a>
+                        <a
+                          href={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Open Stephanie Egharevba's Substack (The Unbias Project) in a new tab"
+                          className="flex items-center justify-center gap-2 rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] py-2.5 px-3 text-xs font-semibold text-[#141413] hover:border-[#1D4ED8] hover:text-[#1D4ED8] transition-colors"
+                        >
+                          <BookOpen className="w-4 h-4 text-[#1D4ED8]" />
+                          <span>Substack</span>
                         </a>
                       </div>
                     </div>
@@ -2233,19 +2274,6 @@ export default function App() {
                         </div>
                       )}
 
-                      {/* Honeypot field for accessible spam protection (hidden from screen readers & visual users) */}
-                      <div className="sr-only" aria-hidden="true">
-                        <label htmlFor="c-honeypot-website">Leave this field empty</label>
-                        <input
-                          id="c-honeypot-website"
-                          type="text"
-                          tabIndex={-1}
-                          autoComplete="off"
-                          value={honeypotWebsite}
-                          onChange={(e) => setHoneypotWebsite(e.target.value)}
-                        />
-                      </div>
-
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label
@@ -2333,6 +2361,7 @@ export default function App() {
                             onChange={(e) =>
                               setEngagementType(
                                 e.target.value as
+                                  | '1-on-1 Advisory Session'
                                   | 'Keynote Speaking'
                                   | 'WCAG Accessibility Audit'
                                   | 'D&I Strategy Advisory'
@@ -2663,6 +2692,16 @@ export default function App() {
               >
                 <Instagram className="w-3.5 h-3.5" />
                 <span>Instagram</span>
+              </a>
+              <a
+                href={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Stephanie Egharevba's Substack (The Unbias Project) in a new tab"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-xs font-medium text-white hover:border-[#60A5FA] hover:text-[#60A5FA] transition-colors"
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Substack</span>
               </a>
             </div>
           </div>

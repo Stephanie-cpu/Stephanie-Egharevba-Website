@@ -52,6 +52,7 @@ export interface CmsSiteSettings {
   seoDescription: string;
   linkedinUrl: string;
   instagramUrl: string;
+  substackUrl?: string;
   bookingCalendarUrl?: string;
 }
 
@@ -261,6 +262,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
         seoDescription: settingsForm.seoDescription.trim().slice(0, 320),
         linkedinUrl: settingsForm.linkedinUrl.trim().slice(0, 300),
         instagramUrl: settingsForm.instagramUrl.trim().slice(0, 300),
+        substackUrl: (settingsForm.substackUrl || 'https://substack.com/@theunbiasproject').trim().slice(0, 300),
         bookingCalendarUrl: (settingsForm.bookingCalendarUrl || '').trim().slice(0, 300),
         authorUid: user.uid,
         updatedAt: serverTimestamp(),
@@ -762,6 +764,23 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                     value={settingsForm.instagramUrl}
                     onChange={(e) =>
                       setSettingsForm({ ...settingsForm, instagramUrl: e.target.value })
+                    }
+                    className="w-full rounded-lg border border-[#D4D2CC] bg-white px-3.5 py-2.5 text-sm text-[#111111]"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="cms-substack"
+                    className="block font-mono text-[11px] uppercase tracking-[0.12em] text-[#525252] mb-1.5"
+                  >
+                    Substack Profile URL
+                  </label>
+                  <input
+                    id="cms-substack"
+                    type="url"
+                    value={settingsForm.substackUrl || 'https://substack.com/@theunbiasproject'}
+                    onChange={(e) =>
+                      setSettingsForm({ ...settingsForm, substackUrl: e.target.value })
                     }
                     className="w-full rounded-lg border border-[#D4D2CC] bg-white px-3.5 py-2.5 text-sm text-[#111111]"
                   />

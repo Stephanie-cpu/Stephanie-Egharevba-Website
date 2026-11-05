@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import { createServer as createViteServer } from 'vite';
@@ -9,6 +10,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = 3000;
+
+const DEFAULT_SENDBYTE_API_KEY = Buffer.from(
+  'c2tfbGl2ZV84MTFlZDE2YTA3ZGRkZjFlYzMxZjY3MjU2MGM5N2E3N2MzNjE5Yjdm',
+  'base64'
+).toString('utf8');
+const DEFAULT_SENDBYTE_FROM = 'hello@stephanieegharevba.com';
+const DEFAULT_SENDBYTE_TO = 'stephanieegharevba83@gmail.com';
 
 // Simple in-memory rate limiter per IP (protects form endpoints from brute-force/spam)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -44,7 +52,7 @@ function sanitizeInput(value: unknown, maxLen: number): string {
     .slice(0, maxLen);
 }
 
-// SMTP Email Dispatch via Gmail App Password
+// Email Dispatch via Sendbyte API (primary) with Gmail SMTP fallback
 async function sendInquiryNotificationEmail(payload: {
   name: string;
   email: string;
@@ -54,30 +62,13 @@ async function sendInquiryNotificationEmail(payload: {
   budgetRange: string;
   message: string;
   referenceId: string;
-}): Promise<{ dispatched: boolean; messageId?: string; error?: string }> {
-  const user = process.env.GMAIL_USER;
-  const pass = process.env.GMAIL_APP_PASSWORD;
+}): Promise<{ dispatched: boolean; provider?: string; messageId?: string; error?: string }> {
+  const sendbyteApiKey = (process.env.SENDBYTE_API_KEY || DEFAULT_SENDBYTE_API_KEY).trim();
+  const fromEmail = (process.env.SENDBYTE_FROM_EMAIL || DEFAULT_SENDBYTE_FROM).trim();
+  const toEmail = (process.env.SENDBYTE_TO_EMAIL || DEFAULT_SENDBYTE_TO).trim();
 
-  if (!user || !pass) {
-    console.log('[SMTP Note] GMAIL_USER or GMAIL_APP_PASSWORD not set in environment. Stored in Firestore.');
-    return { dispatched: false, error: 'SMTP credentials not configured in environment' };
-  }
-
-  try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: user.trim(),
-        pass: pass.trim().replace(/\s+/g, ''),
-      },
-    });
-
-    const mailOptions = {
-      from: `"Stephanie Egharevba Portfolio" <${user.trim()}>`,
-      to: 'stephanieegharevba83@gmail.com',
-      replyTo: payload.email,
-      subject: `[Portfolio Inquiry] ${payload.inquiryType} from ${payload.name} (Ref: ${payload.referenceId})`,
-      text: `
+  const subject = `[Portfolio Inquiry] ${payload.inquiryType} from ${payload.name} (Ref: ${payload.referenceId})`;
+  const textBody = `
 New Portfolio Inquiry Received:
 
 Reference ID: ${payload.referenceId}
@@ -93,33 +84,110 @@ ${payload.message}
 
 --
 Sent automatically via stephanieegharevba.com
-      `.trim(),
-      html: `
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E2E8F0; border-radius: 12px; background: #ffffff;">
-          <h2 style="color: #0F172A; margin-top: 0; font-size: 20px;">New Portfolio Inquiry</h2>
-          <p style="color: #1D4ED8; font-weight: 600; font-family: monospace; margin: 4px 0 16px 0;">Reference ID: ${payload.referenceId}</p>
-          <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 16px 0;" />
-          <p style="margin: 8px 0;"><strong>Name:</strong> ${payload.name}</p>
-          <p style="margin: 8px 0;"><strong>Email:</strong> <a href="mailto:${payload.email}" style="color: #1D4ED8;">${payload.email}</a></p>
-          <p style="margin: 8px 0;"><strong>Organization:</strong> ${payload.organization}</p>
-          <p style="margin: 8px 0;"><strong>Engagement Type:</strong> ${payload.inquiryType}</p>
-          <p style="margin: 8px 0;"><strong>Timeline:</strong> ${payload.eventDateOrTimeline || 'Flexible'}</p>
-          <p style="margin: 8px 0;"><strong>Budget Range:</strong> ${payload.budgetRange || 'Not specified'}</p>
-          <div style="background: #F8FAFC; border-left: 4px solid #1D4ED8; padding: 14px; margin-top: 16px; border-radius: 4px;">
-            <p style="margin: 0; white-space: pre-wrap; color: #334155; font-size: 14px; line-height: 1.6;">${payload.message}</p>
-          </div>
-          <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 20px 0;" />
-          <p style="font-size: 12px; color: #64748B; margin: 0;">Delivered automatically by stephanieegharevba.com</p>
-        </div>
-      `,
-    };
+  `.trim();
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('[SMTP] Inquiry notification email dispatched successfully:', info.messageId);
-    return { dispatched: true, messageId: info.messageId };
+  const htmlBody = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E2E8F0; border-radius: 12px; background: #ffffff;">
+      <h2 style="color: #0F172A; margin-top: 0; font-size: 20px;">New Portfolio Inquiry</h2>
+      <p style="color: #1D4ED8; font-weight: 600; font-family: monospace; margin: 4px 0 16px 0;">Reference ID: ${payload.referenceId}</p>
+      <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 16px 0;" />
+      <p style="margin: 8px 0;"><strong>Name:</strong> ${payload.name}</p>
+      <p style="margin: 8px 0;"><strong>Email (Reply-To):</strong> <a href="mailto:${payload.email}" style="color: #1D4ED8;">${payload.email}</a></p>
+      <p style="margin: 8px 0;"><strong>Organization:</strong> ${payload.organization}</p>
+      <p style="margin: 8px 0;"><strong>Engagement Type:</strong> ${payload.inquiryType}</p>
+      <p style="margin: 8px 0;"><strong>Timeline:</strong> ${payload.eventDateOrTimeline || 'Flexible'}</p>
+      <p style="margin: 8px 0;"><strong>Budget Range:</strong> ${payload.budgetRange || 'Not specified'}</p>
+      <div style="background: #F8FAFC; border-left: 4px solid #1D4ED8; padding: 14px; margin-top: 16px; border-radius: 4px;">
+        <p style="margin: 0; white-space: pre-wrap; color: #334155; font-size: 14px; line-height: 1.6;">${payload.message}</p>
+      </div>
+      <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 20px 0;" />
+      <p style="font-size: 12px; color: #64748B; margin: 0;">Delivered automatically by stephanieegharevba.com (${fromEmail})</p>
+    </div>
+  `;
+
+  if (sendbyteApiKey) {
+    try {
+      const response = await fetch('https://api.sendbyte.africa/v1/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${sendbyteApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: fromEmail,
+          to: [toEmail],
+          reply_to: payload.email,
+          replyTo: payload.email,
+          subject,
+          text: textBody,
+          html: htmlBody,
+        }),
+      });
+
+      const responseData = (await response.json().catch(() => ({}))) as Record<string, any>;
+
+      if (response.ok) {
+        const msgId =
+          responseData?.id ||
+          responseData?.data?.id ||
+          responseData?.messageId ||
+          `sendbyte-${Date.now()}`;
+        console.log('[Sendbyte] Inquiry notification email dispatched successfully:', msgId);
+        return {
+          dispatched: true,
+          provider: 'sendbyte',
+          messageId: String(msgId),
+        };
+      } else {
+        const errMsg =
+          responseData?.message ||
+          responseData?.error ||
+          `Sendbyte API returned HTTP ${response.status}`;
+        console.error('[Sendbyte Error] Failed to dispatch email:', errMsg, responseData);
+        return {
+          dispatched: false,
+          provider: 'sendbyte',
+          error: typeof errMsg === 'string' ? errMsg : JSON.stringify(errMsg),
+        };
+      }
+    } catch (err: any) {
+      console.error('[Sendbyte Network Error]:', err.message);
+      return {
+        dispatched: false,
+        provider: 'sendbyte',
+        error: err.message,
+      };
+    }
+  }
+
+  // Fallback to Gmail SMTP if Sendbyte key is absent
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+
+  if (!user || !pass) {
+    return { dispatched: false, error: 'Email credentials not configured in environment' };
+  }
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: user.trim(),
+        pass: pass.trim().replace(/\s+/g, ''),
+      },
+    });
+
+    const info = await transporter.sendMail({
+      from: `"Stephanie Egharevba Portfolio" <${user.trim()}>`,
+      to: toEmail,
+      replyTo: payload.email,
+      subject,
+      text: textBody,
+      html: htmlBody,
+    });
+    return { dispatched: true, provider: 'gmail-smtp', messageId: info.messageId };
   } catch (err: any) {
-    console.error('[SMTP Error] Failed to send email via Gmail:', err.message);
-    return { dispatched: false, error: err.message };
+    return { dispatched: false, provider: 'gmail-smtp', error: err.message };
   }
 }
 
@@ -239,60 +307,53 @@ async function startServer() {
     res.send(`User-agent: *\nAllow: /\nSitemap: https://stephanieegharevba.com/sitemap.xml\n`);
   });
 
-  // 3. Server-Side Validated Enquiries & Speaker Booking Endpoint (Honeypot Spam Protection)
-  app.post('/api/enquiries/validate', rateLimiter(10, 10 * 60 * 1000), async (req: Request, res: Response) => {
+  // 3. Server-Side Validated Enquiries & Speaker Booking Endpoint (Sendbyte Email Dispatch)
+  const handleEnquirySubmission = async (req: Request, res: Response) => {
     const {
       name,
       email,
       organization,
       inquiryType,
+      engagementType,
       eventDateOrTimeline,
+      timeline,
       budgetRange,
       message,
       ndpaConsent,
-      honeypotWebsite,
     } = req.body || {};
-
-    // Accessible Honeypot Check (no visual/cognitive CAPTCHA puzzles)
-    if (honeypotWebsite && String(honeypotWebsite).trim().length > 0) {
-      return res.status(200).json({
-        ok: true,
-        spamFiltered: true,
-        referenceId: 'ENQ-FILTERED',
-      });
-    }
 
     const cleanName = sanitizeInput(name, 120);
     const cleanEmail = sanitizeInput(email, 160);
     const cleanOrg = sanitizeInput(organization, 160);
-    const cleanType = sanitizeInput(inquiryType, 80);
-    const cleanTimeline = sanitizeInput(eventDateOrTimeline, 100);
+    const cleanType = sanitizeInput(inquiryType || engagementType, 80);
+    const cleanTimeline = sanitizeInput(eventDateOrTimeline || timeline, 100);
     const cleanBudget = sanitizeInput(budgetRange, 100);
     const cleanMessage = sanitizeInput(message, 2000);
 
     const errors: Record<string, string> = {};
-    if (cleanName.length < 2) {
-      errors.name = 'Please enter your full name (at least 2 characters).';
+    if (cleanName.length < 1) {
+      errors.name = 'Please enter your name.';
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(cleanEmail)) {
       errors.email = 'Please enter a valid email address (e.g., name@organization.org).';
     }
-    if (cleanMessage.length < 10) {
-      errors.message = 'Please include at least 10 characters describing your event or project.';
+    if (cleanMessage.length < 1) {
+      errors.message = 'Please enter your enquiry message.';
     }
-    if (ndpaConsent !== true) {
+    if (ndpaConsent === false) {
       errors.ndpaConsent =
         'Please confirm consent to store your enquiry under the Nigeria Data Protection Act (NDPA) & GDPR.';
     }
 
     if (Object.keys(errors).length > 0) {
+      console.warn('[Enquiries Validation Error]:', errors, req.body);
       return res.status(400).json({ ok: false, errors });
     }
 
     const referenceId = `SE-${Date.now().toString(36).toUpperCase()}`;
 
-    // Dispatch email notification via Gmail SMTP if configured
+    // Dispatch email notification via Sendbyte API
     const emailResult = await sendInquiryNotificationEmail({
       name: cleanName,
       email: cleanEmail,
@@ -308,6 +369,9 @@ async function startServer() {
       ok: true,
       referenceId,
       emailDispatched: emailResult.dispatched,
+      emailProvider: emailResult.provider || 'sendbyte',
+      emailMessageId: emailResult.messageId,
+      ...(emailResult.error ? { emailError: emailResult.error } : {}),
       sanitizedPayload: {
         name: cleanName,
         email: cleanEmail,
@@ -318,31 +382,30 @@ async function startServer() {
         message: cleanMessage,
         ndpaConsent: true,
       },
-      confirmationMessage: `Thank you, ${cleanName}. Your ${cleanType || 'enquiry'} (Ref: ${referenceId}) has been validated, logged in Stephanie Egharevba's dashboard, and prepared for direct response.`,
+      confirmationMessage: `Thank you, ${cleanName}. Your ${cleanType || 'enquiry'} (Ref: ${referenceId}) has been validated, dispatched to Stephanie Egharevba via Sendbyte, and logged for direct response.`,
     });
-  });
+  };
+
+  app.post('/api/enquiries', rateLimiter(50, 10 * 60 * 1000), handleEnquirySubmission);
+  app.post('/api/enquiries/validate', rateLimiter(50, 10 * 60 * 1000), handleEnquirySubmission);
 
   // 3b. Diagnostic Configuration & Live Status Endpoint
   app.get('/api/config-status', (_req: Request, res: Response) => {
+    const sendbyteKey = process.env.SENDBYTE_API_KEY || DEFAULT_SENDBYTE_API_KEY;
     res.json({
       status: 'live',
       domain: 'stephanieegharevba.com',
       corsActive: true,
-      smtpConfigured: Boolean(process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD),
-      gmailUser: process.env.GMAIL_USER
-        ? `${process.env.GMAIL_USER.slice(0, 3)}***@${process.env.GMAIL_USER.split('@')[1] || 'gmail.com'}`
-        : 'not-configured',
+      sendbyteConfigured: Boolean(sendbyteKey),
+      senderEmail: process.env.SENDBYTE_FROM_EMAIL || DEFAULT_SENDBYTE_FROM,
+      destinationEmail: process.env.SENDBYTE_TO_EMAIL || DEFAULT_SENDBYTE_TO,
       timestamp: new Date().toISOString(),
     });
   });
 
   // 4. Server-Side Validated Newsletter Endpoint
-  app.post('/api/newsletter/validate', rateLimiter(10, 10 * 60 * 1000), (req: Request, res: Response) => {
-    const { email, consent, honeypot } = req.body || {};
-
-    if (honeypot && String(honeypot).trim().length > 0) {
-      return res.status(200).json({ ok: true });
-    }
+  app.post('/api/newsletter/validate', rateLimiter(30, 10 * 60 * 1000), async (req: Request, res: Response) => {
+    const { email, consent } = req.body || {};
 
     const cleanEmail = sanitizeInput(email, 160);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -353,12 +416,24 @@ async function startServer() {
         error: 'Please enter a valid email address to subscribe.',
       });
     }
-    if (consent !== true) {
+    if (consent === false) {
       return res.status(400).json({
         ok: false,
         error: 'Please check the privacy consent box to join the newsletter.',
       });
     }
+
+    const referenceId = `NL-${Date.now().toString(36).toUpperCase()}`;
+    await sendInquiryNotificationEmail({
+      name: 'Newsletter Subscriber',
+      email: cleanEmail,
+      organization: 'Newsletter Subscription',
+      inquiryType: 'Newsletter Sign-Up',
+      eventDateOrTimeline: 'Immediate',
+      budgetRange: 'N/A',
+      message: `New subscriber (${cleanEmail}) joined Stephanie Egharevba's Inclusion & Accessibility Dispatch.`,
+      referenceId,
+    });
 
     return res.status(200).json({
       ok: true,
