@@ -49,10 +49,19 @@
   animation: marquee-scroll-reverse 45s linear infinite;
 }
 
-.animate-marquee:hover,
-.animate-marquee-reverse:hover,
-.animate-marquee:focus-within,
-.animate-marquee-reverse:focus-within {
+/* Only pause on hover on devices that support true pointer hovering */
+@media (hover: hover) and (pointer: fine) {
+  .animate-marquee:hover,
+  .animate-marquee-reverse:hover,
+  .marquee-container:hover .animate-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* For keyboard users navigating with Tab key, pause so they can comfortably access links without chasing */
+.animate-marquee:has(:focus-visible),
+.animate-marquee-reverse:has(:focus-visible),
+.marquee-container:has(:focus-visible) .animate-marquee-track {
   animation-play-state: paused;
 }
 
@@ -76,12 +85,6 @@
   align-items: center;
   will-change: transform;
   animation: marqueeScroll 65s linear infinite;
-}
-
-/* Seamless pause on hover & keyboard focus: completely halts jitter and ensures 100% reliable clicks */
-.marquee-container:hover .animate-marquee-track,
-.marquee-container:focus-within .animate-marquee-track {
-  animation-play-state: paused;
 }
 
 

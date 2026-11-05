@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export interface SocialLink {
   label: string;
@@ -21,6 +21,27 @@ export default function SocialMarqueeFooter({
   substackUrl = 'https://substack.com/@theunbiasproject',
   onOpenPrivacyPolicy,
 }: SocialMarqueeFooterProps) {
+  // Ensure that when returning to the tab from external redirects or switching back,
+  // any lingering focus/hover state on the marquee links is cleared so the marquee never freezes.
+  useEffect(() => {
+    const handleActiveClear = () => {
+      if (document.activeElement && document.activeElement instanceof HTMLElement) {
+        if (document.activeElement.closest('.marquee-container')) {
+          document.activeElement.blur();
+        }
+      }
+    };
+
+    window.addEventListener('pageshow', handleActiveClear);
+    window.addEventListener('focus', handleActiveClear);
+    window.addEventListener('visibilitychange', handleActiveClear);
+
+    return () => {
+      window.removeEventListener('pageshow', handleActiveClear);
+      window.removeEventListener('focus', handleActiveClear);
+      window.removeEventListener('visibilitychange', handleActiveClear);
+    };
+  }, []);
   const socialLinks: SocialLink[] = [
     {
       label: 'LINKEDIN',
@@ -68,6 +89,9 @@ export default function SocialMarqueeFooter({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={item.ariaLabel}
+              onClick={(e) => {
+                (e.currentTarget as HTMLElement).blur();
+              }}
               className="social-marquee-link relative inline-block text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-neutral-950 dark:text-white transition-opacity duration-200 hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-current cursor-pointer group/link"
             >
               <span className="relative inline-block py-1">
@@ -94,6 +118,9 @@ export default function SocialMarqueeFooter({
               target="_blank"
               rel="noopener noreferrer"
               tabIndex={-1}
+              onClick={(e) => {
+                (e.currentTarget as HTMLElement).blur();
+              }}
               className="social-marquee-link relative inline-block text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-neutral-950 dark:text-white transition-opacity duration-200 hover:opacity-90 focus:outline-none cursor-pointer group/link"
             >
               <span className="relative inline-block py-1">
