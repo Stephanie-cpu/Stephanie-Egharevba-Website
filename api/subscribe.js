@@ -94,20 +94,23 @@ export default async function handler(req, res) {
       }
     }
 
-    // 2. Dispatch the confirmation / welcome email
+    // 2. Dispatch the real welcome email
     const emailPayload = JSON.stringify({
       from: 'Stephanie Egharevba <hello@stephanieegharevba.com>',
       to: cleanEmail,
       reply_to: 'hello@stephanieegharevba.com',
-      subject: 'Confirmed: Inclusion & Accessibility Dispatch',
+      subject: 'You made it! Here is what you just got yourself into',
       html: `
-        <div style="font-family: sans-serif; line-height: 1.6; color: #111; max-width: 560px;">
-          <p>Hi there,</p>
-          <p>You are confirmed for the <strong>Inclusion & Accessibility Dispatch</strong>.</p>
-          <p>You will receive field notes on WCAG 2.2 audits, inclusive systems for programs, and practical accessibility frameworks directly from my work.</p>
-          <p>Best regards,<br><strong>Stephanie Egharevba</strong></p>
-        </div>
-      `,
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #111; max-width: 560px; font-size: 15px;">
+            <p>Hey there,</p>
+            <p>You made it into the dispatch. High five!</p>
+            <p>I promise never to clog your inbox with dry corporate newsletters or 40-page theoretical lectures.</p>
+            <p>Instead, expect real, unfiltered field notes on digital accessibility, practical breakdowns of what actually makes tech work for human beings, and the occasional laugh about bad design decisions that could have been avoided with five minutes of testing.</p>
+            <p>I write like a human, not a committee. Whenever an email lands from me, it will be something sharp you can actually put to work in your own programs and digital builds.</p>
+            <p>Feel free to hit reply and tell me what brought you here, what you are building, or just say hello so I know you are not an internet robot pretending to care about contrast ratios.</p>
+            <p>Talk soon,<br><strong>Stephanie Egharevba</strong></p>
+          </div>
+        `,
     });
 
     const emailEndpoints = [

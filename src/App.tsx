@@ -685,10 +685,24 @@ export default function App() {
   // Newsletter Subscription (/api/subscribe)
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    setNewsletterStatus('loading');
     setNewsletterErrorMessage('');
 
     const email = newsletterEmail.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email) {
+      setNewsletterStatus('error');
+      setNewsletterErrorMessage('Please enter your email address to subscribe.');
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setNewsletterStatus('error');
+      setNewsletterErrorMessage('Please enter a valid email address (e.g., name@domain.com).');
+      return;
+    }
+
+    setNewsletterStatus('loading');
 
     try {
       const res = await fetch('/api/subscribe', {
@@ -2753,6 +2767,7 @@ export default function App() {
                   ) : (
                     <form
                       onSubmit={handleSubscribe}
+                      noValidate
                       className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto"
                     >
                       <div className="flex flex-col gap-1.5">
@@ -2763,6 +2778,8 @@ export default function App() {
                           id="nl-email"
                           type="email"
                           required
+                          aria-invalid={newsletterStatus === 'error'}
+                          aria-describedby={newsletterStatus === 'error' ? 'nl-email-error' : undefined}
                           value={newsletterEmail}
                           onChange={(e) => {
                             setNewsletterEmail(e.target.value);
@@ -2772,7 +2789,11 @@ export default function App() {
                             }
                           }}
                           placeholder="Enter your email..."
-                          className="px-4 py-2.5 text-sm bg-[#FAF9F6] border border-[#E6E4DD] rounded-lg min-w-[240px]"
+                          className={`px-4 py-2.5 text-sm rounded-lg min-w-[240px] outline-none transition-colors ${
+                            newsletterStatus === 'error'
+                              ? 'bg-red-50/50 border-2 border-red-500 text-[#141413]'
+                              : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#1D4ED8]'
+                          }`}
                         />
                         <label className="flex items-center gap-1.5 text-[11px] text-[#575652]">
                           <input
@@ -2794,6 +2815,7 @@ export default function App() {
                   )}
                   {newsletterStatus === 'error' && newsletterErrorMessage && (
                     <p
+                      id="nl-email-error"
                       role="alert"
                       className="flex items-center gap-1.5 text-xs font-medium text-red-600 mt-2"
                     >
