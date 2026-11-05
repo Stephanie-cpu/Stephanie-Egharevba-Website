@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/api/enquiries/validate", "destination": "/api/enquiries" },
+    { "source": "/api/newsletter/validate", "destination": "/api/subscribe" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/work", "destination": "/work/index.html" },
     { "source": "/speaking", "destination": "/speaking/index.html" },

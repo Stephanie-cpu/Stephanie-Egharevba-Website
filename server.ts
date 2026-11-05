@@ -390,44 +390,105 @@ async function startServer() {
     });
   });
 
-  // 4. Server-Side Validated Newsletter Endpoint
-  app.post('/api/newsletter/validate', rateLimiter(30, 10 * 60 * 1000), async (req: Request, res: Response) => {
-    const { email, consent } = req.body || {};
-
+  // 4. Server-Side Newsletter Subscription Endpoint (/api/subscribe)
+  const handleSubscribe = async (req: Request, res: Response) => {
+    const { email } = req.body || {};
     const cleanEmail = sanitizeInput(email, 160);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(cleanEmail)) {
+    if (!cleanEmail || !cleanEmail.includes('@')) {
       return res.status(400).json({
         ok: false,
-        error: 'Please enter a valid email address to subscribe.',
-      });
-    }
-    if (consent === false) {
-      return res.status(400).json({
-        ok: false,
-        error: 'Please check the privacy consent box to join the newsletter.',
+        message: 'A valid email address is required.',
       });
     }
 
-    const referenceId = `NL-${Date.now().toString(36).toUpperCase()}`;
-    await sendInquiryNotificationEmail({
-      name: 'Newsletter Subscriber',
-      email: cleanEmail,
-      organization: 'Newsletter Subscription',
-      inquiryType: 'Newsletter Sign-Up',
-      eventDateOrTimeline: 'Immediate',
-      budgetRange: 'N/A',
-      message: `New subscriber (${cleanEmail}) joined Stephanie Egharevba's Inclusion & Accessibility Dispatch.`,
-      referenceId,
-    });
+    const apiKey = (process.env.SENDBYTE_API_KEY || DEFAULT_SENDBYTE_API_KEY).trim();
+    const brandId = process.env.SENDBYTE_BRAND_ID || 'e0422988-4d99-4c8f-9c13-a70bc7e46e32';
+    const listId = process.env.SENDBYTE_LIST_ID || '6256551f-ab2c-4e86-a3a5-6e17e2fa8110';
 
-    return res.status(200).json({
-      ok: true,
-      email: cleanEmail,
-      message: 'You are subscribed to Stephanie Egharevba’s Inclusion & Accessibility notes.',
-    });
-  });
+    try {
+      let contactAdded = false;
+
+      // 1. Add contact to Sendbyte audience
+      const subscriberRes = await fetch(
+        `https://api.sendbyte.africa/v1/brands/${brandId}/lists/${listId}/subscribers`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            email: cleanEmail,
+            status: 'subscribed',
+          }),
+        }
+      ).catch(() => null);
+
+      if (subscriberRes && subscriberRes.ok) {
+        contactAdded = true;
+      }
+
+      const importRes = await fetch(
+        `https://api.sendbyte.africa/v1/brands/${brandId}/lists/${listId}/import`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            subscribers: [{ email: cleanEmail }],
+          }),
+        }
+      ).catch(() => null);
+
+      if (importRes && importRes.ok) {
+        contactAdded = true;
+      }
+
+      // 2. Dispatch the confirmation / welcome email
+      const emailPayload = JSON.stringify({
+        from: 'Stephanie Egharevba <hello@stephanieegharevba.com>',
+        to: cleanEmail,
+        reply_to: 'hello@stephanieegharevba.com',
+        subject: 'Confirmed: Inclusion & Accessibility Dispatch',
+        html: `
+          <div style="font-family: sans-serif; line-height: 1.6; color: #111; max-width: 560px;">
+            <p>Hi there,</p>
+            <p>You are confirmed for the <strong>Inclusion & Accessibility Dispatch</strong>.</p>
+            <p>You will receive field notes on WCAG 2.2 audits, inclusive systems for programs, and practical accessibility frameworks directly from my work.</p>
+            <p>Best regards,<br><strong>Stephanie Egharevba</strong></p>
+          </div>
+        `,
+      });
+
+      const sendRes = await fetch('https://api.sendbyte.africa/v1/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: emailPayload,
+      }).catch(() => null);
+
+      if (!contactAdded && (!sendRes || !sendRes.ok)) {
+        return res.status(500).json({ ok: false, message: 'Subscription failed at provider.' });
+      }
+
+      return res.status(200).json({
+        ok: true,
+        email: cleanEmail,
+        message: 'Subscribed successfully.',
+      });
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      return res.status(500).json({ ok: false, message: 'Internal server error.' });
+    }
+  };
+
+  app.post('/api/subscribe', rateLimiter(30, 10 * 60 * 1000), handleSubscribe);
+  app.post('/api/newsletter/validate', rateLimiter(30, 10 * 60 * 1000), handleSubscribe);
 
   // Edge-Cached Static Site Generation (SSG) Serving & Vite Development Middleware
   if (process.env.NODE_ENV !== 'production') {

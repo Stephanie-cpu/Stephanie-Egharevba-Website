@@ -261,7 +261,8 @@ export default function App() {
   // Newsletter Sign-up state
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterConsent, setNewsletterConsent] = useState(true);
-  const [newsletterStatus, setNewsletterStatus] = useState<string | null>(null);
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [newsletterErrorMessage, setNewsletterErrorMessage] = useState('');
 
   // Sync Firestore CMS Data
   useEffect(() => {
@@ -681,40 +682,42 @@ export default function App() {
     setIsSubmittingEnquiry(false);
   };
 
-  // Newsletter Submission
-  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+  // Newsletter Subscription (/api/subscribe)
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    setNewsletterStatus(null);
+    setNewsletterStatus('loading');
+    setNewsletterErrorMessage('');
+
+    const email = newsletterEmail.trim();
+
     try {
-      const res = await fetch('/api/newsletter/validate', {
+      const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: newsletterEmail,
-          consent: newsletterConsent,
-          honeypot: '',
-        }),
+        body: JSON.stringify({ email }),
       });
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
-        setNewsletterStatus(data.error || 'Please enter a valid email address.');
-        return;
-      }
 
-      try {
-        await addDoc(collection(db, 'newsletter_subscribers'), {
-          email: data.email,
-          consent: true,
-          createdAt: serverTimestamp(),
-        });
-      } catch {
-        // ignore duplicate/offline
-      }
+      const data = await res.json().catch(() => ({}));
 
-      setNewsletterEmail('');
-      setNewsletterStatus(data.message || 'Subscribed to Stephanie’s inclusion & WCAG notes.');
+      if (res.ok && data.ok) {
+        try {
+          await addDoc(collection(db, 'newsletter_subscribers'), {
+            email,
+            consent: newsletterConsent,
+            createdAt: serverTimestamp(),
+          });
+        } catch {
+          // ignore duplicate/offline
+        }
+        setNewsletterEmail('');
+        setNewsletterStatus('success');
+      } else {
+        setNewsletterStatus('error');
+        setNewsletterErrorMessage(data.message || 'Could not subscribe right now.');
+      }
     } catch {
-      setNewsletterStatus('Could not subscribe right now.');
+      setNewsletterStatus('error');
+      setNewsletterErrorMessage('Could not subscribe right now.');
     }
   };
 
@@ -2737,45 +2740,69 @@ export default function App() {
                   </p>
                 </div>
 
-                <form
-                  onSubmit={handleNewsletterSubmit}
-                  className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto"
-                >
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor="nl-email" className="sr-only">
-                      Email address for newsletter
-                    </label>
-                    <input
-                      id="nl-email"
-                      type="email"
-                      required
-                      value={newsletterEmail}
-                      onChange={(e) => setNewsletterEmail(e.target.value)}
-                      placeholder="Enter your email..."
-                      className="px-4 py-2.5 text-sm bg-[#FAF9F6] border border-[#E6E4DD] rounded-lg min-w-[240px]"
-                    />
-                    <label className="flex items-center gap-1.5 text-[11px] text-[#575652]">
-                      <input
-                        type="checkbox"
-                        checked={newsletterConsent}
-                        onChange={(e) => setNewsletterConsent(e.target.checked)}
-                      />
-                      <span>I agree to receive email updates (unsubscribe anytime)</span>
-                    </label>
-                  </div>
-                  <button
-                    type="submit"
-                    className="px-5 py-2.5 text-xs font-semibold text-white bg-[#141413] hover:bg-[#1D4ED8] rounded-lg transition-colors cursor-pointer shrink-0 self-start"
-                  >
-                    Subscribe
-                  </button>
-                </form>
+                <div className="w-full lg:w-auto">
+                  {newsletterStatus === 'success' ? (
+                    <div
+                      role="status"
+                      aria-live="polite"
+                      className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-50 px-4 py-3 text-xs sm:text-sm font-semibold text-emerald-700"
+                    >
+                      <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                      <span>You are subscribed! Check your inbox to confirm.</span>
+                    </div>
+                  ) : (
+                    <form
+                      onSubmit={handleSubscribe}
+                      className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto"
+                    >
+                      <div className="flex flex-col gap-1.5">
+                        <label htmlFor="nl-email" className="sr-only">
+                          Email address for newsletter
+                        </label>
+                        <input
+                          id="nl-email"
+                          type="email"
+                          required
+                          value={newsletterEmail}
+                          onChange={(e) => {
+                            setNewsletterEmail(e.target.value);
+                            if (newsletterStatus === 'error') {
+                              setNewsletterStatus('idle');
+                              setNewsletterErrorMessage('');
+                            }
+                          }}
+                          placeholder="Enter your email..."
+                          className="px-4 py-2.5 text-sm bg-[#FAF9F6] border border-[#E6E4DD] rounded-lg min-w-[240px]"
+                        />
+                        <label className="flex items-center gap-1.5 text-[11px] text-[#575652]">
+                          <input
+                            type="checkbox"
+                            checked={newsletterConsent}
+                            onChange={(e) => setNewsletterConsent(e.target.checked)}
+                          />
+                          <span>I agree to receive email updates (unsubscribe anytime)</span>
+                        </label>
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={newsletterStatus === 'loading'}
+                        className="px-5 py-2.5 text-xs font-semibold text-white bg-[#141413] hover:bg-[#1D4ED8] disabled:opacity-50 rounded-lg transition-colors cursor-pointer shrink-0 self-start"
+                      >
+                        {newsletterStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                      </button>
+                    </form>
+                  )}
+                  {newsletterStatus === 'error' && newsletterErrorMessage && (
+                    <p
+                      role="alert"
+                      className="flex items-center gap-1.5 text-xs font-medium text-red-600 mt-2"
+                    >
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      <span>{newsletterErrorMessage}</span>
+                    </p>
+                  )}
+                </div>
               </section>
-              {newsletterStatus && (
-                <p role="status" className="text-xs font-mono text-[#1D4ED8]">
-                  {newsletterStatus}
-                </p>
-              )}
             </motion.div>
           )}
         </AnimatePresence>
