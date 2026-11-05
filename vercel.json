@@ -1,0 +1,11 @@
+{
+  "rewrites": [
+    { "source": "/api/enquiries/validate", "destination": "/api/enquiries" },
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/work", "destination": "/work/index.html" },
+    { "source": "/speaking", "destination": "/speaking/index.html" },
+    { "source": "/story", "destination": "/story/index.html" },
+    { "source": "/cv", "destination": "/cv/index.html" },
+    { "source": "/((?!api/|assets/|favicon\\.svg|og_social_preview\\.jpg|robots\\.txt|sitemap\\.xml).*)", "destination": "/index.html" }
+  ]
+}
