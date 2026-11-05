@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
+  AlertCircle,
   ArrowRight,
   ArrowUpRight,
   Award,
   BookOpen,
   Calendar,
   Check,
+  CheckCircle2,
   Copy,
   Download,
   ExternalLink,
@@ -251,6 +253,7 @@ export default function App() {
   const [contactMessage, setContactMessage] = useState('');
   const [ndpaConsent, setNdpaConsent] = useState(true);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
   const [isSubmittingEnquiry, setIsSubmittingEnquiry] = useState(false);
   const [submittedInquiry, setSubmittedInquiry] = useState<SavedInquiry | null>(null);
   const [copiedEmailBrief, setCopiedEmailBrief] = useState(false);
@@ -482,32 +485,89 @@ export default function App() {
     navigateTo('contact');
   };
 
+  // Validate individual contact form fields for immediate inline feedback
+  const validateContactField = (
+    field: 'name' | 'email' | 'message' | 'ndpaConsent',
+    value: string | boolean
+  ): string => {
+    if (field === 'name') {
+      const trimmed = String(value).trim();
+      if (trimmed.length === 0) {
+        return 'Full name is required. Please enter your name.';
+      }
+      if (trimmed.length < 2) {
+        return 'Please enter at least 2 characters for your full name.';
+      }
+      return '';
+    }
+    if (field === 'email') {
+      const trimmed = String(value).trim();
+      if (trimmed.length === 0) {
+        return 'Email address is required so Stephanie can reply to you.';
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(trimmed)) {
+        return 'Please enter a valid email address (e.g., name@organization.org).';
+      }
+      return '';
+    }
+    if (field === 'message') {
+      const trimmed = String(value).trim();
+      if (trimmed.length === 0) {
+        return 'Enquiry message is required. Please share details of your event or project.';
+      }
+      return '';
+    }
+    if (field === 'ndpaConsent') {
+      if (!value) {
+        return 'Required: Please confirm consent under the Nigeria Data Protection Act (NDPA) & GDPR to submit your enquiry.';
+      }
+      return '';
+    }
+    return '';
+  };
+
+  const handleFieldBlur = (
+    field: 'name' | 'email' | 'message',
+    currentValue: string
+  ) => {
+    setTouchedFields((prev) => ({ ...prev, [field]: true }));
+    const errorMsg = validateContactField(field, currentValue);
+    setFormErrors((prev) => {
+      const next = { ...prev };
+      if (errorMsg) {
+        next[field] = errorMsg;
+      } else {
+        delete next[field];
+      }
+      return next;
+    });
+  };
+
   // Submit Enquiry via Express Backend (/api/enquiries) + Sendbyte Email Dispatch + Firestore Persistence
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormErrors({});
+    setTouchedFields({ name: true, email: true, message: true, ndpaConsent: true });
     setIsSubmittingEnquiry(true);
 
-    // 1. Lightweight client-side validation (never blocks short test messages)
+    // 1. Client-side field validation with descriptive inline messages
     const errors: Record<string, string> = {};
     const trimmedName = contactName.trim();
     const trimmedEmail = contactEmail.trim();
     const trimmedMessage = contactMessage.trim();
 
-    if (trimmedName.length < 1) {
-      errors.name = 'Please enter your name.';
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(trimmedEmail)) {
-      errors.email = 'Please enter a valid email address (e.g., name@organization.org).';
-    }
-    if (trimmedMessage.length < 1) {
-      errors.message = 'Please enter your enquiry message.';
-    }
-    if (!ndpaConsent) {
-      errors.ndpaConsent =
-        'Please confirm consent to store your enquiry under the Nigeria Data Protection Act (NDPA) & GDPR.';
-    }
+    const nameError = validateContactField('name', trimmedName);
+    if (nameError) errors.name = nameError;
+
+    const emailError = validateContactField('email', trimmedEmail);
+    if (emailError) errors.email = emailError;
+
+    const messageError = validateContactField('message', trimmedMessage);
+    if (messageError) errors.message = messageError;
+
+    const consentError = validateContactField('ndpaConsent', ndpaConsent);
+    if (consentError) errors.ndpaConsent = consentError;
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -521,10 +581,12 @@ export default function App() {
     const requestPayload = {
       name: trimmedName,
       email: trimmedEmail,
-      organization: contactOrg.trim() || 'Independent / Direct',
+      organization: contactOrg.trim() || 'Individual',
       inquiryType: engagementType,
-      eventDateOrTimeline: timeline.trim(),
-      budgetRange: budgetRange.trim(),
+      timeline: timeline.trim() || 'Flexible',
+      eventDateOrTimeline: timeline.trim() || 'Flexible',
+      budget: budgetRange.trim() || 'Not specified',
+      budgetRange: budgetRange.trim() || 'Not specified',
       message: trimmedMessage,
       ndpaConsent: Boolean(ndpaConsent),
     };
@@ -2276,12 +2338,19 @@ export default function App() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label
-                            htmlFor="c-name"
-                            className="block text-xs font-semibold text-[#141413] mb-1"
-                          >
-                            Full Name <span aria-hidden="true">*</span>
-                          </label>
+                          <div className="flex items-center justify-between mb-1">
+                            <label
+                              htmlFor="c-name"
+                              className="block text-xs font-semibold text-[#141413]"
+                            >
+                              Full Name <span className="text-red-600" aria-hidden="true">*</span>
+                            </label>
+                            {touchedFields.name && !formErrors.name && contactName.trim().length >= 2 && (
+                              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+                                <CheckCircle2 className="w-3 h-3" /> Valid
+                              </span>
+                            )}
+                          </div>
                           <input
                             id="c-name"
                             type="text"
@@ -2289,24 +2358,57 @@ export default function App() {
                             aria-invalid={Boolean(formErrors.name)}
                             aria-describedby={formErrors.name ? 'c-name-error' : undefined}
                             value={contactName}
-                            onChange={(e) => setContactName(e.target.value)}
+                            onBlur={() => handleFieldBlur('name', contactName)}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setContactName(val);
+                              if (touchedFields.name || formErrors.name) {
+                                const err = validateContactField('name', val);
+                                setFormErrors((prev) => {
+                                  const next = { ...prev };
+                                  if (err) next.name = err;
+                                  else delete next.name;
+                                  return next;
+                                });
+                              }
+                            }}
                             placeholder="Your full name"
-                            className="w-full px-3.5 py-2.5 text-sm bg-[#FAF9F6] border border-[#E6E4DD] rounded-lg"
+                            className={`w-full px-3.5 py-2.5 text-sm rounded-lg transition-colors outline-none ${
+                              formErrors.name
+                                ? 'bg-red-50/50 border-2 border-red-500 text-[#141413] focus:ring-2 focus:ring-red-500/20'
+                                : touchedFields.name && contactName.trim().length >= 2
+                                ? 'bg-[#FAF9F6] border border-emerald-600/60 focus:border-[#1D4ED8]'
+                                : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#1D4ED8]'
+                            }`}
                           />
                           {formErrors.name && (
-                            <p id="c-name-error" role="alert" className="text-xs text-red-600 mt-1">
-                              {formErrors.name}
+                            <p
+                              id="c-name-error"
+                              role="alert"
+                              className="flex items-start gap-1.5 text-xs font-medium text-red-600 mt-1.5"
+                            >
+                              <AlertCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                              <span>{formErrors.name}</span>
                             </p>
                           )}
                         </div>
 
                         <div>
-                          <label
-                            htmlFor="c-email"
-                            className="block text-xs font-semibold text-[#141413] mb-1"
-                          >
-                            Email Address <span aria-hidden="true">*</span>
-                          </label>
+                          <div className="flex items-center justify-between mb-1">
+                            <label
+                              htmlFor="c-email"
+                              className="block text-xs font-semibold text-[#141413]"
+                            >
+                              Email Address <span className="text-red-600" aria-hidden="true">*</span>
+                            </label>
+                            {touchedFields.email &&
+                              !formErrors.email &&
+                              /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail.trim()) && (
+                                <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+                                  <CheckCircle2 className="w-3 h-3" /> Valid
+                                </span>
+                              )}
+                          </div>
                           <input
                             id="c-email"
                             type="email"
@@ -2314,17 +2416,38 @@ export default function App() {
                             aria-invalid={Boolean(formErrors.email)}
                             aria-describedby={formErrors.email ? 'c-email-error' : undefined}
                             value={contactEmail}
-                            onChange={(e) => setContactEmail(e.target.value)}
+                            onBlur={() => handleFieldBlur('email', contactEmail)}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setContactEmail(val);
+                              if (touchedFields.email || formErrors.email) {
+                                const err = validateContactField('email', val);
+                                setFormErrors((prev) => {
+                                  const next = { ...prev };
+                                  if (err) next.email = err;
+                                  else delete next.email;
+                                  return next;
+                                });
+                              }
+                            }}
                             placeholder="you@organization.com"
-                            className="w-full px-3.5 py-2.5 text-sm bg-[#FAF9F6] border border-[#E6E4DD] rounded-lg"
+                            className={`w-full px-3.5 py-2.5 text-sm rounded-lg transition-colors outline-none ${
+                              formErrors.email
+                                ? 'bg-red-50/50 border-2 border-red-500 text-[#141413] focus:ring-2 focus:ring-red-500/20'
+                                : touchedFields.email &&
+                                  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail.trim())
+                                ? 'bg-[#FAF9F6] border border-emerald-600/60 focus:border-[#1D4ED8]'
+                                : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#1D4ED8]'
+                            }`}
                           />
                           {formErrors.email && (
                             <p
                               id="c-email-error"
                               role="alert"
-                              className="text-xs text-red-600 mt-1"
+                              className="flex items-start gap-1.5 text-xs font-medium text-red-600 mt-1.5"
                             >
-                              {formErrors.email}
+                              <AlertCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                              <span>{formErrors.email}</span>
                             </p>
                           )}
                         </div>
@@ -2436,12 +2559,19 @@ export default function App() {
                       </div>
 
                       <div>
-                        <label
-                          htmlFor="c-msg"
-                          className="block text-xs font-semibold text-[#141413] mb-1"
-                        >
-                          Enquiry Details <span aria-hidden="true">*</span>
-                        </label>
+                        <div className="flex items-center justify-between mb-1">
+                          <label
+                            htmlFor="c-msg"
+                            className="block text-xs font-semibold text-[#141413]"
+                          >
+                            Enquiry Details <span className="text-red-600" aria-hidden="true">*</span>
+                          </label>
+                          {touchedFields.message && !formErrors.message && contactMessage.trim().length > 0 && (
+                            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+                              <CheckCircle2 className="w-3 h-3" /> Valid
+                            </span>
+                          )}
+                        </div>
                         <textarea
                           id="c-msg"
                           required
@@ -2449,43 +2579,123 @@ export default function App() {
                           aria-invalid={Boolean(formErrors.message)}
                           aria-describedby={formErrors.message ? 'c-msg-error' : undefined}
                           value={contactMessage}
-                          onChange={(e) => setContactMessage(e.target.value)}
+                          onBlur={() => handleFieldBlur('message', contactMessage)}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setContactMessage(val);
+                            if (touchedFields.message || formErrors.message) {
+                              const err = validateContactField('message', val);
+                              setFormErrors((prev) => {
+                                const next = { ...prev };
+                                if (err) next.message = err;
+                                else delete next.message;
+                                return next;
+                              });
+                            }
+                          }}
                           placeholder="Share your event theme, audience, or platform audit goals..."
-                          className="w-full px-3.5 py-2.5 text-sm bg-[#FAF9F6] border border-[#E6E4DD] rounded-lg"
+                          className={`w-full px-3.5 py-2.5 text-sm rounded-lg transition-colors outline-none ${
+                            formErrors.message
+                              ? 'bg-red-50/50 border-2 border-red-500 text-[#141413] focus:ring-2 focus:ring-red-500/20'
+                              : touchedFields.message && contactMessage.trim().length > 0
+                              ? 'bg-[#FAF9F6] border border-emerald-600/60 focus:border-[#1D4ED8]'
+                              : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#1D4ED8]'
+                          }`}
                         />
                         {formErrors.message && (
-                          <p id="c-msg-error" role="alert" className="text-xs text-red-600 mt-1">
-                            {formErrors.message}
+                          <p
+                            id="c-msg-error"
+                            role="alert"
+                            className="flex items-start gap-1.5 text-xs font-medium text-red-600 mt-1.5"
+                          >
+                            <AlertCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                            <span>{formErrors.message}</span>
                           </p>
                         )}
                       </div>
 
-                      {/* NDPA & GDPR Consent Checkbox */}
+                      {/* NDPA & GDPR Consent Checkbox with Enhanced Visual State Feedback */}
                       <div className="pt-1">
-                        <label className="flex items-start gap-2.5 text-xs text-[#575652] cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={ndpaConsent}
-                            onChange={(e) => setNdpaConsent(e.target.checked)}
-                            className="mt-0.5 rounded border-[#D4D2CC] text-[#1D4ED8]"
-                          />
-                          <span>
-                            I consent to having my enquiry stored securely in accordance with the{' '}
-                            <button
-                              type="button"
-                              onClick={() => setIsPrivacyModalOpen(true)}
-                              className="underline font-semibold text-[#141413] hover:text-[#1D4ED8] cursor-pointer"
+                        <div
+                          className={`rounded-xl p-3.5 sm:p-4 transition-all border ${
+                            formErrors.ndpaConsent
+                              ? 'border-2 border-red-500 bg-red-50/70 ring-2 ring-red-500/15'
+                              : ndpaConsent
+                              ? 'border-[#1D4ED8]/30 bg-[#1D4ED8]/[0.04]'
+                              : 'border-amber-400 bg-amber-50/60'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-2 mb-2">
+                            <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider font-semibold text-[#141413]">
+                              <ShieldCheck
+                                className={`w-3.5 h-3.5 ${
+                                  ndpaConsent ? 'text-[#1D4ED8]' : 'text-amber-600'
+                                }`}
+                              />
+                              NDPA &amp; GDPR Data Protection Consent *
+                            </span>
+                            {ndpaConsent ? (
+                              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded">
+                                <CheckCircle2 className="w-3 h-3" /> Consent Active
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-red-700 bg-red-100/90 px-2 py-0.5 rounded">
+                                <AlertCircle className="w-3 h-3" /> Required
+                              </span>
+                            )}
+                          </div>
+
+                          <label
+                            htmlFor="c-ndpa-consent"
+                            className="flex items-start gap-3 text-xs text-[#272725] cursor-pointer select-none"
+                          >
+                            <input
+                              id="c-ndpa-consent"
+                              type="checkbox"
+                              required
+                              aria-invalid={Boolean(formErrors.ndpaConsent)}
+                              aria-describedby={
+                                formErrors.ndpaConsent ? 'c-ndpa-consent-error' : undefined
+                              }
+                              checked={ndpaConsent}
+                              onChange={(e) => {
+                                const checked = e.target.checked;
+                                setNdpaConsent(checked);
+                                setTouchedFields((prev) => ({ ...prev, ndpaConsent: true }));
+                                const err = validateContactField('ndpaConsent', checked);
+                                setFormErrors((prev) => {
+                                  const next = { ...prev };
+                                  if (err) next.ndpaConsent = err;
+                                  else delete next.ndpaConsent;
+                                  return next;
+                                });
+                              }}
+                              className="mt-0.5 w-4 h-4 rounded border-[#8E8C84] text-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8] cursor-pointer shrink-0"
+                            />
+                            <span className="leading-relaxed">
+                              I consent to having my enquiry stored securely in accordance with the{' '}
+                              <button
+                                type="button"
+                                onClick={() => setIsPrivacyModalOpen(true)}
+                                className="underline font-semibold text-[#141413] hover:text-[#1D4ED8] cursor-pointer"
+                              >
+                                Nigeria Data Protection Act (NDPA) &amp; GDPR Privacy Policy
+                              </button>{' '}
+                              (you can request deletion at any time).
+                            </span>
+                          </label>
+
+                          {formErrors.ndpaConsent && (
+                            <p
+                              id="c-ndpa-consent-error"
+                              role="alert"
+                              className="flex items-start gap-1.5 text-xs font-semibold text-red-700 mt-2.5 pt-2 border-t border-red-200"
                             >
-                              Nigeria Data Protection Act (NDPA) &amp; GDPR Privacy Policy
-                            </button>{' '}
-                            (you can request deletion at any time).
-                          </span>
-                        </label>
-                        {formErrors.ndpaConsent && (
-                          <p role="alert" className="text-xs text-red-600 mt-1">
-                            {formErrors.ndpaConsent}
-                          </p>
-                        )}
+                              <AlertCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                              <span>{formErrors.ndpaConsent}</span>
+                            </p>
+                          )}
+                        </div>
                       </div>
 
                       <div className="flex flex-wrap items-center justify-between gap-4 pt-2">

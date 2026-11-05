@@ -64,100 +64,85 @@ async function sendInquiryNotificationEmail(payload: {
   referenceId: string;
 }): Promise<{ dispatched: boolean; provider?: string; messageId?: string; error?: string }> {
   const sendbyteApiKey = (process.env.SENDBYTE_API_KEY || DEFAULT_SENDBYTE_API_KEY).trim();
-  const fromEmail = (process.env.SENDBYTE_FROM_EMAIL || DEFAULT_SENDBYTE_FROM).trim();
-  const toEmail = (process.env.SENDBYTE_TO_EMAIL || DEFAULT_SENDBYTE_TO).trim();
+  const name = payload.name;
+  const email = payload.email;
+  const organization = payload.organization;
+  const timeline = payload.eventDateOrTimeline;
+  const budget = payload.budgetRange;
+  const message = payload.message;
 
-  const subject = `[Portfolio Inquiry] ${payload.inquiryType} from ${payload.name} (Ref: ${payload.referenceId})`;
-  const textBody = `
-New Portfolio Inquiry Received:
+  const subject = `New Advisory Enquiry: ${name} (${organization || 'Individual'})`;
+  const html = `
+      <h2>New Enquiry Received</h2>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Organization:</strong> ${organization || 'N/A'}</p>
+      <p><strong>Enquiry Type:</strong> ${payload.inquiryType || 'Advisory / Speaking'}</p>
+      <p><strong>Timeline:</strong> ${timeline || 'Flexible'}</p>
+      <p><strong>Budget Tier:</strong> ${budget || 'Not specified'}</p>
+      <p><strong>Message / Brief:</strong></p>
+      <p>${message}</p>
+    `;
 
-Reference ID: ${payload.referenceId}
-Name: ${payload.name}
-Email: ${payload.email}
-Organization: ${payload.organization}
-Engagement Type: ${payload.inquiryType}
-Timeline: ${payload.eventDateOrTimeline || 'Flexible'}
-Budget Range: ${payload.budgetRange || 'Not specified'}
-
-Message:
-${payload.message}
-
---
-Sent automatically via stephanieegharevba.com
-  `.trim();
-
-  const htmlBody = `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E2E8F0; border-radius: 12px; background: #ffffff;">
-      <h2 style="color: #0F172A; margin-top: 0; font-size: 20px;">New Portfolio Inquiry</h2>
-      <p style="color: #1D4ED8; font-weight: 600; font-family: monospace; margin: 4px 0 16px 0;">Reference ID: ${payload.referenceId}</p>
-      <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 16px 0;" />
-      <p style="margin: 8px 0;"><strong>Name:</strong> ${payload.name}</p>
-      <p style="margin: 8px 0;"><strong>Email (Reply-To):</strong> <a href="mailto:${payload.email}" style="color: #1D4ED8;">${payload.email}</a></p>
-      <p style="margin: 8px 0;"><strong>Organization:</strong> ${payload.organization}</p>
-      <p style="margin: 8px 0;"><strong>Engagement Type:</strong> ${payload.inquiryType}</p>
-      <p style="margin: 8px 0;"><strong>Timeline:</strong> ${payload.eventDateOrTimeline || 'Flexible'}</p>
-      <p style="margin: 8px 0;"><strong>Budget Range:</strong> ${payload.budgetRange || 'Not specified'}</p>
-      <div style="background: #F8FAFC; border-left: 4px solid #1D4ED8; padding: 14px; margin-top: 16px; border-radius: 4px;">
-        <p style="margin: 0; white-space: pre-wrap; color: #334155; font-size: 14px; line-height: 1.6;">${payload.message}</p>
-      </div>
-      <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 20px 0;" />
-      <p style="font-size: 12px; color: #64748B; margin: 0;">Delivered automatically by stephanieegharevba.com (${fromEmail})</p>
-    </div>
-  `;
+  const requestBody = JSON.stringify({
+    from: 'Stephanie Egharevba <hello@stephanieegharevba.com>',
+    to: 'stephanieegharevba83@gmail.com',
+    reply_to: email, // The visitor's email submitted in the form
+    subject,
+    html,
+  });
 
   if (sendbyteApiKey) {
-    try {
-      const response = await fetch('https://api.sendbyte.africa/v1/emails', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${sendbyteApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: fromEmail,
-          to: [toEmail],
-          reply_to: payload.email,
-          replyTo: payload.email,
-          subject,
-          text: textBody,
-          html: htmlBody,
-        }),
-      });
+    const sendbyteEndpoints = [
+      'https://api.sendbyte.africa/v1/emails',
+      'https://api.sendbyte.com/v1/email/send',
+    ];
 
-      const responseData = (await response.json().catch(() => ({}))) as Record<string, any>;
+    let lastError = '';
 
-      if (response.ok) {
-        const msgId =
-          responseData?.id ||
-          responseData?.data?.id ||
-          responseData?.messageId ||
-          `sendbyte-${Date.now()}`;
-        console.log('[Sendbyte] Inquiry notification email dispatched successfully:', msgId);
-        return {
-          dispatched: true,
-          provider: 'sendbyte',
-          messageId: String(msgId),
-        };
-      } else {
-        const errMsg =
-          responseData?.message ||
-          responseData?.error ||
-          `Sendbyte API returned HTTP ${response.status}`;
-        console.error('[Sendbyte Error] Failed to dispatch email:', errMsg, responseData);
-        return {
-          dispatched: false,
-          provider: 'sendbyte',
-          error: typeof errMsg === 'string' ? errMsg : JSON.stringify(errMsg),
-        };
+    for (const url of sendbyteEndpoints) {
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${sendbyteApiKey}`,
+          },
+          body: requestBody,
+        });
+
+        const responseData = (await response.json().catch(() => ({}))) as Record<string, any>;
+
+        if (response.ok) {
+          const msgId =
+            responseData?.id ||
+            responseData?.data?.id ||
+            responseData?.messageId ||
+            `sendbyte-${Date.now()}`;
+          console.log(`[Sendbyte] Inquiry notification email dispatched via ${url}:`, msgId);
+          return {
+            dispatched: true,
+            provider: 'sendbyte',
+            messageId: String(msgId),
+          };
+        } else {
+          const errMsg =
+            responseData?.message ||
+            responseData?.error ||
+            `Sendbyte API returned HTTP ${response.status}`;
+          lastError = typeof errMsg === 'string' ? errMsg : JSON.stringify(errMsg);
+          console.error(`[Sendbyte Error] (${url}):`, lastError, responseData);
+        }
+      } catch (err: any) {
+        lastError = err.message;
       }
-    } catch (err: any) {
-      console.error('[Sendbyte Network Error]:', err.message);
-      return {
-        dispatched: false,
-        provider: 'sendbyte',
-        error: err.message,
-      };
     }
+
+    return {
+      dispatched: false,
+      provider: 'sendbyte',
+      error: lastError || 'Failed to dispatch via Sendbyte',
+    };
   }
 
   // Fallback to Gmail SMTP if Sendbyte key is absent
@@ -178,12 +163,11 @@ Sent automatically via stephanieegharevba.com
     });
 
     const info = await transporter.sendMail({
-      from: `"Stephanie Egharevba Portfolio" <${user.trim()}>`,
-      to: toEmail,
-      replyTo: payload.email,
+      from: `"Stephanie Egharevba" <${user.trim()}>`,
+      to: 'stephanieegharevba83@gmail.com',
+      replyTo: email,
       subject,
-      text: textBody,
-      html: htmlBody,
+      html,
     });
     return { dispatched: true, provider: 'gmail-smtp', messageId: info.messageId };
   } catch (err: any) {
@@ -318,6 +302,7 @@ async function startServer() {
       eventDateOrTimeline,
       timeline,
       budgetRange,
+      budget,
       message,
       ndpaConsent,
     } = req.body || {};
@@ -327,19 +312,21 @@ async function startServer() {
     const cleanOrg = sanitizeInput(organization, 160);
     const cleanType = sanitizeInput(inquiryType || engagementType, 80);
     const cleanTimeline = sanitizeInput(eventDateOrTimeline || timeline, 100);
-    const cleanBudget = sanitizeInput(budgetRange, 100);
+    const cleanBudget = sanitizeInput(budgetRange || budget, 100);
     const cleanMessage = sanitizeInput(message, 2000);
 
     const errors: Record<string, string> = {};
     if (cleanName.length < 1) {
-      errors.name = 'Please enter your name.';
+      errors.name = 'Full name is required. Please enter your name.';
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(cleanEmail)) {
+    if (cleanEmail.length < 1) {
+      errors.email = 'Email address is required.';
+    } else if (!emailRegex.test(cleanEmail)) {
       errors.email = 'Please enter a valid email address (e.g., name@organization.org).';
     }
     if (cleanMessage.length < 1) {
-      errors.message = 'Please enter your enquiry message.';
+      errors.message = 'Enquiry message is required. Please share details of your request.';
     }
     if (ndpaConsent === false) {
       errors.ndpaConsent =
@@ -357,7 +344,7 @@ async function startServer() {
     const emailResult = await sendInquiryNotificationEmail({
       name: cleanName,
       email: cleanEmail,
-      organization: cleanOrg || 'Independent / Direct',
+      organization: cleanOrg,
       inquiryType: cleanType || 'Keynote Speaking',
       eventDateOrTimeline: cleanTimeline,
       budgetRange: cleanBudget,
