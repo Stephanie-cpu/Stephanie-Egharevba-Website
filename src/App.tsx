@@ -68,6 +68,7 @@ import { PhotoGalleryPressKit } from './components/PhotoGalleryPressKit';
 import { StoryAndCvView } from './components/StoryAndCvView';
 import { BlogView } from './components/BlogView';
 import NavigationDrawer from './components/NavigationDrawer';
+import SocialMarqueeFooter from './components/SocialMarqueeFooter';
 import {
   FloatingAccessibilityWidget,
   AccessibilityPreferences,
@@ -837,11 +838,12 @@ export default function App() {
         toggleDarkMode={toggleDarkLightMode}
         linkedinUrl={siteSettings.linkedinUrl}
         instagramUrl={siteSettings.instagramUrl}
+        tiktokUrl="https://www.tiktok.com/@egharevba_stephanie?_r=1&_t=ZS-9B9xLrUfv1d"
         substackUrl={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
       />
 
-      {/* Main Content */}
-      <main id="main-content" className="flex-1">
+      {/* Main Content (With top padding to offset the fixed navbar) */}
+      <main id="main-content" className="flex-1 pt-[72px]">
         <AnimatePresence mode="wait">
           {/* ================================================================= */}
           {/* PAGE 1: HOME (EXECUTIVE EDITORIAL HERO — AEONIK TRIAL)            */}
@@ -2722,102 +2724,14 @@ export default function App() {
         }}
       />
 
-      {/* Footer with LinkedIn, Instagram, CMS Portal & Privacy Policy */}
-      <footer className="border-t border-[#E6E4DD] bg-[#0B0B0B] text-white mt-12">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10 space-y-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 text-xs text-white/60">
-            <div className="space-y-1">
-              <div className="font-display font-bold text-base text-white">
-                Stephanie Egharevba
-              </div>
-              <p className="text-xs text-white/50">
-                Diversity &amp; Inclusion Lead · Speaker · Author
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-5">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => navigateTo(item.id)}
-                  aria-label={`Footer navigation to ${item.label} page`}
-                  className="hover:text-white transition-colors cursor-pointer"
-                >
-                  {item.label}
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={() => navigateTo('contact')}
-                aria-label="Footer navigation to Enquiries and Contact page"
-                className="hover:text-white transition-colors cursor-pointer"
-              >
-                Enquiries
-              </button>
-            </div>
-
-            {/* Social Media Links */}
-            <div className="flex items-center gap-3">
-              <a
-                href={siteSettings.linkedinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Stephanie Egharevba's LinkedIn profile in a new tab"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-xs font-medium text-white hover:border-[#60A5FA] hover:text-[#60A5FA] transition-colors"
-              >
-                <Linkedin className="w-3.5 h-3.5" />
-                <span>LinkedIn</span>
-              </a>
-              <a
-                href={siteSettings.instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Stephanie Egharevba's Instagram profile in a new tab"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-xs font-medium text-white hover:border-[#60A5FA] hover:text-[#60A5FA] transition-colors"
-              >
-                <Instagram className="w-3.5 h-3.5" />
-                <span>Instagram</span>
-              </a>
-              <a
-                href={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Stephanie Egharevba's Substack (The Unbias Project) in a new tab"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-xs font-medium text-white hover:border-[#60A5FA] hover:text-[#60A5FA] transition-colors"
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>Substack</span>
-              </a>
-            </div>
-          </div>
-
-          <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-[11px] font-mono text-white/45">
-            <div>© {new Date().getFullYear()} Stephanie Egharevba · All Rights Reserved</div>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <button
-                type="button"
-                onClick={() => setIsPrivacyModalOpen(true)}
-                aria-label="Open NDPA and GDPR Privacy Policy modal"
-                className="hover:text-white transition-colors cursor-pointer"
-              >
-                NDPA &amp; GDPR Privacy Policy
-              </button>
-              <span>·</span>
-              <a
-                href="/api/sitemap.xml"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="View XML Sitemap (opens in new tab)"
-                className="hover:text-white transition-colors"
-              >
-                Sitemap.xml
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* Massive Infinite Social Media Marquee Footer (Debbie Onyibe Style) */}
+      <SocialMarqueeFooter
+        linkedinUrl={siteSettings.linkedinUrl || DEFAULT_LINKEDIN_URL}
+        instagramUrl={siteSettings.instagramUrl || DEFAULT_INSTAGRAM_URL}
+        tiktokUrl="https://www.tiktok.com/@egharevba_stephanie?_r=1&_t=ZS-9B9xLrUfv1d"
+        substackUrl={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
+        onOpenPrivacyPolicy={() => setIsPrivacyModalOpen(true)}
+      />
 
       {/* Privacy Policy & NDPA / GDPR Data Rights Modal */}
       {isPrivacyModalOpen && (
