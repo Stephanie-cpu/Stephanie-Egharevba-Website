@@ -153,16 +153,6 @@ export default function SocialMarqueeFooter({
               NDPA &amp; GDPR Privacy Policy
             </button>
           )}
-          <span>·</span>
-          <a
-            href="/sitemap.xml"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View XML Sitemap (opens in new tab)"
-            className="hover:text-neutral-950 dark:hover:text-white transition-colors"
-          >
-            Sitemap.xml
-          </a>
         </div>
       </div>
     </footer>

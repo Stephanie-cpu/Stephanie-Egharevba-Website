@@ -80,8 +80,6 @@ function renderFooter(): string {
           <div>&copy; ${year} Stephanie Egharevba &middot; All Rights Reserved</div>
           <div style="display: flex; gap: 16px;">
             <span>NDPA &amp; GDPR Privacy Policy</span>
-            <span>&middot;</span>
-            <a href="/api/sitemap.xml" style="color: #94A3B8; text-decoration: none;">Sitemap.xml</a>
           </div>
         </div>
       </div>

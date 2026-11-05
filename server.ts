@@ -493,6 +493,9 @@ async function startServer() {
   app.post('/api/subscribe', rateLimiter(30, 10 * 60 * 1000), handleSubscribe);
   app.post('/api/newsletter/validate', rateLimiter(30, 10 * 60 * 1000), handleSubscribe);
 
+  // Explicitly serve static assets from public/ (favicons, manifest, robots, sitemap)
+  app.use(express.static(path.join(__dirname, 'public')));
+
   // Edge-Cached Static Site Generation (SSG) Serving & Vite Development Middleware
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({

@@ -16,6 +16,7 @@ import {
   LogOut,
   Mail,
   MessageSquare,
+  Pencil,
   Plus,
   Search,
   ShieldCheck,
@@ -424,6 +425,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
 
   // Composer Modal state (only accessible when admin is unlocked)
   const [isComposerOpen, setIsComposerOpen] = useState<boolean>(false);
+  const [editingPostId, setEditingPostId] = useState<string | null>(null);
   const [isPublishing, setIsPublishing] = useState<boolean>(false);
   const [newTitle, setNewTitle] = useState<string>('');
   const [newSubtitle, setNewSubtitle] = useState<string>('');
@@ -546,7 +548,12 @@ export const BlogView: React.FC<BlogViewProps> = ({
       ],
     }));
 
-    return [...firestorePosts, ...CURATED_BLOG_POSTS, ...mappedCms];
+    // Allow Stephanie's Firestore edits to override any default curated post
+    const curatedFiltered = CURATED_BLOG_POSTS.filter(
+      (cp) => !firestorePosts.some((fp) => fp.id === cp.id)
+    );
+
+    return [...firestorePosts, ...curatedFiltered, ...mappedCms];
   }, [cmsArticles, firestorePosts]);
 
   const featuredPost = useMemo(
@@ -665,7 +672,34 @@ export const BlogView: React.FC<BlogViewProps> = ({
     reader.readAsDataURL(file);
   };
 
-  const handleCreateNewPost = async (e: React.FormEvent) => {
+  const handleOpenNewPost = () => {
+    setEditingPostId(null);
+    setNewTitle('');
+    setNewSubtitle('');
+    setNewTopic('Accessibility in Practice');
+    setNewCoverUrl('');
+    setNewCoverAlt('');
+    setNewPullQuote('');
+    setNewBody('');
+    setIsComposerOpen(true);
+  };
+
+  const handleOpenEditPost = (post: BlogPost) => {
+    setEditingPostId(post.id);
+    setNewTitle(post.title);
+    setNewSubtitle(post.subtitle || '');
+    setNewTopic(
+      (post.topic as Exclude<BlogTopic, 'All Notes'>) || 'Accessibility in Practice'
+    );
+    setNewCoverUrl(post.coverImage || '');
+    setNewCoverAlt(post.coverImageAlt || '');
+    setNewPullQuote(post.pullQuote || '');
+    const bodyText = post.sections.flatMap((s) => s.paragraphs).join('\n\n');
+    setNewBody(bodyText);
+    setIsComposerOpen(true);
+  };
+
+  const handleSavePost = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isStudioUnlocked || !firebaseUser) return;
     if (!newTitle.trim() || !newBody.trim()) return;
@@ -673,7 +707,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
     setIsPublishing(true);
     const words = newBody.trim().split(/\s+/).length;
     const mins = Math.max(2, Math.ceil(words / 180));
-    const docId = `note_${Date.now()}`;
+    const docId = editingPostId || `note_${Date.now()}`;
     const path = `blog_posts/${docId}`;
 
     const firstParagraph =
@@ -683,17 +717,26 @@ export const BlogView: React.FC<BlogViewProps> = ({
         .filter(Boolean)[0] || '';
 
     try {
-      await setDoc(doc(db, 'blog_posts', docId), {
+      const isExistingFirestoreDoc = firestorePosts.some((p) => p.id === docId);
+
+      const postPayload: Record<string, unknown> = {
         title: newTitle.trim().slice(0, 200),
         subtitle: (
           newSubtitle.trim() || 'Field note on inclusive design and digital accessibility.'
         ).slice(0, 300),
         topic: newTopic,
-        publishedAt: new Date().toLocaleDateString('en-US', {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-        }),
+        publishedAt: editingPostId
+          ? allPosts.find((p) => p.id === editingPostId)?.publishedAt ||
+            new Date().toLocaleDateString('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric',
+            })
+          : new Date().toLocaleDateString('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric',
+            }),
         readingTime: `${mins} min read`,
         pullQuote: (
           newPullQuote.trim() ||
@@ -709,9 +752,14 @@ export const BlogView: React.FC<BlogViewProps> = ({
           : {}),
         status: 'published',
         authorUid: firebaseUser.uid,
-        createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
-      });
+      };
+
+      if (!isExistingFirestoreDoc) {
+        postPayload.createdAt = serverTimestamp();
+      }
+
+      await setDoc(doc(db, 'blog_posts', docId), postPayload, { merge: true });
 
       setNewTitle('');
       setNewSubtitle('');
@@ -719,15 +767,24 @@ export const BlogView: React.FC<BlogViewProps> = ({
       setNewCoverAlt('');
       setNewPullQuote('');
       setNewBody('');
+      setEditingPostId(null);
       setIsComposerOpen(false);
       setActivePostId(docId);
-      setAdminBannerMessage('New blog note published live to your site!');
+      setAdminBannerMessage(
+        editingPostId
+          ? 'Blog note changes saved live!'
+          : 'New blog note published live to your site!'
+      );
       setTimeout(() => setAdminBannerMessage(''), 4000);
     } catch (err) {
       try {
-        handleFirestoreError(err, OperationType.CREATE, path);
+        handleFirestoreError(
+          err,
+          editingPostId ? OperationType.UPDATE : OperationType.CREATE,
+          path
+        );
       } catch {
-        setAdminBannerMessage('Could not publish note. Ensure image size is under 400KB.');
+        setAdminBannerMessage('Could not save note. Ensure image size is under 400KB.');
       }
     } finally {
       setIsPublishing(false);
@@ -828,7 +885,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
             <div className="flex flex-wrap items-center gap-2.5">
               <button
                 type="button"
-                onClick={() => setIsComposerOpen(true)}
+                onClick={handleOpenNewPost}
                 className="px-4 py-2 rounded-lg bg-[#1D4ED8] hover:bg-[#1E40AF] text-white text-xs font-semibold transition-colors inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -911,6 +968,17 @@ export const BlogView: React.FC<BlogViewProps> = ({
               </button>
 
               <div className="flex flex-wrap items-center gap-3">
+                {isStudioUnlocked && (
+                  <button
+                    type="button"
+                    onClick={() => handleOpenEditPost(activePost)}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[#1D4ED8] bg-[#1D4ED8] text-xs font-semibold text-white hover:bg-[#1E40AF] transition-colors cursor-pointer whitespace-nowrap shadow-xs"
+                  >
+                    <Pencil className="w-3.5 h-3.5" />
+                    <span>Edit Note</span>
+                  </button>
+                )}
+
                 {isStudioUnlocked && activePost.isFromFirestore && (
                   <button
                     type="button"
@@ -1153,6 +1221,21 @@ export const BlogView: React.FC<BlogViewProps> = ({
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                       loading="lazy"
                     />
+                    {isStudioUnlocked && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenEditPost(post);
+                        }}
+                        aria-label={`Edit ${post.title}`}
+                        title="Edit this blog post"
+                        className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 text-neutral-900 text-xs font-semibold shadow-md hover:bg-white hover:scale-105 transition-all cursor-pointer"
+                      >
+                        <Pencil className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                        <span>Edit</span>
+                      </button>
+                    )}
                   </div>
 
                   {/* Card Typography */}
@@ -1387,21 +1470,26 @@ export const BlogView: React.FC<BlogViewProps> = ({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto"
           role="dialog"
           aria-modal="true"
-          aria-label="Write a new blog note"
+          aria-label={editingPostId ? 'Edit blog note' : 'Write a new blog note'}
         >
           <div className="w-full max-w-2xl rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 shadow-2xl space-y-5 my-auto max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-[#E6E4DD] pb-3">
               <div>
                 <h3 className="font-display text-xl font-bold text-[#141413]">
-                  Publish a New Blog Note
+                  {editingPostId ? 'Edit Blog Note' : 'Publish a New Blog Note'}
                 </h3>
                 <p className="text-xs text-[#575652]">
-                  Publishes directly to your live Blog page with an optional article photo.
+                  {editingPostId
+                    ? 'Update your note content, title, or cover photo. Changes reflect live immediately.'
+                    : 'Publishes directly to your live Blog page with an optional article photo.'}
                 </p>
               </div>
               <button
                 type="button"
-                onClick={() => setIsComposerOpen(false)}
+                onClick={() => {
+                  setIsComposerOpen(false);
+                  setEditingPostId(null);
+                }}
                 aria-label="Close composer"
                 className="p-1.5 rounded-lg text-[#575652] hover:bg-[#FAF9F6] cursor-pointer"
               >
@@ -1409,7 +1497,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
               </button>
             </div>
 
-            <form onSubmit={handleCreateNewPost} className="space-y-4">
+            <form onSubmit={handleSavePost} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="sm:col-span-2">
                   <label
@@ -1567,7 +1655,10 @@ export const BlogView: React.FC<BlogViewProps> = ({
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setIsComposerOpen(false)}
+                  onClick={() => {
+                    setIsComposerOpen(false);
+                    setEditingPostId(null);
+                  }}
                   className="px-4 py-2.5 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] text-xs font-semibold text-[#141413] cursor-pointer"
                 >
                   Cancel
@@ -1577,7 +1668,13 @@ export const BlogView: React.FC<BlogViewProps> = ({
                   disabled={isPublishing}
                   className="px-5 py-2.5 rounded-lg bg-[#141413] hover:bg-[#1D4ED8] disabled:opacity-50 text-white text-xs font-semibold transition-colors cursor-pointer"
                 >
-                  {isPublishing ? 'Publishing...' : 'Publish Note Live'}
+                  {isPublishing
+                    ? editingPostId
+                      ? 'Saving Changes...'
+                      : 'Publishing...'
+                    : editingPostId
+                    ? 'Save Changes Live'
+                    : 'Publish Note Live'}
                 </button>
               </div>
             </form>
