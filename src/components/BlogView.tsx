@@ -88,10 +88,12 @@ const CURATED_BLOG_POSTS: BlogPost[] = [
     subtitle:
       'Most digital products do not fail accessibility because engineers do not care. They fail because nobody ever tried signing up with the Tab key.',
     topic: 'Accessibility in Practice',
-    publishedAt: 'October 28, 2026',
+    publishedAt: 'Aug 20, 2026',
     readingTime: '5 min read',
     locationNote: 'Lagos · Sunday Morning Coffee Note',
     featured: true,
+    coverImage: '/assets/aistudio/20260604_125652_ee30817c.jpg',
+    coverImageAlt: 'Stephanie facilitating an interactive accessibility workshop in Lagos',
     pullQuote:
       'If a user cannot tell where their focus is on the screen, your interface has politely locked the front door while leaving the lights on inside.',
     excerpt:
@@ -134,9 +136,11 @@ const CURATED_BLOG_POSTS: BlogPost[] = [
     subtitle:
       'Inclusion work is full of stiff corporate buzzwords. Real change happens when we talk honestly about how systems feel to the people living inside them.',
     topic: 'Personal Reflections',
-    publishedAt: 'October 14, 2026',
+    publishedAt: 'Aug 3, 2026',
     readingTime: '6 min read',
     locationNote: 'Lagos · Personal Essay',
+    coverImage: '/assets/aistudio/Headshot_3_ab4f5e1e.jpg',
+    coverImageAlt: 'Stephanie Egharevba portrait',
     pullQuote:
       'People do not connect with policy memos. They connect with honest stories about what works, what hurts, and how we can build better together.',
     excerpt:
@@ -178,9 +182,11 @@ const CURATED_BLOG_POSTS: BlogPost[] = [
     subtitle:
       'From cryptic red borders to inaccessible CAPTCHAs, here is how small changes in inline validation turn a frustrating form into a welcoming conversation.',
     topic: 'Builder Notes',
-    publishedAt: 'September 29, 2026',
+    publishedAt: 'Jul 26, 2026',
     readingTime: '4 min read',
     locationNote: 'Field Note · UI & Forms',
+    coverImage: '/assets/aistudio/20260326_145104_740025f4.jpg',
+    coverImageAlt: 'Panel discussion on accessible design and technology systems',
     pullQuote:
       'An error message should read like a helpful friend pointing out a missed button, not a bouncer slamming a clipboard.',
     excerpt:
@@ -214,9 +220,11 @@ const CURATED_BLOG_POSTS: BlogPost[] = [
     subtitle:
       'Reflections from founding the Mastercard Foundation Alumni Disability Community in Nigeria, and why representation without community is lonely.',
     topic: 'Inclusion & Culture',
-    publishedAt: 'September 11, 2026',
+    publishedAt: 'Jul 15, 2026',
     readingTime: '7 min read',
     locationNote: 'Lagos · Community & Leadership',
+    coverImage: '/assets/aistudio/20250605_082332_545d884d.jpg',
+    coverImageAlt: 'Mastercard Foundation Youth Advisory Council community gathering',
     pullQuote:
       'Getting a seat at the table is step one. Making sure you are not the only person in the building who understands how hard it was to reach that chair is community.',
     excerpt:
@@ -251,9 +259,11 @@ const CURATED_BLOG_POSTS: BlogPost[] = [
     subtitle:
       'Over 15% of Nigerians live with a disability. Building accessible fintech, edtech, and job platforms is not charity; it is smart product engineering.',
     topic: 'Accessibility in Practice',
-    publishedAt: 'August 24, 2026',
+    publishedAt: 'Jun 28, 2026',
     readingTime: '5 min read',
     locationNote: 'West Africa · Product Strategy',
+    coverImage: '/assets/aistudio/20260220_115033_30f9129f.jpg',
+    coverImageAlt: 'Tech leaders and innovators in West Africa discussing digital accessibility',
     pullQuote:
       'When a banking app or a job portal in Lagos is inaccessible, it does not just fail a technical audit; it locks real talent out of economic independence.',
     excerpt:
@@ -275,6 +285,43 @@ const CURATED_BLOG_POSTS: BlogPost[] = [
         paragraphs: [
           'Think about how most people use mobile apps in Lagos, Nairobi, or Accra. They are often outdoors in bright afternoon glare, on a cracked or dimmed screen to save battery, or on a fluctuating network connection where heavy, unoptimized scripts fail to load.',
           'Clean semantic HTML, generous contrast ratios, and clear button labels are not "extra features for a niche group." They are the foundation of resilient engineering that works in the real world.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'blog-curb-cut-effect',
+    slug: 'the-curb-cut-effect-universal-design-in-everyday-tech',
+    title: 'The Curb-Cut Effect: How Accessible Design Elevates Everyday Tech',
+    subtitle:
+      'When you design for people on the margins, you accidentally build a superior product for everyone on the planet.',
+    topic: 'Personal Reflections',
+    publishedAt: 'Jun 10, 2026',
+    readingTime: '5 min read',
+    locationNote: 'Lagos · Writing on Design',
+    coverImage: '/assets/aistudio/20260603_133832_0b986b42.jpg',
+    coverImageAlt: 'Stephanie speaking on accessibility and universal design in technology',
+    pullQuote:
+      'Accessible design is not a concession to weakness; it is the ultimate expression of human-centered engineering.',
+    excerpt:
+      'Closed captions were invented for the Deaf community; today, 80% of Gen Z watches videos on mute with captions. Screen readers paved the way for voice assistants. Here is why the curb-cut effect is the secret superpower of product teams.',
+    takeaways: [
+      'Universal design creates unexpected innovations that become mainstream standard features within five years.',
+      'Accessibility forces product teams to strip out visual fluff and prioritize intuitive information hierarchy.',
+      'When technology adapts to human bodies rather than forcing bodies to adapt to technology, everyone wins.',
+    ],
+    sections: [
+      {
+        paragraphs: [
+          'A few years ago, someone asked me why I get so enthusiastic about captioning videos and designing tap targets for one-handed operation. They assumed it was solely because of my advocacy work.',
+          'The truth is, universal design is simply the best engineering discipline ever invented. When you solve for extreme constraints, the everyday solutions become effortless.',
+        ],
+      },
+      {
+        heading: 'Everyday Inventions Born from Disability Accommodation',
+        paragraphs: [
+          'Typewriters were invented so a blind Italian countess could write letters. Good grips kitchen peelers were invented by a husband whose wife had arthritis in her hands. Audiobooks were invented for wounded soldiers and blind readers.',
+          'Whenever you build with accessibility in mind from day one, you are not just accommodating a minority. You are building the future standard of computing.',
         ],
       },
     ],
@@ -307,6 +354,47 @@ function isUrlAdminRoute(): boolean {
   const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
   const search = new URLSearchParams(window.location.search);
   return path === '/blog-admin' || search.get('admin') === '1';
+}
+
+const BLOG_LETTERS = ['B', 'L', 'O', 'G'];
+
+const blogContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.16,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const blogLetterVariants = {
+  hidden: {
+    opacity: 0,
+    y: 36,
+    scale: 0.75,
+    filter: 'blur(6px)',
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: {
+      type: 'spring' as const,
+      damping: 12,
+      stiffness: 180,
+    },
+  },
+};
+
+function getBlogCategoryTag(topic: string): string {
+  if (topic === 'Personal Reflections') return 'WRITING';
+  if (topic === 'Accessibility in Practice') return 'ACCESSIBILITY';
+  if (topic === 'Inclusion & Culture') return 'INCLUSION & CULTURE';
+  if (topic === 'Builder Notes') return 'BUILDER NOTES';
+  return topic.toUpperCase();
 }
 
 export const BlogView: React.FC<BlogViewProps> = ({
@@ -1015,269 +1103,78 @@ export const BlogView: React.FC<BlogViewProps> = ({
             transition={{ duration: 0.28 }}
             className="space-y-12 sm:space-y-16"
           >
-            {/* 1. Relaxed Editorial Welcome Header */}
-            <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end border-b border-[#E6E4DD] pb-10">
-              <div className="lg:col-span-8 space-y-4">
-                <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-[#1D4ED8]">
-                  <Coffee className="w-3.5 h-3.5" />
-                  <span>THE UNBIAS DISPATCH · PERSONAL JOURNAL &amp; FIELD NOTES</span>
-                </div>
-                <h1 className="text-3xl sm:text-5xl font-display font-bold tracking-tight text-[#141413] leading-[1.08]">
-                  Notes on making tech work for real human beings.
-                </h1>
-                <p className="text-sm sm:text-base text-[#3F3E3A] max-w-2xl leading-relaxed">
-                  Pull up a chair. This is the relaxed corner of my site: honest stories, practical
-                  WCAG breakdowns, and reflections from Lagos on disability, design, and everyday
-                  life.
-                </p>
-              </div>
-
-              <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end justify-between gap-4">
-                <div className="rounded-2xl border border-[#E6E4DD] bg-white p-4 sm:p-5 w-full space-y-2.5">
-                  <div className="text-xs font-bold text-[#141413]">
-                    Written by Stephanie Egharevba
-                  </div>
-                  <div className="pt-2 border-t border-[#E6E4DD] flex items-center justify-between gap-2 text-xs">
-                    <span className="text-[#575652]">Also publishing on Substack</span>
-                    <a
-                      href={substackUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-semibold text-[#1D4ED8] hover:underline whitespace-nowrap"
-                    >
-                      <span>@theunbiasproject</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* 2. Featured Cover Essay */}
-            {featuredPost && selectedTopic === 'All Notes' && !searchQuery.trim() && (
-              <section aria-label="Featured Essay">
-                <div className="rounded-2xl border border-[#E6E4DD] bg-white overflow-hidden grid grid-cols-1 lg:grid-cols-12">
-                  <div
-                    className={`${
-                      featuredPost.coverImage ? 'lg:col-span-7' : 'lg:col-span-12'
-                    } p-6 sm:p-10 flex flex-col justify-between space-y-6`}
-                  >
-                    <div className="space-y-4">
-                      <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#575652] flex flex-wrap items-center gap-2">
-                        <span className="text-[#1D4ED8] font-semibold">FEATURED ESSAY</span>
-                        <span>·</span>
-                        <span>{featuredPost.topic}</span>
-                        <span>·</span>
-                        <span>{featuredPost.readingTime}</span>
-                      </div>
-
-                      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[#141413] tracking-tight leading-[1.15]">
-                        <button
-                          type="button"
-                          onClick={() => handleOpenPost(featuredPost.id)}
-                          className="text-left hover:text-[#1D4ED8] transition-colors cursor-pointer"
-                        >
-                          {featuredPost.title}
-                        </button>
-                      </h2>
-
-                      <p className="text-sm sm:text-base text-[#3F3E3A] leading-relaxed max-w-3xl">
-                        {featuredPost.excerpt}
-                      </p>
-
-                      <blockquote className="pt-2 font-serif italic text-base sm:text-lg text-[#141413]">
-                        “{featuredPost.pullQuote}”
-                      </blockquote>
-                    </div>
-
-                    <div className="pt-4 border-t border-[#E6E4DD] flex flex-wrap items-center justify-between gap-4">
-                      <div className="font-mono text-[11px] text-[#575652]">
-                        {featuredPost.publishedAt} · {featuredPost.locationNote}
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => handleOpenPost(featuredPost.id)}
-                        className="px-5 py-2.5 rounded-lg bg-[#141413] hover:bg-[#1D4ED8] text-white text-xs font-semibold transition-colors inline-flex items-center gap-2 cursor-pointer whitespace-nowrap"
-                      >
-                        <span>Read Full Note</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {featuredPost.coverImage && (
-                    <div className="lg:col-span-5 bg-[#F2EFE9] border-t lg:border-t-0 lg:border-l border-[#E6E4DD] relative min-h-[280px] sm:min-h-[340px]">
-                      <img
-                        src={featuredPost.coverImage}
-                        alt={featuredPost.coverImageAlt || featuredPost.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                </div>
-              </section>
-            )}
-
-            {/* 3. Topic Filter Bar & Search Input */}
-            <section
-              aria-label="Filter notes by topic or keyword"
-              className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2"
-            >
-              <div
-                role="tablist"
-                aria-label="Blog topic categories"
-                className="flex flex-wrap items-center gap-2"
+            {/* Header: Animated BLOG letters spelling out in black */}
+            <div className="pt-2 sm:pt-6 pb-2 mb-10 sm:mb-14 text-center">
+              <h1 className="sr-only">Blog</h1>
+              <motion.div
+                variants={blogContainerVariants}
+                initial="hidden"
+                animate="visible"
+                aria-hidden="true"
+                className="flex items-center justify-center tracking-tight text-black dark:text-white font-black text-6xl sm:text-7xl md:text-8xl lg:text-[104px] leading-none select-none"
               >
-                {topics.map((topic) => {
-                  const active = selectedTopic === topic;
-                  return (
-                    <button
-                      key={topic}
-                      type="button"
-                      role="tab"
-                      aria-selected={active}
-                      onClick={() => setSelectedTopic(topic)}
-                      className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
-                        active
-                          ? 'bg-[#141413] text-white'
-                          : 'bg-white border border-[#E6E4DD] text-[#3F3E3A] hover:border-[#141413] hover:text-[#141413]'
-                      }`}
-                    >
-                      {topic}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="relative w-full md:w-64">
-                <label htmlFor="blog-search" className="sr-only">
-                  Search notes
-                </label>
-                <Search className="w-4 h-4 text-[#575652] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
-                  id="blog-search"
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search notes & topics..."
-                  className="w-full pl-9 pr-3.5 py-2 text-xs sm:text-sm bg-white border border-[#E6E4DD] rounded-lg text-[#141413] focus:border-[#1D4ED8] outline-none transition-colors"
-                />
-              </div>
-            </section>
-
-            {/* 4. Notes & Essays Grid */}
-            {filteredPosts.length === 0 ? (
-              <div className="rounded-2xl border border-[#E6E4DD] bg-white p-10 text-center space-y-3">
-                <p className="text-base font-display font-bold text-[#141413]">
-                  No notes matched “{searchQuery}”
-                </p>
-                <p className="text-xs sm:text-sm text-[#575652]">
-                  Try clearing your search or switching back to All Notes.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedTopic('All Notes');
-                    setSearchQuery('');
-                  }}
-                  className="px-4 py-2 rounded-lg bg-[#141413] text-white text-xs font-semibold cursor-pointer"
-                >
-                  Reset Filters
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredPosts.map((post) => (
-                  <article
-                    key={post.id}
-                    className="rounded-2xl border border-[#E6E4DD] bg-white overflow-hidden flex flex-col justify-between hover:border-[#1D4ED8]/50 transition-colors"
+                {BLOG_LETTERS.map((letter, idx) => (
+                  <motion.span
+                    key={idx}
+                    variants={blogLetterVariants}
+                    className="inline-block"
                   >
-                    <div>
-                      {/* Optional Article Photo (Only renders when an article has a coverImage) */}
-                      {post.coverImage && (
-                        <div className="border-b border-[#E6E4DD] bg-[#F2EFE9] h-48 overflow-hidden">
-                          <img
-                            src={post.coverImage}
-                            alt={post.coverImageAlt || post.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      )}
-
-                      <div className="p-6 sm:p-8 space-y-3.5">
-                        {/* Zero-pill static metadata */}
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="font-mono text-[11px] uppercase tracking-[0.13em] text-[#575652] flex flex-wrap items-center gap-2">
-                            <span className="text-[#1D4ED8] font-semibold">{post.topic}</span>
-                            <span>·</span>
-                            <span>{post.publishedAt}</span>
-                            <span>·</span>
-                            <span>{post.readingTime}</span>
-                          </div>
-
-                          {isStudioUnlocked && post.isFromFirestore && (
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteFirestorePost(post.id)}
-                              title="Delete this note"
-                              aria-label={`Delete ${post.title}`}
-                              className="p-1.5 rounded-lg border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 cursor-pointer"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          )}
-                        </div>
-
-                        <h3 className="text-xl sm:text-2xl font-display font-bold text-[#141413] leading-snug">
-                          <button
-                            type="button"
-                            onClick={() => handleOpenPost(post.id)}
-                            className="text-left hover:text-[#1D4ED8] transition-colors cursor-pointer"
-                          >
-                            {post.title}
-                          </button>
-                        </h3>
-
-                        <p className="text-xs sm:text-sm text-[#3F3E3A] leading-relaxed">
-                          {post.excerpt}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="px-6 sm:px-8 pb-6 pt-4 border-t border-[#E6E4DD] flex items-center justify-between gap-4">
-                      <span className="font-mono text-[11px] text-[#575652]">
-                        {post.locationNote}
-                      </span>
-
-                      <div className="flex items-center gap-3">
-                        {post.externalUrl && (
-                          <a
-                            href={post.externalUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`Read ${post.title} on Substack`}
-                            className="inline-flex items-center gap-1 text-xs font-medium text-[#575652] hover:text-[#141413] whitespace-nowrap"
-                          >
-                            <span>Substack</span>
-                            <ArrowUpRight className="w-3.5 h-3.5" />
-                          </a>
-                        )}
-
-                        <button
-                          type="button"
-                          onClick={() => handleOpenPost(post.id)}
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1D4ED8] hover:text-[#141413] transition-colors cursor-pointer whitespace-nowrap"
-                        >
-                          <span>Read Note</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </article>
+                    {letter}
+                  </motion.span>
                 ))}
-              </div>
-            )}
+              </motion.div>
+            </div>
+
+            {/* 2-Column Clean Editorial Grid Matching Screenshot 122 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 sm:gap-x-12 gap-y-12 sm:gap-y-16 max-w-[1040px] mx-auto">
+              {allPosts.map((post, idx) => (
+                <motion.article
+                  key={post.id}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.5, delay: idx * 0.08 }}
+                  onClick={() => handleOpenPost(post.id)}
+                  className="group cursor-pointer flex flex-col focus:outline-none"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleOpenPost(post.id);
+                    }
+                  }}
+                  aria-label={`Read note: ${post.title}`}
+                >
+                  {/* Card Cover Image */}
+                  <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 shadow-sm border border-black/5 dark:border-white/5">
+                    <img
+                      src={post.coverImage || '/assets/aistudio/20260604_125652_ee30817c.jpg'}
+                      alt={post.coverImageAlt || post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  {/* Card Typography */}
+                  <div className="mt-3.5 space-y-1">
+                    <time
+                      dateTime={post.publishedAt}
+                      className="text-xs text-neutral-500 dark:text-neutral-400 font-medium block"
+                    >
+                      {post.publishedAt}
+                    </time>
+
+                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111827] dark:text-white group-hover:text-[#2563EB] dark:group-hover:text-[#3B82F6] transition-colors leading-snug">
+                      {post.title}
+                    </h2>
+
+                    <div className="text-xs font-semibold text-[#2563EB] dark:text-[#60A5FA] uppercase tracking-wider pt-0.5">
+                      {getBlogCategoryTag(post.topic)}
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
 
             {/* 5. Cozy Dispatch Subscription Box (Wired directly to /api/subscribe) */}
             <section

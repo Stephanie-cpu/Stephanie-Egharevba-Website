@@ -13,6 +13,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'cv', label: 'ABOUT & CV', path: '/cv' },
   { id: 'work', label: 'WORK', path: '/work' },
   { id: 'speaking', label: 'SPEAKING', path: '/speaking' },
+  { id: 'impact', label: 'IMPACT', path: '/impact' },
   { id: 'books', label: 'BOOKS', path: '/books' },
   { id: 'blog', label: 'BLOG', path: '/blog' },
   { id: 'gallery', label: 'GALLERY', path: '/gallery' },

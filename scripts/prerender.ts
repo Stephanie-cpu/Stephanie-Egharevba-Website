@@ -489,6 +489,13 @@ const routes: RouteConfig[] = [
     renderContent: renderSpeakingContent,
   },
   {
+    path: '/impact',
+    title: 'My Impact & Recommendations | Stephanie Egharevba',
+    description: 'Read endorsements and recommendations for Stephanie Egharevba from international conference hosts, clients, mentors, and collaborators.',
+    canonical: 'https://stephanieegharevba.com/impact',
+    renderContent: renderHomeContent,
+  },
+  {
     path: '/story',
     title: 'Stephanie’s Story & Executive CV | Stephanie Egharevba',
     description: 'Executive biography, lived reality with Osteogenesis Imperfecta, and verified curriculum vitae of Stephanie Egharevba.',

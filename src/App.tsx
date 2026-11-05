@@ -69,6 +69,8 @@ import { StoryAndCvView } from './components/StoryAndCvView';
 import { BlogView } from './components/BlogView';
 import NavigationDrawer from './components/NavigationDrawer';
 import SocialMarqueeFooter from './components/SocialMarqueeFooter';
+import MyImpactSection from './components/MyImpactSection';
+import { ImpactView } from './components/ImpactView';
 import {
   FloatingAccessibilityWidget,
   AccessibilityPreferences,
@@ -114,6 +116,7 @@ function getInitialPage(): PageId {
   if (pageParam === 'books' || path === '/books') return 'books';
   if (pageParam === 'blog' || path === '/blog' || path === '/blog-admin') return 'blog';
   if (pageParam === 'gallery' || path === '/gallery') return 'gallery';
+  if (pageParam === 'impact' || path === '/impact') return 'impact';
   if (
     pageParam === 'contact' ||
     pageParam === 'enquiries' ||
@@ -408,6 +411,15 @@ export default function App() {
         image: '/og_social_preview.jpg',
         path: '/contact',
       },
+      impact: {
+        title: 'My Impact & Recommendations | Stephanie Egharevba',
+        description:
+          'Read endorsements and testimonials for Stephanie Egharevba from conference hosts, enterprise founders, mentors, and teammates on digital accessibility, speaking, and inclusion.',
+        keywords:
+          'Stephanie Egharevba Recommendations, Digital Accessibility Testimonials, Inclusive Africa Conference Speaker Endorsements, Disability Inclusion Reviews',
+        image: '/og_social_preview.jpg',
+        path: '/impact',
+      },
     };
 
     const currentSeo = PAGE_SEO[activePage] || PAGE_SEO.overview;
@@ -485,6 +497,7 @@ export default function App() {
       blog: '/blog',
       gallery: '/gallery',
       contact: '/contact',
+      impact: '/impact',
     };
     const targetPath = routeMap[page] || '/';
     if (typeof window !== 'undefined' && window.location.pathname !== targetPath) {
@@ -1372,6 +1385,12 @@ export default function App() {
                   ))}
                 </div>
               </motion.section>
+
+              {/* SECTION 5: MY IMPACT (TESTIMONIALS & ENDORSEMENTS) */}
+              <MyImpactSection
+                onNavigateToImpact={() => navigateTo('impact')}
+                reduceMotion={a11yPrefs.reduceMotion}
+              />
             </motion.div>
           )}
 
@@ -2655,6 +2674,13 @@ export default function App() {
                 </div>
               </section>
             </motion.div>
+          )}
+
+          {/* ================================================================= */}
+          {/* PAGE: IMPACT (LINKEDIN RECOMMENDATIONS & ENDORSEMENTS)            */}
+          {/* ================================================================= */}
+          {activePage === 'impact' && (
+            <ImpactView onNavigate={navigateTo} reduceMotion={a11yPrefs.reduceMotion} />
           )}
         </AnimatePresence>
       </main>

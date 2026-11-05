@@ -1,10 +1,147 @@
-export type PageId = 'overview' | 'work' | 'speaking' | 'books' | 'blog' | 'gallery' | 'cv' | 'contact';
+export type PageId = 'overview' | 'work' | 'speaking' | 'books' | 'blog' | 'gallery' | 'cv' | 'contact' | 'impact';
 
 export type ProjectCategory =
   | 'All'
   | 'WCAG & Accessibility'
   | 'D&I Strategy'
   | 'Workforce & Tech';
+
+export interface RecommendationItem {
+  id: string;
+  name: string;
+  role: string;
+  shortRole: string;
+  organization?: string;
+  relationship: string;
+  date: string;
+  category: 'Keynote Speaking' | 'WCAG & Accessibility' | 'D&I Strategy' | 'Youth Leadership';
+  highlightQuote: string;
+  fullQuote: string;
+  featuredOnHome?: boolean;
+}
+
+export const RECOMMENDATIONS_DATA: RecommendationItem[] = [
+  {
+    id: 'davies-shavanga',
+    name: 'Davies Shavanga',
+    role: 'Events Lead | Programs | Conferences | Accessible Events',
+    shortRole: 'Events Lead & Speaker Host, Inclusive Africa Conference',
+    relationship: 'Speaker host at Inclusive Africa Conference 2025 & 2026',
+    date: 'October 27, 2026',
+    category: 'Keynote Speaking',
+    featuredOnHome: true,
+    highlightQuote:
+      'Having hosted Stephanie as a speaker at the Inclusive Africa Conference in both 2025 and 2026, I have seen firsthand the passion, knowledge, and authenticity she brings to digital accessibility and disability advocacy.',
+    fullQuote:
+      'Having hosted Stephanie as a speaker at the Inclusive Africa Conference in both 2025 and 2026, I have seen firsthand the passion, knowledge, and authenticity she brings to digital accessibility and disability advocacy.\n\nWhat stands out most is her ability to connect lived experience with practical insight and inspire audiences to think differently about inclusion. Stephanie leads with purpose and uses her voice to champion meaningful change. I am proud to recommend her as an outstanding youth leader, international speaker, and powerful advocate for a more accessible digital world.',
+  },
+  {
+    id: 'lidia-pretorius',
+    name: 'Lidia Pretorius',
+    role: 'Disability Inclusion Strategist | Programme Design & Implementation | Coaching & Facilitation | Helping leaders move inclusion from policy into practice — in Africa and beyond',
+    shortRole: 'Disability Inclusion Strategist & Mentor',
+    relationship: 'Stephanie’s Mentor & Strategic Inclusion Collaborator',
+    date: 'January 29, 2026',
+    category: 'D&I Strategy',
+    featuredOnHome: true,
+    highlightQuote:
+      'You don’t often encounter young digital inclusion activists who can move so seamlessly between technical accessibility, lived reality, and strategic application. Stephanie is one of those rare people.',
+    fullQuote:
+      'You don’t often encounter young digital inclusion activists who can move so seamlessly between technical accessibility, lived reality, and strategic application. Stephanie is one of those rare people.\n\nThe clarity with which she translates complex accessibility and digital inclusion issues into practical, engaging, and immediately usable language is genuinely exceptional. Her work doesn’t just inform, it mobilises. Her posts were compelling enough to move me from reader to inbox to a discovery conversation and, very quickly, into active collaboration.\n\nWhat stood out immediately was not only her technical grasp but also her work ethic, intentionality, and systems awareness. We are already structuring collaboration across several digital inclusion fronts within my own work, and exploring extending this into the work of ecosystem partners — a pace and depth of engagement that speaks to both her credibility and her professionalism.\n\nStephanie is not only a strong emerging voice in digital inclusion. She is a practitioner, a translator, and a bridge-builder. If you are working anywhere near diversity and inclusion, accessibility, inclusive technology, or digital equity, she is someone to watch, support, and collaborate with.',
+  },
+  {
+    id: 'ijaodola-tope-kareem',
+    name: 'Ijaodola Tope Kareem',
+    role: 'Co-Founder/CEO at Rushbox',
+    shortRole: 'Co-Founder & CEO, Rushbox',
+    relationship: 'Client (Digital Product MVP & Accessibility Features)',
+    date: 'December 24, 2025',
+    category: 'WCAG & Accessibility',
+    featuredOnHome: true,
+    highlightQuote:
+      'Was an absolutely lovely time building and iterating our MVP alongside Stephanie. She pushed heavy for building disability inclusive features from the start, and we’re glad we did!',
+    fullQuote:
+      'Was an absolutely lovely time building and iterating our MVP alongside Stephanie. She pushed heavy for building disability inclusive features from the start, and we’re glad we did!',
+  },
+  {
+    id: 'isimeme-whyte',
+    name: 'Isimeme Whyte',
+    role: 'Business Development Strategist | Social Entrepreneur | Driving Growth in Agritech, EdTech & the Creative Economy | TVET & Workforce Strategist | Public-Private Partnerships | TEDx Speaker & Filmmaker | AI Educator',
+    shortRole: 'Business Development Strategist, TEDx Speaker & Social Entrepreneur',
+    relationship: 'Professional Collaborator & Strategic Advisory',
+    date: 'October 22, 2024',
+    category: 'Keynote Speaking',
+    highlightQuote:
+      'If you are looking for someone that speaks exceptionally well and is also passionate about what she does, then Stephanie is definitely the right person for you. I totally recommend her.',
+    fullQuote:
+      'If you are looking for someone that speaks exceptionally well and is also passionate about what she does, then Stephanie is definitely the right person for you. I totally recommend her.\n\nI love the fact that she uses her platforms and career to impact and inspire people especially in the educational and technological sector.\n\nHer commitment to youth development and passion to drive total inclusivity in Nigeria and Africa at large is amazing.\n\nLastly, I must mention the fact that she’s very accessible, her communication skills is topnotch and she delivers her job with excellence and keen attention to details.',
+  },
+  {
+    id: 'tobi-aminu',
+    name: 'Tobi Aminu',
+    role: 'Programme/Hub Manager, Nigeria Agri-Business Data & Investment Hub, Lagos Business School',
+    shortRole: 'Programme/Hub Manager, Lagos Business School',
+    relationship: 'Worked on the same team with Stephanie',
+    date: 'January 1, 2025',
+    category: 'Youth Leadership',
+    highlightQuote:
+      'Stephanie is a bold and empathetic advocate of diversity and inclusion with clear dissipation of passion and commitment to push through, in what she does.',
+    fullQuote:
+      'Stephanie is a bold and empathetic advocate of diversity and inclusion with clear dissipation of passion and commitment to push through, in what she does.',
+  },
+  {
+    id: 'precious-eze',
+    name: 'Precious Eze',
+    role: 'Lead Content Development and Audience at Build Without Barrier',
+    shortRole: 'Lead Content Development, Build Without Barrier',
+    relationship: 'Worked on the same team with Stephanie',
+    date: 'December 27, 2024',
+    category: 'Youth Leadership',
+    highlightQuote:
+      'Stephanie Egharevba is an exceptional leader whose commitment to inclusion and innovation is genuinely inspiring. Her significant contributions to diversity and accessibility showcase her talent for driving impactful change.',
+    fullQuote:
+      'Stephanie Egharevba is an exceptional leader whose commitment to inclusion and innovation is genuinely inspiring. Her significant contributions to diversity and accessibility showcase her talent for driving impactful change with unwavering empathy and dedication.',
+  },
+  {
+    id: 'amanda-jaiyeola',
+    name: 'Amanda Jaiyeola',
+    role: 'Founder, Achèo Koncept | Amanda Jaiyeola Foundation | Bureau of Representatives (BOR), Afrikan Youth Business Council — West Africa | Creative Director',
+    shortRole: 'Founder, Amanda Jaiyeola Foundation & Achèo Koncept',
+    relationship: 'Worked on the same team with Stephanie',
+    date: 'September 8, 2024',
+    category: 'Youth Leadership',
+    highlightQuote:
+      'She will assist in ensuring that your initiatives are inclusive and impactful.',
+    fullQuote:
+      'She will assist in ensuring that your initiatives are inclusive and impactful.',
+  },
+  {
+    id: 'odunayo-adelusi',
+    name: 'Odunayo Adelusi',
+    role: 'Gender Equality and Social Inclusion (GESI) Expert',
+    shortRole: 'Gender Equality and Social Inclusion (GESI) Expert',
+    relationship: 'Client & Collaborator',
+    date: 'May 27, 2024',
+    category: 'D&I Strategy',
+    highlightQuote:
+      'Stephanie depicts high level of intelligence, Confident in herself and vast in the development knowledge. I will always recommend her in any conversation that relates to inclusion and diversity.',
+    fullQuote:
+      'Stephanie depicts high level of intelligence, Confident in herself and vast in the development knowledge. I will always recommend her in any conversation that relates to inclusion and diversity.',
+  },
+  {
+    id: 'olajide-olamilekan',
+    name: 'Olajide Olamilekan',
+    role: 'Brand & Product Designer • Founder, Agalio',
+    shortRole: 'Brand & Product Designer • Founder, Agalio',
+    relationship: 'Reported directly to Stephanie',
+    date: 'March 1, 2024',
+    category: 'WCAG & Accessibility',
+    highlightQuote:
+      'She is an extraordinary person to work with, I highly recommend her.',
+    fullQuote:
+      'She is an extraordinary person to work with, I highly recommend her.',
+  },
+];
 
 export interface BookItem {
   id: string;
