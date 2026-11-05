@@ -1469,6 +1469,14 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                       encrypted database inbox, displays a reference receipt to the sender, and
                       supports optional newsletter sign-ups.
                     </li>
+                    <li>
+                      • <strong>Firestore Cloud Function Trigger:</strong>{' '}
+                      <code>onNewsletterSubscriberCreated</code> (
+                      <code>functions/src/index.ts</code>) triggers on{' '}
+                      <code>newsletter_subscribers/&#123;subscriberId&#125;</code> document creation
+                      to sync the subscriber and dispatch the welcome email via Sendbyte with
+                      idempotency protection.
+                    </li>
                   </ul>
                 </div>
 

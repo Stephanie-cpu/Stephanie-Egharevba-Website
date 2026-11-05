@@ -247,6 +247,58 @@ service cloud.firestore {
       data.createdAt is timestamp;
     }
 
+    function isValidBlogPost(data) {
+      return data.keys().hasAll([
+        'title',
+        'subtitle',
+        'topic',
+        'publishedAt',
+        'readingTime',
+        'pullQuote',
+        'body',
+        'status',
+        'authorUid',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'title',
+        'subtitle',
+        'topic',
+        'publishedAt',
+        'readingTime',
+        'pullQuote',
+        'body',
+        'coverImage',
+        'coverImageAlt',
+        'status',
+        'authorUid',
+        'createdAt',
+        'updatedAt'
+      ]) &&
+      data.title is string && data.title.size() >= 2 && data.title.size() <= 200 &&
+      data.subtitle is string && data.subtitle.size() <= 300 &&
+      data.topic is string && data.topic.size() <= 60 &&
+      data.topic in [
+        'Accessibility in Practice',
+        'Inclusion & Culture',
+        'Personal Reflections',
+        'Builder Notes'
+      ] &&
+      data.publishedAt is string && data.publishedAt.size() <= 60 &&
+      data.readingTime is string && data.readingTime.size() <= 40 &&
+      data.pullQuote is string && data.pullQuote.size() <= 500 &&
+      data.body is string && data.body.size() >= 5 && data.body.size() <= 20000 &&
+      (!('coverImage' in data) || (data.coverImage is string && data.coverImage.size() <= 500000)) &&
+      (!('coverImageAlt' in data) || (data.coverImageAlt is string && data.coverImageAlt.size() <= 300)) &&
+      data.status is string && data.status.size() <= 20 &&
+      data.status in ['published', 'draft'] &&
+      data.authorUid is string && data.authorUid.size() >= 1 && data.authorUid.size() <= 128 &&
+      data.authorUid == request.auth.uid &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
     // Collection 1: Global CMS Settings (/cms_settings/{settingId})
     match /cms_settings/{settingId} {
       allow get: if isValidId(settingId);
@@ -354,6 +406,30 @@ service cloud.firestore {
         incoming().diff(existing()).affectedKeys().hasOnly(['role'])
       );
       allow delete: if isSignedIn() && isValidId(adminId) && isAdmin();
+    }
+
+    // Collection 7: Blog Posts (/blog_posts/{postId}) - Writable only by Stephanie (Admin)
+    match /blog_posts/{postId} {
+      allow get: if isValidId(postId) && (existing().status == 'published' || isEditorOrAdmin());
+      allow list: if existing().status == 'published' || isBootstrappedAdmin();
+      allow create: if isSignedIn() && isValidId(postId) && isValidBlogPost(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time && isEditorOrAdmin();
+      allow update: if isSignedIn() && isValidId(postId) && isValidBlogPost(incoming()) && incoming().createdAt == existing().createdAt && incoming().authorUid == existing().authorUid && incoming().updatedAt == request.time && (
+        isAdmin() &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'title',
+          'subtitle',
+          'topic',
+          'publishedAt',
+          'readingTime',
+          'pullQuote',
+          'body',
+          'coverImage',
+          'coverImageAlt',
+          'status',
+          'updatedAt'
+        ])
+      );
+      allow delete: if isSignedIn() && isValidId(postId) && isAdmin();
     }
   }
 }

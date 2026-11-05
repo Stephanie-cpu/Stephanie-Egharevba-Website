@@ -66,6 +66,7 @@ import {
 } from './components/ProjectModals';
 import { PhotoGalleryPressKit } from './components/PhotoGalleryPressKit';
 import { StoryAndCvView } from './components/StoryAndCvView';
+import { BlogView } from './components/BlogView';
 import {
   FloatingAccessibilityWidget,
   AccessibilityPreferences,
@@ -109,6 +110,7 @@ function getInitialPage(): PageId {
   if (pageParam === 'work' || path === '/work') return 'work';
   if (pageParam === 'speaking' || path === '/speaking') return 'speaking';
   if (pageParam === 'books' || path === '/books') return 'books';
+  if (pageParam === 'blog' || path === '/blog' || path === '/blog-admin') return 'blog';
   if (pageParam === 'gallery' || path === '/gallery') return 'gallery';
   if (pageParam === 'contact' || path === '/contact') return 'contact';
   return 'overview';
@@ -370,6 +372,15 @@ export default function App() {
         image: '/og_social_preview.jpg',
         path: '/books',
       },
+      blog: {
+        title: 'Blog & Field Notes | Stephanie Egharevba',
+        description:
+          'Relaxed, human-first field notes and essays by Stephanie Egharevba on digital accessibility, WCAG in practice, disability inclusion, and building better products in Africa.',
+        keywords:
+          'The Unbias Project, Stephanie Egharevba Blog, Digital Accessibility Field Notes, Disability Inclusion Essays, WCAG Practical Guide',
+        image: '/og_social_preview.jpg',
+        path: '/blog',
+      },
       gallery: {
         title: 'Press Portraits & Media Kit | Stephanie Egharevba',
         description:
@@ -462,6 +473,7 @@ export default function App() {
       work: '/work',
       speaking: '/speaking',
       books: '/books',
+      blog: '/blog',
       gallery: '/gallery',
       contact: '/contact',
     };
@@ -780,6 +792,7 @@ export default function App() {
     { id: 'work', label: 'Work' },
     { id: 'speaking', label: 'Speaking' },
     { id: 'books', label: 'Books' },
+    { id: 'blog', label: 'Blog' },
     { id: 'gallery', label: 'Gallery' },
   ];
 
@@ -2120,6 +2133,27 @@ export default function App() {
                   </motion.article>
                 ))}
               </div>
+            </motion.div>
+          )}
+
+          {/* ================================================================= */}
+          {/* PAGE 4B: BLOG & FIELD NOTES (THE UNBIAS DISPATCH)                 */}
+          {/* ================================================================= */}
+          {activePage === 'blog' && (
+            <motion.div
+              key="page-blog"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: EASE_EDITORIAL }}
+            >
+              <BlogView
+                cmsArticles={cmsArticles}
+                substackUrl={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
+                onDiscussArticle={(articleTitle) =>
+                  handleInquireWithContext(articleTitle, 'Media & Press')
+                }
+              />
             </motion.div>
           )}
 

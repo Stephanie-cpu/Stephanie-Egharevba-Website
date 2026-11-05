@@ -389,6 +389,100 @@
         }
       },
       "required": ["email", "role", "createdAt"]
+    },
+    "BlogPost": {
+      "title": "BlogPost",
+      "description": "Full-length blog notes published by Stephanie Egharevba via the private Blog Admin Studio.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 200,
+          "description": "Blog post headline."
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Standfirst or subtitle."
+        },
+        "topic": {
+          "type": "string",
+          "enum": [
+            "Accessibility in Practice",
+            "Inclusion & Culture",
+            "Personal Reflections",
+            "Builder Notes"
+          ],
+          "maxLength": 60,
+          "description": "Blog topic category."
+        },
+        "publishedAt": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "Formatted publication date."
+        },
+        "readingTime": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "Estimated reading time."
+        },
+        "pullQuote": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Highlighted pull quote."
+        },
+        "body": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 20000,
+          "description": "Full markdown/paragraph body content."
+        },
+        "coverImage": {
+          "type": "string",
+          "maxLength": 500000,
+          "description": "Optional article cover image URL or data URI."
+        },
+        "coverImageAlt": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Accessible alt text for cover image."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["published", "draft"],
+          "maxLength": 20,
+          "description": "Publication status."
+        },
+        "authorUid": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Admin UID."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp."
+        }
+      },
+      "required": [
+        "title",
+        "subtitle",
+        "topic",
+        "publishedAt",
+        "readingTime",
+        "pullQuote",
+        "body",
+        "status",
+        "authorUid",
+        "createdAt",
+        "updatedAt"
+      ]
     }
   },
   "firestore": {
@@ -415,6 +509,10 @@
     "/admins/{adminId}": {
       "schema": "AdminUser",
       "description": "Trusted admin and editor role records."
+    },
+    "/blog_posts/{postId}": {
+      "schema": "BlogPost",
+      "description": "Full-length blog notes published by Admin."
     }
   }
 }

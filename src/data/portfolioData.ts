@@ -1,4 +1,4 @@
-export type PageId = 'overview' | 'work' | 'speaking' | 'books' | 'gallery' | 'cv' | 'contact';
+export type PageId = 'overview' | 'work' | 'speaking' | 'books' | 'blog' | 'gallery' | 'cv' | 'contact';
 
 export type ProjectCategory =
   | 'All'
