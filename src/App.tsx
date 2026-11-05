@@ -60,7 +60,6 @@ import { AccessibilitySandbox } from './components/AccessibilitySandbox';
 import { EditorialPreloader } from './components/EditorialPreloader';
 import {
   AddProjectModal,
-  ProjectLightboxModal,
   SpeakingReaderModal,
 } from './components/ProjectModals';
 import { PhotoGalleryPressKit } from './components/PhotoGalleryPressKit';
@@ -112,7 +111,7 @@ function getInitialPage(): PageId {
 }
 
 const APPROVED_100_WORD_BIO =
-  'Stephanie Osasumwen Egharevba is a Nigerian Diversity & Inclusion Leader, Disability Inclusion Specialist, and Public Speaker based in Lagos. Ranked in the Top 3% of Global Speakers on Sessionize and named among ALX Nigeria’s Top 100 Women in Tech (2025), she serves as Associate Engagement Officer at Jobberman Nigeria and Talent Corp Ambassador for the Mastercard Foundation Project Initiative. Previously Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria—where she founded the 200+ member Alumni Disability Community—she audits digital platforms against WCAG usability standards for the African Disability Forum and Rushbox.';
+  'Stephanie Osasumwen Egharevba is a Nigerian Diversity & Inclusion Leader, Disability Inclusion Specialist, and Public Speaker based in Lagos. Ranked in the Top 3% of Global Speakers on Sessionize and named among ALX Nigeria’s Top 100 Women in Tech (2025), she serves as Associate Engagement Officer at Jobberman Nigeria and Talent Corp Ambassador for the Mastercard Foundation Project Initiative. Previously Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria—where she founded the 200+ member Alumni Disability Community—she audits digital platforms against WCAG usability standards for Rushbox and enterprise clients.';
 
 const DEFAULT_A11Y_PREFS: AccessibilityPreferences = {
   theme: 'light',
@@ -211,10 +210,10 @@ export default function App() {
     }
   });
 
-  // Local + CMS Combined Projects (v5 ensures fresh schematic thumbnails & Client Africa spelling)
+  // Local + CMS Combined Projects
   const [localProjects, setLocalProjects] = useState<ProjectItem[]>(() => {
     try {
-      const saved = localStorage.getItem('stephanie_portfolio_projects_v5');
+      const saved = localStorage.getItem('stephanie_portfolio_projects_v8');
       return saved ? JSON.parse(saved) : INITIAL_PROJECTS;
     } catch {
       return INITIAL_PROJECTS;
@@ -230,7 +229,6 @@ export default function App() {
   >('All');
 
   // Modals state
-  const [activeLightboxProject, setActiveLightboxProject] = useState<ProjectItem | null>(null);
   const [activeSpeakingItem, setActiveSpeakingItem] = useState<SpeakingEngagement | null>(null);
   const [isAddProjectOpen, setIsAddProjectOpen] = useState(false);
 
@@ -420,7 +418,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('stephanie_portfolio_projects_v5', JSON.stringify(localProjects));
+      localStorage.setItem('stephanie_portfolio_projects_v8', JSON.stringify(localProjects));
     } catch {
       // ignore
     }
@@ -1189,7 +1187,7 @@ export default function App() {
                     >
                       <div className="space-y-4">
                         <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
-                          AFRICAN DISABILITY FORUM · RUSHBOX
+                          RUSHBOX · PLATFORM AUDITS
                         </div>
                         <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
                           WCAG &amp; Digital Accessibility
@@ -1460,7 +1458,7 @@ export default function App() {
           )}
 
           {/* ================================================================= */}
-          {/* PAGE 2: WORK (CLEAN CARDS + ACCESSIBILITY CONTRAST LAB)           */}
+          {/* PAGE 2: WORK (EXECUTIVE EDITORIAL DOSSIER & CASE STUDIES)         */}
           {/* ================================================================= */}
           {activePage === 'work' && (
             <motion.div
@@ -1469,132 +1467,267 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: EASE_EDITORIAL }}
-              className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12"
+              className="space-y-0"
             >
-              {/* Executive Header & Filter Bar (No Public CMS/Staging Controls) */}
-              <div className="space-y-6 border-b border-[#E2E8F0] pb-7">
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                  <div className="space-y-1.5">
-                    <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
-                      SELECTED WORK &amp; TECHNICAL AUDITS
+              {/* 1. Executive Dark Hero Banner */}
+              <section className="bg-[#0B0B0B] text-white border-b border-white/10">
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-12 pb-10 sm:pt-16 sm:pb-14">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+                    <div className="lg:col-span-8 space-y-4">
+                      <div className="font-mono text-xs text-[#94A3B8] tracking-wide">
+                        Selected Work · Technical Audits · D&amp;I Advisory
+                      </div>
+                      <h1
+                        className="font-display font-bold tracking-tight text-white leading-[1.08]"
+                        style={{ fontSize: 'clamp(2.25rem, 5vw, 3.5rem)' }}
+                      >
+                        Case Studies &amp; WCAG Audits
+                      </h1>
+                      <p className="text-base sm:text-lg text-[#CBD5E1] leading-relaxed max-w-[58ch]">
+                        Engineering accessible digital platforms, auditing continental web portals
+                        against WCAG 2.1 / 2.2 AA standards, and scaling inclusive workforce
+                        pipelines across Africa.
+                      </p>
                     </div>
-                    <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-[#0F172A]">
-                      Projects &amp; Case Studies
-                    </h1>
+
+                    <div className="lg:col-span-4 flex lg:justify-end">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleInquireWithContext(
+                            'WCAG 2.2 Platform Audit & D&I Advisory',
+                            'WCAG Accessibility Audit'
+                          )
+                        }
+                        aria-label="Commission a WCAG 2.2 platform audit or D&I strategy advisory"
+                        className="group min-h-[44px] px-6 py-3.5 text-xs sm:text-sm font-semibold text-[#0B0B0B] bg-white hover:bg-[#1D4ED8] hover:text-white rounded-full transition-colors inline-flex items-center justify-center gap-2.5 w-full sm:w-fit cursor-pointer whitespace-nowrap shrink-0"
+                      >
+                        <span>Commission an Audit or Advisory</span>
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* 2. Filter Bar & Editorial Dossier Index */}
+              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-10">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E6E4DD]">
+                  <div className="flex items-center gap-2 text-xs text-[#575652]">
+                    <span className="font-semibold text-[#141413]">Filter by Practice Area</span>
+                    <span aria-hidden="true">·</span>
+                    <span className="font-mono tabular-nums">
+                      Showing {filteredProjects.length} of {allProjects.length} engagements
+                    </span>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleInquireWithContext(
-                        'WCAG 2.2 Platform Audit & D&I Advisory',
-                        'WCAG Accessibility Audit'
-                      )
-                    }
-                    aria-label="Commission a WCAG 2.2 platform audit or D&I strategy advisory"
-                    className="group px-5 py-2.5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center gap-2 w-fit cursor-pointer"
+                  <div
+                    role="group"
+                    aria-label="Filter projects by category"
+                    className="flex flex-wrap items-center gap-1 p-1 bg-[#F2EFE9] rounded-xl w-fit border border-[#E6E4DD]"
                   >
-                    <span>Commission an Audit or Advisory</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                  </button>
+                    {(
+                      ['All', 'WCAG & Accessibility', 'D&I Strategy', 'Workforce & Tech'] as const
+                    ).map((cat) => {
+                      const isActive = selectedCategory === cat;
+                      return (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => setSelectedCategory(cat)}
+                          aria-label={`Filter case studies by ${cat}`}
+                          aria-pressed={isActive}
+                          className={`min-h-[38px] px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                            isActive
+                              ? 'bg-white text-[#141413] shadow-xs font-semibold'
+                              : 'text-[#575652] hover:text-[#141413]'
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
-                {/* Clean Filter Tabs */}
-                <div
-                  role="group"
-                  aria-label="Filter projects"
-                  className="flex flex-wrap items-center gap-1.5 p-1.5 bg-[#F1F5F9] rounded-xl w-fit border border-[#E2E8F0]"
-                >
-                  {(
-                    ['All', 'WCAG & Accessibility', 'D&I Strategy', 'Workforce & Tech'] as const
-                  ).map((cat) => {
-                    const isActive = selectedCategory === cat;
-                    return (
-                      <button
-                        key={cat}
-                        type="button"
-                        onClick={() => setSelectedCategory(cat)}
-                        aria-label={`Filter case studies by ${cat}`}
-                        aria-pressed={isActive}
-                        className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer ${
-                          isActive
-                            ? 'bg-white text-[#0F172A] shadow-xs font-semibold'
-                            : 'text-[#64748B] hover:text-[#0F172A]'
-                        }`}
-                      >
-                        {cat}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                {/* Editorial Case Study Rows */}
+                <div className="divide-y divide-[#E6E4DD]">
+                  <AnimatePresence mode="popLayout">
+                    {filteredProjects.map((project) => {
+                      return (
+                        <motion.article
+                          layout
+                          key={project.id}
+                          initial={{ opacity: 0, y: 14 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.3, ease: EASE_EDITORIAL }}
+                          className="py-10 first:pt-2 last:pb-2 group"
+                        >
+                          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+                            {/* Left/Main Column (7 cols): Title, Summary & Challenge / Intervention */}
+                            <div className="lg:col-span-7 space-y-5">
+                              <div className="space-y-2">
+                                <div className="text-xs text-[#575652]">
+                                  {project.organization} · {project.role} · {project.year}
+                                </div>
+                                <h2 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#141413] leading-snug">
+                                  {project.title}
+                                </h2>
+                                <p className="text-sm text-[#3F3E3A] leading-relaxed">
+                                  {project.summary}
+                                </p>
+                              </div>
 
-              {/* Clean, Uncluttered 2-Column Case Study Cards */}
-              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7">
-                <AnimatePresence mode="popLayout">
-                  {filteredProjects.map((project, idx) => (
-                    <motion.article
-                      layout
-                      key={project.id}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.96 }}
-                      transition={{ duration: 0.35, delay: idx * 0.04, ease: EASE_EDITORIAL }}
-                      whileHover={{ y: -4 }}
-                      onClick={() => setActiveLightboxProject(project)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          setActiveLightboxProject(project);
-                        }
-                      }}
-                      tabIndex={0}
-                      role="button"
-                      aria-label={`Read case study: ${project.title}`}
-                      className="group bg-white border border-[#E2E8F0] hover:border-[#0F172A] rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-200 cursor-pointer"
-                    >
-                      <EditorialVisualPlate
-                        theme={project.visualTheme}
-                        customImageUrl={project.customImageUrl}
-                        title={project.title}
-                        className="h-48 sm:h-52 w-full border-b border-[#E2E8F0]"
-                      />
+                              {/* Structured Challenge & Intervention Grid */}
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-[#E6E4DD]">
+                                <div className="space-y-1">
+                                  <div className="text-xs font-semibold text-[#141413]">
+                                    The Challenge
+                                  </div>
+                                  <p className="text-xs text-[#575652] leading-relaxed">
+                                    {project.challenge}
+                                  </p>
+                                </div>
+                                <div className="space-y-1">
+                                  <div className="text-xs font-semibold text-[#141413]">
+                                    The Intervention
+                                  </div>
+                                  <p className="text-xs text-[#575652] leading-relaxed">
+                                    {project.intervention}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
 
-                      <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-5">
-                        <div className="space-y-2">
-                          {/* Combined Organization · Role Tag */}
-                          <div className="text-xs font-medium text-[#64748B] truncate">
-                            {project.organization} · {project.role}
+                            {/* Right Column (5 cols): Verified Outcomes, Deliverables & Action */}
+                            <div className="lg:col-span-5 w-full bg-white border border-[#E6E4DD] rounded-2xl p-5 sm:p-6 space-y-5">
+                              <div className="space-y-2.5">
+                                <div className="text-xs font-semibold text-[#141413]">
+                                  Key Outcomes &amp; Impact
+                                </div>
+                                <ul className="space-y-2">
+                                  {project.impactMetrics.map((metric, mIdx) => (
+                                    <li
+                                      key={mIdx}
+                                      className="text-xs text-[#3F3E3A] flex items-start gap-2 leading-relaxed"
+                                    >
+                                      <span className="font-mono text-[11px] font-semibold text-[#1D4ED8] shrink-0">
+                                        0{mIdx + 1}.
+                                      </span>
+                                      <span>{metric}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <div className="pt-3.5 border-t border-[#E6E4DD] space-y-1.5">
+                                <div className="text-[11px] font-semibold text-[#575652]">
+                                  Deliverables
+                                </div>
+                                <p className="text-xs text-[#3F3E3A] leading-relaxed">
+                                  {project.deliverables.join(' · ')}
+                                </p>
+                              </div>
+
+                              <div className="pt-3 border-t border-[#E6E4DD] flex items-center justify-end gap-3">
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleInquireWithContext(
+                                      project.title,
+                                      project.category === 'WCAG & Accessibility'
+                                        ? 'WCAG Accessibility Audit'
+                                        : 'D&I Strategy Advisory'
+                                    )
+                                  }
+                                  aria-label={`Enquire about work similar to ${project.title}`}
+                                  className="text-xs font-semibold text-[#1D4ED8] hover:underline inline-flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0"
+                                >
+                                  <span>Enquire About Similar Work</span>
+                                  <ArrowRight className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
                           </div>
+                        </motion.article>
+                      );
+                    })}
+                  </AnimatePresence>
+                </div>
+              </section>
 
-                          {/* Bold Aeonik Medium/Semibold 20px Project Title */}
-                          <h2 className="text-[20px] font-display font-semibold tracking-tight text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors leading-snug">
-                            {project.title}
-                          </h2>
-
-                          {/* Concise Two-Line Description */}
-                          <p className="text-sm text-[#475569] line-clamp-2 leading-relaxed">
-                            {project.summary}
-                          </p>
-                        </div>
-
-                        <div className="pt-3.5 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
-                          <span className="font-mono text-[11px] font-normal text-[#64748B] tabular-nums">
-                            {project.year}
-                          </span>
-                          <span className="inline-flex items-center gap-1 whitespace-nowrap shrink-0">
-                            <span>View Case Study</span>
-                            <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                          </span>
-                        </div>
+              {/* 3. How Stephanie Audits & Advises (3-Step Methodology) */}
+              <section className="border-t border-b border-[#E6E4DD] bg-white py-12 sm:py-16">
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-8">
+                  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="font-mono text-xs text-[#1D4ED8]">
+                        Engagement Methodology
                       </div>
-                    </motion.article>
-                  ))}
-                </AnimatePresence>
-              </motion.div>
+                      <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]">
+                        How Audits &amp; Strategy Engagements Work
+                      </h2>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => navigateTo('contact')}
+                      aria-label="Book a discovery call with Stephanie"
+                      className="text-xs font-semibold text-[#1D4ED8] hover:text-[#141413] inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+                    >
+                      <span>Schedule a Discovery Session</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
 
-              {/* Signature Interactive WCAG Contrast Lab */}
-              <div id="contrast-lab-section">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 pt-2">
+                    <div className="space-y-2.5 pr-2">
+                      <div className="font-mono text-xs font-semibold text-[#1D4ED8]">
+                        01. Diagnostic &amp; Assistive Teardown
+                      </div>
+                      <h3 className="text-base font-display font-bold text-[#141413]">
+                        WCAG 2.1 / 2.2 Level AA Evaluation
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#575652] leading-relaxed">
+                        Manual screen-reader testing, keyboard navigation tree verification,
+                        semantic DOM inspection, and color contrast auditing across core user flows.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2.5 pr-2 md:border-l md:border-[#E6E4DD] md:pl-6">
+                      <div className="font-mono text-xs font-semibold text-[#1D4ED8]">
+                        02. Remediation &amp; Policy Architecture
+                      </div>
+                      <h3 className="text-base font-display font-bold text-[#141413]">
+                        Prioritized Engineering &amp; D&amp;I Playbooks
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#575652] leading-relaxed">
+                        Actionable ticket roadmaps for frontend and UX teams paired with statutory
+                        disability accommodation policies for HR and executive leadership.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2.5 pr-2 md:border-l md:border-[#E6E4DD] md:pl-6">
+                      <div className="font-mono text-xs font-semibold text-[#1D4ED8]">
+                        03. Verification &amp; Team Enablement
+                      </div>
+                      <h3 className="text-base font-display font-bold text-[#141413]">
+                        CI/CD Guardrails &amp; Inclusive Hiring
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#575652] leading-relaxed">
+                        Hands-on workshops for product engineers and recruiters to sustain
+                        accessibility compliance and place qualified talent with disabilities.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* 4. Signature Interactive WCAG Contrast Lab */}
+              <div
+                id="contrast-lab-section"
+                className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16"
+              >
                 <AccessibilitySandbox />
               </div>
             </motion.div>
@@ -2628,14 +2761,7 @@ export default function App() {
         cmsArticles={cmsArticles}
       />
 
-      {/* Project & Speaking Modals */}
-      <ProjectLightboxModal
-        project={activeLightboxProject}
-        onClose={() => setActiveLightboxProject(null)}
-        onInquireAboutProject={(projectTitle) =>
-          handleInquireWithContext(projectTitle, 'WCAG Accessibility Audit')
-        }
-      />
+      {/* Speaking & Project Modals */}
 
       <SpeakingReaderModal
         item={activeSpeakingItem}

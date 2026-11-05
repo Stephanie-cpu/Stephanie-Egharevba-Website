@@ -449,8 +449,8 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
     title: 'Alumni Disability Community & Inclusion Strategy',
     subtitle: 'Mastercard Foundation Youth Advisory Council Nigeria',
     category: 'D&I Strategy',
-    year: '2024 — 2025',
-    organization: 'Mastercard Foundation',
+    year: '2024 - 2025',
+    organization: 'Mastercard Foundation Youth Advisory Council',
     role: 'Diversity & Inclusion Lead',
     visualTheme: 'council',
     summary:
@@ -497,33 +497,8 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
     ]
   },
   {
-    id: 'african-disability-forum-audit',
-    title: 'African Disability Forum Digital Audit',
-    subtitle: 'Continental Platform WCAG Usability & Remediation',
-    category: 'WCAG & Accessibility',
-    year: '2026',
-    organization: 'African Disability Forum',
-    role: 'Accessibility Consultant',
-    visualTheme: 'toolkit',
-    summary:
-      'Evaluated the Forum’s primary continental web platform against WCAG usability standards for executive remediation.',
-    challenge:
-      'Digital access barriers on the primary platform limited pan-African member organizations from accessing key resources.',
-    intervention:
-      'Conducted an in-depth WCAG usability audit and delivered strategic remediation guidelines to executive leadership.',
-    impactMetrics: [
-      'End-to-end WCAG usability evaluation',
-      'Executive remediation guidelines delivered',
-      'Accessible publishing workflow established'
-    ],
-    deliverables: [
-      'WCAG Usability Audit',
-      'Executive Remediation Strategy'
-    ]
-  },
-  {
     id: 'jobberman-mastercard-workforce',
-    title: 'West Africa Inclusive Workforce Pipeline',
+    title: 'Talent Corp Ambassador',
     subtitle: 'Equitable Skill Acquisition & Corporate Job Placement',
     category: 'Workforce & Tech',
     year: '2026 — Present',
@@ -625,20 +600,6 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
       'Embed universal WCAG accessibility standards into regional training curricula and candidate evaluation workflows.',
       'Facilitate targeted corporate job placements for young professionals with disabilities across partner employers.',
       'Advise hiring managers on workplace accommodation policy and inclusive onboarding standards.'
-    ]
-  },
-  {
-    id: 'exp-adf',
-    period: 'Jan 2026',
-    role: 'Accessibility Consultant',
-    organization: 'African Disability Forum',
-    location: 'Remote',
-    summary:
-      'Audited the Forum’s primary digital platform against WCAG standards and delivered executive remediation guidelines.',
-    highlights: [
-      'Audited multi-page continental web portals against WCAG 2.1/2.2 AA usability and screen-reader parity benchmarks.',
-      'Delivered a prioritized engineering remediation roadmap to executive leadership to resolve DOM, contrast, and keyboard traps.',
-      'Established accessible content-publishing standards for pan-African member organizations.'
     ]
   },
   {

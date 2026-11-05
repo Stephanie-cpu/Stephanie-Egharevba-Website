@@ -551,15 +551,12 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                     gesture is both an engineering failure and a massive commercial blind spot.
                   </p>
                   <p>
-                    Whether I am conducting technical WCAG 2.2 audits for the{' '}
-                    <strong className="font-semibold text-[#0F172A]">
-                      African Disability Forum
-                    </strong>{' '}
-                    and <strong className="font-semibold text-[#0F172A]">Rushbox</strong>, authoring
-                    developer guides like <em>Code for Every Body</em>, or addressing leaders at{' '}
-                    <em>TechCabal Moonshot</em> and <em>InAble</em>, my focus is structural: semantic
-                    code, enforceable recruitment policy, and digital products engineered for every
-                    human body.
+                    Whether I am conducting technical WCAG 2.2 audits for{' '}
+                    <strong className="font-semibold text-[#0F172A]">Rushbox</strong> and enterprise
+                    platforms, authoring developer guides like <em>Code for Every Body</em>, or
+                    addressing leaders at <em>TechCabal Moonshot</em> and <em>InAble</em>, my focus
+                    is structural: semantic code, enforceable recruitment policy, and digital
+                    products engineered for every human body.
                   </p>
                 </div>
 

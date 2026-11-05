@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { X, ArrowUpRight, Check, Copy, Plus } from 'lucide-react';
 import { ProjectCategory, ProjectItem, SpeakingEngagement } from '../data/portfolioData';
-import { EditorialVisualPlate } from './VisualPlates';
 
 interface ProjectLightboxProps {
   project: ProjectItem | null;
@@ -65,12 +64,17 @@ export const ProjectLightboxModal: React.FC<ProjectLightboxProps> = ({
 
         {/* Scrollable Content */}
         <div className="p-5 sm:p-8 overflow-y-auto space-y-6">
-          <EditorialVisualPlate
-            theme={project.visualTheme}
-            customImageUrl={project.customImageUrl}
-            title={project.title}
-            className="w-full h-52 sm:h-64 rounded-xl"
-          />
+          {project.customImageUrl && (
+            <div className="w-full h-52 sm:h-64 rounded-xl overflow-hidden border border-[#E6E4DD]">
+              <img
+                src={project.customImageUrl}
+                alt={project.title}
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
 
           <div className="space-y-2 border-b border-[#E6E4DD] pb-6">
             <div className="text-xs font-mono text-[#1D4ED8]">{project.role}</div>
