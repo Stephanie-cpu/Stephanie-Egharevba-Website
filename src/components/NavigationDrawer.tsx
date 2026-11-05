@@ -19,7 +19,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'contact', label: 'ENQUIRIES', path: '/enquiries' },
 ];
 
-interface NavigationDrawerProps {
+export interface NavigationDrawerProps {
   activePage: PageId;
   onNavigate: (page: PageId) => void;
   isDarkMode: boolean;
@@ -165,7 +165,7 @@ export default function NavigationDrawer({
         aria-label="Site Navigation"
         aria-hidden={!isOpen}
         style={{ backgroundColor: '#111111', color: '#FFFFFF' }}
-        className={`fixed top-0 right-0 z-50 h-full w-full sm:w-[420px] md:w-[480px] bg-neutral-900 text-white p-8 sm:p-12 flex flex-col justify-between shadow-2xl transition-transform duration-300 ease-in-out overflow-y-auto ${
+        className={`fixed top-0 right-0 z-50 h-full w-[82vw] max-w-[380px] sm:w-[420px] md:w-[460px] bg-neutral-900 text-white p-8 sm:p-12 flex flex-col justify-between shadow-2xl transition-transform duration-300 ease-in-out overflow-y-auto ${
           isOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'
         }`}
       >
@@ -192,29 +192,32 @@ export default function NavigationDrawer({
 
               return (
                 <li key={item.id}>
-                  <button
-                    type="button"
-                    onClick={() => handleSelectPage(item.id)}
+                  <a
+                    href={item.path}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (!isActive) {
+                        handleSelectPage(item.id);
+                      }
+                    }}
                     tabIndex={isOpen ? 0 : -1}
                     aria-current={isActive ? 'page' : undefined}
-                    style={{ color: isActive ? '#737373' : '#FFFFFF' }}
-                    className={`relative inline-block text-2xl sm:text-3xl md:text-4xl font-display font-extrabold tracking-tight transition-colors duration-200 text-left ${
-                      isActive
-                        ? 'text-neutral-500 opacity-60 cursor-default'
+                    className={`relative inline-block text-2xl sm:text-3xl md:text-4xl font-display font-extrabold uppercase tracking-tight transition-colors duration-200 ${
+                      isActive && isOpen
+                        ? 'animate-strike-active pointer-events-none'
                         : 'text-white hover:text-neutral-300 cursor-pointer'
                     }`}
                   >
                     <span>{item.label}</span>
 
-                    {/* Strikethrough line for active page */}
-                    {isActive && (
+                    {/* Pure white dynamic strike line */}
+                    {isActive && isOpen && (
                       <span
                         aria-hidden="true"
-                        style={{ backgroundColor: '#A3A3A3' }}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[3px] bg-neutral-400"
+                        className="animate-strike-line"
                       />
                     )}
-                  </button>
+                  </a>
                 </li>
               );
             })}
@@ -293,3 +296,4 @@ export default function NavigationDrawer({
     </>
   );
 }
+

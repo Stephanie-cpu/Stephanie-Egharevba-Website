@@ -257,3 +257,63 @@ html[data-theme="contrast"] *:focus-visible {
   transform: scaleX(1);
   transform-origin: left;
 }
+
+/* Steven Bartlett Style Drawer: Signature Delayed Strikethrough & Dim Sequence */
+@keyframes strikeAcross {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 104%;
+  }
+}
+
+@keyframes dimActiveText {
+  0% {
+    opacity: 1;
+    color: #ffffff;
+  }
+  100% {
+    opacity: 0.45;
+    color: #a3a3a3; /* muted grey */
+  }
+}
+
+/* Delay ensures the drawer finishes sliding open before the strike triggers */
+.animate-strike-active,
+.nav-item-active-dim {
+  animation: dimActiveText 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+}
+
+.animate-strike-line,
+.nav-item-strike {
+  position: absolute;
+  left: -2%;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 3px;
+  background-color: #ffffff; /* pure white strike line */
+  width: 0%;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: strikeAcross 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.4s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-strike-active,
+  .nav-item-active-dim {
+    animation: none !important;
+    opacity: 0.45 !important;
+    color: #a3a3a3 !important;
+  }
+  .animate-strike-line,
+  .nav-item-strike {
+    animation: none !important;
+    width: 104% !important;
+  }
+}
+
+
+
+
+
