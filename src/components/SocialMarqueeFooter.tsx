@@ -155,16 +155,6 @@ export default function SocialMarqueeFooter({
               NDPA &amp; GDPR Privacy Policy
             </button>
           )}
-          {onOpenCmsPortal && (
-            <button
-              type="button"
-              onClick={onOpenCmsPortal}
-              aria-label="Open Stephanie Egharevba Editorial CMS Portal"
-              className="hover:text-neutral-950 dark:hover:text-white transition-colors cursor-pointer"
-            >
-              CMS Portal
-            </button>
-          )}
         </div>
       </div>
     </footer>
