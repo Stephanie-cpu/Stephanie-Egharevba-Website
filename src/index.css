@@ -124,25 +124,14 @@ p, span, a, label {
   }
 }
 
-/* Fluid hardware-accelerated infinite loop - slow, relaxed 65s glide */
+/* Fluid hardware-accelerated infinite loop */
 .animate-marquee-track {
   display: flex;
   flex-shrink: 0;
   align-items: center;
+  min-width: max-content;
   will-change: transform;
-  animation: marqueeScroll 65s linear infinite;
-}
-
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
-  .animate-marquee-reverse,
-  .animate-marquee-track {
-    animation: none !important;
-  }
-  .animate-marquee-track {
-    overflow-x: auto;
-  }
+  animation: marqueeScroll 28s linear infinite;
 }
 
 /* Explicit high-contrast marquee colors: ink black in light mode, crisp white in dark mode */
