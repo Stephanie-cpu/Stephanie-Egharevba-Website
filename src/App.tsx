@@ -1837,33 +1837,93 @@ export default function App() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {cmsArticles.map((art) => (
-                    <div
-                      key={art.id}
-                      className="bg-white border border-[#E6E4DD] rounded-xl p-5 space-y-1.5"
-                    >
-                      <div className="text-xs text-[#1D4ED8] font-mono">
-                        {art.category.toUpperCase()} · {art.publisher} · {art.year}
+                  {cmsArticles.map((art) => {
+                    const hasLink = Boolean(art.externalUrl && art.externalUrl !== '#');
+                    const CardContent = (
+                      <>
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="text-xs text-[#1D4ED8] font-mono">
+                            {art.category.toUpperCase()} · {art.publisher} · {art.year}
+                          </div>
+                          {hasLink && (
+                            <ArrowUpRight className="w-4 h-4 text-[#575652] group-hover:text-[#1D4ED8] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
+                          )}
+                        </div>
+                        <h3 className="text-base font-display font-bold text-[#141413] group-hover:text-[#1D4ED8] transition-colors leading-snug">
+                          “{art.title}”
+                        </h3>
+                        <p className="text-xs text-[#575652] leading-relaxed">{art.excerpt}</p>
+                        {hasLink && (
+                          <div className="text-[11px] font-semibold text-[#1D4ED8] inline-flex items-center gap-1 pt-1">
+                            <span>Read publication</span>
+                          </div>
+                        )}
+                      </>
+                    );
+
+                    return hasLink ? (
+                      <a
+                        key={art.id}
+                        href={art.externalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Read "${art.title}" published in ${art.publisher} (opens in new tab)`}
+                        className="group bg-white border border-[#E6E4DD] hover:border-[#1D4ED8] rounded-xl p-5 space-y-1.5 transition-all shadow-xs hover:shadow-sm block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1D4ED8]"
+                      >
+                        {CardContent}
+                      </a>
+                    ) : (
+                      <div
+                        key={art.id}
+                        className="bg-white border border-[#E6E4DD] rounded-xl p-5 space-y-1.5"
+                      >
+                        {CardContent}
                       </div>
-                      <h3 className="text-base font-display font-bold text-[#141413]">
-                        “{art.title}”
-                      </h3>
-                      <p className="text-xs text-[#575652] leading-relaxed">{art.excerpt}</p>
-                    </div>
-                  ))}
-                  {PUBLICATIONS_AND_FEATURES.map((pub) => (
-                    <div
-                      key={pub.id}
-                      className="bg-white border border-[#E6E4DD] rounded-xl p-5 space-y-1.5"
-                    >
-                      <div className="text-xs text-[#575652] font-mono">
-                        {pub.publisher} · {pub.year}
+                    );
+                  })}
+                  {PUBLICATIONS_AND_FEATURES.map((pub) => {
+                    const hasLink = Boolean(pub.url);
+                    const CardContent = (
+                      <>
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="text-xs text-[#1D4ED8] font-mono">
+                            {pub.category.toUpperCase()} · {pub.publisher} · {pub.year}
+                          </div>
+                          {hasLink && (
+                            <ArrowUpRight className="w-4 h-4 text-[#575652] group-hover:text-[#1D4ED8] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
+                          )}
+                        </div>
+                        <h3 className="text-base font-display font-bold text-[#141413] group-hover:text-[#1D4ED8] transition-colors leading-snug">
+                          “{pub.title}”
+                        </h3>
+                        {hasLink && (
+                          <div className="text-[11px] font-semibold text-[#1D4ED8] inline-flex items-center gap-1 pt-1">
+                            <span>Read publication</span>
+                          </div>
+                        )}
+                      </>
+                    );
+
+                    return hasLink ? (
+                      <a
+                        key={pub.id}
+                        href={pub.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Read "${pub.title}" published in ${pub.publisher} (opens in new tab)`}
+                        className="group bg-white border border-[#E6E4DD] hover:border-[#1D4ED8] rounded-xl p-5 space-y-1.5 transition-all shadow-xs hover:shadow-sm block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1D4ED8]"
+                      >
+                        {CardContent}
+                      </a>
+                    ) : (
+                      <div
+                        key={pub.id}
+                        className="bg-white border border-[#E6E4DD] rounded-xl p-5 space-y-1.5"
+                      >
+                        {CardContent}
                       </div>
-                      <h3 className="text-base font-display font-bold text-[#141413]">
-                        “{pub.title}”
-                      </h3>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </section>
             </motion.div>

@@ -234,6 +234,7 @@ export interface PublicationItem {
   publisher: string;
   year: string;
   category: string;
+  url?: string;
 }
 
 export interface HonorItem {
@@ -889,32 +890,36 @@ export const HONORS_AND_RECOGNITION: HonorItem[] = [
 
 export const PUBLICATIONS_AND_FEATURES: PublicationItem[] = [
   {
-    id: 'pub-refinedng',
-    title: 'Building Inclusive Tech in Africa',
-    publisher: 'Refined NG',
-    year: '2026',
-    category: 'Feature'
-  },
-  {
     id: 'pub-mcf',
     title: "Built to Belong: Stephanie Egharevba's Fight to Make Inclusion Real",
     publisher: 'Mastercard Foundation',
     year: '2025',
-    category: 'Profile'
+    category: 'Profile',
+    url: 'https://mastercardfdn.org/en/what-we-do/impact-stories/built-to-belong-stephanie-egharevbas-fight-to-make-inclusion-real/'
   },
   {
-    id: 'pub-stack-journal',
-    title: 'Stephanie Wants To Give Marginalised Communities A Voice',
-    publisher: 'The Stack Journal',
+    id: 'pub-refinedng',
+    title: 'Building Inclusive Tech in Africa',
+    publisher: 'Refined NG',
+    year: '2026',
+    category: 'Feature',
+    url: 'https://refinedng.com/stephanie-egharevba-on-building-inclusive-tech-in-africa/'
+  },
+  {
+    id: 'pub-its-material',
+    title: 'Participation + Influence',
+    publisher: "IT'S MATERIAL",
     year: '2024',
-    category: 'Interview'
+    category: 'Interview',
+    url: 'https://www.its-material-views.com/p/participation-plus-influence'
   },
   {
     id: 'pub-guardian',
     title: 'Why Nigeria Must Leverage Technology to Boost the Economy',
     publisher: 'The Guardian Newspaper',
     year: '2023',
-    category: 'Op-Ed'
+    category: 'Op-Ed',
+    url: 'https://guardian.ng/technology/why-nigeria-must-leverage-technology-to-boost-economy/'
   }
 ];
 
