@@ -145,8 +145,34 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
   onNavigateToContact,
   onNavigateToWork,
 }) => {
-  const [activeMode, setActiveMode] = useState<'story' | 'cv'>('story');
+  const [activeMode, setActiveMode] = useState<'story' | 'cv'>(() => {
+    if (typeof window !== 'undefined' && window.location.pathname.toLowerCase() === '/cv') {
+      return 'cv';
+    }
+    return 'story';
+  });
   const [copiedQuote, setCopiedQuote] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleRouteSync = (e: Event) => {
+      const customEvt = e as CustomEvent<{ mode?: 'story' | 'cv' }>;
+      if (customEvt.detail?.mode) {
+        setActiveMode(customEvt.detail.mode);
+        return;
+      }
+      if (window.location.pathname.toLowerCase() === '/cv') {
+        setActiveMode('cv');
+      } else if (window.location.pathname.toLowerCase() === '/story') {
+        setActiveMode('story');
+      }
+    };
+    window.addEventListener('popstate', handleRouteSync);
+    window.addEventListener('stephanie-story-cv-mode', handleRouteSync);
+    return () => {
+      window.removeEventListener('popstate', handleRouteSync);
+      window.removeEventListener('stephanie-story-cv-mode', handleRouteSync);
+    };
+  }, []);
 
   // Interactive Timeline Hover & Accordion State
   const [hoveredRoleId, setHoveredRoleId] = useState<string | null>(null);

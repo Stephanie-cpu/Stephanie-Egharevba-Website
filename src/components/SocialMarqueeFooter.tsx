@@ -12,6 +12,7 @@ interface SocialMarqueeFooterProps {
   tiktokUrl?: string;
   substackUrl?: string;
   onOpenPrivacyPolicy?: () => void;
+  onOpenCmsPortal?: () => void;
 }
 
 export default function SocialMarqueeFooter({
@@ -20,6 +21,7 @@ export default function SocialMarqueeFooter({
   tiktokUrl = 'https://www.tiktok.com/@egharevba_stephanie?_r=1&_t=ZS-9B9xLrUfv1d',
   substackUrl = 'https://substack.com/@theunbiasproject',
   onOpenPrivacyPolicy,
+  onOpenCmsPortal,
 }: SocialMarqueeFooterProps) {
   // Ensure that when returning to the tab from external redirects or switching back,
   // any lingering focus/hover state on the marquee links is cleared so the marquee never freezes.
@@ -151,6 +153,16 @@ export default function SocialMarqueeFooter({
               className="hover:text-neutral-950 dark:hover:text-white transition-colors cursor-pointer"
             >
               NDPA &amp; GDPR Privacy Policy
+            </button>
+          )}
+          {onOpenCmsPortal && (
+            <button
+              type="button"
+              onClick={onOpenCmsPortal}
+              aria-label="Open Stephanie Egharevba Editorial CMS Portal"
+              className="hover:text-neutral-950 dark:hover:text-white transition-colors cursor-pointer"
+            >
+              CMS Portal
             </button>
           )}
         </div>

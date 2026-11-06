@@ -81,6 +81,7 @@ import {
   CmsProjectRecord,
   CmsArticleRecord,
 } from './components/CmsAdminModal';
+import { CmsPortalView } from './components/CmsPortalView';
 import { db, handleFirestoreError, OperationType } from './lib/firebase';
 
 const DEFAULT_LINKEDIN_URL =
@@ -114,7 +115,16 @@ function getInitialPage(): PageId {
   if (pageParam === 'work' || path === '/work') return 'work';
   if (pageParam === 'speaking' || path === '/speaking') return 'speaking';
   if (pageParam === 'books' || path === '/books') return 'books';
-  if (pageParam === 'blog' || path === '/blog' || path === '/blog-admin') return 'blog';
+  if (
+    pageParam === 'cms' ||
+    pageParam === 'admin' ||
+    path === '/cms' ||
+    path === '/admin' ||
+    path === '/blog-admin'
+  ) {
+    return 'cms';
+  }
+  if (pageParam === 'blog' || path === '/blog') return 'blog';
   if (pageParam === 'gallery' || path === '/gallery') return 'gallery';
   if (pageParam === 'impact' || path === '/impact') return 'impact';
   if (
@@ -217,6 +227,7 @@ export default function App() {
   const [cmsProjects, setCmsProjects] = useState<CmsProjectRecord[]>([]);
   const [cmsArticles, setCmsArticles] = useState<CmsArticleRecord[]>([]);
   const [isCmsModalOpen, setIsCmsModalOpen] = useState<boolean>(false);
+  const [cmsEditPostId, setCmsEditPostId] = useState<string | null>(null);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState<boolean>(false);
 
   // NDPA / GDPR Cookie & Privacy Consent Banner
@@ -420,6 +431,13 @@ export default function App() {
         image: '/og_social_preview.jpg',
         path: '/impact',
       },
+      cms: {
+        title: 'Editorial CMS Portal | Stephanie Egharevba',
+        description: 'Editorial CMS Portal for managing blog posts, case studies, and site content.',
+        keywords: 'Stephanie Egharevba CMS Portal',
+        image: '/og_social_preview.jpg',
+        path: '/cms',
+      },
     };
 
     const currentSeo = PAGE_SEO[activePage] || PAGE_SEO.overview;
@@ -472,12 +490,15 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Discrete admin shortcut (Ctrl+Shift+A or Meta+Shift+A) to access CMS without public UI artifacts
+  // Discrete admin shortcut (Ctrl+Shift+A or Meta+Shift+A) to access CMS Portal
   useEffect(() => {
     const handleAdminKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
         e.preventDefault();
-        setIsCmsModalOpen((prev) => !prev);
+        setActivePage('cms');
+        if (typeof window !== 'undefined' && window.location.pathname !== '/cms') {
+          window.history.pushState({ page: 'cms' }, '', '/cms');
+        }
       }
     };
     window.addEventListener('keydown', handleAdminKey);
@@ -498,6 +519,7 @@ export default function App() {
       gallery: '/gallery',
       contact: '/contact',
       impact: '/impact',
+      cms: '/cms',
     };
     const targetPath = routeMap[page] || '/';
     if (typeof window !== 'undefined' && window.location.pathname !== targetPath) {
@@ -2027,6 +2049,10 @@ export default function App() {
                 onDiscussArticle={(articleTitle) =>
                   handleInquireWithContext(articleTitle, 'Media & Press')
                 }
+                onOpenCmsPortal={(editId) => {
+                  if (editId) setCmsEditPostId(editId);
+                  navigateTo('cms');
+                }}
               />
             </motion.div>
           )}
@@ -2742,6 +2768,28 @@ export default function App() {
           {activePage === 'impact' && (
             <ImpactView onNavigate={navigateTo} reduceMotion={a11yPrefs.reduceMotion} />
           )}
+
+          {/* ================================================================= */}
+          {/* PAGE: EDITORIAL CMS PORTAL (/cms, /admin, /blog-admin)            */}
+          {/* ================================================================= */}
+          {activePage === 'cms' && (
+            <motion.div
+              key="page-cms"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25, ease: EASE_EDITORIAL }}
+            >
+              <CmsPortalView
+                onNavigate={navigateTo}
+                siteSettings={siteSettings}
+                cmsProjects={cmsProjects}
+                cmsArticles={cmsArticles}
+                initialEditPostId={cmsEditPostId}
+                onClearInitialEditPostId={() => setCmsEditPostId(null)}
+              />
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
 
@@ -2817,6 +2865,7 @@ export default function App() {
         tiktokUrl="https://www.tiktok.com/@egharevba_stephanie?_r=1&_t=ZS-9B9xLrUfv1d"
         substackUrl={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
         onOpenPrivacyPolicy={() => setIsPrivacyModalOpen(true)}
+        onOpenCmsPortal={() => navigateTo('cms')}
       />
 
       {/* Privacy Policy & NDPA / GDPR Data Rights Modal */}

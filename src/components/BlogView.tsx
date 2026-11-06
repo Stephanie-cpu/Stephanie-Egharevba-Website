@@ -45,6 +45,15 @@ import {
   OperationType,
 } from '../lib/firebase';
 import { CmsArticleRecord } from './CmsAdminModal';
+import {
+  CmsStoredBlogRecord,
+  ADMIN_SESSION_UNLOCKED_KEY,
+  recordToBlogPost,
+  loadLocalBlogMirror,
+  loadDeletedBlogIds,
+  saveLocalBlogMirrorRecord,
+  removeLocalBlogRecord,
+} from '../lib/blogCms';
 
 export type BlogTopic =
   | 'All Notes'
@@ -78,10 +87,10 @@ export interface BlogPost {
 }
 
 // Default private password for Stephanie's /blog-admin portal (stored as a hash/constant check)
-const ADMIN_PASSCODE_DEFAULT = 'UnbiasLagos2026!';
-const ADMIN_PASSCODE_STORAGE_KEY = 'stephanie_blog_admin_custom_pass_v1';
+export const ADMIN_PASSCODE_DEFAULT = 'UnbiasLagos2026!';
+export const ADMIN_PASSCODE_STORAGE_KEY = 'stephanie_blog_admin_custom_pass_v1';
 
-const CURATED_BLOG_POSTS: BlogPost[] = [
+export const CURATED_BLOG_POSTS: BlogPost[] = [
   {
     id: 'blog-five-minute-keyboard-test',
     slug: 'what-happens-when-you-unplug-your-mouse-for-five-minutes',
@@ -348,6 +357,7 @@ interface BlogViewProps {
   cmsArticles: CmsArticleRecord[];
   substackUrl: string;
   onDiscussArticle: (articleTitle: string) => void;
+  onOpenCmsPortal?: (editPostId?: string) => void;
 }
 
 function isUrlAdminRoute(): boolean {
@@ -402,18 +412,29 @@ export const BlogView: React.FC<BlogViewProps> = ({
   cmsArticles,
   substackUrl,
   onDiscussArticle,
+  onOpenCmsPortal,
 }) => {
   const [selectedTopic, setSelectedTopic] = useState<BlogTopic>('All Notes');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activePostId, setActivePostId] = useState<string | null>(null);
   const [copiedPostId, setCopiedPostId] = useState<string | null>(null);
 
-  // Firestore blog_posts listener (public published posts)
-  const [firestorePosts, setFirestorePosts] = useState<BlogPost[]>([]);
+  // Firestore blog_posts listener + Local Mirror
+  const [firestoreMap, setFirestoreMap] = useState<Record<string, CmsStoredBlogRecord>>({});
+  const [localMirrorMap, setLocalMirrorMap] = useState<Record<string, CmsStoredBlogRecord>>(
+    loadLocalBlogMirror
+  );
+  const [deletedIds, setDeletedIds] = useState<string[]>(loadDeletedBlogIds);
 
   // Private Admin Route & Authentication State
   const [showAdminLoginModal, setShowAdminLoginModal] = useState<boolean>(isUrlAdminRoute);
-  const [passcodeUnlocked, setPasscodeUnlocked] = useState<boolean>(false);
+  const [passcodeUnlocked, setPasscodeUnlocked] = useState<boolean>(() => {
+    try {
+      return sessionStorage.getItem(ADMIN_SESSION_UNLOCKED_KEY) === 'true';
+    } catch {
+      return false;
+    }
+  });
   const [passcodeInput, setPasscodeInput] = useState<string>('');
   const [passcodeError, setPasscodeError] = useState<string>('');
   const [firebaseUser, setFirebaseUser] = useState<User | null>(auth.currentUser);
@@ -449,12 +470,21 @@ export const BlogView: React.FC<BlogViewProps> = ({
     return () => unsub();
   }, []);
 
+  useEffect(() => {
+    const syncLocal = () => {
+      setLocalMirrorMap(loadLocalBlogMirror());
+      setDeletedIds(loadDeletedBlogIds());
+    };
+    window.addEventListener('stephanie-blog-cms-updated', syncLocal);
+    return () => window.removeEventListener('stephanie-blog-cms-updated', syncLocal);
+  }, []);
+
   const isVerifiedStephanieGoogle =
     Boolean(firebaseUser?.emailVerified) &&
     firebaseUser?.email?.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
 
-  // Admin studio is only active when unlocked via password AND/OR verified Google Admin on /blog-admin
-  const isStudioUnlocked = passcodeUnlocked && isVerifiedStephanieGoogle;
+  // Admin studio is active when unlocked via password OR verified Google Admin
+  const isStudioUnlocked = passcodeUnlocked || isVerifiedStephanieGoogle;
 
   // Listen to published blog_posts from Firestore
   useEffect(() => {
@@ -462,52 +492,12 @@ export const BlogView: React.FC<BlogViewProps> = ({
     const unsub = onSnapshot(
       q,
       (snap) => {
-        const docs: { record: FirestoreBlogRecord; seconds: number }[] = snap.docs.map((d) => {
-          const data = d.data() as Omit<FirestoreBlogRecord, 'id'>;
-          return {
-            record: { id: d.id, ...data },
-            seconds: data.createdAt?.seconds || 0,
-          };
+        const map: Record<string, CmsStoredBlogRecord> = {};
+        snap.docs.forEach((d) => {
+          const data = d.data() as Omit<CmsStoredBlogRecord, 'id'>;
+          map[d.id] = { id: d.id, ...data };
         });
-        docs.sort((a, b) => b.seconds - a.seconds);
-
-        const mapped: BlogPost[] = docs.map(({ record }) => {
-          const paragraphs = record.body
-            .split(/\n\s*\n/)
-            .map((p) => p.trim())
-            .filter(Boolean);
-
-          return {
-            id: record.id,
-            slug: record.id,
-            title: record.title,
-            subtitle: record.subtitle,
-            topic: record.topic,
-            publishedAt: record.publishedAt,
-            readingTime: record.readingTime,
-            locationNote: 'Lagos · Dispatch Note',
-            ...(record.coverImage
-              ? {
-                  coverImage: record.coverImage,
-                  coverImageAlt: record.coverImageAlt || record.title,
-                }
-              : {}),
-            pullQuote: record.pullQuote,
-            excerpt: paragraphs[0] || record.subtitle,
-            isFromFirestore: true,
-            takeaways: [
-              'Published via Stephanie Egharevba’s Unbias Dispatch.',
-              'Practical field notes on digital accessibility and inclusive systems.',
-            ],
-            sections: [
-              {
-                paragraphs,
-              },
-            ],
-          };
-        });
-
-        setFirestorePosts(mapped);
+        setFirestoreMap(map);
       },
       (err) => {
         console.warn('Firestore blog_posts listener:', err);
@@ -518,6 +508,11 @@ export const BlogView: React.FC<BlogViewProps> = ({
   }, []);
 
   const allPosts: BlogPost[] = useMemo(() => {
+    const combinedRecords: Record<string, CmsStoredBlogRecord> = {
+      ...localMirrorMap,
+      ...firestoreMap,
+    };
+
     const mappedCms: BlogPost[] = cmsArticles.map((art) => ({
       id: `cms-${art.id}`,
       slug: art.id,
@@ -548,13 +543,33 @@ export const BlogView: React.FC<BlogViewProps> = ({
       ],
     }));
 
-    // Allow Stephanie's Firestore edits to override any default curated post
-    const curatedFiltered = CURATED_BLOG_POSTS.filter(
-      (cp) => !firestorePosts.some((fp) => fp.id === cp.id)
-    );
+    const curatedIds = new Set(CURATED_BLOG_POSTS.map((c) => c.id));
+    const customPublishedPosts: BlogPost[] = Object.values(combinedRecords)
+      .filter(
+        (r) =>
+          !curatedIds.has(r.id) &&
+          !deletedIds.includes(r.id) &&
+          (r.status === 'published' || !r.status)
+      )
+      .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
+      .map((rec) => recordToBlogPost(rec));
 
-    return [...firestorePosts, ...curatedFiltered, ...mappedCms];
-  }, [cmsArticles, firestorePosts]);
+    const curatedMerged: BlogPost[] = [];
+    for (const cp of CURATED_BLOG_POSTS) {
+      if (deletedIds.includes(cp.id) && !combinedRecords[cp.id]) {
+        continue;
+      }
+      const override = combinedRecords[cp.id];
+      if (override) {
+        if (override.status === 'draft') continue;
+        curatedMerged.push(recordToBlogPost(override, cp));
+      } else {
+        curatedMerged.push(cp);
+      }
+    }
+
+    return [...customPublishedPosts, ...curatedMerged, ...mappedCms];
+  }, [cmsArticles, firestoreMap, localMirrorMap, deletedIds]);
 
   const featuredPost = useMemo(
     () => allPosts.find((p) => p.featured) || allPosts[0],
@@ -685,6 +700,10 @@ export const BlogView: React.FC<BlogViewProps> = ({
   };
 
   const handleOpenEditPost = (post: BlogPost) => {
+    if (onOpenCmsPortal) {
+      onOpenCmsPortal(post.id);
+      return;
+    }
     setEditingPostId(post.id);
     setNewTitle(post.title);
     setNewSubtitle(post.subtitle || '');
@@ -701,7 +720,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
 
   const handleSavePost = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isStudioUnlocked || !firebaseUser) return;
+    if (!isStudioUnlocked) return;
     if (!newTitle.trim() || !newBody.trim()) return;
 
     setIsPublishing(true);
@@ -716,50 +735,80 @@ export const BlogView: React.FC<BlogViewProps> = ({
         .map((p) => p.trim())
         .filter(Boolean)[0] || '';
 
+    const publishedAtStr = editingPostId
+      ? allPosts.find((p) => p.id === editingPostId)?.publishedAt ||
+        new Date().toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        })
+      : new Date().toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        });
+
+    const localRecord: CmsStoredBlogRecord = {
+      id: docId,
+      title: newTitle.trim().slice(0, 200),
+      subtitle: (
+        newSubtitle.trim() || 'Field note on inclusive design and digital accessibility.'
+      ).slice(0, 300),
+      topic: newTopic,
+      publishedAt: publishedAtStr.slice(0, 60),
+      readingTime: `${mins} min read`,
+      pullQuote: (
+        newPullQuote.trim() ||
+        firstParagraph ||
+        'Designing for accessibility means designing for real human conditions.'
+      ).slice(0, 500),
+      body: newBody.trim().slice(0, 20000),
+      ...(newCoverUrl.trim()
+        ? {
+            coverImage: newCoverUrl.trim().slice(0, 500000),
+            coverImageAlt: (newCoverAlt.trim() || newTitle.trim()).slice(0, 300),
+          }
+        : {}),
+      status: 'published',
+      authorUid: firebaseUser?.uid || 'local-admin',
+      createdAt: firestoreMap[docId]?.createdAt || {
+        seconds: Math.floor(Date.now() / 1000),
+      },
+      updatedAt: { seconds: Math.floor(Date.now() / 1000) },
+    };
+
+    saveLocalBlogMirrorRecord(localRecord);
+    setLocalMirrorMap(loadLocalBlogMirror());
+
     try {
-      const isExistingFirestoreDoc = firestorePosts.some((p) => p.id === docId);
+      if (isVerifiedStephanieGoogle && firebaseUser) {
+        const isExistingFirestoreDoc = Boolean(firestoreMap[docId]);
 
-      const postPayload: Record<string, unknown> = {
-        title: newTitle.trim().slice(0, 200),
-        subtitle: (
-          newSubtitle.trim() || 'Field note on inclusive design and digital accessibility.'
-        ).slice(0, 300),
-        topic: newTopic,
-        publishedAt: editingPostId
-          ? allPosts.find((p) => p.id === editingPostId)?.publishedAt ||
-            new Date().toLocaleDateString('en-US', {
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric',
-            })
-          : new Date().toLocaleDateString('en-US', {
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric',
-            }),
-        readingTime: `${mins} min read`,
-        pullQuote: (
-          newPullQuote.trim() ||
-          firstParagraph ||
-          'Designing for accessibility means designing for real human conditions.'
-        ).slice(0, 500),
-        body: newBody.trim().slice(0, 20000),
-        ...(newCoverUrl.trim()
-          ? {
-              coverImage: newCoverUrl.trim().slice(0, 500000),
-              coverImageAlt: (newCoverAlt.trim() || newTitle.trim()).slice(0, 300),
-            }
-          : {}),
-        status: 'published',
-        authorUid: firebaseUser.uid,
-        updatedAt: serverTimestamp(),
-      };
+        const postPayload: Record<string, unknown> = {
+          title: localRecord.title,
+          subtitle: localRecord.subtitle,
+          topic: localRecord.topic,
+          publishedAt: localRecord.publishedAt,
+          readingTime: localRecord.readingTime,
+          pullQuote: localRecord.pullQuote,
+          body: localRecord.body,
+          ...(localRecord.coverImage
+            ? {
+                coverImage: localRecord.coverImage,
+                coverImageAlt: localRecord.coverImageAlt,
+              }
+            : {}),
+          status: 'published',
+          authorUid: firebaseUser.uid,
+          updatedAt: serverTimestamp(),
+        };
 
-      if (!isExistingFirestoreDoc) {
-        postPayload.createdAt = serverTimestamp();
+        if (!isExistingFirestoreDoc) {
+          postPayload.createdAt = serverTimestamp();
+        }
+
+        await setDoc(doc(db, 'blog_posts', docId), postPayload, { merge: true });
       }
-
-      await setDoc(doc(db, 'blog_posts', docId), postPayload, { merge: true });
 
       setNewTitle('');
       setNewSubtitle('');
@@ -784,7 +833,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
           path
         );
       } catch {
-        setAdminBannerMessage('Could not save note. Ensure image size is under 400KB.');
+        setAdminBannerMessage('Saved locally. Ensure image size is under 400KB for Cloud sync.');
       }
     } finally {
       setIsPublishing(false);
@@ -793,9 +842,15 @@ export const BlogView: React.FC<BlogViewProps> = ({
 
   const handleDeleteFirestorePost = async (postId: string) => {
     if (!isStudioUnlocked) return;
+    removeLocalBlogRecord(postId);
+    setLocalMirrorMap(loadLocalBlogMirror());
+    setDeletedIds(loadDeletedBlogIds());
+
     const path = `blog_posts/${postId}`;
     try {
-      await deleteDoc(doc(db, 'blog_posts', postId));
+      if (isVerifiedStephanieGoogle && firestoreMap[postId]) {
+        await deleteDoc(doc(db, 'blog_posts', postId));
+      }
       if (activePostId === postId) {
         setActivePostId(null);
       }
@@ -805,7 +860,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
       try {
         handleFirestoreError(err, OperationType.DELETE, path);
       } catch {
-        setAdminBannerMessage('Could not delete blog note.');
+        setAdminBannerMessage('Could not delete blog note from cloud.');
       }
     }
   };
@@ -877,12 +932,25 @@ export const BlogView: React.FC<BlogViewProps> = ({
                   Stephanie’s Private Blog Studio (Unlocked)
                 </div>
                 <div className="font-mono text-[11px] text-[#575652]">
-                  Verified as {firebaseUser?.email} · Only you can see this toolbar
+                  {isVerifiedStephanieGoogle
+                    ? `Verified as ${firebaseUser?.email} · Cloud Sync Active`
+                    : 'Studio Unlocked · Open Full CMS Portal to manage all posts'}
                 </div>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5">
+              {onOpenCmsPortal && (
+                <button
+                  type="button"
+                  onClick={() => onOpenCmsPortal()}
+                  className="px-4 py-2 rounded-lg bg-[#141413] hover:bg-[#1D4ED8] text-white text-xs font-semibold transition-colors inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Open Full CMS Portal</span>
+                </button>
+              )}
+
               <button
                 type="button"
                 onClick={handleOpenNewPost}
