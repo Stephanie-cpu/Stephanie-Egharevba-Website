@@ -143,6 +143,155 @@ export const RECOMMENDATIONS_DATA: RecommendationItem[] = [
   },
 ];
 
+export interface ServicePillarItem {
+  id: string;
+  number: string;
+  kicker: string;
+  title: string;
+  targetKeywords: string[];
+  leadSummary: string;
+  paragraphs: string[];
+  deliverables: string[];
+  ctaLabel: string;
+  ctaPage: PageId;
+  enquiryType:
+    | 'WCAG Accessibility Audit'
+    | 'D&I Strategy Advisory'
+    | 'Keynote Speaking';
+}
+
+export const CORE_SERVICE_PILLARS: ServicePillarItem[] = [
+  {
+    id: 'service-wcag-audits',
+    number: '01',
+    kicker: 'WCAG 2.1 / 2.2 AA & AAA TECHNICAL AUDITING',
+    title: 'WCAG & Digital Accessibility Audits',
+    targetKeywords: [
+      'WCAG audit services',
+      'digital accessibility consultant Africa',
+      'digital accessibility consultant Nigeria',
+      'mobile app accessibility testing',
+    ],
+    leadSummary:
+      'Comprehensive manual and automated WCAG 2.2 Level AA/AAA accessibility audits for web platforms, fintech apps, and NGO portals across Nigeria, West Africa, and global markets.',
+    paragraphs: [
+      'Automated accessibility scanners catch less than 30% of real-world usability barriers. As a dedicated digital accessibility consultant in Nigeria and Africa, Stephanie Egharevba conducts deep, code-level WCAG audit services that combine manual assistive technology testing (NVDA, VoiceOver, TalkBack, and switch-navigation) with structural DOM, ARIA, and keyboard focus-tree evaluations.',
+      'For high-growth fintechs, SaaS startups, commercial banks, and enterprise product teams, an inaccessible checkout flow, KYC verification screen, or onboarding form silently locks out over 15% of the population—more than 35 million Nigerians and 1.3 billion people globally living with disabilities. Mobile app accessibility testing and responsive web evaluations uncover the exact friction points where screen-reader users get trapped in modal dialogs, where low-contrast typography fails under bright outdoor sunlight, and where custom UI components lack semantic labels.',
+      'Every WCAG 2.2 AA audit engagement concludes with a developer-ready Engineering Remediation Roadmap rather than a vague compliance PDF. Product managers, UI/UX designers, and frontend engineers receive prioritized ticket specifications—organized into Critical Blockers, High-Impact UX Fixes, and Design System Guardrails—complete with semantic HTML/ARIA code patterns, contrast ratio calculations, Nigerian Disability Act (NCPWD) alignment notes, and a post-remediation verification walkthrough to certify compliance.',
+    ],
+    deliverables: [
+      'Full WCAG 2.1 / 2.2 Level AA Technical Audit Report',
+      'Manual Screen-Reader (NVDA, VoiceOver, TalkBack) & Keyboard Navigation Walkthroughs',
+      'Mobile App Accessibility Testing & Touch-Target (44x44px) Verification',
+      'Prioritized Engineering Ticket Roadmap with Semantic HTML & ARIA Code Snippets',
+      'Post-Remediation Verification & Compliance Sign-Off',
+    ],
+    ctaLabel: 'Commission a WCAG 2.2 Accessibility Audit',
+    ctaPage: 'contact',
+    enquiryType: 'WCAG Accessibility Audit',
+  },
+  {
+    id: 'service-ngo-di-advisory',
+    number: '02',
+    kicker: 'INCLUSIVE GRANTMAKING, POLICY & WORKFORCE SYSTEMS',
+    title: 'Inclusive Program & D&I Advisory',
+    targetKeywords: [
+      'inclusive digital design for NGOs',
+      'disability inclusion strategy consultant',
+      'accessible grantmaking programs',
+    ],
+    leadSummary:
+      'Strategic disability inclusion advisory helping international foundations, NGOs, and corporate talent ecosystems design accessible grantmaking programs, inclusive learning portals, and equitable employment pipelines.',
+    paragraphs: [
+      'Philanthropic foundations, development agencies, and impact organizations invest millions of dollars into youth employment, digital skills fellowships, and entrepreneurship grants across Africa. Yet when the application portal, learning management system (LMS), or event format is inaccessible, qualified young people with disabilities are filtered out before the program even begins.',
+      'Drawing from her leadership as Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria—where she founded and scaled the 200+ member Alumni Disability Community—and her work across Jobberman Nigeria and the Mastercard Foundation Talent Corp initiative, Stephanie serves as a trusted disability inclusion strategy consultant for institutional programs. She helps organizations move from well-intentioned diversity statements to measurable, operational inclusion.',
+      'Advisory engagements cover end-to-end inclusive digital design for NGOs and accessible grantmaking programs: auditing fellowship application forms so screen-reader and motor-impaired applicants are not disqualified by visual CAPTCHAs or timed tests; establishing clear workplace and academic accommodation policies; training program officers and partner employers on disability etiquette and bias-free interviewing; and building self-sustaining peer networks that retain talent with disabilities long after onboarding.',
+    ],
+    deliverables: [
+      'Accessible Grantmaking & Fellowship Application Portal Audits',
+      'Institutional Disability Inclusion Policy & Accommodation Frameworks',
+      'Inclusive Digital Design Standards for NGO Learning Platforms (EdTech / LMS)',
+      'Employer Readiness Training & Inclusive Recruitment Pipeline Architecture',
+      'Lived-Experience Advisory Council & Disabled Alumni Network Design',
+    ],
+    ctaLabel: 'Book Inclusive Program & D&I Advisory',
+    ctaPage: 'contact',
+    enquiryType: 'D&I Strategy Advisory',
+  },
+  {
+    id: 'service-keynote-speaking',
+    number: '03',
+    kicker: 'TOP 3% GLOBAL SPEAKER ON SESSIONIZE · ALX TOP 100 WOMEN IN TECH',
+    title: 'Keynote Speaking & Executive Briefings',
+    targetKeywords: [
+      'AI accessibility keynote speaker',
+      'disability inclusion speaker Africa',
+    ],
+    leadSummary:
+      'High-impact keynotes, fireside chats, and engineering masterclasses on AI accessibility, inclusive product leadership, and disability inclusion across Africa and global technology stages.',
+    paragraphs: [
+      'Ranked in the Top 3% of Global Speakers on Sessionize and recognized among ALX Nigeria’s Top 100 Women in Tech, Stephanie Egharevba is a sought-after AI accessibility keynote speaker and disability inclusion speaker in Africa. Having delivered plenaries, fireside chats, and broadcasts for the InAble Inclusive Africa Conference, Mastercard Foundation global broadcasts, TechCabal Moonshot, InnovateAI Lagos, DataFest Africa, and AISEN, she brings rare dual fluency: lived experience with Osteogenesis Imperfecta paired with hands-on Computer Science and WCAG auditing expertise.',
+      'As artificial intelligence reshapes banking, education, healthcare, and hiring across emerging markets, organizations face a pivotal choice: allow AI interfaces to automate historical exclusion at scale, or engineer multi-modal, accessible AI products that expand human capability. Stephanie’s keynotes challenge founders, software engineers, policymakers, and educators to rethink how products and institutions are built.',
+      'Every keynote or executive workshop is tailored to the host audience—whether addressing 3,000+ developers and students at a national technology summit, briefing bank executives on the commercial market case for serving 35+ million Nigerians with disabilities, or facilitating a live 5-minute keyboard and screen-reader teardown with product engineering teams.',
+    ],
+    deliverables: [
+      'Flagship Keynote: Disability Is Not the Problem—Design Is the Problem',
+      'AI & Tech Plenary: Auditing AI Interfaces & Digital Products for Human Inclusion',
+      'Executive Briefing: Why Inaccessible Products Lock Out 15% of the African Market',
+      'Hands-On Engineering Workshop: Building WCAG 2.2 AA Accessible Software from Sprint Zero',
+      'Global Broadcasts, Fireside Chats & High-Level Policy Panel Moderation',
+    ],
+    ctaLabel: 'Book Stephanie Egharevba as a Keynote Speaker',
+    ctaPage: 'speaking',
+    enquiryType: 'Keynote Speaking',
+  },
+];
+
+export interface BuyerFaqItem {
+  id: string;
+  question: string;
+  answer: string;
+  category: 'WCAG Audits' | 'NGO Advisory' | 'Compliance' | 'Speaking';
+}
+
+export const BUYER_FAQ_ITEMS: BuyerFaqItem[] = [
+  {
+    id: 'faq-audit-timeline',
+    category: 'WCAG Audits',
+    question: 'How long does a WCAG 2.2 AA accessibility audit take for a web or mobile platform?',
+    answer:
+      'A focused WCAG 2.2 Level AA audit for a core user journey (such as onboarding, checkout, KYC verification, or a grant application portal) typically takes 2 to 3 weeks. A full-scale enterprise or multi-platform web and mobile app accessibility audit takes 4 to 6 weeks, including manual screen-reader testing (NVDA, VoiceOver, TalkBack), keyboard navigation tree verification, a prioritized engineering remediation roadmap, and a live walkthrough with your developers.',
+  },
+  {
+    id: 'faq-ngo-grantmaking',
+    category: 'NGO Advisory',
+    question: 'How do NGOs and foundations build digital accessibility into funded programs and grantmaking?',
+    answer:
+      'Inclusive program design starts before the call for applications opens. Stephanie works with NGOs, foundations, and development partners to audit application portals and learning management systems (removing barriers like visual CAPTCHAs, unlabeled PDFs, and inaccessible video players), establish clear budget lines for reasonable accommodations (sign language interpretation, captions, assistive tech stipends), and train program officers to recruit and support youth with disabilities throughout the fellowship or employment lifecycle.',
+  },
+  {
+    id: 'faq-audit-deliverables',
+    category: 'WCAG Audits',
+    question: 'What does our engineering and product team receive at the end of a WCAG audit?',
+    answer:
+      'Instead of a generic automated scanner dump, your team receives an actionable Engineering Remediation Playbook. Every accessibility barrier is documented with its exact WCAG 2.2 success criterion, severity rating (Critical Blocker, High, Medium), screen-reader/keyboard reproduction steps, and concrete semantic HTML, CSS contrast, and ARIA code fixes that your frontend developers can ship immediately.',
+  },
+  {
+    id: 'faq-nigerian-disability-act',
+    category: 'Compliance',
+    question: 'Why do Nigerian fintechs and digital products need to comply with the Nigerian Disability Act?',
+    answer:
+      'The Discrimination Against Persons with Disabilities (Prohibition) Act 2018 and the National Commission for Persons with Disabilities (NCPWD) mandate equitable access to public services, banking, telecommunications, education, and employment—which increasingly operate through digital apps. Beyond regulatory compliance, over 35 million Nigerians (15%+ of the population) live with a disability; making your mobile and web platforms accessible unlocks an underserved market while improving usability for all customers in low-bandwidth or bright-sunlight conditions.',
+  },
+  {
+    id: 'faq-booking-speaking',
+    category: 'Speaking',
+    question: 'How can we book Stephanie Egharevba for a conference keynote, panel, or corporate workshop?',
+    answer:
+      'You can submit your event dates, audience profile, and format via the Enquiries page or schedule a 1-on-1 briefing directly on Stephanie’s Google Calendar. Stephanie delivers in-person and virtual keynotes, fireside chats, and hands-on WCAG workshops across Nigeria, Africa, and globally, with tailored fee tiers for corporate enterprises, international conferences, and NGO/academic ecosystems.',
+  },
+];
+
 export interface BookItem {
   id: string;
   title: string;
@@ -257,9 +406,9 @@ export const CV_PDF_URL = '/assets/aistudio/EGHAREVBA_STEPHANIE_CV_592c7c87.pdf'
 export const STEPHANIE_PORTRAITS: PortraitAsset[] = [
   {
     id: 'portrait-executive-emerald',
-    src: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
+    src: '/assets/aistudio/stephanie-egharevba-digital-accessibility-consultant-portrait.jpg',
     title: 'Executive Studio Portrait',
-    caption: 'Stephanie Egharevba — Diversity & Inclusion Lead.',
+    caption: 'Stephanie Egharevba — Digital Accessibility Consultant, WCAG Strategist, and Diversity & Inclusion Lead in Lagos, Nigeria.',
     attireAndMood: 'Emerald blazer · Charcoal backdrop',
     orientation: 'three-quarter',
     resolutionLabel: 'Press Portrait · 3:4',
@@ -267,9 +416,9 @@ export const STEPHANIE_PORTRAITS: PortraitAsset[] = [
   },
   {
     id: 'portrait-sky-blazer-close',
-    src: '/assets/aistudio/Headshot_5_8e90ef75.jpg',
+    src: '/assets/aistudio/stephanie-egharevba-disability-inclusion-speaker-headshot.jpg',
     title: 'Speaker Headshot (Sky Blazer)',
-    caption: 'Warm studio headshot of Stephanie Egharevba.',
+    caption: 'Stephanie Egharevba — Disability Inclusion Speaker in Africa and Top 3% Global Speaker on Sessionize.',
     attireAndMood: 'Powder-blue blazer · Neutral backdrop',
     orientation: 'portrait',
     resolutionLabel: 'Headshot · 3:4',
@@ -277,9 +426,9 @@ export const STEPHANIE_PORTRAITS: PortraitAsset[] = [
   },
   {
     id: 'portrait-emerald-closeup',
-    src: '/assets/aistudio/Headshot_2_fbb50a76.jpg',
+    src: '/assets/aistudio/stephanie-egharevba-wcag-strategist-executive-portrait.jpg',
     title: 'Close-Up Studio Portrait',
-    caption: 'High-contrast studio portrait.',
+    caption: 'Executive studio portrait of Stephanie Egharevba, Digital Accessibility Consultant and WCAG 2.2 Compliance Auditor.',
     attireAndMood: 'Emerald lapel · Deep studio lighting',
     orientation: 'portrait',
     resolutionLabel: 'Editorial · 3:4',
@@ -287,9 +436,9 @@ export const STEPHANIE_PORTRAITS: PortraitAsset[] = [
   },
   {
     id: 'portrait-white-shirt-editorial',
-    src: '/assets/aistudio/Headshot_3_ab4f5e1e.jpg',
+    src: '/assets/aistudio/stephanie-egharevba-author-editorial-portrait.jpg',
     title: 'Editorial Half-Length Portrait',
-    caption: 'Editorial portrait in crisp white shirt.',
+    caption: 'Editorial portrait of Stephanie Egharevba, author of Code for Every Body and Accessibility Made Easy Toolkit.',
     attireAndMood: 'White button-down · Soft daylight',
     orientation: 'three-quarter',
     resolutionLabel: 'Feature · 3:4',
@@ -297,9 +446,9 @@ export const STEPHANIE_PORTRAITS: PortraitAsset[] = [
   },
   {
     id: 'portrait-sky-blazer-smile',
-    src: '/assets/aistudio/Headshot_1_1e1bde4f.jpg',
+    src: '/assets/aistudio/stephanie-egharevba-keynote-speaker-studio-portrait.jpg',
     title: 'Candid Studio Portrait',
-    caption: 'Over-the-shoulder studio portrait.',
+    caption: 'Studio portrait of Stephanie Egharevba, AI Accessibility Keynote Speaker and Inclusive Program Advisor.',
     attireAndMood: 'Textured blazer · Studio key light',
     orientation: 'portrait',
     resolutionLabel: 'Media · 3:4',
@@ -310,111 +459,111 @@ export const STEPHANIE_PORTRAITS: PortraitAsset[] = [
 export const KINETIC_STAGE_PHOTOS: KineticGalleryItem[] = [
   {
     id: 'kinetic-stage-jobberman',
-    src: '/assets/aistudio/1000473901-01_2216da6a.jpeg',
-    title: 'Mastercard Foundation & Jobberman Plenary Panel',
+    src: '/assets/aistudio/stephanie-egharevba-jobberman-mastercard-foundation-panel.jpg',
+    title: 'Stephanie Egharevba Speaking at Mastercard Foundation & Jobberman Career Fair Panel',
     eventTag: 'Jobberman Lagos Career Fair',
     location: 'Lagos, Nigeria',
     year: '2024',
-    caption: 'Stephanie delivering key insights on mainstreaming talent with disabilities into enterprise tech hiring pipelines.',
+    caption: 'Stephanie Egharevba delivering insights on mainstreaming talent with disabilities into enterprise tech hiring pipelines in Lagos.',
     track: 'stage',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-stage-terra-kulture',
-    src: '/assets/aistudio/IMG-20240125-WA0242_db1d38c7.jpg',
-    title: 'National Youth Leadership Delegation Arrival',
+    src: '/assets/aistudio/stephanie-egharevba-mastercard-foundation-youth-advisory-summit.jpg',
+    title: 'Stephanie Egharevba at Mastercard Foundation Youth Advisory Council National Summit',
     eventTag: 'Mastercard Foundation YAC · Terra Kulture',
     location: 'Lagos, Nigeria',
     year: '2024',
-    caption: 'Arrival with the youth leadership delegation for the Mastercard Foundation national summit.',
+    caption: 'Stephanie Egharevba arriving with the youth leadership delegation for the Mastercard Foundation national inclusion summit.',
     track: 'stage',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-stage-keynote-plenary',
-    src: '/assets/aistudio/20251015_151930_f8ceff89.jpg',
-    title: 'Keynote Address on Digital Accessibility Standards',
-    eventTag: 'National Tech Inclusion Assembly',
-    location: 'Abuja, Nigeria',
+    src: '/assets/aistudio/stephanie-egharevba-inclusive-africa-keynote.jpg',
+    title: 'Stephanie Egharevba Delivering Keynote Address on WCAG Digital Accessibility Standards',
+    eventTag: 'Inclusive Africa & Tech Inclusion Assembly',
+    location: 'Abuja & Nairobi',
     year: '2025',
-    caption: 'Delivering keynote on eliminating algorithmic and UI barriers for 1.3 billion persons with disabilities.',
+    caption: 'Stephanie Egharevba delivering a keynote address on eliminating UI and algorithmic barriers for persons with disabilities in Africa.',
     track: 'stage',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-stage-summit-awards',
-    src: '/assets/aistudio/20251015_184848_9c33e1c3.jpg',
-    title: 'Tech Inclusion Honors & Evening Plenary',
+    src: '/assets/aistudio/stephanie-egharevba-alx-top-100-women-in-tech-plenary.jpg',
+    title: 'Stephanie Egharevba Honored at ALX Top 100 Women in Tech Plenary',
     eventTag: 'ALX Women in Tech Plenary',
     location: 'Lagos, Nigeria',
     year: '2025',
-    caption: 'Celebrating high-impact milestones in accessibility advocacy and digital inclusion across West Africa.',
+    caption: 'Stephanie Egharevba celebrating milestones in digital accessibility advocacy and disability inclusion across West Africa.',
     track: 'stage',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-stage-sessionize-panel',
-    src: '/assets/aistudio/20260212_154541_161bcbb6.jpg',
-    title: 'Executive Panel on Global Digital Ecosystems',
+    src: '/assets/aistudio/stephanie-egharevba-sessionize-global-speaker-panel.jpg',
+    title: 'Stephanie Egharevba on Executive Panel for Accessible Digital Ecosystems',
     eventTag: 'Sessionize Top 3% Global Speaker Series',
     location: 'Lagos, Nigeria',
     year: '2026',
-    caption: 'Guiding enterprise engineering leaders on building accessible web applications from day zero.',
+    caption: 'Stephanie Egharevba guiding enterprise engineering leaders on building WCAG 2.2 AA accessible web applications from sprint zero.',
     track: 'stage',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-stage-global-youth',
-    src: '/assets/aistudio/20260603_133832_0b986b42.jpg',
-    title: 'Global Youth & Disability Rights Assembly',
+    src: '/assets/aistudio/stephanie-egharevba-global-youth-disability-inclusion-assembly.jpg',
+    title: 'Stephanie Egharevba Presenting at Global Youth & Disability Inclusion Assembly',
     eventTag: 'Mastercard Foundation Continental Forum',
     location: 'Kigali, Rwanda',
     year: '2026',
-    caption: 'Presenting policy recommendations for continental disability-inclusive education and workforce readiness.',
+    caption: 'Stephanie Egharevba presenting policy recommendations for disability-inclusive education and accessible grantmaking programs.',
     track: 'stage',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-stage-adf-summit',
-    src: '/assets/aistudio/20260326_145104_740025f4.jpg',
-    title: 'African Disability Forum Strategic Plenary',
+    src: '/assets/aistudio/stephanie-egharevba-african-disability-forum-summit.jpg',
+    title: 'Stephanie Egharevba at African Disability Forum Strategic Plenary',
     eventTag: 'ADF Strategic Assembly',
     location: 'Addis Ababa, Ethiopia',
     year: '2026',
-    caption: 'Championing unified continental digital accessibility legislation and assistive device subsidization.',
+    caption: 'Stephanie Egharevba championing unified continental digital accessibility legislation and assistive technology standards.',
     track: 'stage',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-stage-workforce-dialogue',
-    src: '/assets/aistudio/20260604_132032_b273a6a3.jpg',
-    title: 'Workforce Transition Plenary Dialogue',
+    src: '/assets/aistudio/stephanie-egharevba-inclusive-workforce-transition-dialogue.jpg',
+    title: 'Stephanie Egharevba Moderating Workforce Transition Plenary Dialogue',
     eventTag: 'Youth Advisory Council Forum',
     location: 'Lagos, Nigeria',
     year: '2026',
-    caption: 'Stephanie moderating high-level stakeholder dialogue on school-to-workplace transitions for youth with disabilities.',
+    caption: 'Stephanie Egharevba moderating stakeholder dialogue on school-to-workplace transitions for youth with disabilities in Nigeria.',
     track: 'stage',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-stage-alumni-launch',
-    src: '/assets/aistudio/20260604_125726_9a7ac23d.jpg',
-    title: 'Alumni Disability Network Continental Stage',
+    src: '/assets/aistudio/stephanie-egharevba-alumni-disability-community-launch.jpg',
+    title: 'Stephanie Egharevba Launching the 200+ Member Alumni Disability Network',
     eventTag: 'Mastercard Foundation YAC',
     location: 'Lagos, Nigeria',
     year: '2026',
-    caption: 'Unveiling the 200+ member peer disability community and regional tech accessibility hubs.',
+    caption: 'Stephanie Egharevba unveiling the 200+ member Alumni Disability Community and regional tech accessibility hubs.',
     track: 'stage',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-stage-symposium',
-    src: '/assets/aistudio/20260909_134526_3dc4aa6c.jpg',
-    title: 'Pan-African Accessibility & Policy Symposium',
+    src: '/assets/aistudio/stephanie-egharevba-pan-african-accessibility-policy-symposium.jpg',
+    title: 'Stephanie Egharevba Keynote at Pan-African Accessibility & Policy Symposium',
     eventTag: 'Digital Inclusion Policy Symposium',
     location: 'Lagos, Nigeria',
     year: '2026',
-    caption: 'Keynote presentation on bridging the digital divide through public-private assistive tech infrastructure.',
+    caption: 'Stephanie Egharevba delivering a keynote presentation on bridging the digital divide through assistive tech infrastructure.',
     track: 'stage',
     aspectRatio: 'landscape'
   }
@@ -423,144 +572,144 @@ export const KINETIC_STAGE_PHOTOS: KineticGalleryItem[] = [
 export const KINETIC_ADVISORY_PHOTOS: KineticGalleryItem[] = [
   {
     id: 'kinetic-advisory-bilateral',
-    src: '/assets/aistudio/IMG-20240126-WA0128_ec2bd45d.jpg',
-    title: 'Executive Bilateral Strategy Consultation',
+    src: '/assets/aistudio/stephanie-egharevba-disability-inclusion-strategy-consultation.jpg',
+    title: 'Stephanie Egharevba Leading Disability Inclusion Strategy Consultation',
     eventTag: 'Strategic Leadership Advisory',
     location: 'Lagos, Nigeria',
     year: '2024',
-    caption: 'In-depth advisory session with international leadership on designing inclusive workplace accommodations.',
+    caption: 'Stephanie Egharevba in an executive advisory session on designing inclusive workplace accommodations and D&I policy.',
     track: 'advisory',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-advisory-yac-retreat',
-    src: '/assets/aistudio/20250604_134819_e52f7594.jpg',
-    title: 'Youth Advisory Council Strategic Working Session',
+    src: '/assets/aistudio/stephanie-egharevba-ngo-inclusive-program-design-session.jpg',
+    title: 'Stephanie Egharevba Facilitating NGO Inclusive Program Design Session',
     eventTag: 'Mastercard Foundation YAC',
     location: 'Lagos, Nigeria',
     year: '2025',
-    caption: 'Co-creating nationwide disability youth inclusion frameworks and accessible event benchmarks.',
+    caption: 'Stephanie Egharevba co-creating nationwide youth disability inclusion frameworks and accessible event benchmarks.',
     track: 'advisory',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-advisory-roundtable-morning',
-    src: '/assets/aistudio/20250605_082358_c2127c67.jpg',
-    title: 'Inclusive Employment Employer Consultation',
+    src: '/assets/aistudio/stephanie-egharevba-inclusive-employment-employer-advisory.jpg',
+    title: 'Stephanie Egharevba Advising Employers on Inclusive Employment & Recruitment',
     eventTag: 'Jobberman Diversity Advisory',
     location: 'Lagos, Nigeria',
     year: '2025',
-    caption: 'Advising corporate recruiters on eliminating bias and accessibility barriers in interview stages.',
+    caption: 'Stephanie Egharevba advising corporate recruiters on eliminating bias and digital accessibility barriers in hiring stages.',
     track: 'advisory',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-advisory-roundtable-dialogue',
-    src: '/assets/aistudio/20250605_082332_545d884d.jpg',
-    title: 'Disability Inclusion Working Group Roundtable',
+    src: '/assets/aistudio/stephanie-egharevba-disability-inclusion-working-group-roundtable.jpg',
+    title: 'Stephanie Egharevba Chairing Disability Inclusion Working Group Roundtable',
     eventTag: 'Workforce Advisory Group',
     location: 'Lagos, Nigeria',
     year: '2025',
-    caption: 'Evaluating real-world physical and digital accessibility roadblocks facing young Nigerian professionals.',
+    caption: 'Stephanie Egharevba evaluating physical and digital accessibility roadblocks facing young Nigerian professionals.',
     track: 'advisory',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-advisory-tech-leaders-1',
-    src: '/assets/aistudio/20260220_115034_3591bfd3.jpg',
-    title: 'ALX Tech Leaders Strategy Clinic',
+    src: '/assets/aistudio/stephanie-egharevba-wcag-accessibility-audit-clinic.jpg',
+    title: 'Stephanie Egharevba Leading WCAG 2.2 Accessibility Audit Strategy Clinic',
     eventTag: 'ALX Tech Fellowship',
     location: 'Lagos, Nigeria',
     year: '2026',
-    caption: 'Hands-on strategy clinic auditing product prototypes against WCAG 2.2 Level AA requirements.',
+    caption: 'Stephanie Egharevba leading a hands-on strategy clinic auditing product prototypes against WCAG 2.2 Level AA requirements.',
     track: 'advisory',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-advisory-tech-leaders-2',
-    src: '/assets/aistudio/20260220_115033_30f9129f.jpg',
-    title: 'Enterprise Tech Consultation & Briefing',
+    src: '/assets/aistudio/stephanie-egharevba-enterprise-accessibility-engineering-briefing.jpg',
+    title: 'Stephanie Egharevba Briefing Engineering Stakeholders on WCAG Compliance',
     eventTag: 'Executive Consultation',
     location: 'Lagos, Nigeria',
     year: '2026',
-    caption: 'Briefing engineering stakeholders on integrating assistive testing into automated CI/CD pipelines.',
+    caption: 'Stephanie Egharevba briefing engineering stakeholders on integrating assistive testing into automated CI/CD pipelines.',
     track: 'advisory',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-advisory-wcag-clinic-1',
-    src: '/assets/aistudio/20260509_131243_de9962f5.jpg',
-    title: 'Screen Reader Usability Testing Clinic',
+    src: '/assets/aistudio/stephanie-egharevba-screen-reader-mobile-app-accessibility-testing.jpg',
+    title: 'Stephanie Egharevba Conducting Screen Reader & Mobile App Accessibility Testing',
     eventTag: 'WCAG Engineering Clinic',
     location: 'Lagos, Nigeria',
     year: '2026',
-    caption: 'Live screen reader and contrast verification clinic with software engineers and product designers.',
+    caption: 'Stephanie Egharevba leading a live screen reader and contrast verification clinic with software engineers and product designers.',
     track: 'advisory',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-advisory-wcag-clinic-2',
-    src: '/assets/aistudio/20260509_131448_e8051972.jpg',
-    title: 'Digital Accessibility Architecture Review',
+    src: '/assets/aistudio/stephanie-egharevba-rushbox-wcag-architecture-review.jpg',
+    title: 'Stephanie Egharevba Reviewing DOM & ARIA Digital Accessibility Architecture',
     eventTag: 'ADF · Rushbox Audit Clinic',
     location: 'Lagos, Nigeria',
     year: '2026',
-    caption: 'Auditing DOM hierarchy, ARIA live-regions, and keyboard navigation flows across client web apps.',
+    caption: 'Stephanie Egharevba auditing DOM hierarchy, ARIA live-regions, and keyboard navigation flows across client web applications.',
     track: 'advisory',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-advisory-community-leadership',
-    src: '/assets/aistudio/20260604_125652_ee30817c.jpg',
-    title: 'Community Leadership & Mentorship Roundtable',
+    src: '/assets/aistudio/stephanie-egharevba-disability-advocacy-leadership-mentorship.jpg',
+    title: 'Stephanie Egharevba Mentoring Emerging Disability Advocacy Leaders in Lagos',
     eventTag: 'Disability Advocacy Mentorship',
     location: 'Lagos, Nigeria',
     year: '2026',
-    caption: 'Mentoring emerging disability leaders on policy advocacy, public speaking, and institutional change.',
+    caption: 'Stephanie Egharevba mentoring emerging disability leaders on policy advocacy, public speaking, and institutional change.',
     track: 'advisory',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-advisory-bilateral-alignment',
-    src: '/assets/aistudio/20260604_125724_9696bed8.jpg',
-    title: 'Institutional Strategic Alignment Session',
+    src: '/assets/aistudio/stephanie-egharevba-accessible-grantmaking-partnership-advisory.jpg',
+    title: 'Stephanie Egharevba in Accessible Grantmaking Partnership Alignment Session',
     eventTag: 'Multilateral Partnership Advisory',
     location: 'Lagos, Nigeria',
     year: '2026',
-    caption: 'Finalizing multilateral partnership roadmap for community tech access and assistive digital infrastructure.',
+    caption: 'Stephanie Egharevba finalizing a multilateral partnership roadmap for inclusive NGO programs and assistive digital infrastructure.',
     track: 'advisory',
     aspectRatio: 'landscape'
   },
   {
     id: 'kinetic-portrait-emerald',
-    src: '/assets/aistudio/Headshot_4_f3b4056c.jpg',
-    title: 'Official Executive Portrait (Emerald Lapel)',
+    src: '/assets/aistudio/stephanie-egharevba-digital-accessibility-consultant-portrait.jpg',
+    title: 'Stephanie Egharevba Official Executive Portrait (Digital Accessibility Consultant)',
     eventTag: 'Official Studio Portrait',
     location: 'Lagos, Nigeria',
     year: '2025',
-    caption: 'Primary official press portrait of Stephanie Egharevba for international keynote announcements.',
+    caption: 'Primary official press portrait of Stephanie Egharevba for international keynote announcements and media features.',
     track: 'advisory',
     aspectRatio: 'portrait'
   },
   {
     id: 'kinetic-portrait-sky-blazer',
-    src: '/assets/aistudio/Headshot_5_8e90ef75.jpg',
-    title: 'Speaker Portrait (Sky Blazer)',
+    src: '/assets/aistudio/stephanie-egharevba-disability-inclusion-speaker-headshot.jpg',
+    title: 'Stephanie Egharevba Speaker Portrait (Disability Inclusion Speaker Africa)',
     eventTag: 'Speaker Press Asset',
     location: 'Lagos, Nigeria',
     year: '2025',
-    caption: 'Warm studio portrait approved for conference agendas, speaker rosters, and event programs.',
+    caption: 'Warm studio portrait of Stephanie Egharevba approved for conference agendas, speaker rosters, and event programs.',
     track: 'advisory',
     aspectRatio: 'portrait'
   },
   {
     id: 'kinetic-portrait-white-shirt',
-    src: '/assets/aistudio/Headshot_3_ab4f5e1e.jpg',
-    title: 'Editorial Studio Portrait',
+    src: '/assets/aistudio/stephanie-egharevba-author-editorial-portrait.jpg',
+    title: 'Stephanie Egharevba Editorial Author Portrait',
     eventTag: 'Editorial Feature',
     location: 'Lagos, Nigeria',
     year: '2025',
-    caption: 'Editorial portrait in crisp white shirt for feature profiles and published thought leadership.',
+    caption: 'Editorial portrait of Stephanie Egharevba in crisp white shirt for feature profiles and published thought leadership.',
     track: 'advisory',
     aspectRatio: 'portrait'
   }
@@ -572,141 +721,144 @@ export const ALL_KINETIC_PHOTOS: KineticGalleryItem[] = [
 ];
 
 export const CORE_COMPETENCIES: string[] = [
-  'D&I Strategy',
-  'Disability Policy',
-  'WCAG Auditing',
-  'Strategic Partnerships',
+  'WCAG 2.2 AA Auditing',
+  'Mobile App Accessibility Testing',
+  'Inclusive Digital Design for NGOs',
+  'Disability Inclusion Strategy',
+  'Accessible Grantmaking Programs',
   'Inclusive Workforce Placement',
-  'Community Mobilization',
-  'Keynote Speaking'
+  'AI Accessibility Keynotes'
 ];
 
 export const INITIAL_PROJECTS: ProjectItem[] = [
   {
-    id: 'mastercard-yac-nigeria',
-    title: 'Alumni Disability Community & Inclusion Strategy',
-    subtitle: 'Mastercard Foundation Youth Advisory Council Nigeria',
-    category: 'D&I Strategy',
-    year: '2024 - 2025',
-    organization: 'Mastercard Foundation Youth Advisory Council',
-    role: 'Diversity & Inclusion Lead',
-    visualTheme: 'council',
-    summary:
-      'Founded and scaled the Alumni Disability Community from 0 to 200+ members and led Ogun State lab infrastructure.',
-    challenge:
-      'Underrepresented youth with disabilities lacked a unified peer-advocacy network and standardized event accessibility guidelines.',
-    intervention:
-      'Built a 200+ member alumni network, authored baseline accessibility guidelines, moderated the global 2024 IDPD broadcast, and delivered computer lab hardware in Ogun State.',
-    impactMetrics: [
-      '200+ Active Alumni Disability Community members',
-      'Global 2024 IDPD panel broadcast moderator',
-      'Ogun State computer lab & backup power delivered'
-    ],
-    deliverables: [
-      'Baseline Event & Platform Accessibility Guidelines',
-      'Alumni Disability Community Network',
-      'Ogun State Tech Infrastructure Give-Back'
-    ]
-  },
-  {
     id: 'rushbox-wcag-audit',
-    title: 'Rushbox WCAG Platform Audit',
-    subtitle: 'Comprehensive Digital Accessibility Evaluation & Roadmap',
+    title: 'Rushbox WCAG 2.2 AA Platform Audit & Remediation',
+    subtitle: 'End-to-End Web & Mobile Accessibility Teardown, Keyboard Navigation & Inclusive MVP Engineering',
     category: 'WCAG & Accessibility',
     year: '2025 — 2026',
     organization: 'Rushbox',
-    role: 'Accessibility Consultant',
+    role: 'Digital Accessibility Consultant & WCAG Auditor',
     visualTheme: 'audit',
     summary:
-      'Audited web architecture and navigation against WCAG standards to remove physical, sensory, and cognitive barriers.',
+      'Partnered with Rushbox’s founding and engineering team during MVP iteration to audit core web and mobile user journeys against WCAG 2.1 / 2.2 Level AA standards, eliminating keyboard traps, screen-reader blockers, and contrast failures before scale.',
     challenge:
-      'Users with physical, sensory, and cognitive disabilities faced navigation and structural barriers across core product flows.',
+      'Customers with physical, visual, and cognitive disabilities encountered critical usability blockers across onboarding, navigation, and checkout flows: custom interactive controls lacked ARIA roles and focus indicators, modal dialogs trapped keyboard-only users, form inputs failed to announce validation errors to screen readers, and secondary UI text fell below the 4.5:1 WCAG contrast threshold.',
     intervention:
-      'Evaluated site structure against international WCAG standards and delivered a prioritized engineering remediation roadmap.',
+      'Conducted a comprehensive manual and automated WCAG 2.2 Level AA teardown using keyboard-only walkthroughs and screen readers (NVDA and VoiceOver). Re-architected the DOM heading hierarchy (single H1, logical H2/H3 landmarks), replaced non-semantic div buttons with keyboard-accessible controls, engineered high-visibility :focus-visible rings, connected inline form error states via aria-describedby, and delivered a prioritized engineering remediation roadmap.',
     impactMetrics: [
-      'Full WCAG architecture & navigation audit',
-      'Physical, sensory & cognitive barriers resolved',
-      'Long-term product inclusion roadmap adopted'
+      '100% of critical keyboard focus traps and unlabeled interactive controls resolved across MVP core flows',
+      'Achieved WCAG 2.2 AA contrast parity (≥ 4.5:1 body text, ≥ 3:1 UI components) across light and dark surfaces',
+      'Embedded a repeatable accessibility engineering checklist directly into Rushbox’s frontend sprint workflow'
     ],
     deliverables: [
-      'WCAG Technical Audit Report',
-      'Engineering Remediation Roadmap',
-      'Inclusive UX Advisory'
+      'WCAG 2.2 Level AA Technical Audit Report',
+      'Screen-Reader & Keyboard Navigation Tree Remediation Specs',
+      'Inclusive UX & Frontend Engineering Playbook'
+    ]
+  },
+  {
+    id: 'mastercard-yac-nigeria',
+    title: 'Mastercard Foundation Alumni Disability Community & Inclusive Program Architecture',
+    subtitle: 'Scaling a 200+ Member Disability Network, Accessible Event Standards & Ogun State Tech Lab Infrastructure',
+    category: 'D&I Strategy',
+    year: '2024 — 2025',
+    organization: 'Mastercard Foundation Youth Advisory Council Nigeria',
+    role: 'Diversity & Inclusion Lead',
+    visualTheme: 'council',
+    summary:
+      'Designed and scaled institutional disability inclusion across the Mastercard Foundation Youth Advisory Council in Nigeria—founding the 200+ member Alumni Disability Community from zero, authoring accessible program standards, and delivering assistive computer lab hardware.',
+    challenge:
+      'Young graduates and scholars with disabilities across Nigeria were navigating fellowship transitions, career placement, and leadership events in isolation—facing inconsistent event accommodations, inaccessible digital registration forms, and a lack of structured peer mentorship.',
+    intervention:
+      'Audited and redesigned council communication and event workflows to mandate live captioning, sign language interpretation, accessible venue vetting, and screen-reader friendly digital outreach. Founded the Alumni Disability Community from scratch to unite 200+ young professionals with disabilities, moderated the globally broadcast 2024 International Day of Persons with Disabilities (IDPD) panel, and directed an Ogun State secondary school infrastructure project delivering desktop computers and backup power.',
+    impactMetrics: [
+      'Scaled the Mastercard Foundation Alumni Disability Community from 0 to 200+ active members nationwide',
+      'Established mandatory accessibility standards adopted across national youth summits, roundtables, and digital broadcasts',
+      'Delivered fully equipped computer lab hardware, backup power, and digital literacy training to students in Ogun State'
+    ],
+    deliverables: [
+      'Accessible Grantmaking & Event Inclusion Standards',
+      '200+ Member Alumni Disability Peer & Mentorship Network',
+      'Ogun State School Computer Lab & Backup Power Deployment'
     ]
   },
   {
     id: 'jobberman-mastercard-workforce',
-    title: 'Talent Corp Ambassador',
-    subtitle: 'Equitable Skill Acquisition & Corporate Job Placement',
+    title: 'Jobberman & Mastercard Foundation Inclusive Workforce Pipeline',
+    subtitle: 'Accessible Candidate Onboarding, Learning Module Audits & Corporate Placement across West Africa',
     category: 'Workforce & Tech',
     year: '2026 — Present',
-    organization: 'Jobberman & Mastercard Foundation',
+    organization: 'Jobberman Nigeria & Mastercard Foundation Talent Corp',
     role: 'Associate Engagement Officer & Talent Corp Ambassador',
     visualTheme: 'fintech',
     summary:
-      'Embedding universal accessibility into regional workforce training and placing young talents with disabilities into roles.',
+      'Embedding WCAG digital accessibility and disability inclusion into regional workforce readiness programs, candidate assessment portals, and corporate job placements across West Africa.',
     challenge:
-      'Young talents with disabilities across West Africa face systemic friction transitioning from training into employment.',
+      'Skilled job seekers with physical and sensory disabilities across West Africa frequently dropped out of digital training cohorts and corporate recruitment funnels due to inaccessible learning modules, timed visual assessments, and employer misconceptions around workplace accommodations.',
     intervention:
-      'Spearheading end-to-end talent readiness, accessible training modules, and corporate partner placement.',
+      'Audited candidate onboarding and digital training journeys to remove sensory and motor friction for applicants with disabilities. Partnered with corporate hiring managers to institute practical accommodation policies, accessible interview workflows, and targeted talent placement under the Mastercard Foundation Project Initiative.',
     impactMetrics: [
-      'Regional disability inclusion frameworks deployed',
-      'Accessible learning modules embedded across West Africa',
-      'Targeted corporate job placement for PWDs'
+      'Deployed accessible learning and candidate evaluation standards across regional workforce training cohorts',
+      'Removed onboarding and assessment friction for youth with physical, visual, and hearing disabilities',
+      'Equipped corporate partner employers with practical workplace accommodation and inclusive hiring frameworks'
     ],
     deliverables: [
-      'Inclusive Talent Pipeline Framework',
-      'Accessible Training Standards',
-      'Corporate Employer Readiness'
+      'Accessible Candidate Onboarding & LMS Audit Guidelines',
+      'Inclusive Workforce Placement & Employer Readiness Playbook',
+      'Disability Accommodation Policy Templates for HR Teams'
     ]
   },
   {
     id: 'client-africa-disability-gender',
-    title: 'Disability Rights & Gender Equity Strategy',
-    subtitle: 'Inclusive Governance & Regional Program Delivery',
+    title: 'Client Africa Disability Rights & Gender Equity Governance',
+    subtitle: 'Inclusive NGO Program Design, Accessible Community Outreach & GESI Policy Integration',
     category: 'D&I Strategy',
     year: '2024 — 2025',
     organization: 'Client Africa',
     role: 'Head of Disability & Gender Equality',
     visualTheme: 'clent',
     summary:
-      'Integrated disability rights and gender equity into core organizational governance and regional impact programs.',
+      'Embedded disability inclusion and gender equity (GESI) directly into organizational governance, grant program budgets, and regional community outreach across Nigeria.',
     challenge:
-      'Regional impact programs needed structured governance to guarantee representation of women and persons with disabilities.',
+      'Regional social-impact programs lacked formal disability inclusion KPIs, budget allocations for reasonable accommodations, and accessible communication channels, resulting in low participation from women and youth with disabilities.',
     intervention:
-      'Formulated organizational D&I strategies and led regional campaigns that increased underrepresented participation.',
+      'Authored a binding Disability & Gender Equality Governance Charter, trained program coordinators on inclusive digital and field outreach, introduced accommodation budgeting into project planning, and redesigned community campaign materials for clarity and accessibility.',
     impactMetrics: [
-      'D&I embedded in core leadership governance',
-      'Increased underrepresented participation regionally'
+      'Integrated measurable disability and gender inclusion KPIs into executive program governance',
+      'Significantly increased participation of women and persons with disabilities across regional advocacy campaigns',
+      'Trained 100% of program delivery coordinators on accessible event and outreach execution'
     ],
     deliverables: [
-      'Disability & Gender Equality Strategy',
-      'Inclusive Program Governance'
+      'Disability & Gender Equality (GESI) Governance Strategy',
+      'Inclusive NGO Program Budgeting & Accommodation Checklist',
+      'Accessible Community Outreach Training Manual'
     ]
   },
   {
     id: 'google-microsoft-yabatech-communities',
-    title: 'Google, Microsoft & Yabatech Tech Communities',
-    subtitle: '300+ Student Developers Mobilized & Campus Inclusion',
+    title: 'Google GDSC, Microsoft Ambassadors & Yabatech Campus Accessibility Reform',
+    subtitle: 'Mobilizing 300+ Student Developers & Securing Institutional Academic Accommodations',
     category: 'Workforce & Tech',
     year: '2023 — 2024',
-    organization: 'Google · Microsoft · Yabatech',
-    role: 'GDSC Lead, Microsoft Lead & Special Adviser',
+    organization: 'Google · Microsoft · Yaba College of Technology',
+    role: 'GDSC Lead, Microsoft Ambassador Lead & Special Adviser on Disability',
     visualTheme: 'policy',
     summary:
-      'Mobilized 300+ student developers across Google and Microsoft chapters while championing campus disability policy.',
+      'Built and led a 300+ member inclusive campus developer ecosystem across Google and Microsoft student chapters while spearheading statutory examination and physical accessibility reforms at Yaba College of Technology.',
     challenge:
-      'Disabled and underrepresented students faced campus accommodation gaps and exclusion from technical tracks.',
+      'Students with disabilities faced physical lecture-hall barriers, lack of examination accommodations, and exclusion from technical software engineering bootcamps and hackathons.',
     intervention:
-      'Led Google GDSC (200+ members) and Microsoft Student Ambassadors (100+ members) while serving as Special Adviser on disability inclusion.',
+      'Audited campus workshop formats and student portals to ensure barrier-free participation, grew the Google Developer Student Club (200+ members) and Microsoft Student Ambassadors chapter (100+ members), and negotiated directly with senior college administration as Special Adviser to the Student Union President to institutionalize academic and physical accommodations.',
     impactMetrics: [
-      '200+ Students in Google GDSC chapter',
-      '100+ Members in Microsoft Ambassador chapter',
-      'Appointed Special Adviser to Student Union President'
+      'Mobilized 300+ student developers across Google GDSC (200+) and Microsoft Student Ambassador (100+) chapters',
+      'Secured formal examination accommodations and physical accessibility pathways for students with disabilities',
+      'Connected disabled and female student builders to regional ecosystems including DataFest Africa and CHAOSS Africa'
     ],
     deliverables: [
-      'Campus Accommodation Frameworks',
-      'Data Literacy & Coding Tracks'
+      'Institutional Campus Disability Accommodation Policy Framework',
+      'Barrier-Free Web Engineering & Data Literacy Bootcamps',
+      'Inclusive Student Developer Community Playbook'
     ]
   }
 ];
@@ -1098,7 +1250,7 @@ export const STEPHANIE_BOOKS: BookItem[] = [
     selarUrl: 'https://selar.com/4bqls9k68c',
     accentColor: '#F59E0B',
     coverBg: '#13543A',
-    coverImageUrl: '/assets/aistudio/is-your-product-excluding-selar.com-6970b1110bd40_12dcffed.jpg',
+    coverImageUrl: '/assets/aistudio/stephanie-egharevba-is-your-product-excluding-15-percent-of-nigerians-book.jpg',
     description:
       'Inaccessible digital products lock out over 30 million Nigerians and cost African enterprises significant market share. This executive briefing gives founders and product leaders a clear commercial roadmap to build inclusive products that scale.',
     highlights: [
@@ -1115,7 +1267,7 @@ export const STEPHANIE_BOOKS: BookItem[] = [
     selarUrl: 'https://selar.com/codeforeverybody',
     accentColor: '#2563EB',
     coverBg: '#F8FAFC',
-    coverImageUrl: '/assets/aistudio/code-for-everybody-selar.com-69619fb1197c5_3dffc49d.png',
+    coverImageUrl: '/assets/aistudio/stephanie-egharevba-code-for-every-body-accessibility-book.png',
     description:
       'A hands-on engineering manual for building semantic, keyboard-navigable, and screen-reader compatible web and mobile interfaces. Designed for frontend engineers and UX teams shipping accessible code in production.',
     highlights: [
@@ -1132,7 +1284,7 @@ export const STEPHANIE_BOOKS: BookItem[] = [
     selarUrl: 'https://selar.com/accessibilitymadeeasy',
     accentColor: '#34D399',
     coverBg: '#0F623D',
-    coverImageUrl: '/assets/aistudio/accessibility-made-easy-selar.com-695fe90b3bd5c_cd1a13b3.png',
+    coverImageUrl: '/assets/aistudio/stephanie-egharevba-accessibility-made-easy-wcag-toolkit.png',
     description:
       'A ready-to-use audit toolkit featuring WCAG 2.2 AA checklists, contrast benchmarks, and Nigerian Disability Act compliance templates. Built to help product teams run structured accessibility reviews from day one.',
     highlights: [
@@ -1142,5 +1294,3 @@ export const STEPHANIE_BOOKS: BookItem[] = [
     ]
   }
 ];
-
-

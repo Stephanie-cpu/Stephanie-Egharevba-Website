@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'motion/react';
 import {
   ArrowLeft,
   ArrowRight,
+  Check,
+  Copy,
   Grid,
   Pause,
   Play,
@@ -24,6 +26,11 @@ interface PhotoGalleryPressKitProps {
 
 const EASE_EDITORIAL: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+const OFFICIAL_SPEAKER_BIO =
+  'Stephanie Osasumwen Egharevba is a Nigerian Digital Accessibility Consultant, WCAG 2.2 Compliance Auditor, Disability Inclusion Strategist, and Author based in Lagos. Ranked in the Top 3% of Global Speakers on Sessionize and named among ALX Nigeria’s Top 100 Women in Tech (2025), she serves as Associate Engagement Officer at Jobberman Nigeria and Talent Corp Ambassador for the Mastercard Foundation Project Initiative. Previously Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria—where she founded the 200+ member Alumni Disability Community—she audits web and mobile platforms against WCAG 2.2 AA standards and is the author of Code for Every Body. Learn more at https://stephanieegharevba.com.';
+
+const OFFICIAL_HTML_BACKLINK = `<p><strong>Stephanie Egharevba</strong> — Digital Accessibility Consultant, WCAG 2.2 Strategist &amp; Disability Inclusion Speaker in Africa. Explore her <a href="https://stephanieegharevba.com/work">WCAG Case Studies</a>, <a href="https://stephanieegharevba.com/speaking">Keynote Speaking Portfolio</a>, and <a href="https://stephanieegharevba.com/books">Accessibility Books</a> at <a href="https://stephanieegharevba.com">stephanieegharevba.com</a>.</p>`;
+
 export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
   reduceMotion = false
 }) => {
@@ -39,6 +46,8 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
 
   const [viewMode, setViewMode] = useState<'kinetic' | 'grid'>('kinetic');
   const [selectedPhoto, setSelectedPhoto] = useState<KineticGalleryItem | null>(null);
+  const [copiedBio, setCopiedBio] = useState<boolean>(false);
+  const [copiedHtml, setCopiedHtml] = useState<boolean>(false);
 
   const allPhotos: KineticGalleryItem[] = ALL_KINETIC_PHOTOS;
 
@@ -81,12 +90,17 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
   const shouldPauseMotion = isAnimationPaused || reduceMotion;
 
   return (
-    <div className="space-y-8">
-      {/* Minimalist Controls Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]">
-          Gallery
-        </h1>
+    <div className="space-y-12">
+      {/* Minimalist Controls Bar + H1 */}
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#E6E4DD] pb-6">
+        <div className="space-y-1.5">
+          <div className="text-xs font-mono text-[#575652]">
+            OFFICIAL PRESS ASSETS · STAGE PHOTOGRAPHY &amp; SPEAKER KIT
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]">
+            Speaker Media Kit &amp; Press Gallery
+          </h1>
+        </div>
 
         <div className="flex items-center gap-2">
           {viewMode === 'kinetic' && (
@@ -94,7 +108,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
               type="button"
               onClick={toggleAnimationPlayPause}
               aria-pressed={isAnimationPaused}
-              aria-label={isAnimationPaused ? 'Play animation' : 'Pause animation'}
+              aria-label={isAnimationPaused ? 'Play gallery animation' : 'Pause gallery animation'}
               className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 border transition-all cursor-pointer ${
                 isAnimationPaused
                   ? 'bg-[#1D4ED8] text-white border-[#1D4ED8]'
@@ -147,7 +161,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
         </div>
       </div>
 
-      {/* Pure Photo Gallery (No Text Overlays, Badges, or Captions) */}
+      {/* Pure Photo Gallery with Descriptive Alt Text */}
       {viewMode === 'kinetic' ? (
         <div className="space-y-6 overflow-hidden">
           {/* Track 1: Glides Left */}
@@ -155,7 +169,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
             className="relative overflow-x-auto sm:overflow-hidden select-none"
             tabIndex={0}
             role="region"
-            aria-label="Gallery Track 1"
+            aria-label="Keynote Stage Photography Track"
           >
             <div
               className={`flex gap-4 sm:gap-5 items-stretch ${
@@ -179,8 +193,9 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                 >
                   <img
                     src={photo.src}
-                    alt={photo.title}
+                    alt={photo.caption || photo.title}
                     loading="lazy"
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
                   />
                 </div>
@@ -193,7 +208,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
             className="relative overflow-x-auto sm:overflow-hidden select-none"
             tabIndex={0}
             role="region"
-            aria-label="Gallery Track 2"
+            aria-label="WCAG Advisory & Portraits Track"
           >
             <div
               className={`flex gap-4 sm:gap-5 items-stretch ${
@@ -217,8 +232,9 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                 >
                   <img
                     src={photo.src}
-                    alt={photo.title}
+                    alt={photo.caption || photo.title}
                     loading="lazy"
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
                   />
                 </div>
@@ -227,7 +243,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
           </div>
         </div>
       ) : (
-        /* Static Grid View: Pure Photos Only */
+        /* Static Grid View */
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {allPhotos.map((photo, index) => (
             <motion.div
@@ -249,8 +265,9 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
             >
               <img
                 src={photo.src}
-                alt={photo.title}
+                alt={photo.caption || photo.title}
                 loading="lazy"
+                referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
               />
             </motion.div>
@@ -258,7 +275,100 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
         </div>
       )}
 
-      {/* Clean Photo Lightbox Modal (Photo Only) */}
+      {/* Official Speaker Bio & Partner Backlink Attribution Kit (Phase 4 Backlink Builder) */}
+      <section
+        aria-labelledby="press-attribution-heading"
+        className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 space-y-6"
+      >
+        <div className="space-y-1.5">
+          <div className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#1D4ED8] font-semibold">
+            FOR CONFERENCE ORGANIZERS, PODCAST HOSTS &amp; MEDIA PARTNERS
+          </div>
+          <h2
+            id="press-attribution-heading"
+            className="text-xl sm:text-2xl font-display font-bold text-[#141413]"
+          >
+            Official Speaker Bio &amp; Canonical Website Attribution
+          </h2>
+          <p className="text-xs sm:text-sm text-[#575652] max-w-2xl leading-relaxed">
+            Featuring Stephanie Egharevba on an upcoming conference agenda (such as Inclusive Africa, Sessionize, or TechCabal), podcast episode, or partner directory? Use the approved 100-word speaker bio and canonical backlink snippet below.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Approved 100-Word Speaker Bio */}
+          <div className="rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] p-5 flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="text-sm font-display font-bold text-[#141413]">
+                  Approved 100-Word Speaker Bio
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard?.writeText(OFFICIAL_SPEAKER_BIO);
+                    setCopiedBio(true);
+                    setTimeout(() => setCopiedBio(false), 2400);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E6E4DD] hover:border-[#1D4ED8] text-xs font-semibold text-[#141413] cursor-pointer"
+                >
+                  {copiedBio ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Copied Bio</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                      <span>Copy Bio Text</span>
+                    </>
+                  )}
+                </button>
+              </div>
+              <p className="text-xs text-[#3F3E3A] leading-relaxed">
+                {OFFICIAL_SPEAKER_BIO}
+              </p>
+            </div>
+          </div>
+
+          {/* Canonical HTML Attribution Snippet */}
+          <div className="rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] p-5 flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="text-sm font-display font-bold text-[#141413]">
+                  Partner &amp; Show-Notes Backlink Snippet (HTML)
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard?.writeText(OFFICIAL_HTML_BACKLINK);
+                    setCopiedHtml(true);
+                    setTimeout(() => setCopiedHtml(false), 2400);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E6E4DD] hover:border-[#1D4ED8] text-xs font-semibold text-[#141413] cursor-pointer"
+                >
+                  {copiedHtml ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Copied HTML</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                      <span>Copy HTML Link</span>
+                    </>
+                  )}
+                </button>
+              </div>
+              <pre className="text-[11px] font-mono text-[#272725] bg-white border border-[#E6E4DD] rounded-lg p-3 overflow-x-auto whitespace-pre-wrap">
+                {OFFICIAL_HTML_BACKLINK}
+              </pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Clean Photo Lightbox Modal */}
       <AnimatePresence>
         {selectedPhoto && (
           <div
@@ -313,7 +423,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
               transition={{ duration: 0.2, ease: EASE_EDITORIAL }}
               onClick={(e) => e.stopPropagation()}
               src={selectedPhoto.src}
-              alt={selectedPhoto.title}
+              alt={selectedPhoto.caption || selectedPhoto.title}
               className="max-h-[88vh] max-w-[92vw] object-contain rounded-xl shadow-2xl"
             />
           </div>

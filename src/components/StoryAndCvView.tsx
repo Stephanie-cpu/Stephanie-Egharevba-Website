@@ -601,7 +601,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                     onClick={onNavigateToWork}
                     className="px-5 py-3 text-xs sm:text-sm font-semibold text-[#0F172A] bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#0F172A] rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer"
                   >
-                    <span>Inspect Case Studies &amp; Contrast Lab</span>
+                    <span>Explore WCAG Case Studies &amp; Contrast Lab</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>

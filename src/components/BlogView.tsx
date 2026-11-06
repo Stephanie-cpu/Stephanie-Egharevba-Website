@@ -3,56 +3,32 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   AlertCircle,
   ArrowLeft,
-  ArrowRight,
   ArrowUpRight,
   BookOpen,
   Check,
   CheckCircle2,
   Clock,
-  Coffee,
   Copy,
-  KeyRound,
-  Lock,
-  LogOut,
   Mail,
   MessageSquare,
-  Pencil,
-  Plus,
   Search,
-  ShieldCheck,
   Sparkles,
-  Trash2,
-  X,
 } from 'lucide-react';
 import {
   collection,
-  doc,
   addDoc,
-  setDoc,
-  deleteDoc,
   onSnapshot,
   query,
   where,
   serverTimestamp,
 } from 'firebase/firestore';
-import { onAuthStateChanged, signInWithPopup, signOut, User } from 'firebase/auth';
-import {
-  auth,
-  db,
-  googleProvider,
-  BOOTSTRAPPED_ADMIN_EMAIL,
-  handleFirestoreError,
-  OperationType,
-} from '../lib/firebase';
+import { db } from '../lib/firebase';
 import { CmsArticleRecord } from './CmsAdminModal';
 import {
   CmsStoredBlogRecord,
-  ADMIN_SESSION_UNLOCKED_KEY,
   recordToBlogPost,
   loadLocalBlogMirror,
   loadDeletedBlogIds,
-  saveLocalBlogMirrorRecord,
-  removeLocalBlogRecord,
 } from '../lib/blogCms';
 
 export type BlogTopic =
@@ -86,11 +62,219 @@ export interface BlogPost {
   }[];
 }
 
-// Default private password for Stephanie's /blog-admin portal (stored as a hash/constant check)
+// Default private password for Stephanie's /cms portal
 export const ADMIN_PASSCODE_DEFAULT = 'UnbiasLagos2026!';
 export const ADMIN_PASSCODE_STORAGE_KEY = 'stephanie_blog_admin_custom_pass_v1';
 
 export const CURATED_BLOG_POSTS: BlogPost[] = [
+  {
+    id: 'blog-ngo-funded-programs-accessibility',
+    slug: 'what-digital-accessibility-should-actually-look-like-in-ngo-funded-programs',
+    title: 'What Digital Accessibility Should Actually Look Like in NGO-Funded Programs',
+    subtitle:
+      'A practical blueprint for foundations, NGOs, and development programs to move from inclusion pledges to accessible grantmaking portals, learning systems, and talent pipelines.',
+    topic: 'Inclusion & Culture',
+    publishedAt: 'Nov 4, 2026',
+    readingTime: '7 min read',
+    locationNote: 'Lagos · Inclusive Program & Grantmaking Strategy',
+    featured: true,
+    coverImage: '/assets/aistudio/stephanie-egharevba-ngo-inclusive-program-design-session.jpg',
+    coverImageAlt:
+      'Stephanie Egharevba facilitating an inclusive digital program design session with NGO and youth leaders in Lagos',
+    pullQuote:
+      'You cannot set a 10% disability inclusion target on a grant program and then host the application form on a portal that locks out screen readers on page one.',
+    excerpt:
+      'Every year, philanthropic foundations and international NGOs launch multi-million-dollar youth employment and digital skills programs across Africa. Yet many struggle to recruit and retain participants with disabilities because the digital infrastructure of the program itself was never audited for accessibility.',
+    externalUrl: 'https://substack.com/@theunbiasproject',
+    takeaways: [
+      'Audit grant and fellowship application forms against WCAG 2.2 Level AA before opening applications—removing visual puzzle CAPTCHAs, unlabeled PDF uploads, and inaccessible date pickers.',
+      'Build a dedicated reasonable accommodation budget line (5%–7% of program delivery costs) for sign language interpretation, live captioning, screen-reader compatible learning materials, and mobility stipends.',
+      'Treat disabled alumni and youth advisory councils as co-designers of the program architecture rather than post-launch survey respondents.',
+    ],
+    sections: [
+      {
+        paragraphs: [
+          'Across West and East Africa, foundations, bilateral donors, and NGOs are doing vital work funding digital skills bootcamps, entrepreneurship fellowships, and workforce placement initiatives. Almost every program charter now includes a commitment to Gender Equality and Social Inclusion (GESI) and sets a target for recruiting young people with disabilities.',
+          'Then the call for applications goes live. Three weeks later, the program delivery team looks at the dashboard and asks: "Why did we receive almost zero completed applications from candidates with disabilities?"',
+          'Having served as Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council in Nigeria and worked across workforce readiness programs at Jobberman, I have seen the exact reason up close: the ambition is inclusive, but the digital doorway is locked.',
+        ],
+      },
+      {
+        heading: '1. The Application Portal Is Your First Inclusion Policy',
+        paragraphs: [
+          'Before a young graduate with a visual, motor, or hearing impairment ever meets a program officer, they meet your online application form. If your multi-step grant portal uses custom dropdowns that cannot be opened with a keyboard, timed cognitive tests that cannot be extended, or a visual traffic-light CAPTCHA at the final submit button, blind and motor-impaired applicants are silently disqualified.',
+          'Inclusive digital design for NGOs starts with a pre-launch WCAG 2.2 AA audit of every third-party form builder, learning management system (LMS), and assessment tool in your participant journey. Every form field needs a programmatic label, clear inline error guidance connected via aria-describedby, and an explicit question asking: "What reasonable accommodations will help you participate fully in this selection process?"',
+        ],
+        callout:
+          'Program Officer Checklist: Before launching your next cohort application, unplug your mouse and complete the entire registration form using only the Tab, Shift+Tab, Space, and Enter keys.',
+      },
+      {
+        heading: '2. Accessible Learning Management Systems (LMS) & Training Content',
+        paragraphs: [
+          'Getting accepted into a fellowship is only step one. If the training curriculum relies on uncaptioned video lectures, scanned image PDFs that screen readers see as blank pages, or live webinars without sign language interpretation, scholars with disabilities are forced to work twice as hard just to access the baseline material.',
+          'Accessible grantmaking programs mandate that implementing partners deliver multi-modal learning assets: synchronized captions and transcripts on all video modules, tagged accessible PDFs or semantic HTML workbooks, and low-bandwidth mobile compatibility for learners using assistive technology on budget Android devices.',
+        ],
+      },
+      {
+        heading: '3. Budgeting for Accommodations & Building Peer Ecosystems',
+        paragraphs: [
+          'True disability inclusion strategy is never free, and it should never be treated as an emergency ad-hoc expense. High-performing NGO programs ring-fence a dedicated reasonable accommodation budget line from day zero so program managers never have to hesitate when a participant requests a sign language interpreter, tactile materials, or accessible transport.',
+          'Finally, representation without community is isolating. When we built the 200+ member Alumni Disability Community within the Mastercard Foundation ecosystem in Nigeria, retention and career placement accelerated because young professionals with disabilities had a peer network to share job leads, workplace accommodation strategies, and mentorship.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'blog-inaccessible-platforms-waste-grant-money',
+    slug: 'how-inaccessible-digital-platforms-waste-grant-money-and-exclude-talent',
+    title: 'How Inaccessible Digital Platforms Waste Grant Money and Exclude Talent',
+    subtitle:
+      'When donor-funded EdTech portals, job boards, and civic platforms ship without WCAG compliance, organizations pay twice: first in lost talent, and second in expensive code rewrites.',
+    topic: 'Accessibility in Practice',
+    publishedAt: 'Oct 28, 2026',
+    readingTime: '6 min read',
+    locationNote: 'West Africa · Donor ROI & Digital Infrastructure',
+    coverImage: '/assets/aistudio/stephanie-egharevba-accessible-grantmaking-partnership-advisory.jpg',
+    coverImageAlt:
+      'Stephanie Egharevba in a strategic advisory session on accessible grantmaking and inclusive digital infrastructure',
+    pullQuote:
+      'Funding an inclusive workforce program on an inaccessible software platform is like funding a public library and building a twenty-step staircase with no ramp at the front entrance.',
+    excerpt:
+      'Development agencies and impact investors spend millions procuring custom web portals, EdTech apps, and talent matching platforms. Here is how overlooking WCAG 2.2 AA standards during software procurement quietly drains donor ROI and filters out brilliant African talent.',
+    externalUrl: 'https://substack.com/@theunbiasproject',
+    takeaways: [
+      'Retrofitting accessibility into a digital platform after launch costs up to 6x–10x more than embedding WCAG 2.2 AA requirements into initial procurement RFPs.',
+      'Inaccessible candidate assessments create false negatives—filtering out qualified software engineers, analysts, and creatives simply because the test UI broke their screen reader.',
+      'Requiring a verified WCAG 2.2 AA audit before final vendor sign-off protects grant capital and ensures donor-funded infrastructure serves 100% of the target population.',
+    ],
+    sections: [
+      {
+        paragraphs: [
+          'Imagine a foundation commits $2 million to train and place 10,000 underserved youth into digital economy jobs across Nigeria, Kenya, and Ghana. A software vendor is contracted to build the central candidate portal, skill-testing engine, and employer matching dashboard.',
+          'Six months later, the platform launches with sleek animations, a trendy low-contrast color palette, and custom drag-and-drop assessment widgets. On paper, the software deliverable is marked "Complete." In reality, every single candidate who relies on keyboard navigation, screen magnification, or a mobile screen reader has just been locked out of the program.',
+        ],
+      },
+      {
+        heading: 'The Hidden Financial Cost of Post-Launch Retrofits',
+        paragraphs: [
+          'When organizations treat digital accessibility as a "Phase 2 enhancement," grant money is wasted in two ways. First, outreach budgets spent recruiting youth with disabilities fail to convert because candidates abandon the broken registration funnel. Second, when the donor or program lead eventually commissions an accessibility audit, the engineering vendor has to rip apart core UI components that were already paid for.',
+          'Fixing color contrast tokens and semantic button roles during the Figma and sprint-zero stage takes hours. Rewriting custom React modals, unlabelled canvas charts, and inaccessible video players six months after launch takes weeks of billable engineering time.',
+        ],
+        callout:
+          'Procurement Rule for Foundations & NGOs: Include "WCAG 2.2 Level AA conformance verified by independent manual screen-reader and keyboard testing" as a mandatory acceptance criterion in every software vendor contract.',
+        },
+      {
+        heading: 'How Broken Assessment Tools Create False Negatives',
+        paragraphs: [
+          'In my workforce advisory work, one of the most painful patterns I witness is talented young Nigerians with disabilities failing automated pre-employment screening tests—not because they lack the technical or analytical skill, but because the assessment timer does not pause for screen readers, or the multiple-choice radio buttons are unlabelled div elements.',
+          'When we audit and remediate those candidate journeys, completion rates rise across the board—not only for candidates with disabilities, but also for applicants on low-bandwidth mobile connections and older smartphones. Accessible engineering makes every dollar of grant funding work harder.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'blog-wcag-22-checklist-african-fintech-startups',
+    slug: 'wcag-2-2-aa-checklist-for-african-fintech-and-startup-product-teams',
+    title: 'WCAG 2.2 AA Checklist for African Fintech and Startup Product Teams',
+    subtitle:
+      'A practical, engineering-first guide to contrast ratios, 44px touch targets, accessible KYC flows, and screen-reader parity for mobile and web apps in Africa.',
+    topic: 'Builder Notes',
+    publishedAt: 'Oct 19, 2026',
+    readingTime: '8 min read',
+    locationNote: 'Lagos · Fintech & Product Engineering',
+    coverImage: '/assets/aistudio/stephanie-egharevba-screen-reader-mobile-app-accessibility-testing.jpg',
+    coverImageAlt:
+      'Stephanie Egharevba conducting live screen-reader and mobile app accessibility testing with software engineers',
+    pullQuote:
+      'When a banking app or payment checkout in Lagos fails WCAG 2.2 AA standards, it does not just fail a technical audit—it locks millions of customers out of financial independence.',
+    excerpt:
+      'Building a fintech, edtech, or e-commerce product for Nigeria, Kenya, or pan-African markets? Use this field-tested WCAG 2.2 Level AA engineering checklist to make your mobile and web interfaces usable for every customer.',
+    externalUrl: 'https://substack.com/@theunbiasproject',
+    takeaways: [
+      'Enforce a minimum 4.5:1 contrast ratio for normal text and 3:1 for UI components and icons—essential for both low-vision users and customers using smartphones in bright tropical sunlight.',
+      'Ensure all interactive tap targets measure at least 44x44 CSS pixels (exceeding WCAG 2.2 Target Size Minimum) so users with motor tremors or one-handed grip can transact without mis-taps.',
+      'Provide multi-modal alternatives for biometric KYC (such as "blink twice" or "turn head rapidly" liveness checks) so blind and motor-impaired users can open bank accounts independently.',
+    ],
+    sections: [
+      {
+        paragraphs: [
+          'African fintechs have built some of the fastest, most resilient payment infrastructure in the world. Yet when I conduct mobile app accessibility testing and WCAG 2.2 AA audits across regional banking, savings, and logistics apps, the same five barriers repeatedly block users with disabilities from completing basic transactions.',
+          'Here is the practical WCAG 2.2 Level AA checklist I share with founders, product designers, and frontend engineers—designed specifically for the realities of mobile-first African product teams.',
+        ],
+      },
+      {
+        heading: '1. Accessible Biometric KYC & Onboarding (No Single-Sensory Traps)',
+        paragraphs: [
+          'Many digital banks rely on automated selfie liveness checks that flash visual text prompts on screen ("Smile", "Blink now", "Move closer to the oval") with zero audio guidance or haptic feedback. For a blind customer, or a user with Osteogenesis Imperfecta or cerebral palsy who cannot hold a phone at a rigid arm’s-length angle, account creation stops right there.',
+          'To comply with WCAG 2.2, pair camera framing guides with real-time VoiceOver/TalkBack spoken cues, relax rigid timeout windows (WCAG 2.2.1 Timing Adjustable), and always offer an accessible fallback verification pathway (such as NIN/BVN document upload with assisted verification).',
+        ],
+      },
+      {
+        heading: '2. Color Contrast & Sunlight Legibility (WCAG 1.4.3 & 1.4.11)',
+        paragraphs: [
+          'Pale grey placeholder text on a white input background might look sleek on a calibrated MacBook Pro inside an air-conditioned studio in Victoria Island, but it is unreadable to low-vision users and invisible outdoors under bright midday glare on a budget Android screen.',
+          'Set your design system tokens so body text maintains at least a 4.5:1 contrast ratio against its surface, large headings maintain at least 3:1, and active input borders or status icons maintain at least 3:1 contrast. Never use red or green color alone to indicate whether a transfer succeeded or failed—always include a clear text label and icon.',
+        ],
+        callout:
+          'Interactive Tool: You can test your exact brand hex codes against WCAG 2.2 AA and AAA mathematical thresholds using the live Contrast Lab on my Work page (/work).',
+      },
+      {
+        heading: '3. Keyboard Focus, Screen-Reader Labels & PIN Pads (WCAG 2.4.7, 2.5.8 & 4.1.2)',
+        paragraphs: [
+          'Icon-only buttons—like the "Copy account number" icon, the "Hide balance" eye toggle, or the top-right "Close modal" X—are the most common culprits in TalkBack and VoiceOver audits. Without an explicit aria-label, a screen reader simply announces "Unlabelled button."',
+          'Similarly, custom numeric PIN pads and OTP inputs must announce each digit clearly, support focus-visible outlines for keyboard and switch-device users, and respect WCAG 2.2 Success Criterion 3.3.8 (Accessible Authentication) by allowing password managers or paste functionality where appropriate.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'blog-nigerian-disability-act-digital-compliance',
+    slug: 'why-nigerian-digital-products-need-to-comply-with-the-nigerian-disability-act',
+    title: 'Why Nigerian Digital Products Need to Comply with the Nigerian Disability Act',
+    subtitle:
+      'Understanding the Discrimination Against Persons with Disabilities (Prohibition) Act, NCPWD enforcement, and the 35-million-person market case for inclusive tech in Nigeria.',
+    topic: 'Accessibility in Practice',
+    publishedAt: 'Oct 8, 2026',
+    readingTime: '6 min read',
+    locationNote: 'Lagos · Policy, Law & Market Strategy',
+    coverImage: '/assets/aistudio/stephanie-egharevba-pan-african-accessibility-policy-symposium.jpg',
+    coverImageAlt:
+      'Stephanie Egharevba speaking on the Nigerian Disability Act and digital accessibility compliance at a policy symposium',
+    pullQuote:
+      'Over 35 million Nigerians live with a disability. Designing accessible digital products is both a statutory obligation under Nigerian law and one of the largest untapped growth opportunities in African tech.',
+    excerpt:
+      'Many Nigerian founders and executives assume accessibility laws only apply to US or European companies under the ADA or European Accessibility Act. Here is what the Nigerian Disability Act and NCPWD mean for banks, telecoms, employers, and digital platforms operating in Nigeria.',
+    externalUrl: 'https://substack.com/@theunbiasproject',
+    takeaways: [
+      'Nigeria’s Discrimination Against Persons with Disabilities (Prohibition) Act 2018 mandates equitable access to public services, banking, education, telecommunications, and employment—domains now delivered primarily through web and mobile apps.',
+      'The Act’s five-year transitional grace period has expired, empowering the National Commission for Persons with Disabilities (NCPWD) and courts to enforce compliance and penalties.',
+      'Beyond legal risk, serving the 15%+ of Nigerians living with disabilities—and their households—unlocks massive commercial loyalty and international partnership eligibility.',
+    ],
+    sections: [
+      {
+        paragraphs: [
+          'Whenever I speak with technology executives or bank product leaders in Lagos, someone inevitably asks: "Stephanie, isn’t WCAG compliance mainly a requirement for foreign companies worried about US ADA lawsuits or the European Accessibility Act?"',
+          'My answer is always direct: look closer to home. In January 2019, Nigeria enacted the Discrimination Against Persons with Disabilities (Prohibition) Act, 2018, and established the National Commission for Persons with Disabilities (NCPWD) to oversee implementation and enforcement.',
+        ],
+      },
+      {
+        heading: 'What the Nigerian Disability Act Means in a Digital-First Economy',
+        paragraphs: [
+          'The Act prohibits discrimination against persons with disabilities across public infrastructure, transportation, healthcare, education, telecommunications, banking, and employment—and mandates a 5% employment quota for persons with disabilities in public organizations.',
+          'In 2026, where does banking happen in Nigeria? On mobile apps and USSD/web portals. Where does university registration and workforce training happen? On EdTech platforms. Where does job recruitment happen? On digital applicant tracking systems. When a bank’s mobile app or an employer’s recruitment portal is inaccessible to screen-reader or motor-impaired citizens, it creates an unlawful barrier to the exact services protected by the Act—especially now that the statutory five-year transitional moratoria have elapsed.',
+        ],
+        callout:
+          'Need a structured compliance roadmap? My Accessibility Made Easy Toolkit and executive briefing "Is Your Product Excluding 15% of Nigerians?" break down WCAG 2.2 AA and NCPWD alignment step by step.',
+      },
+      {
+        heading: 'Global Procurement & The 35-Million-Person Market Case',
+        paragraphs: [
+          'Even beyond domestic regulation, Nigerian startups scaling across Africa or bidding for contracts with international development organizations, multinational enterprises, and EU/UK/US partners face strict vendor accessibility vetting. If your SaaS product cannot demonstrate WCAG 2.1 / 2.2 Level AA conformance, your sales team is disqualified during enterprise procurement.',
+          'Most importantly, the World Health Organization and national estimates indicate that over 35 million Nigerians—more than 15% of our population—live with a disability. When you audit your platform, fix your keyboard navigation and contrast ratios, and train your engineering team to build inclusively, you are not doing charity. You are opening your business to millions of loyal customers and world-class talent.',
+        ],
+      },
+    ],
+  },
   {
     id: 'blog-five-minute-keyboard-test',
     slug: 'what-happens-when-you-unplug-your-mouse-for-five-minutes',
@@ -101,9 +285,8 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
     publishedAt: 'Aug 20, 2026',
     readingTime: '5 min read',
     locationNote: 'Lagos · Sunday Morning Coffee Note',
-    featured: true,
-    coverImage: '/assets/aistudio/20260604_125652_ee30817c.jpg',
-    coverImageAlt: 'Stephanie facilitating an interactive accessibility workshop in Lagos',
+    coverImage: '/assets/aistudio/stephanie-egharevba-disability-advocacy-leadership-mentorship.jpg',
+    coverImageAlt: 'Stephanie Egharevba facilitating an interactive WCAG accessibility workshop in Lagos',
     pullQuote:
       'If a user cannot tell where their focus is on the screen, your interface has politely locked the front door while leaving the lights on inside.',
     excerpt:
@@ -149,8 +332,8 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
     publishedAt: 'Aug 3, 2026',
     readingTime: '6 min read',
     locationNote: 'Lagos · Personal Essay',
-    coverImage: '/assets/aistudio/Headshot_3_ab4f5e1e.jpg',
-    coverImageAlt: 'Stephanie Egharevba portrait',
+    coverImage: '/assets/aistudio/stephanie-egharevba-author-editorial-portrait.jpg',
+    coverImageAlt: 'Editorial portrait of Stephanie Egharevba, founder of The Unbias Project',
     pullQuote:
       'People do not connect with policy memos. They connect with honest stories about what works, what hurts, and how we can build better together.',
     excerpt:
@@ -195,8 +378,8 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
     publishedAt: 'Jul 26, 2026',
     readingTime: '4 min read',
     locationNote: 'Field Note · UI & Forms',
-    coverImage: '/assets/aistudio/20260326_145104_740025f4.jpg',
-    coverImageAlt: 'Panel discussion on accessible design and technology systems',
+    coverImage: '/assets/aistudio/stephanie-egharevba-african-disability-forum-summit.jpg',
+    coverImageAlt: 'Stephanie Egharevba speaking on accessible UI forms and digital inclusion systems',
     pullQuote:
       'An error message should read like a helpful friend pointing out a missed button, not a bouncer slamming a clipboard.',
     excerpt:
@@ -233,8 +416,8 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
     publishedAt: 'Jul 15, 2026',
     readingTime: '7 min read',
     locationNote: 'Lagos · Community & Leadership',
-    coverImage: '/assets/aistudio/20250605_082332_545d884d.jpg',
-    coverImageAlt: 'Mastercard Foundation Youth Advisory Council community gathering',
+    coverImage: '/assets/aistudio/stephanie-egharevba-disability-inclusion-working-group-roundtable.jpg',
+    coverImageAlt: 'Stephanie Egharevba with the Mastercard Foundation Youth Advisory Council disability inclusion community',
     pullQuote:
       'Getting a seat at the table is step one. Making sure you are not the only person in the building who understands how hard it was to reach that chair is community.',
     excerpt:
@@ -272,8 +455,8 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
     publishedAt: 'Jun 28, 2026',
     readingTime: '5 min read',
     locationNote: 'West Africa · Product Strategy',
-    coverImage: '/assets/aistudio/20260220_115033_30f9129f.jpg',
-    coverImageAlt: 'Tech leaders and innovators in West Africa discussing digital accessibility',
+    coverImage: '/assets/aistudio/stephanie-egharevba-enterprise-accessibility-engineering-briefing.jpg',
+    coverImageAlt: 'Stephanie Egharevba briefing West African tech leaders on WCAG digital accessibility',
     pullQuote:
       'When a banking app or a job portal in Lagos is inaccessible, it does not just fail a technical audit; it locks real talent out of economic independence.',
     excerpt:
@@ -309,8 +492,8 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
     publishedAt: 'Jun 10, 2026',
     readingTime: '5 min read',
     locationNote: 'Lagos · Writing on Design',
-    coverImage: '/assets/aistudio/20260603_133832_0b986b42.jpg',
-    coverImageAlt: 'Stephanie speaking on accessibility and universal design in technology',
+    coverImage: '/assets/aistudio/stephanie-egharevba-global-youth-disability-inclusion-assembly.jpg',
+    coverImageAlt: 'Stephanie Egharevba speaking on universal design and the curb-cut effect in technology',
     pullQuote:
       'Accessible design is not a concession to weakness; it is the ultimate expression of human-centered engineering.',
     excerpt:
@@ -338,33 +521,11 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
   },
 ];
 
-interface FirestoreBlogRecord {
-  id: string;
-  title: string;
-  subtitle: string;
-  topic: Exclude<BlogTopic, 'All Notes'>;
-  publishedAt: string;
-  readingTime: string;
-  pullQuote: string;
-  body: string;
-  coverImage?: string;
-  coverImageAlt?: string;
-  status: 'published' | 'draft';
-  createdAt?: { seconds: number };
-}
-
 interface BlogViewProps {
   cmsArticles: CmsArticleRecord[];
   substackUrl: string;
   onDiscussArticle: (articleTitle: string) => void;
   onOpenCmsPortal?: (editPostId?: string) => void;
-}
-
-function isUrlAdminRoute(): boolean {
-  if (typeof window === 'undefined') return false;
-  const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
-  const search = new URLSearchParams(window.location.search);
-  return path === '/blog-admin' || search.get('admin') === '1';
 }
 
 const BLOG_LETTERS = ['B', 'L', 'O', 'G'];
@@ -401,10 +562,10 @@ const blogLetterVariants = {
 };
 
 function getBlogCategoryTag(topic: string): string {
-  if (topic === 'Personal Reflections') return 'WRITING';
-  if (topic === 'Accessibility in Practice') return 'ACCESSIBILITY';
-  if (topic === 'Inclusion & Culture') return 'INCLUSION & CULTURE';
-  if (topic === 'Builder Notes') return 'BUILDER NOTES';
+  if (topic === 'Personal Reflections') return 'WRITING & REFLECTIONS';
+  if (topic === 'Accessibility in Practice') return 'WCAG & ACCESSIBILITY';
+  if (topic === 'Inclusion & Culture') return 'NGO & INCLUSION STRATEGY';
+  if (topic === 'Builder Notes') return 'FINTECH & BUILDER NOTES';
   return topic.toUpperCase();
 }
 
@@ -412,7 +573,6 @@ export const BlogView: React.FC<BlogViewProps> = ({
   cmsArticles,
   substackUrl,
   onDiscussArticle,
-  onOpenCmsPortal,
 }) => {
   const [selectedTopic, setSelectedTopic] = useState<BlogTopic>('All Notes');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -426,49 +586,10 @@ export const BlogView: React.FC<BlogViewProps> = ({
   );
   const [deletedIds, setDeletedIds] = useState<string[]>(loadDeletedBlogIds);
 
-  // Private Admin Route & Authentication State
-  const [showAdminLoginModal, setShowAdminLoginModal] = useState<boolean>(isUrlAdminRoute);
-  const [passcodeUnlocked, setPasscodeUnlocked] = useState<boolean>(() => {
-    try {
-      return sessionStorage.getItem(ADMIN_SESSION_UNLOCKED_KEY) === 'true';
-    } catch {
-      return false;
-    }
-  });
-  const [passcodeInput, setPasscodeInput] = useState<string>('');
-  const [passcodeError, setPasscodeError] = useState<string>('');
-  const [firebaseUser, setFirebaseUser] = useState<User | null>(auth.currentUser);
-  const [adminBannerMessage, setAdminBannerMessage] = useState<string>('');
-
-  // Custom password change state inside unlocked studio
-  const [newCustomPassword, setNewCustomPassword] = useState<string>('');
-  const [showPasswordSettings, setShowPasswordSettings] = useState<boolean>(false);
-
-  // Composer Modal state (only accessible when admin is unlocked)
-  const [isComposerOpen, setIsComposerOpen] = useState<boolean>(false);
-  const [editingPostId, setEditingPostId] = useState<string | null>(null);
-  const [isPublishing, setIsPublishing] = useState<boolean>(false);
-  const [newTitle, setNewTitle] = useState<string>('');
-  const [newSubtitle, setNewSubtitle] = useState<string>('');
-  const [newTopic, setNewTopic] = useState<Exclude<BlogTopic, 'All Notes'>>(
-    'Accessibility in Practice'
-  );
-  const [newCoverUrl, setNewCoverUrl] = useState<string>('');
-  const [newCoverAlt, setNewCoverAlt] = useState<string>('');
-  const [newPullQuote, setNewPullQuote] = useState<string>('');
-  const [newBody, setNewBody] = useState<string>('');
-
   // Cozy inline newsletter state wired to /api/subscribe
   const [email, setEmail] = useState<string>('');
   const [subStatus, setSubStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [subError, setSubError] = useState<string>('');
-
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setFirebaseUser(u);
-    });
-    return () => unsub();
-  }, []);
 
   useEffect(() => {
     const syncLocal = () => {
@@ -478,13 +599,6 @@ export const BlogView: React.FC<BlogViewProps> = ({
     window.addEventListener('stephanie-blog-cms-updated', syncLocal);
     return () => window.removeEventListener('stephanie-blog-cms-updated', syncLocal);
   }, []);
-
-  const isVerifiedStephanieGoogle =
-    Boolean(firebaseUser?.emailVerified) &&
-    firebaseUser?.email?.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
-
-  // Admin studio is active when unlocked via password OR verified Google Admin
-  const isStudioUnlocked = passcodeUnlocked || isVerifiedStephanieGoogle;
 
   // Listen to published blog_posts from Firestore
   useEffect(() => {
@@ -571,10 +685,18 @@ export const BlogView: React.FC<BlogViewProps> = ({
     return [...customPublishedPosts, ...curatedMerged, ...mappedCms];
   }, [cmsArticles, firestoreMap, localMirrorMap, deletedIds]);
 
-  const featuredPost = useMemo(
-    () => allPosts.find((p) => p.featured) || allPosts[0],
-    [allPosts]
-  );
+  // Open article directly if ?note=<slug> is present in URL
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const noteSlug = params.get('note');
+    if (noteSlug) {
+      const matched = allPosts.find((p) => p.slug === noteSlug || p.id === noteSlug);
+      if (matched) {
+        setActivePostId(matched.id);
+      }
+    }
+  }, [allPosts]);
 
   const filteredPosts = useMemo(() => {
     return allPosts.filter((post) => {
@@ -595,273 +717,48 @@ export const BlogView: React.FC<BlogViewProps> = ({
     [activePostId, allPosts]
   );
 
-  const handleOpenPost = (postId: string) => {
-    setActivePostId(postId);
+  // Sync canonical tag & article SEO metadata when reading an individual blog post
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const canonicalEl = document.querySelector('link[rel="canonical"]');
+    if (activePost) {
+      const shortTitle = `${activePost.title.slice(0, 40)} | Stephanie Egharevba`;
+      document.title = shortTitle;
+      const canonicalUrl = `https://stephanieegharevba.com/blog?note=${encodeURIComponent(activePost.slug)}`;
+      if (canonicalEl) canonicalEl.setAttribute('href', canonicalUrl);
+    } else {
+      document.title = 'Digital Accessibility Blog | Stephanie Egharevba';
+      if (canonicalEl) canonicalEl.setAttribute('href', 'https://stephanieegharevba.com/blog');
+    }
+  }, [activePost]);
+
+  const handleOpenPost = (post: BlogPost) => {
+    setActivePostId(post.id);
+    if (typeof window !== 'undefined') {
+      window.history.pushState(
+        { page: 'blog', note: post.slug },
+        '',
+        `/blog?note=${encodeURIComponent(post.slug)}`
+      );
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBackToIndex = () => {
+    setActivePostId(null);
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ page: 'blog' }, '', '/blog');
+    }
   };
 
   const handleCopyPostLink = (post: BlogPost) => {
     try {
-      const url = `${window.location.origin}/blog?note=${encodeURIComponent(post.slug)}`;
+      const url = `https://stephanieegharevba.com/blog?note=${encodeURIComponent(post.slug)}`;
       navigator.clipboard.writeText(url);
       setCopiedPostId(post.id);
       setTimeout(() => setCopiedPostId(null), 2500);
     } catch {
       // ignore clipboard errors
-    }
-  };
-
-  const getExpectedPasscode = (): string => {
-    try {
-      return localStorage.getItem(ADMIN_PASSCODE_STORAGE_KEY) || ADMIN_PASSCODE_DEFAULT;
-    } catch {
-      return ADMIN_PASSCODE_DEFAULT;
-    }
-  };
-
-  const handleVerifyPasscode = (e: React.FormEvent) => {
-    e.preventDefault();
-    const expected = getExpectedPasscode();
-    if (passcodeInput.trim() === expected) {
-      setPasscodeUnlocked(true);
-      setPasscodeError('');
-      setPasscodeInput('');
-    } else {
-      setPasscodeError('Incorrect password. Only Stephanie Egharevba has access to this studio.');
-    }
-  };
-
-  const handleGoogleAdminLogin = async () => {
-    try {
-      setPasscodeError('');
-      const res = await signInWithPopup(auth, googleProvider);
-      if (res.user.email?.toLowerCase() !== BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase()) {
-        await signOut(auth);
-        setPasscodeError(
-          `Access denied: Only ${BOOTSTRAPPED_ADMIN_EMAIL} is authorized to publish notes.`
-        );
-      }
-    } catch (err) {
-      setPasscodeError(err instanceof Error ? err.message : 'Google Sign-In failed.');
-    }
-  };
-
-  const handleUpdateCustomPassword = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newCustomPassword.trim().length < 6) {
-      setAdminBannerMessage('New password must be at least 6 characters.');
-      return;
-    }
-    try {
-      localStorage.setItem(ADMIN_PASSCODE_STORAGE_KEY, newCustomPassword.trim());
-      setNewCustomPassword('');
-      setShowPasswordSettings(false);
-      setAdminBannerMessage('Your private Blog Studio password has been updated.');
-      setTimeout(() => setAdminBannerMessage(''), 4000);
-    } catch {
-      // ignore
-    }
-  };
-
-  const handleLockAndExitAdmin = () => {
-    setPasscodeUnlocked(false);
-    setShowAdminLoginModal(false);
-    setIsComposerOpen(false);
-    if (typeof window !== 'undefined' && window.location.pathname === '/blog-admin') {
-      window.history.pushState({ page: 'blog' }, '', '/blog');
-    }
-  };
-
-  const handleFileUploadToDataUrl = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    onLoaded: (dataUrl: string) => void
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        onLoaded(reader.result);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleOpenNewPost = () => {
-    setEditingPostId(null);
-    setNewTitle('');
-    setNewSubtitle('');
-    setNewTopic('Accessibility in Practice');
-    setNewCoverUrl('');
-    setNewCoverAlt('');
-    setNewPullQuote('');
-    setNewBody('');
-    setIsComposerOpen(true);
-  };
-
-  const handleOpenEditPost = (post: BlogPost) => {
-    if (onOpenCmsPortal) {
-      onOpenCmsPortal(post.id);
-      return;
-    }
-    setEditingPostId(post.id);
-    setNewTitle(post.title);
-    setNewSubtitle(post.subtitle || '');
-    setNewTopic(
-      (post.topic as Exclude<BlogTopic, 'All Notes'>) || 'Accessibility in Practice'
-    );
-    setNewCoverUrl(post.coverImage || '');
-    setNewCoverAlt(post.coverImageAlt || '');
-    setNewPullQuote(post.pullQuote || '');
-    const bodyText = post.sections.flatMap((s) => s.paragraphs).join('\n\n');
-    setNewBody(bodyText);
-    setIsComposerOpen(true);
-  };
-
-  const handleSavePost = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isStudioUnlocked) return;
-    if (!newTitle.trim() || !newBody.trim()) return;
-
-    setIsPublishing(true);
-    const words = newBody.trim().split(/\s+/).length;
-    const mins = Math.max(2, Math.ceil(words / 180));
-    const docId = editingPostId || `note_${Date.now()}`;
-    const path = `blog_posts/${docId}`;
-
-    const firstParagraph =
-      newBody
-        .split(/\n\s*\n/)
-        .map((p) => p.trim())
-        .filter(Boolean)[0] || '';
-
-    const publishedAtStr = editingPostId
-      ? allPosts.find((p) => p.id === editingPostId)?.publishedAt ||
-        new Date().toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-        })
-      : new Date().toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-        });
-
-    const localRecord: CmsStoredBlogRecord = {
-      id: docId,
-      title: newTitle.trim().slice(0, 200),
-      subtitle: (
-        newSubtitle.trim() || 'Field note on inclusive design and digital accessibility.'
-      ).slice(0, 300),
-      topic: newTopic,
-      publishedAt: publishedAtStr.slice(0, 60),
-      readingTime: `${mins} min read`,
-      pullQuote: (
-        newPullQuote.trim() ||
-        firstParagraph ||
-        'Designing for accessibility means designing for real human conditions.'
-      ).slice(0, 500),
-      body: newBody.trim().slice(0, 20000),
-      ...(newCoverUrl.trim()
-        ? {
-            coverImage: newCoverUrl.trim().slice(0, 500000),
-            coverImageAlt: (newCoverAlt.trim() || newTitle.trim()).slice(0, 300),
-          }
-        : {}),
-      status: 'published',
-      authorUid: firebaseUser?.uid || 'local-admin',
-      createdAt: firestoreMap[docId]?.createdAt || {
-        seconds: Math.floor(Date.now() / 1000),
-      },
-      updatedAt: { seconds: Math.floor(Date.now() / 1000) },
-    };
-
-    saveLocalBlogMirrorRecord(localRecord);
-    setLocalMirrorMap(loadLocalBlogMirror());
-
-    try {
-      if (isVerifiedStephanieGoogle && firebaseUser) {
-        const isExistingFirestoreDoc = Boolean(firestoreMap[docId]);
-
-        const postPayload: Record<string, unknown> = {
-          title: localRecord.title,
-          subtitle: localRecord.subtitle,
-          topic: localRecord.topic,
-          publishedAt: localRecord.publishedAt,
-          readingTime: localRecord.readingTime,
-          pullQuote: localRecord.pullQuote,
-          body: localRecord.body,
-          ...(localRecord.coverImage
-            ? {
-                coverImage: localRecord.coverImage,
-                coverImageAlt: localRecord.coverImageAlt,
-              }
-            : {}),
-          status: 'published',
-          authorUid: firebaseUser.uid,
-          updatedAt: serverTimestamp(),
-        };
-
-        if (!isExistingFirestoreDoc) {
-          postPayload.createdAt = serverTimestamp();
-        }
-
-        await setDoc(doc(db, 'blog_posts', docId), postPayload, { merge: true });
-      }
-
-      setNewTitle('');
-      setNewSubtitle('');
-      setNewCoverUrl('');
-      setNewCoverAlt('');
-      setNewPullQuote('');
-      setNewBody('');
-      setEditingPostId(null);
-      setIsComposerOpen(false);
-      setActivePostId(docId);
-      setAdminBannerMessage(
-        editingPostId
-          ? 'Blog note changes saved live!'
-          : 'New blog note published live to your site!'
-      );
-      setTimeout(() => setAdminBannerMessage(''), 4000);
-    } catch (err) {
-      try {
-        handleFirestoreError(
-          err,
-          editingPostId ? OperationType.UPDATE : OperationType.CREATE,
-          path
-        );
-      } catch {
-        setAdminBannerMessage('Saved locally. Ensure image size is under 400KB for Cloud sync.');
-      }
-    } finally {
-      setIsPublishing(false);
-    }
-  };
-
-  const handleDeleteFirestorePost = async (postId: string) => {
-    if (!isStudioUnlocked) return;
-    removeLocalBlogRecord(postId);
-    setLocalMirrorMap(loadLocalBlogMirror());
-    setDeletedIds(loadDeletedBlogIds());
-
-    const path = `blog_posts/${postId}`;
-    try {
-      if (isVerifiedStephanieGoogle && firestoreMap[postId]) {
-        await deleteDoc(doc(db, 'blog_posts', postId));
-      }
-      if (activePostId === postId) {
-        setActivePostId(null);
-      }
-      setAdminBannerMessage('Blog note deleted.');
-      setTimeout(() => setAdminBannerMessage(''), 3500);
-    } catch (err) {
-      try {
-        handleFirestoreError(err, OperationType.DELETE, path);
-      } catch {
-        setAdminBannerMessage('Could not delete blog note from cloud.');
-      }
     }
   };
 
@@ -911,8 +808,8 @@ export const BlogView: React.FC<BlogViewProps> = ({
     'All Notes',
     'Accessibility in Practice',
     'Inclusion & Culture',
-    'Personal Reflections',
     'Builder Notes',
+    'Personal Reflections',
   ];
 
   return (
@@ -934,11 +831,11 @@ export const BlogView: React.FC<BlogViewProps> = ({
             <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#E6E4DD]">
               <button
                 type="button"
-                onClick={() => setActivePostId(null)}
+                onClick={handleBackToIndex}
                 className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#141413] hover:text-[#1D4ED8] transition-colors cursor-pointer whitespace-nowrap"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>Back to all notes</span>
+                <span>Back to all accessibility articles</span>
               </button>
 
               <div className="flex flex-wrap items-center gap-3">
@@ -950,12 +847,12 @@ export const BlogView: React.FC<BlogViewProps> = ({
                   {copiedPostId === activePost.id ? (
                     <>
                       <Check className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Link Copied</span>
+                      <span>Canonical Link Copied</span>
                     </>
                   ) : (
                     <>
                       <Copy className="w-3.5 h-3.5 text-[#575652]" />
-                      <span>Share Note</span>
+                      <span>Copy Canonical Link</span>
                     </>
                   )}
                 </button>
@@ -967,14 +864,14 @@ export const BlogView: React.FC<BlogViewProps> = ({
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[#E6E4DD] bg-white text-xs font-medium text-[#1D4ED8] hover:border-[#1D4ED8] transition-colors whitespace-nowrap"
                   >
-                    <span>Read on Substack</span>
+                    <span>Cross-posted on The Unbias Project Substack</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </a>
                 )}
               </div>
             </div>
 
-            {/* Essay Header */}
+            {/* Essay Header (Strict H1 for the Article) */}
             <header className="space-y-5">
               <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#575652] flex flex-wrap items-center gap-2">
                 <span className="text-[#1D4ED8] font-semibold">{activePost.topic}</span>
@@ -997,25 +894,26 @@ export const BlogView: React.FC<BlogViewProps> = ({
                 {activePost.subtitle}
               </p>
 
-              {/* Author Byline Strip */}
-              <div className="flex items-center justify-between gap-4 pt-3 border-t border-[#E6E4DD]">
+              {/* Author Byline & Canonical Attribution Strip */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#E6E4DD]">
                 <div>
                   <div className="text-xs sm:text-sm font-semibold text-[#141413]">
-                    Stephanie Egharevba
+                    By Stephanie Egharevba · Digital Accessibility Consultant &amp; WCAG Strategist
                   </div>
                   <div className="text-[11px] text-[#575652]">
-                    Written from Lagos · Notes on accessibility &amp; human design
+                    Originally published on stephanieegharevba.com/blog · Syndicated with The Unbias Project on Substack
                   </div>
                 </div>
               </div>
             </header>
 
-            {/* Optional Editorial Cover Image (Only renders when an article has a photo) */}
+            {/* Editorial Cover Image */}
             {activePost.coverImage && (
               <figure className="rounded-2xl overflow-hidden border border-[#E6E4DD] bg-white">
                 <img
                   src={activePost.coverImage}
                   alt={activePost.coverImageAlt || activePost.title}
+                  referrerPolicy="no-referrer"
                   className="w-full max-h-[440px] object-cover"
                 />
               </figure>
@@ -1024,14 +922,14 @@ export const BlogView: React.FC<BlogViewProps> = ({
             {/* Warm Pull Quote Card */}
             <blockquote className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 space-y-2">
               <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#1D4ED8]">
-                A THOUGHT TO SIT WITH
+                CORE THESIS
               </div>
               <p className="font-serif italic text-lg sm:text-xl text-[#141413] leading-relaxed">
                 “{activePost.pullQuote}”
               </p>
             </blockquote>
 
-            {/* Main Essay Body Prose */}
+            {/* Main Essay Body Prose (H2 Section Headings) */}
             <div className="space-y-8 text-base sm:text-[17px] text-[#272725] leading-[1.8] max-w-[68ch]">
               {activePost.sections.map((sec, idx) => (
                 <section key={idx} className="space-y-4">
@@ -1058,10 +956,16 @@ export const BlogView: React.FC<BlogViewProps> = ({
             </div>
 
             {/* Pocket Summary / Key Takeaways */}
-            <div className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 space-y-4">
-              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#1D4ED8]">
-                IF YOU ONLY REMEMBER THREE THINGS
-              </div>
+            <section
+              aria-labelledby="key-takeaways-heading"
+              className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 space-y-4"
+            >
+              <h2
+                id="key-takeaways-heading"
+                className="font-mono text-xs uppercase tracking-[0.16em] text-[#1D4ED8] font-bold"
+              >
+                KEY EXECUTIVE &amp; ENGINEERING TAKEAWAYS
+              </h2>
               <ul className="space-y-3">
                 {activePost.takeaways.map((item, i) => (
                   <li
@@ -1075,20 +979,19 @@ export const BlogView: React.FC<BlogViewProps> = ({
                   </li>
                 ))}
               </ul>
-            </div>
+            </section>
 
-            {/* Warm Conversational Footer CTA */}
+            {/* Canonical Cross-Link & Conversational Footer CTA */}
             <div className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div className="space-y-1.5 max-w-md">
                 <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#575652]">
-                  KEEP THE CONVERSATION GOING
+                  COMMISSION AN AUDIT OR KEYNOTE
                 </div>
-                <h3 className="text-lg font-display font-bold text-[#141413]">
-                  Did this spark a question or an idea for your team?
-                </h3>
+                <h2 className="text-lg font-display font-bold text-[#141413]">
+                  Need a WCAG 2.2 AA audit or inclusive program review for your team?
+                </h2>
                 <p className="text-xs sm:text-sm text-[#3F3E3A]">
-                  I love hearing from readers, engineers, and product leaders. Send me a quick note
-                  and tell me what you are building.
+                  Book Stephanie Egharevba to audit your digital platform, advise your NGO grantmaking program, or speak at your next event.
                 </p>
               </div>
 
@@ -1099,21 +1002,21 @@ export const BlogView: React.FC<BlogViewProps> = ({
                   className="px-5 py-3 rounded-lg bg-[#141413] hover:bg-[#1D4ED8] text-white text-xs font-semibold transition-colors inline-flex items-center gap-2 cursor-pointer whitespace-nowrap"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
-                  <span>Reply to Stephanie</span>
+                  <span>Discuss This Article with Stephanie</span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => setActivePostId(null)}
+                  onClick={handleBackToIndex}
                   className="px-4 py-3 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] hover:border-[#141413] text-[#141413] text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap"
                 >
-                  Browse More Notes
+                  Explore More Accessibility Articles
                 </button>
               </div>
             </div>
           </motion.article>
         ) : (
           /* ===================================================================== */
-          /* MAIN RELAXED BLOG & FIELD NOTES OVERVIEW (CLEAN PUBLIC VIEW)          */
+          /* MAIN BLOG & FIELD NOTES OVERVIEW (CLEAN PUBLIC VIEW)                  */
           /* ===================================================================== */
           <motion.div
             key="blog-index"
@@ -1121,11 +1024,10 @@ export const BlogView: React.FC<BlogViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.28 }}
-            className="space-y-12 sm:space-y-16"
+            className="space-y-12 sm:space-y-14"
           >
-            {/* Header: Animated BLOG letters spelling out in black */}
-            <div className="pt-2 sm:pt-6 pb-2 mb-10 sm:mb-14 text-center">
-              <h1 className="sr-only">Blog</h1>
+            {/* Header: Animated BLOG letters + Single Semantic H1 */}
+            <div className="pt-2 sm:pt-6 pb-2 text-center space-y-4">
               <motion.div
                 variants={blogContainerVariants}
                 initial="hidden"
@@ -1143,52 +1045,111 @@ export const BlogView: React.FC<BlogViewProps> = ({
                   </motion.span>
                 ))}
               </motion.div>
+
+              <h1 className="text-lg sm:text-xl font-display font-bold text-[#141413] dark:text-white max-w-2xl mx-auto">
+                Digital Accessibility, WCAG 2.2 Engineering &amp; Inclusive Program Field Notes
+              </h1>
+              <p className="text-xs sm:text-sm text-[#575652] dark:text-neutral-300 max-w-xl mx-auto">
+                Practical essays by Stephanie Egharevba on WCAG 2.2 AA compliance for African fintechs, inclusive NGO grantmaking programs, and the Nigerian Disability Act.
+              </p>
             </div>
 
-            {/* 2-Column Clean Editorial Grid Matching Screenshot 122 */}
+            {/* Topic Filter & Search Controls */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 max-w-[1040px] mx-auto pb-4 border-b border-[#E6E4DD]">
+              <div
+                role="group"
+                aria-label="Filter blog articles by topic"
+                className="flex flex-wrap items-center gap-1.5"
+              >
+                {topics.map((t) => {
+                  const isActive = selectedTopic === t;
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setSelectedTopic(t)}
+                      aria-pressed={isActive}
+                      className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                        isActive
+                          ? 'bg-[#141413] text-white'
+                          : 'bg-white border border-[#E6E4DD] text-[#575652] hover:text-[#141413]'
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="relative w-full md:w-64">
+                <Search className="w-3.5 h-3.5 text-[#575652] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search WCAG, NGO, fintech..."
+                  aria-label="Search blog articles"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg bg-white border border-[#E6E4DD] focus:border-[#1D4ED8] outline-none"
+                />
+              </div>
+            </div>
+
+            {/* 2-Column Clean Editorial Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 sm:gap-x-12 gap-y-12 sm:gap-y-16 max-w-[1040px] mx-auto">
-              {allPosts.map((post, idx) => (
+              {filteredPosts.map((post, idx) => (
                 <motion.article
                   key={post.id}
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
-                  transition={{ duration: 0.5, delay: idx * 0.08 }}
-                  onClick={() => handleOpenPost(post.id)}
+                  transition={{ duration: 0.5, delay: Math.min(idx * 0.06, 0.24) }}
+                  onClick={() => handleOpenPost(post)}
                   className="group cursor-pointer flex flex-col focus:outline-none"
                   tabIndex={0}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      handleOpenPost(post.id);
+                      handleOpenPost(post);
                     }
                   }}
-                  aria-label={`Read note: ${post.title}`}
+                  aria-label={`Read article: ${post.title}`}
                 >
                   {/* Card Cover Image */}
                   <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 shadow-sm border border-black/5 dark:border-white/5">
                     <img
-                      src={post.coverImage || '/assets/aistudio/20260604_125652_ee30817c.jpg'}
+                      src={post.coverImage || '/assets/aistudio/stephanie-egharevba-disability-advocacy-leadership-mentorship.jpg'}
                       alt={post.coverImageAlt || post.title}
+                      referrerPolicy="no-referrer"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                       loading="lazy"
                     />
                   </div>
 
-                  {/* Card Typography */}
-                  <div className="mt-3.5 space-y-1">
-                    <time
-                      dateTime={post.publishedAt}
-                      className="text-xs text-neutral-500 dark:text-neutral-400 font-medium block"
-                    >
-                      {post.publishedAt}
-                    </time>
+                  {/* Card Typography (H2 for Article Titles) */}
+                  <div className="mt-3.5 space-y-1.5">
+                    <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+                      <time dateTime={post.publishedAt}>{post.publishedAt}</time>
+                      <span aria-hidden="true">·</span>
+                      <span>{post.readingTime}</span>
+                    </div>
 
                     <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111827] dark:text-white group-hover:text-[#2563EB] dark:group-hover:text-[#3B82F6] transition-colors leading-snug">
-                      {post.title}
+                      <a
+                        href={`/blog?note=${encodeURIComponent(post.slug)}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleOpenPost(post);
+                        }}
+                      >
+                        {post.title}
+                      </a>
                     </h2>
 
-                    <div className="text-xs font-semibold text-[#2563EB] dark:text-[#60A5FA] uppercase tracking-wider pt-0.5">
+                    <p className="text-xs sm:text-sm text-[#475569] dark:text-neutral-300 line-clamp-2 leading-relaxed">
+                      {post.excerpt}
+                    </p>
+
+                    <div className="text-xs font-semibold text-[#2563EB] dark:text-[#60A5FA] uppercase tracking-wider pt-1">
                       {getBlogCategoryTag(post.topic)}
                     </div>
                   </div>
@@ -1196,7 +1157,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
               ))}
             </div>
 
-            {/* 5. Cozy Dispatch Subscription Box (Wired directly to /api/subscribe) */}
+            {/* Cozy Dispatch Subscription & Canonical Substack Cross-Link Box */}
             <section
               aria-label="Subscribe to The Unbias Dispatch"
               className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
@@ -1204,15 +1165,24 @@ export const BlogView: React.FC<BlogViewProps> = ({
               <div className="lg:col-span-7 space-y-2.5">
                 <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#1D4ED8]">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>LETTERS FROM LAGOS · NO SPAM EVER</span>
+                  <span>CANONICAL ARCHIVE · SYNDICATED WITH THE UNBIAS PROJECT</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-display font-bold text-[#141413]">
                   Get new field notes in your inbox whenever I hit publish.
                 </h2>
                 <p className="text-xs sm:text-sm text-[#3F3E3A] leading-relaxed max-w-xl">
-                  Real, unfiltered notes on digital accessibility, practical breakdowns of what
-                  makes tech work for human beings, and the occasional laugh about bad design
-                  decisions that could have been avoided with five minutes of testing.
+                  All full canonical essays are published here on{' '}
+                  <strong className="font-semibold text-[#141413]">stephanieegharevba.com/blog</strong>{' '}
+                  first and cross-linked with{' '}
+                  <a
+                    href={substackUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-semibold text-[#1D4ED8]"
+                  >
+                    The Unbias Project on Substack
+                  </a>
+                  . Subscribe below for direct email dispatches on WCAG 2.2 audits, NGO inclusion, and product strategy.
                 </p>
               </div>
 
@@ -1283,7 +1253,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
                         className="inline-flex items-center gap-1 font-medium text-[#141413] hover:text-[#1D4ED8]"
                       >
                         <BookOpen className="w-3 h-3" />
-                        <span>Read archives on Substack</span>
+                        <span>Follow The Unbias Project on Substack</span>
                       </a>
                     </div>
                   </form>

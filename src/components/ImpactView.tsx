@@ -82,7 +82,7 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight text-[#141413] dark:text-white">
-          My Impact
+          Client &amp; Speaker Endorsements — My Impact
         </h1>
 
         <p className="text-base sm:text-lg text-[#575652] dark:text-neutral-300 max-w-[65ch] leading-relaxed">

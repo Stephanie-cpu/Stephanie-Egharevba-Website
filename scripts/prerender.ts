@@ -463,68 +463,82 @@ function renderStoryContent(): string {
   `;
 }
 
-// SSG Routes Table
+// SSG Routes Table (All titles < 60 chars, all descriptions < 155 chars)
 const routes: RouteConfig[] = [
   {
     path: '/',
-    title: 'Stephanie Egharevba | Disability Inclusion & Digital Accessibility Strategist',
-    description: 'Scaling digital accessibility, inclusive systems, and global talent pipelines. Top 3% Global Speaker on Sessionize and ALX Top 100 Woman in Tech.',
+    title: 'Stephanie Egharevba | Digital Accessibility Consultant',
+    description: 'Stephanie Egharevba: Digital Accessibility Consultant in Nigeria & Africa, WCAG 2.2 AA Auditor, and Disability Inclusion Keynote Speaker.',
     canonical: 'https://stephanieegharevba.com/',
     renderContent: renderHomeContent,
   },
   {
     path: '/work',
-    title: 'Work & WCAG Case Studies | Stephanie Egharevba',
-    description: 'Selected digital accessibility audits, WCAG 2.2 evaluations, and inclusive systems strategy across Africa and global enterprises.',
+    title: 'WCAG Audits & Case Studies | Stephanie Egharevba',
+    description: 'Explore WCAG 2.2 AA accessibility audits, inclusive program advisory for NGOs, and remediation case studies by Stephanie Egharevba.',
     canonical: 'https://stephanieegharevba.com/work',
     renderContent: renderWorkContent,
   },
   {
     path: '/speaking',
-    title: 'Speaking & Keynotes | Stephanie Egharevba',
-    description: 'Keynotes, fireside chats, and broadcast panels by Stephanie Egharevba (Top 3% Global Speaker on Sessionize).',
+    title: 'AI & Inclusion Keynote Speaker | Stephanie Egharevba',
+    description: 'Book Stephanie Egharevba, Top 3% Global Speaker on Sessionize, for keynotes on AI accessibility, assistive technology, and disability inclusion.',
     canonical: 'https://stephanieegharevba.com/speaking',
     renderContent: renderSpeakingContent,
   },
   {
-    path: '/impact',
-    title: 'My Impact & Recommendations | Stephanie Egharevba',
-    description: 'Read endorsements and recommendations for Stephanie Egharevba from international conference hosts, clients, mentors, and collaborators.',
-    canonical: 'https://stephanieegharevba.com/impact',
+    path: '/books',
+    title: 'Accessibility Books & Toolkits | Stephanie Egharevba',
+    description: 'Practical WCAG 2.2 engineering books and audit toolkits by Stephanie Egharevba: Code for Every Body and Accessibility Made Easy on Selar.',
+    canonical: 'https://stephanieegharevba.com/books',
     renderContent: renderHomeContent,
   },
   {
-    path: '/story',
-    title: 'Stephanie’s Story & Executive CV | Stephanie Egharevba',
-    description: 'Executive biography, lived reality with Osteogenesis Imperfecta, and verified curriculum vitae of Stephanie Egharevba.',
-    canonical: 'https://stephanieegharevba.com/story',
-    renderContent: renderStoryContent,
-  },
-  {
-    path: '/cv',
-    title: 'Stephanie’s Story & Executive CV | Stephanie Egharevba',
-    description: 'Executive biography, lived reality with Osteogenesis Imperfecta, and verified curriculum vitae of Stephanie Egharevba.',
-    canonical: 'https://stephanieegharevba.com/story',
-    renderContent: renderStoryContent,
-  },
-  {
     path: '/blog',
-    title: 'Blog & Field Notes | Stephanie Egharevba',
-    description: 'Relaxed, human-first field notes and essays by Stephanie Egharevba on digital accessibility, WCAG in practice, and disability inclusion.',
+    title: 'Digital Accessibility Blog | Stephanie Egharevba',
+    description: 'Field notes and essays by Stephanie Egharevba on WCAG 2.2 AA compliance, NGO-funded program accessibility, and the Nigerian Disability Act.',
     canonical: 'https://stephanieegharevba.com/blog',
     renderContent: renderHomeContent,
   },
   {
+    path: '/impact',
+    title: 'Client & Speaker Endorsements | Stephanie Egharevba',
+    description: 'Read verified client and conference organizer endorsements for Stephanie Egharevba across WCAG audits, D&I strategy, and keynote speaking.',
+    canonical: 'https://stephanieegharevba.com/impact',
+    renderContent: renderHomeContent,
+  },
+  {
+    path: '/gallery',
+    title: 'Speaker Media Kit & Photos | Stephanie Egharevba',
+    description: 'Download official high-resolution press portraits, speaker headshots, and conference bios for Stephanie Egharevba.',
+    canonical: 'https://stephanieegharevba.com/gallery',
+    renderContent: renderHomeContent,
+  },
+  {
+    path: '/story',
+    title: 'About & Executive CV | Stephanie Egharevba',
+    description: 'Read the biography and executive CV of Stephanie Egharevba: Digital Accessibility Consultant, WCAG Strategist, and D&I Lead in Lagos, Nigeria.',
+    canonical: 'https://stephanieegharevba.com/cv',
+    renderContent: renderStoryContent,
+  },
+  {
+    path: '/cv',
+    title: 'About & Executive CV | Stephanie Egharevba',
+    description: 'Read the biography and executive CV of Stephanie Egharevba: Digital Accessibility Consultant, WCAG Strategist, and D&I Lead in Lagos, Nigeria.',
+    canonical: 'https://stephanieegharevba.com/cv',
+    renderContent: renderStoryContent,
+  },
+  {
     path: '/contact',
-    title: 'Speaking & Advisory Enquiries | Stephanie Egharevba',
-    description: 'Commission a WCAG 2.1 / 2.2 AA platform audit or book Stephanie Egharevba as a Disability Inclusion Speaker.',
-    canonical: 'https://stephanieegharevba.com/contact',
+    title: 'Book WCAG Audit or Keynote | Stephanie Egharevba',
+    description: 'Commission a WCAG 2.2 AA digital accessibility audit, NGO inclusion advisory, or keynote speaking engagement with Stephanie Egharevba.',
+    canonical: 'https://stephanieegharevba.com/enquiries',
     renderContent: renderHomeContent,
   },
   {
     path: '/enquiries',
-    title: 'Speaking & Advisory Enquiries | Stephanie Egharevba',
-    description: 'Commission a WCAG 2.1 / 2.2 AA platform audit or book Stephanie Egharevba as a Disability Inclusion Speaker.',
+    title: 'Book WCAG Audit or Keynote | Stephanie Egharevba',
+    description: 'Commission a WCAG 2.2 AA digital accessibility audit, NGO inclusion advisory, or keynote speaking engagement with Stephanie Egharevba.',
     canonical: 'https://stephanieegharevba.com/enquiries',
     renderContent: renderHomeContent,
   },
@@ -542,8 +556,6 @@ async function runSSG() {
   console.log(`Starting SSG Pre-Rendering across ${routes.length} core routes...`);
 
   for (const route of routes) {
-    const pageHtml = route.renderContent();
-
     // Replace <title>
     let customized = baseHtml.replace(
       /<title>[\s\S]*?<\/title>/i,
@@ -562,21 +574,29 @@ async function runSSG() {
 
     // Replace description
     customized = customized.replace(
-      /<meta name="description" content="[\s\S]*?" \/>/i,
+      /<meta name="description"[\s\S]*?\/>/i,
       `<meta name="description" content="${route.description}" />`
     );
     customized = customized.replace(
-      /<meta property="og:description" content="[\s\S]*?" \/>/i,
+      /<meta property="og:description"[\s\S]*?\/>/i,
       `<meta property="og:description" content="${route.description}" />`
     );
+    customized = customized.replace(
+      /<meta name="twitter:description"[\s\S]*?\/>/i,
+      `<meta name="twitter:description" content="${route.description}" />`
+    );
 
-    // Replace canonical
+    // Replace canonical & og:url
     customized = customized.replace(
       /<link rel="canonical" href="[\s\S]*?" \/>/i,
       `<link rel="canonical" href="${route.canonical}" />`
     );
+    customized = customized.replace(
+      /<meta property="og:url" content="[\s\S]*?" \/>/i,
+      `<meta property="og:url" content="${route.canonical}" />`
+    );
 
-    // Ensure <div id="root"></div> remains clean without duplicate static body/footer injection
+    // Ensure <div id="root"></div> remains clean for React client rendering
     customized = customized.replace(
       /<div id="root">[\s\S]*?<\/div>/i,
       `<div id="root"></div>`

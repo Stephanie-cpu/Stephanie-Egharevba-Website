@@ -41,6 +41,8 @@ import {
 } from 'firebase/firestore';
 import {
   CORE_COMPETENCIES,
+  CORE_SERVICE_PILLARS,
+  BUYER_FAQ_ITEMS,
   CV_PDF_URL,
   EDUCATION_HISTORY,
   HONORS_AND_RECOGNITION,
@@ -96,9 +98,9 @@ const DEFAULT_SITE_SETTINGS: CmsSiteSettings = {
   heroQuote: 'Disability is not the problem—design is the problem.',
   heroSubtext:
     'Scaling digital accessibility, inclusive systems, and global talent pipelines.',
-  seoTitle: 'Stephanie Egharevba | Digital Accessibility Consultant & WCAG Strategist',
+  seoTitle: 'Stephanie Egharevba | Digital Accessibility Consultant',
   seoDescription:
-    'Minimalist editorial portfolio of Stephanie Egharevba: Disability Inclusion Strategist, Digital Accessibility Advocate, Author, and Public Speaker.',
+    'Stephanie Egharevba: Digital Accessibility Consultant in Nigeria & Africa, WCAG 2.2 AA Auditor, and Disability Inclusion Keynote Speaker.',
   linkedinUrl: DEFAULT_LINKEDIN_URL,
   instagramUrl: DEFAULT_INSTAGRAM_URL,
   substackUrl: DEFAULT_SUBSTACK_URL,
@@ -345,87 +347,87 @@ export default function App() {
     };
   }, []);
 
-  // Dynamically update document <title>, page-specific keywords, OpenGraph & Twitter Cards for social media
+  // Dynamically update document <title> (<60 chars), unique meta description (<155 chars), canonical URL, OpenGraph, Twitter Cards & Schema.org JSON-LD
   useEffect(() => {
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://stephanieegharevba.com';
 
     const PAGE_SEO: Record<PageId, { title: string; description: string; keywords: string; image: string; path: string }> = {
       overview: {
-        title: 'Stephanie Egharevba | Digital Accessibility Consultant & WCAG Strategist',
+        title: 'Stephanie Egharevba | Digital Accessibility Consultant',
         description:
-          'Stephanie Egharevba is a Digital Accessibility Consultant in Nigeria & West Africa, WCAG 2.1 / 2.2 AA Compliance Auditor, and Disability Inclusion Speaker in Africa specializing in Inclusive Digital Product Design.',
+          'Stephanie Egharevba: Digital Accessibility Consultant in Nigeria & Africa, WCAG 2.2 AA Auditor, and Disability Inclusion Keynote Speaker.',
         keywords:
-          'Digital Accessibility Consultant Nigeria, Digital Accessibility Consultant West Africa, WCAG 2.1 2.2 AA Compliance Auditor, Disability Inclusion Speaker Africa, Inclusive Digital Product Design, Stephanie Egharevba',
+          'WCAG audit services, digital accessibility consultant Africa, digital accessibility consultant Nigeria, mobile app accessibility testing, inclusive digital design for NGOs, disability inclusion strategy consultant, AI accessibility keynote speaker, disability inclusion speaker Africa, Stephanie Egharevba',
         image: '/og_social_preview.jpg',
         path: '/',
       },
       cv: {
-        title: 'Story & Executive CV | Stephanie Egharevba',
+        title: 'About & Executive CV | Stephanie Egharevba',
         description:
-          'Executive story and career trajectory of Stephanie Egharevba: Digital Accessibility Consultant, Disability Inclusion Lead, and WCAG Auditor across West Africa.',
+          'Read the biography and executive CV of Stephanie Egharevba: Digital Accessibility Consultant, WCAG Strategist, and D&I Lead in Lagos, Nigeria.',
         keywords:
-          'Stephanie Egharevba CV, Digital Accessibility Consultant Nigeria, Disability Inclusion Lead West Africa, WCAG Compliance Auditor, Tech Accessibility Africa',
+          'Stephanie Egharevba CV, Digital Accessibility Consultant Nigeria, Disability Inclusion Strategy Consultant, WCAG Compliance Auditor, Tech Accessibility Africa',
         image: '/og_social_preview.jpg',
-        path: '/story',
+        path: '/cv',
       },
       work: {
-        title: 'Case Studies & WCAG Audits | Stephanie Egharevba',
+        title: 'WCAG Audits & Case Studies | Stephanie Egharevba',
         description:
-          'Featured case studies and audits by Stephanie Egharevba: WCAG 2.1 / 2.2 AA compliance auditing, inclusive digital product design, and accessibility remediation.',
+          'Explore WCAG 2.2 AA accessibility audits, inclusive program advisory for NGOs, and remediation case studies by Stephanie Egharevba.',
         keywords:
-          'Case Studies & WCAG Audits, WCAG 2.1 2.2 AA Compliance Auditor, Digital Accessibility Audit Nigeria, Inclusive Digital Product Design, Platform Accessibility Audit',
+          'WCAG audit services, digital accessibility consultant Africa, mobile app accessibility testing, inclusive digital design for NGOs, accessible grantmaking programs, Nigerian Disability Act compliance',
         image: '/og_social_preview.jpg',
         path: '/work',
       },
       speaking: {
-        title: 'Keynote Speaker on Digital Inclusion & Assistive Tech | Stephanie Egharevba',
+        title: 'AI & Inclusion Keynote Speaker | Stephanie Egharevba',
         description:
-          'Book Stephanie Egharevba: Disability Inclusion Speaker in Africa and Top 3% Global Speaker delivering keynotes on digital inclusion, assistive tech, and AI accessibility.',
+          'Book Stephanie Egharevba, Top 3% Global Speaker on Sessionize, for keynotes on AI accessibility, assistive technology, and disability inclusion.',
         keywords:
-          'Disability Inclusion Speaker Africa, Keynote Speaker Digital Inclusion, Assistive Tech Speaker Nigeria, Top 3% Speaker Sessionize, Tech Inclusion Keynote',
+          'AI accessibility keynote speaker, disability inclusion speaker Africa, assistive tech speaker Nigeria, Top 3% Speaker Sessionize, Inclusive Africa speaker',
         image: '/og_social_preview.jpg',
         path: '/speaking',
       },
       books: {
-        title: 'Books & Toolkits | Stephanie Egharevba',
+        title: 'Accessibility Books & Toolkits | Stephanie Egharevba',
         description:
-          'Published engineering manuals and audit starter kits by Stephanie Egharevba: Is Your Product Excluding 15% of Nigerians?, Code for Every Body, and Accessibility Made Easy.',
+          'Practical WCAG 2.2 engineering books and audit toolkits by Stephanie Egharevba: Code for Every Body and Accessibility Made Easy on Selar.',
         keywords:
           'Code for Every Body, Is Your Product Excluding 15% of Nigerians, Accessibility Made Easy Toolkit, WCAG 2.2 Starter Kit, Digital Accessibility Books',
         image: '/og_social_preview.jpg',
         path: '/books',
       },
       blog: {
-        title: 'Blog & Field Notes | Stephanie Egharevba',
+        title: 'Digital Accessibility Blog | Stephanie Egharevba',
         description:
-          'Relaxed, human-first field notes and essays by Stephanie Egharevba on digital accessibility, WCAG in practice, disability inclusion, and building better products in Africa.',
+          'Field notes and essays by Stephanie Egharevba on WCAG 2.2 AA compliance, NGO-funded program accessibility, and the Nigerian Disability Act.',
         keywords:
-          'The Unbias Project, Stephanie Egharevba Blog, Digital Accessibility Field Notes, Disability Inclusion Essays, WCAG Practical Guide',
+          'NGO digital accessibility, WCAG 2.2 AA checklist African fintech, Nigerian Disability Act digital compliance, accessible grantmaking programs, The Unbias Project',
         image: '/og_social_preview.jpg',
         path: '/blog',
       },
       gallery: {
-        title: 'Press Portraits & Media Kit | Stephanie Egharevba',
+        title: 'Speaker Media Kit & Photos | Stephanie Egharevba',
         description:
-          'High-resolution press portraits, speaker headshots, and media kit for Stephanie Egharevba — Digital Accessibility Consultant & Disability Inclusion Speaker.',
+          'Download official high-resolution press portraits, speaker headshots, and conference bios for Stephanie Egharevba.',
         keywords:
           'Stephanie Egharevba Press Photos, Speaker Headshots, Media Kit Digital Accessibility Consultant, Disability Inclusion Speaker Africa',
         image: '/og_social_preview.jpg',
         path: '/gallery',
       },
       contact: {
-        title: 'Speaking & Advisory Enquiries | Stephanie Egharevba',
+        title: 'Book WCAG Audit or Keynote | Stephanie Egharevba',
         description:
-          'Commission a WCAG 2.1 / 2.2 AA platform audit or book Stephanie Egharevba as a Disability Inclusion Speaker and Digital Accessibility Consultant.',
+          'Commission a WCAG 2.2 AA digital accessibility audit, NGO inclusion advisory, or keynote speaking engagement with Stephanie Egharevba.',
         keywords:
-          'Commission WCAG Audit, Book Digital Accessibility Consultant, Disability Inclusion Speaker Booking, Request Speaking Fee, Stephanie Egharevba Contact',
+          'WCAG audit services, book digital accessibility consultant Nigeria, disability inclusion speaker booking, accessible grantmaking advisory, Stephanie Egharevba contact',
         image: '/og_social_preview.jpg',
-        path: '/contact',
+        path: '/enquiries',
       },
       impact: {
-        title: 'My Impact & Recommendations | Stephanie Egharevba',
+        title: 'Client & Speaker Endorsements | Stephanie Egharevba',
         description:
-          'Read endorsements and testimonials for Stephanie Egharevba from conference hosts, enterprise founders, mentors, and teammates on digital accessibility, speaking, and inclusion.',
+          'Read verified client and conference organizer endorsements for Stephanie Egharevba across WCAG audits, D&I strategy, and keynote speaking.',
         keywords:
           'Stephanie Egharevba Recommendations, Digital Accessibility Testimonials, Inclusive Africa Conference Speaker Endorsements, Disability Inclusion Reviews',
         image: '/og_social_preview.jpg',
@@ -442,11 +444,11 @@ export default function App() {
 
     const currentSeo = PAGE_SEO[activePage] || PAGE_SEO.overview;
     const finalTitle = currentSeo.title;
-    const finalDesc = siteSettings.seoDescription || currentSeo.description;
+    const finalDesc = currentSeo.description;
     const fullImageUrl = currentSeo.image.startsWith('http')
       ? currentSeo.image
       : `${origin}${currentSeo.image}`;
-    const fullPageUrl = `${origin}${currentSeo.path}`;
+    const fullPageUrl = `https://stephanieegharevba.com${currentSeo.path}`;
 
     document.title = finalTitle;
 
@@ -466,12 +468,96 @@ export default function App() {
     setOrUpdateMeta('meta[property="og:description"]', 'property', 'og:description', finalDesc);
     setOrUpdateMeta('meta[property="og:image"]', 'property', 'og:image', fullImageUrl);
     setOrUpdateMeta('meta[property="og:url"]', 'property', 'og:url', fullPageUrl);
-    setOrUpdateMeta('meta[property="og:type"]', 'property', 'og:type', 'website');
+    setOrUpdateMeta('meta[property="og:type"]', 'property', 'og:type', activePage === 'blog' ? 'article' : 'website');
     setOrUpdateMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
     setOrUpdateMeta('meta[name="twitter:title"]', 'name', 'twitter:title', finalTitle);
     setOrUpdateMeta('meta[name="twitter:description"]', 'name', 'twitter:description', finalDesc);
     setOrUpdateMeta('meta[name="twitter:image"]', 'name', 'twitter:image', fullImageUrl);
-  }, [activePage, siteSettings]);
+
+    if (activePage !== 'blog') {
+      let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+      if (!canonicalLink) {
+        canonicalLink = document.createElement('link');
+        canonicalLink.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonicalLink);
+      }
+      canonicalLink.setAttribute('href', fullPageUrl);
+    }
+
+    // Dynamic JSON-LD Schema Markup (Person, Service, Book, FAQPage)
+    let schemaEl = document.getElementById('dynamic-page-schema') as HTMLScriptElement | null;
+    if (!schemaEl) {
+      schemaEl = document.createElement('script');
+      schemaEl.id = 'dynamic-page-schema';
+      schemaEl.type = 'application/ld+json';
+      document.head.appendChild(schemaEl);
+    }
+
+    const personNode = {
+      '@type': 'Person',
+      '@id': 'https://stephanieegharevba.com/#person',
+      name: 'Stephanie Egharevba',
+      alternateName: 'Stephanie Osasumwen Egharevba',
+      url: 'https://stephanieegharevba.com',
+      jobTitle: 'Digital Accessibility Consultant & WCAG Strategist',
+      description:
+        'Digital Accessibility Consultant in Nigeria & Africa, WCAG 2.1 / 2.2 AA Compliance Auditor, Disability Inclusion Strategy Consultant, Author, and Top 3% Global Keynote Speaker on Sessionize.',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Lagos',
+        addressCountry: 'NG',
+      },
+      sameAs: [
+        'https://www.wikidata.org/wiki/Q142065190',
+        'https://www.linkedin.com/in/egharevbastephanie',
+        'https://www.instagram.com/egharevba_stephanie',
+        'https://www.tiktok.com/@egharevba_stephanie',
+        'https://sessionize.com/stephanie-egharevba',
+        'https://substack.com/@theunbiasproject',
+      ],
+    };
+
+    const serviceNodes = CORE_SERVICE_PILLARS.map((s) => ({
+      '@type': 'Service',
+      '@id': `https://stephanieegharevba.com/work#${s.id}`,
+      name: s.title,
+      serviceType: s.kicker,
+      provider: { '@id': 'https://stephanieegharevba.com/#person' },
+      areaServed: ['Nigeria', 'West Africa', 'Africa', 'Global'],
+      description: s.paragraphs[0],
+      keywords: s.targetKeywords.join(', '),
+    }));
+
+    const bookNodes = STEPHANIE_BOOKS.map((b) => ({
+      '@type': 'Book',
+      '@id': `https://stephanieegharevba.com/books#${b.id}`,
+      name: b.title,
+      alternativeHeadline: b.subtitle,
+      author: { '@id': 'https://stephanieegharevba.com/#person' },
+      description: b.description,
+      url: b.selarUrl,
+      image: `https://stephanieegharevba.com${b.coverImageUrl}`,
+      inLanguage: 'en',
+    }));
+
+    const faqNode = {
+      '@type': 'FAQPage',
+      '@id': `${fullPageUrl}#faq`,
+      mainEntity: BUYER_FAQ_ITEMS.map((f) => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.answer,
+        },
+      })),
+    };
+
+    schemaEl.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [personNode, ...serviceNodes, ...bookNodes, faqNode],
+    });
+  }, [activePage]);
 
   useEffect(() => {
     try {
@@ -511,13 +597,13 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: a11yPrefs.reduceMotion ? 'auto' : 'smooth' });
     const routeMap: Record<PageId, string> = {
       overview: '/',
-      cv: '/story',
+      cv: '/cv',
       work: '/work',
       speaking: '/speaking',
       books: '/books',
       blog: '/blog',
       gallery: '/gallery',
-      contact: '/contact',
+      contact: '/enquiries',
       impact: '/impact',
       cms: '/cms',
     };
@@ -913,7 +999,7 @@ export default function App() {
                           {siteSettings.heroTagline}
                         </motion.p>
 
-                        {/* 2. Pure Aeonik Trial H1 (Fluid, Mobile-Safe Sizing) */}
+                        {/* 2. Single Page-Level H1 with Keyword-Rich Role Subtitle */}
                         <motion.h1
                           initial={{ opacity: 0, y: 16 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -923,7 +1009,10 @@ export default function App() {
                             fontSize: 'clamp(2.35rem, 6.5vw, 4rem)',
                           }}
                         >
-                          Stephanie Egharevba
+                          <span>Stephanie Egharevba</span>
+                          <span className="block text-base sm:text-xl lg:text-2xl font-sans font-medium tracking-[-0.01em] text-[#94A3B8] mt-2.5 leading-snug">
+                            Digital Accessibility Consultant &amp; WCAG Strategist
+                          </span>
                         </motion.h1>
 
                         {/* 3. Polished Sub-headline in Aeonik Regular (#CBD5E1, 18px-20px, 1.6 line-height) */}
@@ -944,25 +1033,31 @@ export default function App() {
                         className="pt-1"
                       >
                         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-3.5">
-                          <button
-                            type="button"
-                            onClick={() => navigateTo('contact')}
-                            aria-label="Book Stephanie Egharevba for speaking - Navigate to enquiries"
+                          <a
+                            href="/enquiries"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigateTo('contact');
+                            }}
+                            aria-label="Book Stephanie Egharevba for a Keynote or WCAG Consultation"
                             className="group px-7 py-3.5 text-sm font-semibold text-[#000000] bg-[#FFFFFF] hover:bg-[#E2E8F0] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm w-fit"
                           >
-                            <span>Book for Speaking</span>
+                            <span>Book Stephanie for a Keynote</span>
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                          </button>
+                          </a>
 
-                          <button
-                            type="button"
-                            onClick={() => navigateTo('work')}
-                            aria-label="Explore Stephanie's case studies and advisory work"
+                          <a
+                            href="/work"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigateTo('work');
+                            }}
+                            aria-label="Explore WCAG Case Studies and Digital Accessibility Audits"
                             className="group px-7 py-3.5 text-sm font-semibold text-white border border-white/25 hover:border-white/60 hover:bg-white/10 active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer w-fit"
                           >
-                            <span>Explore Work &amp; Advisory</span>
+                            <span>Explore WCAG Case Studies</span>
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                          </button>
+                          </a>
                         </div>
                       </motion.div>
                     </div>
@@ -1056,15 +1151,18 @@ export default function App() {
                     </p>
 
                     <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-6">
-                      <button
-                        type="button"
-                        onClick={() => navigateTo('cv')}
-                        aria-label="Read Stephanie's full story and executive CV"
+                      <a
+                        href="/cv"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigateTo('cv');
+                        }}
+                        aria-label="Read Stephanie Egharevba's executive biography and CV"
                         className="group px-7 py-3.5 text-sm font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
                       >
-                        <span>Read Full Story &amp; CV</span>
+                        <span>Read Stephanie Egharevba&apos;s CV</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                      </button>
+                      </a>
 
                       <a
                         href={CV_PDF_URL}
@@ -1073,7 +1171,7 @@ export default function App() {
                         className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center justify-center sm:justify-start gap-2 py-2"
                       >
                         <Download className="w-4 h-4 text-[#64748B]" />
-                        <span>Download CV (PDF)</span>
+                        <span>Download Stephanie&apos;s Executive CV (PDF)</span>
                       </a>
                     </div>
                   </motion.div>
@@ -1104,15 +1202,18 @@ export default function App() {
                         What Stephanie Does
                       </h2>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => navigateTo('work')}
-                      aria-label="View case studies and open accessibility contrast lab"
+                    <a
+                      href="/work"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigateTo('work');
+                      }}
+                      aria-label="Explore WCAG Case Studies and Interactive Contrast Lab"
                       className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                     >
-                      <span>View Case Studies &amp; Contrast Lab</span>
+                      <span>Explore WCAG Case Studies &amp; Contrast Lab</span>
                       <ArrowRight className="w-4 h-4" />
-                    </button>
+                    </a>
                   </motion.div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
@@ -1143,16 +1244,17 @@ export default function App() {
                           RUSHBOX · PLATFORM AUDITS
                         </div>
                         <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
-                          WCAG &amp; Digital Accessibility
+                          WCAG &amp; Digital Accessibility Audits
                         </h3>
                         <p className="text-[14px] sm:text-[15px] text-[#475569] leading-relaxed">
-                          End-to-end accessibility engineering for web and mobile platforms—uncovering
-                          usability barriers and shipping remediated, compliant user journeys.
+                          End-to-end WCAG 2.1 and 2.2 Level AA accessibility auditing for web and
+                          mobile platforms—uncovering keyboard focus traps, screen-reader barriers,
+                          and shipping remediated user journeys across Nigeria and Africa.
                         </p>
                       </div>
 
                       <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
-                        <span>Inspect Audits &amp; Contrast Lab</span>
+                        <span>Explore WCAG Case Studies &amp; Contrast Lab</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
                     </motion.div>
@@ -1170,7 +1272,7 @@ export default function App() {
                       onClick={() => navigateTo('work')}
                       role="button"
                       tabIndex={0}
-                      aria-label="Explore Diversity and Inclusion Strategy and Policy case studies"
+                      aria-label="Explore Inclusive Program and D&I Strategy Advisory case studies"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
@@ -1184,15 +1286,17 @@ export default function App() {
                           MASTERCARD FOUNDATION · PARTNER
                         </div>
                         <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
-                          D&amp;I Strategy &amp; Policy
+                          Inclusive Program &amp; D&amp;I Advisory
                         </h3>
                         <p className="text-[14px] sm:text-[15px] text-[#475569] leading-relaxed">
-                          Promoting disability inclusion across the Youth Advisory Council through accessible events, inclusive communication, and advocacy that ensures young people with disabilities are meaningfully represented and included.
+                          Promoting disability inclusion across NGOs, foundations, and the Youth
+                          Advisory Council through accessible grantmaking portals, inclusive
+                          communication, and workforce placement governance.
                         </p>
                       </div>
 
                       <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
-                        <span>Review Institutional Programmes</span>
+                        <span>Review Inclusive Program Case Studies</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
                     </motion.div>
@@ -1210,7 +1314,7 @@ export default function App() {
                       onClick={() => navigateTo('speaking')}
                       role="button"
                       tabIndex={0}
-                      aria-label="Explore Keynotes and Executive Stages speaking engagements"
+                      aria-label="Explore Keynote Speaking and Executive Stages engagements"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
@@ -1224,7 +1328,7 @@ export default function App() {
                           TOP 3% GLOBAL SPEAKER · SESSIONIZE
                         </div>
                         <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#0F172A]">
-                          Keynotes &amp; Executive Stages
+                          Keynote Speaking &amp; Executive Stages
                         </h3>
                         <p className="text-[14px] sm:text-[15px] text-[#475569] leading-relaxed">
                           High-authority keynotes on AI accessibility, inclusive product leadership,
@@ -1274,10 +1378,97 @@ export default function App() {
                       </div>
 
                       <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
-                        <span>Access Frameworks &amp; Downloads</span>
+                        <span>Explore Accessibility Books &amp; Toolkits</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
                     </motion.div>
+                  </div>
+
+                  {/* Dedicated 300+ Word Service Sub-Sections for Search & Buyer Clarity */}
+                  <div className="pt-10 border-t border-[#E2E8F0] space-y-8">
+                    <div className="space-y-2 max-w-3xl">
+                      <div className="font-mono text-xs font-semibold uppercase tracking-[0.08em] text-[#1D4ED8]">
+                        CORE CONSULTING, AUDIT &amp; SPEAKING SERVICES
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#0F172A]">
+                        Specialized Digital Accessibility &amp; Inclusion Services Across Africa
+                      </h2>
+                      <p className="text-sm sm:text-base text-[#475569] leading-relaxed">
+                        Detailed breakdown of how Stephanie partners with fintechs, enterprise engineering teams, international NGOs, grantmakers, and conference organizers.
+                      </p>
+                    </div>
+
+                    <div className="space-y-6">
+                      {CORE_SERVICE_PILLARS.map((service) => (
+                        <article
+                          key={service.id}
+                          id={service.id}
+                          className="rounded-2xl border border-[#E2E8F0] bg-[#FAF9F6] p-6 sm:p-8 space-y-5"
+                        >
+                          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 border-b border-[#E2E8F0] pb-4">
+                            <div className="space-y-1">
+                              <div className="font-mono text-xs font-semibold uppercase tracking-wider text-[#1D4ED8]">
+                                {service.kicker}
+                              </div>
+                              <h3 className="text-xl sm:text-2xl font-display font-bold text-[#0F172A]">
+                                {service.title}
+                              </h3>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleInquireWithContext(service.title, service.enquiryType)
+                              }
+                              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center gap-2 w-fit cursor-pointer shrink-0"
+                            >
+                              <span>{service.ctaLabel}</span>
+                              <ArrowRight className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+
+                          <div className="space-y-3.5 text-sm sm:text-[15px] text-[#334155] leading-relaxed">
+                            {service.paragraphs.map((para, pIdx) => (
+                              <p key={pIdx}>{para}</p>
+                            ))}
+                          </div>
+
+                          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 pt-3 border-t border-[#E2E8F0]">
+                            <div className="lg:col-span-8 space-y-2">
+                              <div className="text-xs font-semibold uppercase tracking-wider text-[#0F172A]">
+                                Key Deliverables &amp; Outcomes
+                              </div>
+                              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                {service.deliverables.map((deliv, dIdx) => (
+                                  <li
+                                    key={dIdx}
+                                    className="text-xs text-[#334155] flex items-start gap-2"
+                                  >
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-[#1D4ED8] shrink-0 mt-0.5" />
+                                    <span>{deliv}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="lg:col-span-4 space-y-2">
+                              <div className="text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                                Focus Areas
+                              </div>
+                              <div className="flex flex-wrap gap-1.5">
+                                {service.targetKeywords.map((kw) => (
+                                  <span
+                                    key={kw}
+                                    className="px-2.5 py-1 rounded-md bg-white border border-[#E2E8F0] text-[11px] font-mono text-[#475569]"
+                                  >
+                                    {kw}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </motion.section>
@@ -1400,7 +1591,7 @@ export default function App() {
                       </div>
 
                       <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
-                        <span>Get on Selar</span>
+                        <span>Buy {book.title} on Selar</span>
                         <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </div>
                     </motion.a>
@@ -1538,20 +1729,20 @@ export default function App() {
                                 </p>
                               </div>
 
-                              {/* Structured Challenge & Intervention Grid */}
+                              {/* Structured Barrier & Audit Fix Grid */}
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-[#E6E4DD]">
-                                <div className="space-y-1">
-                                  <div className="text-xs font-semibold text-[#141413]">
-                                    The Challenge
-                                  </div>
+                                <div className="space-y-1.5">
+                                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#141413]">
+                                    The Accessibility Barrier
+                                  </h3>
                                   <p className="text-xs text-[#575652] leading-relaxed">
                                     {project.challenge}
                                   </p>
                                 </div>
-                                <div className="space-y-1">
-                                  <div className="text-xs font-semibold text-[#141413]">
-                                    The Intervention
-                                  </div>
+                                <div className="space-y-1.5">
+                                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#141413]">
+                                    What I Audited &amp; Fixed
+                                  </h3>
                                   <p className="text-xs text-[#575652] leading-relaxed">
                                     {project.intervention}
                                   </p>
@@ -1559,12 +1750,12 @@ export default function App() {
                               </div>
                             </div>
 
-                            {/* Right Column (5 cols): Verified Outcomes, Deliverables & Action */}
+                            {/* Right Column (5 cols): The Measurable Impact, Deliverables & Action */}
                             <div className="lg:col-span-5 w-full bg-white border border-[#E6E4DD] rounded-2xl p-5 sm:p-6 space-y-5">
                               <div className="space-y-2.5">
-                                <div className="text-xs font-semibold text-[#141413]">
-                                  Key Outcomes &amp; Impact
-                                </div>
+                                <h3 className="text-xs font-bold uppercase tracking-wider text-[#141413]">
+                                  The Measurable Impact
+                                </h3>
                                 <ul className="space-y-2">
                                   {project.impactMetrics.map((metric, mIdx) => (
                                     <li
@@ -1682,13 +1873,121 @@ export default function App() {
                 </div>
               </section>
 
-              {/* 4. Signature Interactive WCAG Contrast Lab */}
+              {/* 4. Dedicated Service Deep-Dive Sub-Sections (300+ Words Each) */}
+              <section
+                aria-label="Dedicated Accessibility and Inclusion Services"
+                className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16 space-y-8 border-b border-[#E6E4DD]"
+              >
+                <div className="space-y-2 max-w-3xl">
+                  <div className="font-mono text-xs font-semibold uppercase tracking-wider text-[#1D4ED8]">
+                    DEDICATED SERVICE OFFERINGS
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]">
+                    WCAG Auditing, NGO Program Advisory &amp; Keynote Speaking
+                  </h2>
+                  <p className="text-sm sm:text-base text-[#575652] leading-relaxed">
+                    Comprehensive scope, methodology, and deliverables for engineering leaders, startup founders, and international development programs.
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  {CORE_SERVICE_PILLARS.map((service) => (
+                    <article
+                      key={service.id}
+                      className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 space-y-5"
+                    >
+                      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 border-b border-[#E6E4DD] pb-4">
+                        <div className="space-y-1">
+                          <div className="font-mono text-xs font-semibold uppercase tracking-wider text-[#1D4ED8]">
+                            {service.kicker}
+                          </div>
+                          <h3 className="text-xl sm:text-2xl font-display font-bold text-[#141413]">
+                            {service.title}
+                          </h3>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleInquireWithContext(service.title, service.enquiryType)
+                          }
+                          className="px-5 py-2.5 text-xs font-semibold text-white bg-[#141413] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center gap-2 w-fit cursor-pointer shrink-0"
+                        >
+                          <span>{service.ctaLabel}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      <div className="space-y-3.5 text-sm sm:text-[15px] text-[#3F3E3A] leading-relaxed">
+                        {service.paragraphs.map((para, pIdx) => (
+                          <p key={pIdx}>{para}</p>
+                        ))}
+                      </div>
+
+                      <div className="pt-3 border-t border-[#E6E4DD] space-y-2">
+                        <div className="text-xs font-semibold uppercase tracking-wider text-[#141413]">
+                          Included Deliverables
+                        </div>
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {service.deliverables.map((deliv, dIdx) => (
+                            <li
+                              key={dIdx}
+                              className="text-xs text-[#3F3E3A] flex items-start gap-2"
+                            >
+                              <CheckCircle2 className="w-3.5 h-3.5 text-[#1D4ED8] shrink-0 mt-0.5" />
+                              <span>{deliv}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+
+              {/* 5. Signature Interactive WCAG Contrast Lab */}
               <div
                 id="contrast-lab-section"
                 className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16"
               >
                 <AccessibilitySandbox />
               </div>
+
+              {/* 6. Buyer Frequently Asked Questions (FAQ) Section */}
+              <section
+                aria-labelledby="work-faq-heading"
+                className="max-w-[1200px] mx-auto px-4 sm:px-6 pb-16 sm:pb-24 space-y-8"
+              >
+                <div className="space-y-2 max-w-3xl">
+                  <div className="font-mono text-xs font-semibold uppercase tracking-wider text-[#1D4ED8]">
+                    FREQUENTLY ASKED QUESTIONS
+                  </div>
+                  <h2
+                    id="work-faq-heading"
+                    className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]"
+                  >
+                    Common Questions About WCAG Audits &amp; Inclusion Advisory
+                  </h2>
+                  <p className="text-sm sm:text-base text-[#575652] leading-relaxed">
+                    Answers for product teams, NGO program directors, and compliance officers planning an accessibility audit or advisory engagement.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {BUYER_FAQ_ITEMS.map((faq, idx) => (
+                    <article
+                      key={idx}
+                      className="rounded-2xl border border-[#E6E4DD] bg-white p-6 space-y-3"
+                    >
+                      <h3 className="text-base sm:text-lg font-display font-bold text-[#141413] leading-snug">
+                        {faq.question}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#3F3E3A] leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </section>
             </motion.div>
           )}
 
@@ -1841,7 +2140,7 @@ export default function App() {
 
                       <div className="sm:col-span-2 flex sm:justify-end">
                         <span className="text-xs font-medium text-[#575652] group-hover:text-[#1D4ED8] inline-flex items-center gap-1">
-                          Details
+                          Read Keynote Summary &amp; Takeaways
                           <ArrowUpRight className="w-3.5 h-3.5" />
                         </span>
                       </div>
@@ -2021,9 +2320,10 @@ export default function App() {
                       href={book.selarUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`Buy ${book.title} by Stephanie Egharevba on Selar (opens in new tab)`}
                       className="w-full py-3.5 px-5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center justify-center gap-2"
                     >
-                      <span>Get on Selar</span>
+                      <span>Buy {book.title} on Selar</span>
                       <ArrowUpRight className="w-4 h-4" />
                     </a>
                   </motion.article>
@@ -2759,6 +3059,43 @@ export default function App() {
                   )}
                 </div>
               </section>
+
+              {/* Buyer FAQ Section on Enquiries Page */}
+              <section
+                aria-labelledby="contact-faq-heading"
+                className="border-t border-[#E6E4DD] pt-12 space-y-8"
+              >
+                <div className="space-y-2 max-w-3xl">
+                  <div className="font-mono text-xs font-semibold uppercase tracking-wider text-[#1D4ED8]">
+                    BUYER &amp; ORGANIZER FAQ
+                  </div>
+                  <h2
+                    id="contact-faq-heading"
+                    className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]"
+                  >
+                    Frequently Asked Questions Before Booking
+                  </h2>
+                  <p className="text-sm text-[#575652] leading-relaxed">
+                    Direct answers on WCAG 2.2 AA audit timelines, NGO grantmaking accessibility advisory, Nigerian Disability Act compliance, and keynote speaking engagements.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {BUYER_FAQ_ITEMS.map((faq, idx) => (
+                    <article
+                      key={idx}
+                      className="rounded-2xl border border-[#E6E4DD] bg-white p-6 space-y-2.5"
+                    >
+                      <h3 className="text-base font-display font-bold text-[#141413] leading-snug">
+                        {faq.question}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#3F3E3A] leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </section>
             </motion.div>
           )}
 
@@ -2858,14 +3195,14 @@ export default function App() {
         }}
       />
 
-      {/* Massive Infinite Social Media Marquee Footer (Debbie Onyibe Style) */}
+      {/* Clean Single-Instance Social & Site Directory Footer */}
       <SocialMarqueeFooter
         linkedinUrl={siteSettings.linkedinUrl || DEFAULT_LINKEDIN_URL}
         instagramUrl={siteSettings.instagramUrl || DEFAULT_INSTAGRAM_URL}
         tiktokUrl="https://www.tiktok.com/@egharevba_stephanie?_r=1&_t=ZS-9B9xLrUfv1d"
         substackUrl={siteSettings.substackUrl || DEFAULT_SUBSTACK_URL}
         onOpenPrivacyPolicy={() => setIsPrivacyModalOpen(true)}
-        onOpenCmsPortal={() => navigateTo('cms')}
+        onNavigate={navigateTo}
       />
 
       {/* Privacy Policy & NDPA / GDPR Data Rights Modal */}

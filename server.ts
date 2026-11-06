@@ -3,6 +3,7 @@ import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import nodemailer from 'nodemailer';
 
@@ -220,53 +221,78 @@ async function startServer() {
     const distSitemapPath = path.join(__dirname, 'dist', 'sitemap.xml');
     
     res.header('Content-Type', 'application/xml; charset=utf-8');
-    if (require('fs').existsSync(sitemapPath)) {
+    if (fs.existsSync(sitemapPath)) {
       return res.sendFile(sitemapPath);
-    } else if (require('fs').existsSync(distSitemapPath)) {
+    } else if (fs.existsSync(distSitemapPath)) {
       return res.sendFile(distSitemapPath);
     }
 
+    const today = new Date().toISOString().split('T')[0];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://stephanieegharevba.com/</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://stephanieegharevba.com/cv</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://stephanieegharevba.com/story</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stephanieegharevba.com/work</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stephanieegharevba.com/speaking</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stephanieegharevba.com/books</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://stephanieegharevba.com/blog</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://stephanieegharevba.com/impact</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://stephanieegharevba.com/gallery</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stephanieegharevba.com/enquiries</loc>
+    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stephanieegharevba.com/contact</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -282,9 +308,9 @@ async function startServer() {
     const distRobotsPath = path.join(__dirname, 'dist', 'robots.txt');
 
     res.header('Content-Type', 'text/plain; charset=utf-8');
-    if (require('fs').existsSync(robotsPath)) {
+    if (fs.existsSync(robotsPath)) {
       return res.sendFile(robotsPath);
-    } else if (require('fs').existsSync(distRobotsPath)) {
+    } else if (fs.existsSync(distRobotsPath)) {
       return res.sendFile(distRobotsPath);
     }
 
@@ -537,7 +563,11 @@ async function startServer() {
         'Cache-Control',
         'public, max-age=0, must-revalidate, s-maxage=86400, stale-while-revalidate=3600'
       );
-      res.sendFile(filePath);
+      if (fs.existsSync(filePath)) {
+        res.sendFile(filePath);
+      } else {
+        res.sendFile(path.join(distPath, 'index.html'));
+      }
     };
 
     app.get('/', (_req: Request, res: Response) => {
@@ -552,12 +582,36 @@ async function startServer() {
       sendHtmlRoute(path.join(distPath, 'speaking/index.html'), res);
     });
 
+    app.get('/books', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'books/index.html'), res);
+    });
+
+    app.get('/blog', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'blog/index.html'), res);
+    });
+
+    app.get('/impact', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'impact/index.html'), res);
+    });
+
+    app.get('/gallery', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'gallery/index.html'), res);
+    });
+
     app.get('/story', (_req: Request, res: Response) => {
       sendHtmlRoute(path.join(distPath, 'story/index.html'), res);
     });
 
     app.get('/cv', (_req: Request, res: Response) => {
-      sendHtmlRoute(path.join(distPath, 'story/index.html'), res);
+      sendHtmlRoute(path.join(distPath, 'cv/index.html'), res);
+    });
+
+    app.get('/enquiries', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'enquiries/index.html'), res);
+    });
+
+    app.get('/contact', (_req: Request, res: Response) => {
+      sendHtmlRoute(path.join(distPath, 'contact/index.html'), res);
     });
 
     // Fallback for dynamic routes

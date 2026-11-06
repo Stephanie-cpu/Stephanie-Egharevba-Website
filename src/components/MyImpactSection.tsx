@@ -25,13 +25,12 @@ export default function MyImpactSection({
           id="my-impact-heading"
           className="text-xl sm:text-2xl font-bold tracking-wider text-[#1D4ED8] dark:text-[#3B82F6] uppercase whitespace-nowrap"
         >
-          MY IMPACT
+          MY IMPACT &amp; CLIENT ENDORSEMENTS
         </h2>
         <div
           className="flex-1 h-[2px] bg-[#D9DDE2] dark:bg-neutral-800 relative flex items-center justify-end"
           aria-hidden="true"
         >
-          {/* Accent blue endcap marker matching reference screenshot */}
           <div className="w-12 sm:w-20 h-[3px] bg-[#1D4ED8] dark:bg-[#3B82F6]" />
         </div>
       </div>
@@ -67,16 +66,19 @@ export default function MyImpactSection({
         ))}
       </div>
 
-      {/* Centered "View More" Pill Button */}
+      {/* Descriptive, Keyword-Rich CTA Link (Replaces generic "View More") */}
       <div className="mt-10 sm:mt-12 flex justify-center">
-        <button
-          type="button"
-          onClick={onNavigateToImpact}
-          aria-label="View all recommendations and endorsements on the Impact page"
+        <a
+          href="/impact"
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigateToImpact();
+          }}
+          aria-label="Read all client and conference speaker endorsements for Stephanie Egharevba"
           className="bg-[#2563EB] hover:bg-blue-700 active:scale-95 text-white text-sm sm:text-base font-semibold px-9 py-3 rounded-full transition-all duration-200 shadow-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:ring-offset-2"
         >
-          View More
-        </button>
+          Read All Client &amp; Speaker Endorsements
+        </a>
       </div>
     </section>
   );

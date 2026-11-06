@@ -175,7 +175,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
   const [projYear, setProjYear] = useState('2026');
   const [projRole, setProjRole] = useState('Accessibility Consultant');
   const [projSummary, setProjSummary] = useState('');
-  const [projImageUrl, setProjImageUrl] = useState('/assets/aistudio/Headshot_4_f3b4056c.jpg');
+  const [projImageUrl, setProjImageUrl] = useState('/assets/aistudio/stephanie-egharevba-inclusive-africa-keynote.jpg');
   const [projImageAlt, setProjImageAlt] = useState('');
 
   // New Press Article form state
