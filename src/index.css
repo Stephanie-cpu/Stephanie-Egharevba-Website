@@ -85,14 +85,14 @@ p, span, a, label {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: marquee-scroll 42s linear infinite;
+  animation: marquee-scroll 75s linear infinite;
 }
 
 .animate-marquee-reverse {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: marquee-scroll-reverse 45s linear infinite;
+  animation: marquee-scroll-reverse 80s linear infinite;
 }
 
 /* Only pause on hover on devices that support true pointer hovering */
@@ -131,7 +131,7 @@ p, span, a, label {
   align-items: center;
   min-width: max-content;
   will-change: transform;
-  animation: marqueeScroll 28s linear infinite;
+  animation: marqueeScroll 70s linear infinite;
 }
 
 /* Explicit high-contrast marquee colors: ink black in light mode, crisp white in dark mode */

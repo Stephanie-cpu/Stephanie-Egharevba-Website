@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   AlertCircle,
@@ -297,13 +297,51 @@ export default function App() {
   const [openWorkFaqIndex, setOpenWorkFaqIndex] = useState<number | null>(null);
   const [openContactFaqIndex, setOpenContactFaqIndex] = useState<number | null>(null);
 
-  // Next Webinar Sign-Up state
+  // Next Webinar Sign-Up & Video Play state
   const [isWebinarSignupOpen, setIsWebinarSignupOpen] = useState(false);
   const [webinarName, setWebinarName] = useState('');
   const [webinarEmail, setWebinarEmail] = useState('');
   const [webinarRole, setWebinarRole] = useState('');
   const [webinarStatus, setWebinarStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [webinarErrorMsg, setWebinarErrorMsg] = useState('');
+  const [isWebinarVideoPlaying, setIsWebinarVideoPlaying] = useState(false);
+  const webinarIframeRef = useRef<HTMLIFrameElement | null>(null);
+
+  const handlePlayWebinarVideo = () => {
+    setIsWebinarVideoPlaying(true);
+    try {
+      webinarIframeRef.current?.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+        '*'
+      );
+    } catch {
+      // ignore cross-origin postMessage errors
+    }
+  };
+
+  useEffect(() => {
+    const handleYouTubeMessage = (event: MessageEvent) => {
+      if (typeof event.data !== 'string') return;
+      try {
+        const data = JSON.parse(event.data);
+        if (
+          data?.event === 'infoDelivery' &&
+          data?.info &&
+          typeof data.info.playerState === 'number'
+        ) {
+          if (data.info.playerState === 1) {
+            setIsWebinarVideoPlaying(true);
+          }
+        } else if (data?.event === 'onStateChange' && data?.info === 1) {
+          setIsWebinarVideoPlaying(true);
+        }
+      } catch {
+        // ignore non-JSON messages
+      }
+    };
+    window.addEventListener('message', handleYouTubeMessage);
+    return () => window.removeEventListener('message', handleYouTubeMessage);
+  }, []);
 
   // Sync Firestore CMS Data
   useEffect(() => {
@@ -1519,19 +1557,48 @@ export default function App() {
                     </p>
                   </div>
 
-                  {/* YouTube Video Showcase Frame (Increased Width & Centered in the Middle) */}
-                  <div className="w-full max-w-[860px] mx-auto aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-[#141413] border border-[#E6E4DD] shadow-sm">
+                  {/* YouTube Video Showcase Frame (Increased Width & Centered in the Middle with Custom Minimalist Play Overlay) */}
+                  <div className="relative w-full max-w-[860px] mx-auto aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-[#141413] border border-[#E6E4DD] shadow-sm group">
                     <iframe
+                      ref={webinarIframeRef}
                       width="560"
                       height="315"
-                      src="https://www.youtube.com/embed/MYnNpJC-I9c?si=bUzxLV39P4lKyXX1"
+                      src="https://www.youtube.com/embed/MYnNpJC-I9c?si=bUzxLV39P4lKyXX1&enablejsapi=1&rel=0"
                       title="YouTube video player"
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       referrerPolicy="strict-origin-when-cross-origin"
                       allowFullScreen
+                      onLoad={() => {
+                        try {
+                          webinarIframeRef.current?.contentWindow?.postMessage(
+                            JSON.stringify({ event: 'listening', id: 'webinar-yt-player' }),
+                            '*'
+                          );
+                        } catch {
+                          // ignore
+                        }
+                      }}
                       className="w-full h-full border-0"
                     />
+
+                    {/* Custom Minimalist Play Icon Overlay (Centered & fades out once video starts playing) */}
+                    <button
+                      type="button"
+                      onClick={handlePlayWebinarVideo}
+                      aria-label="Play webinar video: A Blueprint for Industry Success"
+                      aria-hidden={isWebinarVideoPlaying ? 'true' : undefined}
+                      tabIndex={isWebinarVideoPlaying ? -1 : 0}
+                      className={`absolute inset-0 z-10 w-full h-full flex items-center justify-center bg-black/5 hover:bg-black/15 transition-all duration-500 ease-out cursor-pointer focus:outline-none ${
+                        isWebinarVideoPlaying
+                          ? 'opacity-0 pointer-events-none scale-105'
+                          : 'opacity-100 pointer-events-auto scale-100'
+                      }`}
+                    >
+                      <span className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#141413] text-[#FAF9F6] border border-[#FAF9F6]/25 shadow-xl flex items-center justify-center transition-transform duration-300 ease-out group-hover:scale-105 active:scale-95">
+                        <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-current ml-1" />
+                      </span>
+                    </button>
                   </div>
 
                   {/* Single Primary CTA Button Linking to Build Without Barriers (Centered with Video) */}
