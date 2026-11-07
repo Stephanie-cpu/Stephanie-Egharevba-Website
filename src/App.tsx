@@ -401,7 +401,7 @@ export default function App() {
 
   // Dynamically update document <title> (<60 chars), unique meta description (<155 chars), canonical URL, OpenGraph, Twitter Cards & Schema.org JSON-LD
   useEffect(() => {
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://stephanieegharevba.com';
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.stephanieegharevba.com';
 
     const PAGE_SEO: Record<PageId, { title: string; description: string; keywords: string; image: string; path: string }> = {
       overview: {
@@ -500,7 +500,7 @@ export default function App() {
     const fullImageUrl = currentSeo.image.startsWith('http')
       ? currentSeo.image
       : `${origin}${currentSeo.image}`;
-    const fullPageUrl = `https://stephanieegharevba.com${currentSeo.path}`;
+    const fullPageUrl = `https://www.stephanieegharevba.com${currentSeo.path}`;
 
     document.title = finalTitle;
 
@@ -516,6 +516,7 @@ export default function App() {
 
     setOrUpdateMeta('meta[name="description"]', 'name', 'description', finalDesc);
     setOrUpdateMeta('meta[name="keywords"]', 'name', 'keywords', currentSeo.keywords);
+    setOrUpdateMeta('meta[property="og:site_name"]', 'property', 'og:site_name', 'Stephanie Egharevba');
     setOrUpdateMeta('meta[property="og:title"]', 'property', 'og:title', finalTitle);
     setOrUpdateMeta('meta[property="og:description"]', 'property', 'og:description', finalDesc);
     setOrUpdateMeta('meta[property="og:image"]', 'property', 'og:image', fullImageUrl);
@@ -536,7 +537,7 @@ export default function App() {
       canonicalLink.setAttribute('href', fullPageUrl);
     }
 
-    // Dynamic JSON-LD Schema Markup (Person, Service, Book, FAQPage)
+    // Dynamic JSON-LD Schema Markup (WebSite, Person, Service, Book, FAQPage)
     let schemaEl = document.getElementById('dynamic-page-schema') as HTMLScriptElement | null;
     if (!schemaEl) {
       schemaEl = document.createElement('script');
@@ -545,12 +546,19 @@ export default function App() {
       document.head.appendChild(schemaEl);
     }
 
+    const websiteNode = {
+      '@type': 'WebSite',
+      '@id': 'https://www.stephanieegharevba.com/#website',
+      name: 'Stephanie Egharevba',
+      url: 'https://www.stephanieegharevba.com/',
+    };
+
     const personNode = {
       '@type': 'Person',
-      '@id': 'https://stephanieegharevba.com/#person',
+      '@id': 'https://www.stephanieegharevba.com/#person',
       name: 'Stephanie Egharevba',
       alternateName: 'Stephanie Osasumwen Egharevba',
-      url: 'https://stephanieegharevba.com',
+      url: 'https://www.stephanieegharevba.com',
       jobTitle: 'Digital Accessibility Consultant & WCAG Strategist',
       description:
         'Digital Accessibility Consultant in Nigeria & Africa, WCAG 2.1 / 2.2 AA Compliance Auditor, Disability Inclusion Strategy Consultant, Author, and Top 3% Global Keynote Speaker on Sessionize.',
@@ -571,10 +579,10 @@ export default function App() {
 
     const serviceNodes = CORE_SERVICE_PILLARS.map((s) => ({
       '@type': 'Service',
-      '@id': `https://stephanieegharevba.com/work#${s.id}`,
+      '@id': `https://www.stephanieegharevba.com/work#${s.id}`,
       name: s.title,
       serviceType: s.kicker,
-      provider: { '@id': 'https://stephanieegharevba.com/#person' },
+      provider: { '@id': 'https://www.stephanieegharevba.com/#person' },
       areaServed: ['Nigeria', 'West Africa', 'Africa', 'Global'],
       description: s.paragraphs[0],
       keywords: s.targetKeywords.join(', '),
@@ -582,13 +590,13 @@ export default function App() {
 
     const bookNodes = STEPHANIE_BOOKS.map((b) => ({
       '@type': 'Book',
-      '@id': `https://stephanieegharevba.com/books#${b.id}`,
+      '@id': `https://www.stephanieegharevba.com/books#${b.id}`,
       name: b.title,
       alternativeHeadline: b.subtitle,
-      author: { '@id': 'https://stephanieegharevba.com/#person' },
+      author: { '@id': 'https://www.stephanieegharevba.com/#person' },
       description: b.description,
       url: b.selarUrl,
-      image: `https://stephanieegharevba.com${b.coverImageUrl}`,
+      image: `https://www.stephanieegharevba.com${b.coverImageUrl}`,
       inLanguage: 'en',
     }));
 
@@ -613,7 +621,7 @@ export default function App() {
 
     schemaEl.textContent = JSON.stringify({
       '@context': 'https://schema.org',
-      '@graph': [personNode, ...serviceNodes, ...bookNodes, faqNode],
+      '@graph': [websiteNode, personNode, ...serviceNodes, ...bookNodes, faqNode],
     });
 
     // Dedicated top-level FAQPage JSON-LD script for Home, Work, and Enquiries pages

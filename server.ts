@@ -231,67 +231,67 @@ async function startServer() {
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://stephanieegharevba.com/</loc>
+    <loc>https://www.stephanieegharevba.com/</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://stephanieegharevba.com/cv</loc>
+    <loc>https://www.stephanieegharevba.com/cv</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://stephanieegharevba.com/story</loc>
+    <loc>https://www.stephanieegharevba.com/story</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://stephanieegharevba.com/work</loc>
+    <loc>https://www.stephanieegharevba.com/work</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://stephanieegharevba.com/speaking</loc>
+    <loc>https://www.stephanieegharevba.com/speaking</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://stephanieegharevba.com/books</loc>
+    <loc>https://www.stephanieegharevba.com/books</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://stephanieegharevba.com/blog</loc>
+    <loc>https://www.stephanieegharevba.com/blog</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://stephanieegharevba.com/impact</loc>
+    <loc>https://www.stephanieegharevba.com/impact</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://stephanieegharevba.com/gallery</loc>
+    <loc>https://www.stephanieegharevba.com/gallery</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://stephanieegharevba.com/enquiries</loc>
+    <loc>https://www.stephanieegharevba.com/enquiries</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://stephanieegharevba.com/contact</loc>
+    <loc>https://www.stephanieegharevba.com/contact</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -314,7 +314,7 @@ async function startServer() {
       return res.sendFile(distRobotsPath);
     }
 
-    res.send(`User-agent: *\nAllow: /\nSitemap: https://stephanieegharevba.com/sitemap.xml\n`);
+    res.send(`User-agent: *\nAllow: /\nAllow: /favicon.ico\nAllow: /favicon.svg\nAllow: /favicon-48x48.png\nAllow: /favicon-96x96.png\nAllow: /favicon-192x192.png\nAllow: /apple-touch-icon.png\nSitemap: https://www.stephanieegharevba.com/sitemap.xml\n`);
   });
 
   // 3. Server-Side Validated Enquiries & Speaker Booking Endpoint (Sendbyte Email Dispatch)

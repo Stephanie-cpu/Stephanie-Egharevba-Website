@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="https://www.stephanieegharevba.com/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="https://www.stephanieegharevba.com/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="https://www.stephanieegharevba.com/favicon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.stephanieegharevba.com/apple-touch-icon.png" />
     <title>Stephanie Egharevba | Digital Accessibility Consultant</title>
     <meta
       name="description"
@@ -18,7 +18,7 @@
       name="keywords"
       content="WCAG audit services, digital accessibility consultant Africa, digital accessibility consultant Nigeria, mobile app accessibility testing, inclusive digital design for NGOs, disability inclusion strategy consultant, accessible grantmaking programs, AI accessibility keynote speaker, disability inclusion speaker Africa, Stephanie Egharevba"
     />
-    <link rel="canonical" href="https://stephanieegharevba.com/" />
+    <link rel="canonical" href="https://www.stephanieegharevba.com/" />
     
     <!-- OpenGraph Metadata -->
     <meta property="og:type" content="website" />
@@ -28,8 +28,8 @@
       property="og:description"
       content="Stephanie Egharevba: Digital Accessibility Consultant in Nigeria &amp; Africa, WCAG 2.2 AA Auditor, and Disability Inclusion Keynote Speaker."
     />
-    <meta property="og:url" content="https://stephanieegharevba.com/" />
-    <meta property="og:image" content="https://stephanieegharevba.com/og_social_preview.jpg" />
+    <meta property="og:url" content="https://www.stephanieegharevba.com/" />
+    <meta property="og:image" content="https://www.stephanieegharevba.com/og_social_preview.jpg" />
     <meta property="og:image:alt" content="Stephanie Egharevba — Digital Accessibility Consultant &amp; WCAG Strategist" />
     <meta property="og:locale" content="en_US" />
 
@@ -40,7 +40,7 @@
       name="twitter:description"
       content="Stephanie Egharevba: Digital Accessibility Consultant in Nigeria &amp; Africa, WCAG 2.2 AA Auditor, and Disability Inclusion Keynote Speaker."
     />
-    <meta name="twitter:image" content="https://stephanieegharevba.com/og_social_preview.jpg" />
+    <meta name="twitter:image" content="https://www.stephanieegharevba.com/og_social_preview.jpg" />
     <meta name="twitter:image:alt" content="Stephanie Egharevba — Digital Accessibility Consultant &amp; WCAG Strategist" />
 
     <!-- Sitemap & Discovery -->
@@ -57,20 +57,37 @@
       rel="stylesheet"
     />
 
-    <!-- Schema.org Structured Data (Person, Service, Book & FAQPage) -->
+    <!-- Google Search Site Name (WebSite Structured Data) -->
+    <script id="website-schema-jsonld" type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://www.stephanieegharevba.com/#website",
+      "name": "Stephanie Egharevba",
+      "url": "https://www.stephanieegharevba.com/"
+    }
+    </script>
+
+    <!-- Schema.org Structured Data (WebSite, Person, Service, Book & FAQPage) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
+          "@type": "WebSite",
+          "@id": "https://www.stephanieegharevba.com/#website",
+          "name": "Stephanie Egharevba",
+          "url": "https://www.stephanieegharevba.com/"
+        },
+        {
           "@type": "Person",
-          "@id": "https://stephanieegharevba.com/#person",
+          "@id": "https://www.stephanieegharevba.com/#person",
           "name": "Stephanie Egharevba",
           "alternateName": "Stephanie Osasumwen Egharevba",
-          "url": "https://stephanieegharevba.com",
+          "url": "https://www.stephanieegharevba.com",
           "jobTitle": "Digital Accessibility Consultant & WCAG Strategist",
           "description": "Stephanie Egharevba is a Digital Accessibility Consultant in Nigeria & Africa, WCAG 2.1 / 2.2 AA Compliance Auditor, Disability Inclusion Strategy Consultant, Author, and Top 3% Global Keynote Speaker on Sessionize.",
-          "image": "https://stephanieegharevba.com/assets/aistudio/stephanie-egharevba-inclusive-africa-keynote.jpg",
+          "image": "https://www.stephanieegharevba.com/assets/aistudio/stephanie-egharevba-inclusive-africa-keynote.jpg",
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "Lagos",
@@ -103,73 +120,73 @@
         },
         {
           "@type": "Service",
-          "@id": "https://stephanieegharevba.com/work#service-wcag-audits",
+          "@id": "https://www.stephanieegharevba.com/work#service-wcag-audits",
           "name": "WCAG & Digital Accessibility Audits",
           "serviceType": "WCAG 2.1 / 2.2 AA Compliance Auditing & Mobile App Accessibility Testing",
-          "provider": { "@id": "https://stephanieegharevba.com/#person" },
+          "provider": { "@id": "https://www.stephanieegharevba.com/#person" },
           "areaServed": ["Nigeria", "West Africa", "Africa", "Global"],
           "description": "Comprehensive WCAG 2.1 and 2.2 Level AA digital accessibility audits, screen-reader testing (NVDA, VoiceOver, TalkBack), keyboard navigation remediation, and engineering playbooks for web and mobile applications."
         },
         {
           "@type": "Service",
-          "@id": "https://stephanieegharevba.com/work#service-inclusive-advisory",
+          "@id": "https://www.stephanieegharevba.com/work#service-inclusive-advisory",
           "name": "Inclusive Program & D&I Advisory",
           "serviceType": "Disability Inclusion Strategy & Accessible Grantmaking Advisory for NGOs",
-          "provider": { "@id": "https://stephanieegharevba.com/#person" },
+          "provider": { "@id": "https://www.stephanieegharevba.com/#person" },
           "areaServed": ["Nigeria", "West Africa", "Africa", "Global"],
           "description": "Strategic disability inclusion consulting for NGOs, international foundations, and enterprises—auditing grant application portals, learning platforms, and recruitment pipelines."
         },
         {
           "@type": "Service",
-          "@id": "https://stephanieegharevba.com/speaking#service-keynote-speaking",
+          "@id": "https://www.stephanieegharevba.com/speaking#service-keynote-speaking",
           "name": "Keynote Speaking & Executive Briefings",
           "serviceType": "AI Accessibility & Disability Inclusion Keynote Speaking",
-          "provider": { "@id": "https://stephanieegharevba.com/#person" },
+          "provider": { "@id": "https://www.stephanieegharevba.com/#person" },
           "areaServed": ["Nigeria", "Africa", "Global"],
           "description": "High-impact keynote talks, fireside chats, and executive workshops on AI accessibility, assistive technology, and inclusive digital systems."
         },
         {
           "@type": "Book",
-          "@id": "https://stephanieegharevba.com/books#book-code-every-body",
+          "@id": "https://www.stephanieegharevba.com/books#book-code-every-body",
           "name": "Code for Every Body",
           "alternativeHeadline": "Practical Accessibility for Web & App Developers",
-          "author": { "@id": "https://stephanieegharevba.com/#person" },
+          "author": { "@id": "https://www.stephanieegharevba.com/#person" },
           "url": "https://selar.com/73184u5367",
-          "image": "https://stephanieegharevba.com/assets/aistudio/stephanie-egharevba-code-for-every-body-accessibility-book.png",
+          "image": "https://www.stephanieegharevba.com/assets/aistudio/stephanie-egharevba-code-for-every-body-accessibility-book.png",
           "inLanguage": "en",
           "description": "A hands-on developer handbook that strips away theoretical jargon to teach semantic HTML, ARIA states, focus traps, and screen-reader parity."
         },
         {
           "@type": "Book",
-          "@id": "https://stephanieegharevba.com/books#book-excluding-15-percent",
+          "@id": "https://www.stephanieegharevba.com/books#book-excluding-15-percent",
           "name": "Is Your Product Excluding 15% of Nigerians?",
           "alternativeHeadline": "The Business & Legal Case for Accessible Tech in Nigeria",
-          "author": { "@id": "https://stephanieegharevba.com/#person" },
+          "author": { "@id": "https://www.stephanieegharevba.com/#person" },
           "url": "https://selar.com/271076b399",
-          "image": "https://stephanieegharevba.com/assets/aistudio/stephanie-egharevba-excluding-15-percent-nigerians-book.png",
+          "image": "https://www.stephanieegharevba.com/assets/aistudio/stephanie-egharevba-excluding-15-percent-nigerians-book.png",
           "inLanguage": "en",
           "description": "An executive and founder's blueprint examining how inaccessible digital products lock out over 30 million Nigerians living with disabilities and how to align with the Discrimination Against Persons with Disabilities (Prohibition) Act 2018."
         },
         {
           "@type": "Book",
-          "@id": "https://stephanieegharevba.com/books#book-accessibility-made-easy",
+          "@id": "https://www.stephanieegharevba.com/books#book-accessibility-made-easy",
           "name": "Accessibility Made Easy",
           "alternativeHeadline": "Starter Kit & Audit Checklist for Product Teams",
-          "author": { "@id": "https://stephanieegharevba.com/#person" },
+          "author": { "@id": "https://www.stephanieegharevba.com/#person" },
           "url": "https://selar.com/892174c31d",
-          "image": "https://stephanieegharevba.com/assets/aistudio/stephanie-egharevba-accessibility-made-easy-toolkit.png",
+          "image": "https://www.stephanieegharevba.com/assets/aistudio/stephanie-egharevba-accessibility-made-easy-toolkit.png",
           "inLanguage": "en",
           "description": "A zero-fluff operational starter kit designed for product managers, UX designers, and QA teams who need to embed accessibility into agile sprints immediately."
         },
         {
           "@type": "FAQPage",
-          "@id": "https://stephanieegharevba.com/#faq",
-          "url": "https://stephanieegharevba.com/",
+          "@id": "https://www.stephanieegharevba.com/#faq",
+          "url": "https://www.stephanieegharevba.com/",
           "name": "Frequently Asked Questions — WCAG Accessibility Audits & Inclusion Advisory",
           "mainEntity": [
             {
               "@type": "Question",
-              "@id": "https://stephanieegharevba.com/#faq-audit-timeline",
+              "@id": "https://www.stephanieegharevba.com/#faq-audit-timeline",
               "name": "How long does a WCAG 2.2 AA accessibility audit take for a web or mobile platform?",
               "acceptedAnswer": {
                 "@type": "Answer",
@@ -178,7 +195,7 @@
             },
             {
               "@type": "Question",
-              "@id": "https://stephanieegharevba.com/#faq-ngo-grantmaking",
+              "@id": "https://www.stephanieegharevba.com/#faq-ngo-grantmaking",
               "name": "How do NGOs and foundations build digital accessibility into funded programs and grantmaking?",
               "acceptedAnswer": {
                 "@type": "Answer",
@@ -187,7 +204,7 @@
             },
             {
               "@type": "Question",
-              "@id": "https://stephanieegharevba.com/#faq-audit-deliverables",
+              "@id": "https://www.stephanieegharevba.com/#faq-audit-deliverables",
               "name": "What does our engineering and product team receive at the end of a WCAG audit?",
               "acceptedAnswer": {
                 "@type": "Answer",
@@ -196,7 +213,7 @@
             },
             {
               "@type": "Question",
-              "@id": "https://stephanieegharevba.com/#faq-nigerian-disability-act",
+              "@id": "https://www.stephanieegharevba.com/#faq-nigerian-disability-act",
               "name": "Why do Nigerian fintechs and digital products need to comply with the Nigerian Disability Act?",
               "acceptedAnswer": {
                 "@type": "Answer",
@@ -205,7 +222,7 @@
             },
             {
               "@type": "Question",
-              "@id": "https://stephanieegharevba.com/#faq-booking-speaking",
+              "@id": "https://www.stephanieegharevba.com/#faq-booking-speaking",
               "name": "How can we book Stephanie Egharevba for a conference keynote, panel, or corporate workshop?",
               "acceptedAnswer": {
                 "@type": "Answer",
@@ -221,13 +238,13 @@
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "@id": "https://stephanieegharevba.com/work#faq",
-      "url": "https://stephanieegharevba.com/work",
+      "@id": "https://www.stephanieegharevba.com/work#faq",
+      "url": "https://www.stephanieegharevba.com/work",
       "name": "Common Questions About WCAG Audits & Inclusion Advisory",
       "mainEntity": [
         {
           "@type": "Question",
-          "@id": "https://stephanieegharevba.com/work#faq-audit-timeline",
+          "@id": "https://www.stephanieegharevba.com/work#faq-audit-timeline",
           "name": "How long does a WCAG 2.2 AA accessibility audit take for a web or mobile platform?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -236,7 +253,7 @@
         },
         {
           "@type": "Question",
-          "@id": "https://stephanieegharevba.com/work#faq-ngo-grantmaking",
+          "@id": "https://www.stephanieegharevba.com/work#faq-ngo-grantmaking",
           "name": "How do NGOs and foundations build digital accessibility into funded programs and grantmaking?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -245,7 +262,7 @@
         },
         {
           "@type": "Question",
-          "@id": "https://stephanieegharevba.com/work#faq-audit-deliverables",
+          "@id": "https://www.stephanieegharevba.com/work#faq-audit-deliverables",
           "name": "What does our engineering and product team receive at the end of a WCAG audit?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -254,7 +271,7 @@
         },
         {
           "@type": "Question",
-          "@id": "https://stephanieegharevba.com/work#faq-nigerian-disability-act",
+          "@id": "https://www.stephanieegharevba.com/work#faq-nigerian-disability-act",
           "name": "Why do Nigerian fintechs and digital products need to comply with the Nigerian Disability Act?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -263,7 +280,7 @@
         },
         {
           "@type": "Question",
-          "@id": "https://stephanieegharevba.com/work#faq-booking-speaking",
+          "@id": "https://www.stephanieegharevba.com/work#faq-booking-speaking",
           "name": "How can we book Stephanie Egharevba for a conference keynote, panel, or corporate workshop?",
           "acceptedAnswer": {
             "@type": "Answer",

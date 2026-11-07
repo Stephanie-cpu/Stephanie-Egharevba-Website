@@ -724,11 +724,11 @@ export const BlogView: React.FC<BlogViewProps> = ({
     if (activePost) {
       const shortTitle = `${activePost.title.slice(0, 40)} | Stephanie Egharevba`;
       document.title = shortTitle;
-      const canonicalUrl = `https://stephanieegharevba.com/blog?note=${encodeURIComponent(activePost.slug)}`;
+      const canonicalUrl = `https://www.stephanieegharevba.com/blog?note=${encodeURIComponent(activePost.slug)}`;
       if (canonicalEl) canonicalEl.setAttribute('href', canonicalUrl);
     } else {
       document.title = 'Digital Accessibility Blog | Stephanie Egharevba';
-      if (canonicalEl) canonicalEl.setAttribute('href', 'https://stephanieegharevba.com/blog');
+      if (canonicalEl) canonicalEl.setAttribute('href', 'https://www.stephanieegharevba.com/blog');
     }
   }, [activePost]);
 
@@ -753,7 +753,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
 
   const handleCopyPostLink = (post: BlogPost) => {
     try {
-      const url = `https://stephanieegharevba.com/blog?note=${encodeURIComponent(post.slug)}`;
+      const url = `https://www.stephanieegharevba.com/blog?note=${encodeURIComponent(post.slug)}`;
       navigator.clipboard.writeText(url);
       setCopiedPostId(post.id);
       setTimeout(() => setCopiedPostId(null), 2500);
