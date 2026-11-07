@@ -147,20 +147,48 @@ export default function NavigationDrawer({
       {/* Fixed Top Header Bar (Left Hamburger, Center Monogram Logo, Right On/Off Switch & "Let's Talk" Button) */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-[#FAF9F6]/95 dark:bg-[#0B0D13]/95 backdrop-blur-md border-b border-[#E6E4DD]/70 dark:border-[#262C3A]/70 transition-colors duration-200">
         <div className="max-w-[1280px] mx-auto flex items-center justify-between px-4 sm:px-8 py-3.5 sm:py-4">
-          {/* Left: Hamburger Menu Trigger (3 Horizontal Lines) */}
+          {/* Left: Animated Hamburger Menu Trigger */}
           <div className="flex items-center">
             <button
               ref={triggerRef}
               type="button"
-              onClick={() => setIsOpen(true)}
-              aria-label="Open navigation menu"
+              onClick={() => setIsOpen((prev) => !prev)}
+              aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={isOpen}
               aria-controls="navigation-drawer"
-              className="flex flex-col justify-center items-start w-10 h-10 space-y-1.5 text-[#141413] dark:text-white hover:opacity-75 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#141413] dark:focus-visible:ring-white rounded-lg cursor-pointer transition-opacity"
+              className={`group relative flex flex-col justify-center items-start w-11 h-11 px-2 text-[#141413] dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#141413] dark:focus-visible:ring-white rounded-full cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-[#141413]/5 dark:hover:bg-white/10 active:scale-75 ${
+                isOpen ? 'rotate-180 scale-105 bg-[#141413]/8 dark:bg-white/15' : 'rotate-0 scale-100'
+              }`}
             >
-              <span className="w-7 h-[2px] bg-current transition-all" aria-hidden="true" />
-              <span className="w-5 h-[2px] bg-current transition-all" aria-hidden="true" />
-              <span className="w-7 h-[2px] bg-current transition-all" aria-hidden="true" />
+              <span className="relative w-7 h-4 flex flex-col justify-between items-start">
+                {/* Top bar */}
+                <span
+                  aria-hidden="true"
+                  className={`h-[2.2px] bg-current rounded-full origin-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                    isOpen
+                      ? 'w-6 translate-y-[6.8px] rotate-45'
+                      : 'w-7 translate-y-0 rotate-0 group-hover:w-4 group-hover:translate-x-1'
+                  }`}
+                />
+                {/* Middle bar */}
+                <span
+                  aria-hidden="true"
+                  className={`h-[2.2px] bg-current rounded-full transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                    isOpen
+                      ? 'w-0 opacity-0 translate-x-3 scale-0'
+                      : 'w-4.5 opacity-100 translate-x-0 scale-100 group-hover:w-7'
+                  }`}
+                />
+                {/* Bottom bar */}
+                <span
+                  aria-hidden="true"
+                  className={`h-[2.2px] bg-current rounded-full origin-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                    isOpen
+                      ? 'w-6 -translate-y-[6.8px] -rotate-45'
+                      : 'w-6 translate-y-0 rotate-0 group-hover:w-5 group-hover:translate-x-0.5'
+                  }`}
+                />
+              </span>
             </button>
           </div>
 
@@ -223,7 +251,7 @@ export default function NavigationDrawer({
 
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 z-50 bg-black/55 backdrop-blur-xs transition-opacity duration-300 motion-reduce:transition-none ${
+        className={`fixed inset-0 z-50 bg-black/55 backdrop-blur-xs transition-opacity duration-400 delay-75 motion-reduce:transition-none ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={handleClose}
@@ -239,7 +267,7 @@ export default function NavigationDrawer({
         aria-label="Site Navigation"
         aria-hidden={!isOpen}
         style={{ backgroundColor: '#0A0A0A', color: '#FFFFFF' }}
-        className={`fixed top-0 right-0 z-50 h-[100dvh] w-[88vw] sm:w-[65vw] lg:w-[60vw] max-w-[840px] bg-neutral-950 text-white px-8 sm:px-14 md:px-16 py-5 sm:py-6 flex flex-col justify-between shadow-2xl transition-transform duration-300 ease-out motion-reduce:transition-none overflow-hidden ${
+        className={`fixed top-0 right-0 z-50 h-[100dvh] w-[88vw] sm:w-[65vw] lg:w-[60vw] max-w-[840px] bg-neutral-950 text-white px-8 sm:px-14 md:px-16 py-5 sm:py-6 flex flex-col justify-between shadow-2xl transition-transform duration-500 delay-75 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none overflow-hidden ${
           isOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'
         }`}
       >
@@ -251,7 +279,9 @@ export default function NavigationDrawer({
             onClick={handleClose}
             tabIndex={isOpen ? 0 : -1}
             aria-label="Close navigation menu"
-            className="w-10 h-10 -ml-2 flex items-center justify-center text-neutral-300 hover:text-white transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+            className={`w-10 h-10 -ml-2 flex items-center justify-center text-neutral-300 hover:text-white hover:rotate-90 hover:scale-110 active:scale-75 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-full ${
+              isOpen ? 'rotate-0 scale-100 delay-150' : '-rotate-90 scale-50'
+            }`}
           >
             <X className="w-7 h-7 stroke-[1.5]" aria-hidden="true" />
           </button>
