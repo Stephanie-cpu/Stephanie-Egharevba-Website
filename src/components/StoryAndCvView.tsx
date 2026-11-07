@@ -248,7 +248,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
       <motion.div
         aria-hidden="true"
         style={{ scaleX: topReadingBarScaleX, transformOrigin: '0% 50%' }}
-        className="fixed top-0 left-0 right-0 h-[2px] bg-[#1D4ED8] z-50 pointer-events-none"
+        className="fixed top-0 left-0 right-0 h-[2px] bg-[#0F172A] z-50 pointer-events-none"
       />
 
       {/* ===================================================================== */}
@@ -283,7 +283,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                   Osasumwen
                 </span>
               </div>
-              <p className="text-sm sm:text-base font-semibold text-[#1D4ED8]">
+              <p className="text-sm sm:text-base font-semibold text-[#334155]">
                 Diversity &amp; Inclusion Lead · Disability Inclusion Specialist · Author &amp;
                 Global Speaker
               </p>
@@ -320,7 +320,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
             <button
               type="button"
               onClick={onNavigateToContact}
-              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#334155] rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer"
             >
               <span>Book Advisory</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -384,7 +384,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
             transition={{ duration: 0.2, ease: EASE_EDITORIAL }}
             className="space-y-14"
           >
-            {/* BEAT 01: 01 / ORIGIN — "Architectures of Exclusion." */}
+            {/* BEAT 01: "Architectures of Exclusion." */}
             <motion.article
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -393,10 +393,6 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
               className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center bg-white border border-[#E2E8F0] rounded-3xl p-7 sm:p-12"
             >
               <div className="lg:col-span-7 space-y-5">
-                <div className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-[#1D4ED8]">
-                  01 / ORIGIN
-                </div>
-
                 <h2
                   className="font-display font-bold tracking-[-0.03em] text-[#0F172A] leading-[1.08]"
                   style={{ fontSize: 'clamp(2rem, 3.6vw, 2.75rem)' }}
@@ -445,7 +441,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
               </div>
             </motion.article>
 
-            {/* BEAT 02: 02 / MOMENTUM — "From Campus Policy to Continental Scale." */}
+            {/* BEAT 02: "From Campus Policy to Continental Scale." */}
             <motion.article
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -460,7 +456,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                     <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
                       VERIFIED IMPACT METRICS
                     </span>
-                    <span className="font-mono text-[11px] font-semibold text-[#1D4ED8]">
+                    <span className="font-mono text-[11px] font-semibold text-[#0F172A]">
                       2023 — 2026
                     </span>
                   </div>
@@ -497,7 +493,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                     </div>
 
                     <div className="p-4 sm:p-5 rounded-xl bg-white border border-[#E2E8F0] space-y-1">
-                      <div className="text-2xl sm:text-3xl font-display font-bold text-[#1D4ED8]">
+                      <div className="text-2xl sm:text-3xl font-display font-bold text-[#0F172A]">
                         <AnimatedStatCounter target={3} prefix="Top " suffix="%" />
                       </div>
                       <div className="text-xs font-semibold text-[#0F172A]">Global Speaker</div>
@@ -508,10 +504,6 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
               </div>
 
               <div className="lg:col-span-7 order-1 lg:order-2 space-y-5">
-                <div className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-[#1D4ED8]">
-                  02 / MOMENTUM
-                </div>
-
                 <h2
                   className="font-display font-bold tracking-[-0.03em] text-[#0F172A] leading-[1.08]"
                   style={{ fontSize: 'clamp(2rem, 3.6vw, 2.75rem)' }}
@@ -550,7 +542,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
               </div>
             </motion.article>
 
-            {/* BEAT 03: 03 / THESIS — "Disability Is Not the Edge Case." */}
+            {/* BEAT 03: "Disability Is Not the Edge Case." */}
             <motion.article
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -559,10 +551,6 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
               className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center bg-white border border-[#E2E8F0] rounded-3xl p-7 sm:p-12"
             >
               <div className="lg:col-span-7 space-y-5">
-                <div className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-[#1D4ED8]">
-                  03 / THESIS
-                </div>
-
                 <h2
                   className="font-display font-bold tracking-[-0.03em] text-[#0F172A] leading-[1.08]"
                   style={{ fontSize: 'clamp(2rem, 3.6vw, 2.75rem)' }}
@@ -590,7 +578,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                   <button
                     type="button"
                     onClick={() => setActiveMode('cv')}
-                    className="group px-6 py-3 text-xs sm:text-sm font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer"
+                    className="group px-6 py-3 text-xs sm:text-sm font-semibold text-white bg-[#111111] hover:bg-[#334155] rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer"
                   >
                     <span>Switch to Complete CV / Timeline</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -611,13 +599,13 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
               <div className="lg:col-span-5">
                 <div className="p-7 sm:p-9 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#0F172A] transition-colors flex flex-col justify-between space-y-6">
                   <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3.5">
-                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-[#1D4ED8]">
+                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748B]">
                       SIGNATURE THESIS
                     </span>
                     <button
                       type="button"
                       onClick={handleCopySignatureQuote}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0F172A] hover:text-[#64748B] transition-colors cursor-pointer"
                     >
                       {copiedQuote ? (
                         <>
@@ -672,7 +660,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                 <button
                   type="button"
                   onClick={expandOrCollapseAllRoles}
-                  className="text-xs font-semibold text-[#1D4ED8] hover:underline cursor-pointer self-start sm:self-auto"
+                  className="text-xs font-semibold text-[#0F172A] hover:underline cursor-pointer self-start sm:self-auto"
                 >
                   {expandedRoleIds.length === PROFESSIONAL_EXPERIENCE.length
                     ? 'Collapse All Roles'
@@ -693,7 +681,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                   animate={{ scaleY: timelineProgress }}
                   transition={{ type: 'spring', stiffness: 120, damping: 28 }}
                   style={{ transformOrigin: 'top' }}
-                  className="absolute left-[11px] sm:left-[19px] top-3 bottom-3 w-[2px] bg-[#1D4ED8] rounded-full"
+                  className="absolute left-[11px] sm:left-[19px] top-3 bottom-3 w-[2px] bg-[#0F172A] rounded-full"
                 />
 
                 <div className="space-y-4">
@@ -723,8 +711,8 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                         <div
                           className={`absolute -left-[21px] sm:-left-[29px] top-6 w-4 h-4 rounded-full border-[3px] border-[#FAF9F6] transition-all duration-200 ${
                             isExpanded || isHovered
-                              ? 'bg-[#1D4ED8] ring-4 ring-[#1D4ED8]/15 scale-110'
-                              : 'bg-[#0F172A]'
+                              ? 'bg-[#0F172A] ring-4 ring-[#0F172A]/15 scale-110'
+                              : 'bg-[#64748B]'
                           }`}
                         />
 
@@ -748,14 +736,14 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-6">
                             <div className="space-y-1">
-                              <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[#1D4ED8] tabular-nums">
+                              <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[#0F172A] tabular-nums">
                                 <span>{exp.period}</span>
                                 <span className="text-[#CBD5E1]">·</span>
                                 <span className="font-sans font-semibold text-[#64748B]">
                                   {exp.organization} ({exp.location})
                                 </span>
                               </div>
-                              <h3 className="text-lg sm:text-xl font-display font-bold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                              <h3 className="text-lg sm:text-xl font-display font-bold text-[#0F172A]">
                                 {exp.role}
                               </h3>
                             </div>
@@ -780,14 +768,14 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                             {exp.summary}
                           </p>
 
-                          {/* Interactive Role Skills & Tools Chips (Highlight on Hover) */}
+                          {/* Interactive Role Skills & Tools Chips */}
                           <div className="flex flex-wrap items-center gap-1.5 mt-4">
                             {roleSkills.map((skill) => (
                               <span
                                 key={skill}
                                 className={`px-2.5 py-0.5 rounded-md text-[11px] font-medium border transition-colors duration-200 ${
                                   isHovered
-                                    ? 'bg-[#EFF6FF] text-[#1D4ED8] border-[#BFDBFE]'
+                                    ? 'bg-[#0F172A] text-white border-[#0F172A]'
                                     : 'bg-[#F8FAFC] text-[#64748B] border-[#E2E8F0]'
                                 }`}
                               >
@@ -812,7 +800,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                                       key={bIdx}
                                       className="text-xs sm:text-sm text-[#334155] flex items-start gap-3 leading-relaxed"
                                     >
-                                      <span className="font-mono text-[11px] font-bold text-[#1D4ED8] mt-0.5 shrink-0">
+                                      <span className="font-mono text-[11px] font-bold text-[#0F172A] mt-0.5 shrink-0">
                                         0{bIdx + 1}
                                       </span>
                                       <span>{bullet}</span>
@@ -845,18 +833,18 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                       Honors &amp; Recognition
                     </h2>
                   </div>
-                  <Award className="w-6 h-6 text-[#1D4ED8] hidden sm:block" />
+                  <Award className="w-6 h-6 text-[#0F172A] hidden sm:block" />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {HONORS_AND_RECOGNITION.map((honor) => (
                     <div
                       key={honor.id}
-                      className="group p-6 sm:p-7 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#1D4ED8] hover:shadow-[0_0_30px_-8px_rgba(29,78,216,0.22)] transition-all duration-300 flex flex-col justify-between space-y-4"
+                      className="group p-6 sm:p-7 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-all duration-300 flex flex-col justify-between space-y-4"
                     >
                       <div className="space-y-3">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] text-[11px] font-semibold uppercase tracking-[0.06em] text-[#1D4ED8]">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] text-[11px] font-semibold uppercase tracking-[0.06em] text-[#0F172A]">
                             <Sparkles className="w-3 h-3" />
                             <span>{honor.issuer}</span>
                           </span>
@@ -865,7 +853,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                           </span>
                         </div>
 
-                        <h3 className="text-lg sm:text-xl font-display font-bold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                        <h3 className="text-lg sm:text-xl font-display font-bold text-[#0F172A]">
                           {honor.title}
                         </h3>
 
@@ -878,7 +866,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                 </div>
               </div>
 
-              {/* Academic Credentials with Research & Campus Leadership Context (SSCE Removed) */}
+              {/* Academic Credentials with Research & Campus Leadership Context */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
@@ -889,7 +877,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                       Education
                     </h2>
                   </div>
-                  <GraduationCap className="w-6 h-6 text-[#1D4ED8] hidden sm:block" />
+                  <GraduationCap className="w-6 h-6 text-[#0F172A] hidden sm:block" />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -899,7 +887,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                       className="p-6 sm:p-7 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0F172A] transition-colors flex flex-col justify-between space-y-4"
                     >
                       <div className="space-y-2">
-                        <div className="flex items-center justify-between gap-2 text-xs font-mono text-[#1D4ED8]">
+                        <div className="flex items-center justify-between gap-2 text-xs font-mono text-[#64748B]">
                           <span>{edu.institution}</span>
                           <span className="tabular-nums font-semibold">{edu.period}</span>
                         </div>
