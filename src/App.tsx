@@ -9,6 +9,7 @@ import {
   Calendar,
   Check,
   CheckCircle2,
+  ChevronDown,
   Copy,
   Download,
   ExternalLink,
@@ -290,6 +291,18 @@ export default function App() {
   const [newsletterConsent, setNewsletterConsent] = useState(true);
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [newsletterErrorMessage, setNewsletterErrorMessage] = useState('');
+
+  // Collapsible FAQ state (collapsed by default to save space)
+  const [openWorkFaqIndex, setOpenWorkFaqIndex] = useState<number | null>(null);
+  const [openContactFaqIndex, setOpenContactFaqIndex] = useState<number | null>(null);
+
+  // Next Webinar Sign-Up state
+  const [isWebinarSignupOpen, setIsWebinarSignupOpen] = useState(false);
+  const [webinarName, setWebinarName] = useState('');
+  const [webinarEmail, setWebinarEmail] = useState('');
+  const [webinarRole, setWebinarRole] = useState('');
+  const [webinarStatus, setWebinarStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [webinarErrorMsg, setWebinarErrorMsg] = useState('');
 
   // Sync Firestore CMS Data
   useEffect(() => {
@@ -886,6 +899,74 @@ export default function App() {
     }
   };
 
+  // Webinar Sign-Up Handler
+  const handleWebinarSignupSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setWebinarErrorMsg('');
+
+    const trimmedName = webinarName.trim();
+    const trimmedEmail = webinarEmail.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!trimmedName) {
+      setWebinarStatus('error');
+      setWebinarErrorMsg('Please enter your name.');
+      return;
+    }
+    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+      setWebinarStatus('error');
+      setWebinarErrorMsg('Please enter a valid email address.');
+      return;
+    }
+
+    setWebinarStatus('loading');
+
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmedEmail }),
+      }).catch(() => {});
+
+      try {
+        await addDoc(collection(db, 'newsletter_subscribers'), {
+          email: trimmedEmail,
+          name: trimmedName,
+          role: webinarRole.trim() || 'Webinar Attendee',
+          source: 'next_webinar_signup',
+          consent: true,
+          createdAt: serverTimestamp(),
+        });
+      } catch {
+        // ignore offline/duplicate
+      }
+
+      try {
+        await addDoc(collection(db, 'enquiries'), {
+          name: trimmedName,
+          email: trimmedEmail,
+          organization: webinarRole.trim() || 'Webinar Registrant',
+          inquiryType: 'Keynote Speaking',
+          message: `Signed up to attend Stephanie's next webinar ("Building products that refuse to leave anyone behind").`,
+          ndpaConsent: true,
+          status: 'new',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        });
+      } catch {
+        // ignore offline
+      }
+
+      setWebinarStatus('success');
+      setWebinarName('');
+      setWebinarEmail('');
+      setWebinarRole('');
+    } catch {
+      setWebinarStatus('error');
+      setWebinarErrorMsg('Could not complete sign-up right now. Please try again.');
+    }
+  };
+
   // Merge CMS published projects with initial CV projects
   const mappedCmsProjects: ProjectItem[] = cmsProjects.map((cp) => ({
     id: cp.id,
@@ -946,7 +1027,7 @@ export default function App() {
       {/* Skip to Main Content */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#1D4ED8] focus:text-white focus:rounded-lg text-xs font-medium"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#141413] focus:text-white focus:rounded-lg text-xs font-medium"
       >
         Skip to main content
       </a>
@@ -1158,7 +1239,7 @@ export default function App() {
                           navigateTo('cv');
                         }}
                         aria-label="Read Stephanie Egharevba's executive biography and CV"
-                        className="group px-7 py-3.5 text-sm font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
+                        className="group px-7 py-3.5 text-sm font-semibold text-white bg-[#111111] hover:bg-[#3F3E3A] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
                       >
                         <span>Read Stephanie Egharevba&apos;s CV</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -1168,7 +1249,7 @@ export default function App() {
                         href={CV_PDF_URL}
                         download="Stephanie_Egharevba_CV.pdf"
                         aria-label="Download Stephanie Egharevba's official CV in PDF format"
-                        className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center justify-center sm:justify-start gap-2 py-2"
+                        className="text-sm font-semibold text-[#0F172A] hover:text-[#475569] transition-colors inline-flex items-center justify-center sm:justify-start gap-2 py-2"
                       >
                         <Download className="w-4 h-4 text-[#64748B]" />
                         <span>Download Stephanie&apos;s Executive CV (PDF)</span>
@@ -1209,7 +1290,7 @@ export default function App() {
                         navigateTo('work');
                       }}
                       aria-label="Explore WCAG Case Studies and Interactive Contrast Lab"
-                      className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+                      className="text-sm font-semibold text-[#0F172A] hover:text-[#475569] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                     >
                       <span>Explore WCAG Case Studies &amp; Contrast Lab</span>
                       <ArrowRight className="w-4 h-4" />
@@ -1253,7 +1334,7 @@ export default function App() {
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#475569] transition-colors">
                         <span>Explore WCAG Case Studies &amp; Contrast Lab</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
@@ -1295,7 +1376,7 @@ export default function App() {
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#475569] transition-colors">
                         <span>Review Inclusive Program Case Studies</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
@@ -1336,7 +1417,7 @@ export default function App() {
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#475569] transition-colors">
                         <span>Watch Keynotes &amp; Speaking Topics</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
@@ -1377,7 +1458,7 @@ export default function App() {
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#475569] transition-colors">
                         <span>Explore Accessibility Books &amp; Toolkits</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
@@ -1386,47 +1467,220 @@ export default function App() {
                 </div>
               </motion.section>
 
-              {/* FLAGSHIP INITIATIVE SPOTLIGHT: BUILD WITHOUT BARRIERS (BWB) */}
+              {/* FLAGSHIP INITIATIVE & WEBINARS SPOTLIGHT: BUILDING PRODUCTS THAT REFUSE TO LEAVE ANYONE BEHIND */}
               <motion.section
                 initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 36 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-70px' }}
                 transition={{ duration: 0.75, ease: EASE_EDITORIAL }}
-                className="bg-[#FAF9F6] py-12 sm:py-16 lg:py-20 border-y border-[#E2E8F0]"
+                className="bg-[#FAF9F6] py-10 sm:py-14 border-y border-[#E6E4DD]"
               >
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-                  <div className="max-w-3xl space-y-6">
-                    <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold tracking-tight text-[#0F172A] leading-[1.12]">
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-6">
+                  {/* Top Editorial Header Row (Screenshot Layout: WEBINARS + Horizontal Progress Line with Accent Bar) */}
+                  <div className="flex items-center gap-6 sm:gap-12">
+                    <span className="text-2xl sm:text-3xl font-display font-bold uppercase tracking-tight text-[#141413] shrink-0">
+                      WEBINARS
+                    </span>
+                    <div
+                      aria-hidden="true"
+                      className="flex-1 h-[2px] bg-[#E6E4DD] flex items-center justify-end"
+                    >
+                      <span className="w-12 sm:w-20 h-[3px] bg-[#141413]" />
+                    </div>
+                  </div>
+
+                  {/* Section Headline & Concise Context */}
+                  <div className="max-w-3xl space-y-2">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold tracking-tight text-[#141413] leading-[1.12] text-balance">
                       Building products that refuse to leave anyone behind.
                     </h2>
-
-                    <p className="text-[15px] sm:text-[17px] text-[#475569] leading-relaxed">
-                      Build Without Barriers is an open masterclass platform training founders, engineers, and product teams across Africa to build accessible software from sprint zero. From live WCAG architectural audits to community cohort sessions, BWB translates complex compliance guidelines into practical engineering habits.
+                    <p className="text-sm sm:text-base text-[#575652] leading-relaxed">
+                      Practical webinars and live masterclasses training founders, designers, and engineering teams to build accessible digital products from sprint zero.
                     </p>
+                  </div>
 
-                    {/* Action CTAs */}
-                    <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  {/* YouTube Video Showcase Frame (Reduced Width Only) */}
+                  <div className="w-full max-w-[640px] aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-[#141413] border border-[#E6E4DD] shadow-sm">
+                    <iframe
+                      width="560"
+                      height="315"
+                      src="https://www.youtube.com/embed/MYnNpJC-I9c?si=bUzxLV39P4lKyXX1"
+                      title="YouTube video player"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                      className="w-full h-full border-0"
+                    />
+                  </div>
+
+                  {/* Primary CTA Button + Expandable Webinar Sign-Up Drawer */}
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsWebinarSignupOpen((prev) => !prev);
+                          setWebinarStatus('idle');
+                        }}
+                        aria-expanded={isWebinarSignupOpen}
+                        className="px-7 py-3.5 text-xs sm:text-sm font-bold text-white bg-[#141413] hover:bg-[#3F3E3A] active:scale-[0.99] rounded-xl transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
+                      >
+                        <Calendar className="w-4 h-4" />
+                        <span>Sign Up to Be on My Next Webinar</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+
                       <a
                         href="https://bwbhq.vercel.app/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Explore Build Without Barriers platform website (opens in new tab)"
-                        className="px-6 py-3.5 text-xs font-bold text-white bg-[#1D4ED8] hover:bg-[#2563EB] active:scale-[0.98] rounded-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                        className="px-6 py-3.5 text-xs sm:text-sm font-semibold text-[#141413] bg-white hover:bg-[#F2EFE9] border border-[#E6E4DD] rounded-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <span>Explore Build Without Barriers</span>
                         <ExternalLink className="w-4 h-4" />
                       </a>
-
-                      <button
-                        type="button"
-                        onClick={() => handleInquireWithContext('Build Without Barriers Partnership', 'D&I Strategy Advisory')}
-                        aria-label="Partner with Build Without Barriers initiative - opens enquiry form"
-                        className="px-6 py-3.5 text-xs font-semibold text-[#0F172A] bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] rounded-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <span>Partner with BWB</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
                     </div>
+
+                    {/* Inline Webinar Registration Drawer */}
+                    <AnimatePresence>
+                      {isWebinarSignupOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.2 }}
+                          className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 shadow-xs max-w-3xl"
+                        >
+                          {webinarStatus === 'success' ? (
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                              <div className="flex items-start gap-3">
+                                <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
+                                <div className="space-y-1">
+                                  <h3 className="text-base font-display font-bold text-[#141413]">
+                                    You’re on the list for the next webinar!
+                                  </h3>
+                                  <p className="text-xs sm:text-sm text-[#575652]">
+                                    We’ve saved your registration and will email you the live session link and calendar invite as soon as the next cohort date goes live.
+                                  </p>
+                                </div>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setIsWebinarSignupOpen(false);
+                                  setWebinarStatus('idle');
+                                }}
+                                className="px-4 py-2 text-xs font-semibold text-[#141413] border border-[#E6E4DD] rounded-lg hover:border-[#141413] cursor-pointer shrink-0 self-start sm:self-center"
+                              >
+                                Close
+                              </button>
+                            </div>
+                          ) : (
+                            <form onSubmit={handleWebinarSignupSubmit} className="space-y-4">
+                              <div className="flex items-center justify-between gap-4">
+                                <div>
+                                  <h3 className="text-base sm:text-lg font-display font-bold text-[#141413]">
+                                    Reserve Your Spot on the Next Live Webinar
+                                  </h3>
+                                  <p className="text-xs text-[#575652]">
+                                    Enter your details below to receive the calendar invite and session materials.
+                                  </p>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => setIsWebinarSignupOpen(false)}
+                                  aria-label="Close webinar registration form"
+                                  className="p-1.5 text-[#575652] hover:text-[#141413] rounded-lg cursor-pointer"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+
+                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div>
+                                  <label
+                                    htmlFor="webinar-reg-name"
+                                    className="block font-mono text-[10px] uppercase tracking-wider text-[#575652] mb-1 font-semibold"
+                                  >
+                                    Full Name *
+                                  </label>
+                                  <input
+                                    id="webinar-reg-name"
+                                    type="text"
+                                    required
+                                    value={webinarName}
+                                    onChange={(e) => setWebinarName(e.target.value)}
+                                    placeholder="Your name"
+                                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] text-[#141413] focus:border-[#141413] outline-none"
+                                  />
+                                </div>
+
+                                <div>
+                                  <label
+                                    htmlFor="webinar-reg-email"
+                                    className="block font-mono text-[10px] uppercase tracking-wider text-[#575652] mb-1 font-semibold"
+                                  >
+                                    Email Address *
+                                  </label>
+                                  <input
+                                    id="webinar-reg-email"
+                                    type="email"
+                                    required
+                                    value={webinarEmail}
+                                    onChange={(e) => setWebinarEmail(e.target.value)}
+                                    placeholder="you@company.com"
+                                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] text-[#141413] focus:border-[#141413] outline-none"
+                                  />
+                                </div>
+
+                                <div>
+                                  <label
+                                    htmlFor="webinar-reg-role"
+                                    className="block font-mono text-[10px] uppercase tracking-wider text-[#575652] mb-1 font-semibold"
+                                  >
+                                    Role / Organization
+                                  </label>
+                                  <input
+                                    id="webinar-reg-role"
+                                    type="text"
+                                    value={webinarRole}
+                                    onChange={(e) => setWebinarRole(e.target.value)}
+                                    placeholder="e.g., Product Designer, Founder"
+                                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] text-[#141413] focus:border-[#141413] outline-none"
+                                  />
+                                </div>
+                              </div>
+
+                              {webinarStatus === 'error' && webinarErrorMsg && (
+                                <p role="alert" className="text-xs font-medium text-red-600">
+                                  {webinarErrorMsg}
+                                </p>
+                              )}
+
+                              <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+                                <span className="text-[11px] text-[#575652]">
+                                  Zero spam · Unsubscribe anytime
+                                </span>
+                                <button
+                                  type="submit"
+                                  disabled={webinarStatus === 'loading'}
+                                  className="px-6 py-2.5 rounded-xl bg-[#141413] hover:bg-[#3F3E3A] text-white text-xs font-semibold inline-flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                                >
+                                  <span>
+                                    {webinarStatus === 'loading'
+                                      ? 'Registering...'
+                                      : 'Confirm My Webinar Spot'}
+                                  </span>
+                                  <ArrowRight className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </form>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </motion.section>
@@ -1460,7 +1714,7 @@ export default function App() {
                     type="button"
                     onClick={() => navigateTo('books')}
                     aria-label="View complete publication details and Selar book list"
-                    className="text-sm font-semibold text-[#0F172A] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+                    className="text-sm font-semibold text-[#0F172A] hover:text-[#475569] transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                   >
                     <span>View Complete Publication Details</span>
                     <ArrowRight className="w-4 h-4" />
@@ -1494,7 +1748,7 @@ export default function App() {
 
                         {/* Title & Complete Two-Sentence Description (Never Truncated) */}
                         <div className="space-y-2.5 pt-1">
-                          <h3 className="text-xl font-display font-bold tracking-tight text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                          <h3 className="text-xl font-display font-bold tracking-tight text-[#0F172A] group-hover:text-[#475569] transition-colors">
                             {book.title}
                           </h3>
                           <p className="text-sm text-[#475569] leading-relaxed">
@@ -1503,7 +1757,7 @@ export default function App() {
                         </div>
                       </div>
 
-                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#1D4ED8] transition-colors">
+                      <div className="pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-semibold text-[#0F172A] group-hover:text-[#475569] transition-colors">
                         <span>Buy {book.title} on Selar</span>
                         <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </div>
@@ -1563,7 +1817,7 @@ export default function App() {
                           )
                         }
                         aria-label="Commission a WCAG 2.2 platform audit or D&I strategy advisory"
-                        className="group min-h-[44px] px-6 py-3.5 text-xs sm:text-sm font-semibold text-[#0B0B0B] bg-white hover:bg-[#1D4ED8] hover:text-white rounded-full transition-colors inline-flex items-center justify-center gap-2.5 w-full sm:w-fit cursor-pointer whitespace-nowrap shrink-0"
+                        className="group min-h-[44px] px-6 py-3.5 text-xs sm:text-sm font-semibold text-[#0B0B0B] bg-white hover:bg-[#E2E8F0] rounded-full transition-colors inline-flex items-center justify-center gap-2.5 w-full sm:w-fit cursor-pointer whitespace-nowrap shrink-0"
                       >
                         <span>Commission an Audit or Advisory</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -1675,7 +1929,7 @@ export default function App() {
                                       key={mIdx}
                                       className="text-xs text-[#3F3E3A] flex items-start gap-2 leading-relaxed"
                                     >
-                                      <span className="font-mono text-[11px] font-semibold text-[#1D4ED8] shrink-0">
+                                      <span className="font-mono text-[11px] font-semibold text-[#141413] shrink-0">
                                         0{mIdx + 1}.
                                       </span>
                                       <span>{metric}</span>
@@ -1705,7 +1959,7 @@ export default function App() {
                                     )
                                   }
                                   aria-label={`Enquire about work similar to ${project.title}`}
-                                  className="text-xs font-semibold text-[#1D4ED8] hover:underline inline-flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0"
+                                  className="text-xs font-semibold text-[#141413] hover:underline inline-flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0"
                                 >
                                   <span>Enquire About Similar Work</span>
                                   <ArrowRight className="w-3.5 h-3.5" />
@@ -1725,7 +1979,7 @@ export default function App() {
                 <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-8">
                   <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                     <div className="space-y-1">
-                      <div className="font-mono text-xs text-[#1D4ED8]">
+                      <div className="font-mono text-xs text-[#575652]">
                         Engagement Methodology
                       </div>
                       <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]">
@@ -1736,7 +1990,7 @@ export default function App() {
                       type="button"
                       onClick={() => navigateTo('contact')}
                       aria-label="Book a discovery call with Stephanie"
-                      className="text-xs font-semibold text-[#1D4ED8] hover:text-[#141413] inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+                      className="text-xs font-semibold text-[#141413] hover:text-[#575652] inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0"
                     >
                       <span>Schedule a Discovery Session</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -1745,7 +1999,7 @@ export default function App() {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 pt-2">
                     <div className="space-y-2.5 pr-2">
-                      <div className="font-mono text-xs font-semibold text-[#1D4ED8]">
+                      <div className="font-mono text-xs font-semibold text-[#575652]">
                         01. Diagnostic &amp; Assistive Teardown
                       </div>
                       <h3 className="text-base font-display font-bold text-[#141413]">
@@ -1758,7 +2012,7 @@ export default function App() {
                     </div>
 
                     <div className="space-y-2.5 pr-2 md:border-l md:border-[#E6E4DD] md:pl-6">
-                      <div className="font-mono text-xs font-semibold text-[#1D4ED8]">
+                      <div className="font-mono text-xs font-semibold text-[#575652]">
                         02. Remediation &amp; Policy Architecture
                       </div>
                       <h3 className="text-base font-display font-bold text-[#141413]">
@@ -1771,7 +2025,7 @@ export default function App() {
                     </div>
 
                     <div className="space-y-2.5 pr-2 md:border-l md:border-[#E6E4DD] md:pl-6">
-                      <div className="font-mono text-xs font-semibold text-[#1D4ED8]">
+                      <div className="font-mono text-xs font-semibold text-[#575652]">
                         03. Verification &amp; Team Enablement
                       </div>
                       <h3 className="text-base font-display font-bold text-[#141413]">
@@ -1865,12 +2119,12 @@ export default function App() {
                 <AccessibilitySandbox />
               </div>
 
-              {/* 6. Buyer Frequently Asked Questions (FAQ) Section */}
+              {/* 6. Buyer Frequently Asked Questions (Collapsible Dropdown Accordion) */}
               <section
                 aria-labelledby="work-faq-heading"
-                className="max-w-[1200px] mx-auto px-4 sm:px-6 pb-16 sm:pb-24 space-y-8"
+                className="max-w-[1200px] mx-auto px-4 sm:px-6 pb-16 sm:pb-24 space-y-6"
               >
-                <div className="space-y-2 max-w-3xl">
+                <div className="space-y-1.5 max-w-2xl">
                   <div className="font-mono text-xs font-semibold uppercase tracking-wider text-[#575652]">
                     FREQUENTLY ASKED QUESTIONS
                   </div>
@@ -1880,25 +2134,56 @@ export default function App() {
                   >
                     Common Questions About WCAG Audits &amp; Inclusion Advisory
                   </h2>
-                  <p className="text-sm sm:text-base text-[#575652] leading-relaxed">
-                    Answers for product teams, NGO program directors, and compliance officers planning an accessibility audit or advisory engagement.
-                  </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {BUYER_FAQ_ITEMS.map((faq, idx) => (
-                    <article
-                      key={idx}
-                      className="rounded-2xl border border-[#E6E4DD] bg-white p-6 space-y-3"
-                    >
-                      <h3 className="text-base sm:text-lg font-display font-bold text-[#141413] leading-snug">
-                        {faq.question}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-[#3F3E3A] leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </article>
-                  ))}
+                <div className="max-w-4xl divide-y divide-[#E6E4DD] border border-[#E6E4DD] rounded-2xl bg-white overflow-hidden">
+                  {BUYER_FAQ_ITEMS.map((faq, idx) => {
+                    const isOpen = openWorkFaqIndex === idx;
+                    return (
+                      <div key={idx} className="transition-colors">
+                        <h3 className="m-0">
+                          <button
+                            type="button"
+                            onClick={() => setOpenWorkFaqIndex(isOpen ? null : idx)}
+                            aria-expanded={isOpen}
+                            aria-controls={`work-faq-panel-${idx}`}
+                            className="w-full px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-4 text-left hover:bg-[#FAF9F6] transition-colors cursor-pointer"
+                          >
+                            <span className="flex items-baseline gap-3.5 pr-2">
+                              <span className="font-mono text-xs font-semibold text-[#575652] tabular-nums shrink-0">
+                                0{idx + 1}
+                              </span>
+                              <span className="text-sm sm:text-base font-display font-bold text-[#141413] leading-snug">
+                                {faq.question}
+                              </span>
+                            </span>
+                            <span
+                              className={`w-7 h-7 rounded-full border border-[#E6E4DD] flex items-center justify-center shrink-0 transition-colors ${
+                                isOpen
+                                  ? 'bg-[#141413] border-[#141413] text-white'
+                                  : 'bg-[#FAF9F6] text-[#141413]'
+                              }`}
+                            >
+                              <ChevronDown
+                                className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                                  isOpen ? 'rotate-180' : ''
+                                }`}
+                              />
+                            </span>
+                          </button>
+                        </h3>
+                        {isOpen && (
+                          <div
+                            id={`work-faq-panel-${idx}`}
+                            role="region"
+                            className="px-5 sm:px-6 pb-5 pt-1 sm:pl-14 text-xs sm:text-sm text-[#3F3E3A] leading-relaxed border-t border-[#FAF9F6]"
+                          >
+                            {faq.answer}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </section>
             </motion.div>
@@ -1938,14 +2223,14 @@ export default function App() {
                     }
                     className="px-4 py-2.5 text-xs font-medium text-[#141413] bg-white border border-[#E6E4DD] hover:border-[#141413] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
                   >
-                    <Calendar className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                    <Calendar className="w-3.5 h-3.5 text-[#141413]" />
                     Request Speaking Fee
                   </button>
 
                   <button
                     type="button"
                     onClick={() => navigateTo('contact')}
-                    className="px-4 py-2.5 text-xs font-medium text-white bg-[#1D4ED8] hover:bg-[#1E40AF] rounded-lg inline-flex items-center gap-1.5 w-fit cursor-pointer"
+                    className="px-4 py-2.5 text-xs font-medium text-white bg-[#141413] hover:bg-[#3F3E3A] rounded-lg inline-flex items-center gap-1.5 w-fit cursor-pointer"
                   >
                     <Mic className="w-3.5 h-3.5" />
                     Book Stephanie
@@ -1956,7 +2241,7 @@ export default function App() {
               {/* Embedded YouTube Speaking Videos Showcase */}
               <section aria-label="Featured Speaking Videos" className="space-y-4">
                 <div className="flex items-center gap-2 text-xs font-mono text-[#575652]">
-                  <Play className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                  <Play className="w-3.5 h-3.5 text-[#141413]" />
                   <span>WATCH STEPHANIE ON STAGE & IN CONVERSATION</span>
                 </div>
 
@@ -1978,7 +2263,7 @@ export default function App() {
                         />
                       </div>
                       <div className="p-4 sm:p-5 space-y-1">
-                        <div className="text-[11px] font-mono text-[#1D4ED8]">{video.tag}</div>
+                        <div className="text-[11px] font-mono text-[#575652]">{video.tag}</div>
                         <h2 className="text-base sm:text-lg font-display font-bold text-[#141413]">
                           {video.title}
                         </h2>
@@ -2045,14 +2330,14 @@ export default function App() {
                       </div>
 
                       <div className="sm:col-span-7 space-y-0.5">
-                        <div className="text-xs text-[#1D4ED8] font-medium">{item.event}</div>
-                        <h3 className="text-base sm:text-lg font-display font-bold text-[#141413] group-hover:text-[#1D4ED8] transition-colors">
+                        <div className="text-xs text-[#575652] font-medium">{item.event}</div>
+                        <h3 className="text-base sm:text-lg font-display font-bold text-[#141413] group-hover:text-[#575652] transition-colors">
                           {item.title}
                         </h3>
                       </div>
 
                       <div className="sm:col-span-2 flex sm:justify-end">
-                        <span className="text-xs font-medium text-[#575652] group-hover:text-[#1D4ED8] inline-flex items-center gap-1">
+                        <span className="text-xs font-medium text-[#575652] group-hover:text-[#141413] inline-flex items-center gap-1">
                           Read Keynote Summary &amp; Takeaways
                           <ArrowUpRight className="w-3.5 h-3.5" />
                         </span>
@@ -2076,19 +2361,19 @@ export default function App() {
                     const CardContent = (
                       <>
                         <div className="flex items-center justify-between gap-2">
-                          <div className="text-xs text-[#1D4ED8] font-mono">
+                          <div className="text-xs text-[#575652] font-mono">
                             {art.category.toUpperCase()} · {art.publisher} · {art.year}
                           </div>
                           {hasLink && (
-                            <ArrowUpRight className="w-4 h-4 text-[#575652] group-hover:text-[#1D4ED8] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
+                            <ArrowUpRight className="w-4 h-4 text-[#575652] group-hover:text-[#141413] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
                           )}
                         </div>
-                        <h3 className="text-base font-display font-bold text-[#141413] group-hover:text-[#1D4ED8] transition-colors leading-snug">
+                        <h3 className="text-base font-display font-bold text-[#141413] group-hover:text-[#575652] transition-colors leading-snug">
                           “{art.title}”
                         </h3>
                         <p className="text-xs text-[#575652] leading-relaxed">{art.excerpt}</p>
                         {hasLink && (
-                          <div className="text-[11px] font-semibold text-[#1D4ED8] inline-flex items-center gap-1 pt-1">
+                          <div className="text-[11px] font-semibold text-[#141413] inline-flex items-center gap-1 pt-1">
                             <span>Read publication</span>
                           </div>
                         )}
@@ -2102,7 +2387,7 @@ export default function App() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`Read "${art.title}" published in ${art.publisher} (opens in new tab)`}
-                        className="group bg-white border border-[#E6E4DD] hover:border-[#1D4ED8] rounded-xl p-5 space-y-1.5 transition-all shadow-xs hover:shadow-sm block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1D4ED8]"
+                        className="group bg-white border border-[#E6E4DD] hover:border-[#141413] rounded-xl p-5 space-y-1.5 transition-all shadow-xs hover:shadow-sm block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#141413]"
                       >
                         {CardContent}
                       </a>
@@ -2120,18 +2405,18 @@ export default function App() {
                     const CardContent = (
                       <>
                         <div className="flex items-center justify-between gap-2">
-                          <div className="text-xs text-[#1D4ED8] font-mono">
+                          <div className="text-xs text-[#575652] font-mono">
                             {pub.category.toUpperCase()} · {pub.publisher} · {pub.year}
                           </div>
                           {hasLink && (
-                            <ArrowUpRight className="w-4 h-4 text-[#575652] group-hover:text-[#1D4ED8] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
+                            <ArrowUpRight className="w-4 h-4 text-[#575652] group-hover:text-[#141413] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
                           )}
                         </div>
-                        <h3 className="text-base font-display font-bold text-[#141413] group-hover:text-[#1D4ED8] transition-colors leading-snug">
+                        <h3 className="text-base font-display font-bold text-[#141413] group-hover:text-[#575652] transition-colors leading-snug">
                           “{pub.title}”
                         </h3>
                         {hasLink && (
-                          <div className="text-[11px] font-semibold text-[#1D4ED8] inline-flex items-center gap-1 pt-1">
+                          <div className="text-[11px] font-semibold text-[#141413] inline-flex items-center gap-1 pt-1">
                             <span>Read publication</span>
                           </div>
                         )}
@@ -2145,7 +2430,7 @@ export default function App() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`Read "${pub.title}" published in ${pub.publisher} (opens in new tab)`}
-                        className="group bg-white border border-[#E6E4DD] hover:border-[#1D4ED8] rounded-xl p-5 space-y-1.5 transition-all shadow-xs hover:shadow-sm block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1D4ED8]"
+                        className="group bg-white border border-[#E6E4DD] hover:border-[#141413] rounded-xl p-5 space-y-1.5 transition-all shadow-xs hover:shadow-sm block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#141413]"
                       >
                         {CardContent}
                       </a>
@@ -2221,7 +2506,7 @@ export default function App() {
                         <ul className="space-y-2 pt-3 border-t border-[#F1F5F9]">
                           {book.highlights.map((hl, i) => (
                             <li key={i} className="text-xs text-[#475569] flex items-start gap-2.5">
-                              <span className="font-sans text-[#1D4ED8] font-bold">•</span>
+                              <span className="font-sans text-[#0F172A] font-bold">•</span>
                               <span>{hl}</span>
                             </li>
                           ))}
@@ -2234,7 +2519,7 @@ export default function App() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`Buy ${book.title} by Stephanie Egharevba on Selar (opens in new tab)`}
-                      className="w-full py-3.5 px-5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full transition-colors inline-flex items-center justify-center gap-2"
+                      className="w-full py-3.5 px-5 text-xs font-semibold text-white bg-[#111111] hover:bg-[#3F3E3A] rounded-full transition-colors inline-flex items-center justify-center gap-2"
                     >
                       <span>Buy {book.title} on Selar</span>
                       <ArrowUpRight className="w-4 h-4" />
@@ -2338,29 +2623,29 @@ export default function App() {
 
                   <div className="bg-white border border-[#E6E4DD] rounded-2xl p-5 sm:p-6 space-y-4">
                     <div className="flex items-center gap-3 text-sm">
-                      <Mail className="w-4 h-4 text-[#1D4ED8] shrink-0" />
+                      <Mail className="w-4 h-4 text-[#141413] shrink-0" />
                       <a
                         href="mailto:stephanieegharevba83@gmail.com"
                         aria-label="Send email to stephanieegharevba83@gmail.com"
-                        className="font-medium text-[#141413] hover:text-[#1D4ED8] break-all"
+                        className="font-medium text-[#141413] hover:text-[#575652] break-all"
                       >
                         stephanieegharevba83@gmail.com
                       </a>
                     </div>
 
                     <div className="flex items-center gap-3 border-t border-[#E6E4DD] pt-3.5 text-sm">
-                      <Phone className="w-4 h-4 text-[#1D4ED8] shrink-0" />
+                      <Phone className="w-4 h-4 text-[#141413] shrink-0" />
                       <a
                         href="tel:+2348162447467"
                         aria-label="Call Stephanie Egharevba at +234 816 244 7467"
-                        className="font-mono font-medium text-[#141413] hover:text-[#1D4ED8]"
+                        className="font-mono font-medium text-[#141413] hover:text-[#575652]"
                       >
                         +234 816 244 7467
                       </a>
                     </div>
 
                     <div className="flex items-center gap-3 border-t border-[#E6E4DD] pt-3.5 text-sm">
-                      <MapPin className="w-4 h-4 text-[#1D4ED8] shrink-0" />
+                      <MapPin className="w-4 h-4 text-[#141413] shrink-0" />
                       <span className="text-[#575652]">Lagos, Nigeria · Global Remote</span>
                     </div>
 
@@ -2375,9 +2660,9 @@ export default function App() {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label="Open Stephanie Egharevba's LinkedIn profile in a new tab"
-                          className="flex items-center justify-center gap-2 rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] py-2.5 px-3 text-xs font-semibold text-[#141413] hover:border-[#1D4ED8] hover:text-[#1D4ED8] transition-colors"
+                          className="flex items-center justify-center gap-2 rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] py-2.5 px-3 text-xs font-semibold text-[#141413] hover:border-[#141413] transition-colors"
                         >
-                          <Linkedin className="w-4 h-4 text-[#1D4ED8]" />
+                          <Linkedin className="w-4 h-4 text-[#141413]" />
                           <span>LinkedIn</span>
                         </a>
                         <a
@@ -2385,9 +2670,9 @@ export default function App() {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label="Open Stephanie Egharevba's Instagram profile in a new tab"
-                          className="flex items-center justify-center gap-2 rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] py-2.5 px-3 text-xs font-semibold text-[#141413] hover:border-[#1D4ED8] hover:text-[#1D4ED8] transition-colors"
+                          className="flex items-center justify-center gap-2 rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] py-2.5 px-3 text-xs font-semibold text-[#141413] hover:border-[#141413] transition-colors"
                         >
-                          <Instagram className="w-4 h-4 text-[#1D4ED8]" />
+                          <Instagram className="w-4 h-4 text-[#141413]" />
                           <span>Instagram</span>
                         </a>
                         <a
@@ -2395,18 +2680,18 @@ export default function App() {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label="Open Stephanie Egharevba's Substack (The Unbias Project) in a new tab"
-                          className="flex items-center justify-center gap-2 rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] py-2.5 px-3 text-xs font-semibold text-[#141413] hover:border-[#1D4ED8] hover:text-[#1D4ED8] transition-colors"
+                          className="flex items-center justify-center gap-2 rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] py-2.5 px-3 text-xs font-semibold text-[#141413] hover:border-[#141413] transition-colors"
                         >
-                          <BookOpen className="w-4 h-4 text-[#1D4ED8]" />
+                          <BookOpen className="w-4 h-4 text-[#141413]" />
                           <span>Substack</span>
                         </a>
                       </div>
                     </div>
 
                     {/* Prominent Direct Google Calendar Booking Card */}
-                    <div className="bg-[#111622] text-white rounded-2xl p-5 sm:p-6 space-y-3.5 border border-white/10 shadow-lg">
-                      <div className="flex items-center gap-2 text-[11px] font-mono font-semibold uppercase tracking-wider text-[#60A5FA]">
-                        <Calendar className="w-4 h-4 text-[#60A5FA]" />
+                    <div className="bg-[#0B0B0B] text-white rounded-2xl p-5 sm:p-6 space-y-3.5 border border-white/10 shadow-lg">
+                      <div className="flex items-center gap-2 text-[11px] font-mono font-semibold uppercase tracking-wider text-[#94A3B8]">
+                        <Calendar className="w-4 h-4 text-[#94A3B8]" />
                         <span>GOOGLE CALENDAR BOOKING</span>
                       </div>
                       <h2 className="text-lg sm:text-xl font-display font-bold text-white">
@@ -2420,7 +2705,7 @@ export default function App() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Book a 1-on-1 session with Stephanie Egharevba on Google Calendar (opens in new tab)"
-                        className="w-full min-h-[44px] flex items-center justify-center gap-2 px-5 py-3 text-xs font-semibold text-[#0B0B0B] bg-white hover:bg-[#1D4ED8] hover:text-white rounded-xl transition-all cursor-pointer shadow-sm"
+                        className="w-full min-h-[44px] flex items-center justify-center gap-2 px-5 py-3 text-xs font-semibold text-[#0B0B0B] bg-white hover:bg-[#E2E8F0] rounded-xl transition-all cursor-pointer shadow-sm"
                       >
                         <span>Book a Session on Google Calendar</span>
                         <ArrowUpRight className="w-4 h-4" />
@@ -2445,7 +2730,7 @@ export default function App() {
                         <button
                           type="button"
                           onClick={() => setSubmittedInquiry(null)}
-                          className="text-xs font-medium text-[#1D4ED8] cursor-pointer"
+                          className="text-xs font-medium text-[#141413] underline cursor-pointer"
                         >
                           Submit Another
                         </button>
@@ -2468,7 +2753,7 @@ export default function App() {
                             setCopiedEmailBrief(true);
                             setTimeout(() => setCopiedEmailBrief(false), 2000);
                           }}
-                          className="px-4 py-2.5 text-xs font-medium text-white bg-[#1D4ED8] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+                          className="px-4 py-2.5 text-xs font-medium text-white bg-[#141413] hover:bg-[#3F3E3A] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
                         >
                           {copiedEmailBrief ? (
                             <Check className="w-3.5 h-3.5" />
@@ -2541,8 +2826,8 @@ export default function App() {
                               formErrors.name
                                 ? 'bg-red-50/50 border-2 border-red-500 text-[#141413] focus:ring-2 focus:ring-red-500/20'
                                 : touchedFields.name && contactName.trim().length >= 2
-                                ? 'bg-[#FAF9F6] border border-emerald-600/60 focus:border-[#1D4ED8]'
-                                : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#1D4ED8]'
+                                ? 'bg-[#FAF9F6] border border-emerald-600/60 focus:border-[#141413]'
+                                : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#141413]'
                             }`}
                           />
                           {formErrors.name && (
@@ -2600,8 +2885,8 @@ export default function App() {
                                 ? 'bg-red-50/50 border-2 border-red-500 text-[#141413] focus:ring-2 focus:ring-red-500/20'
                                 : touchedFields.email &&
                                   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail.trim())
-                                ? 'bg-[#FAF9F6] border border-emerald-600/60 focus:border-[#1D4ED8]'
-                                : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#1D4ED8]'
+                                ? 'bg-[#FAF9F6] border border-emerald-600/60 focus:border-[#141413]'
+                                : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#141413]'
                             }`}
                           />
                           {formErrors.email && (
@@ -2762,8 +3047,8 @@ export default function App() {
                             formErrors.message
                               ? 'bg-red-50/50 border-2 border-red-500 text-[#141413] focus:ring-2 focus:ring-red-500/20'
                               : touchedFields.message && contactMessage.trim().length > 0
-                              ? 'bg-[#FAF9F6] border border-emerald-600/60 focus:border-[#1D4ED8]'
-                              : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#1D4ED8]'
+                              ? 'bg-[#FAF9F6] border border-emerald-600/60 focus:border-[#141413]'
+                              : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#141413]'
                           }`}
                         />
                         {formErrors.message && (
@@ -2785,7 +3070,7 @@ export default function App() {
                             formErrors.ndpaConsent
                               ? 'border-2 border-red-500 bg-red-50/70 ring-2 ring-red-500/15'
                               : ndpaConsent
-                              ? 'border-[#1D4ED8]/30 bg-[#1D4ED8]/[0.04]'
+                              ? 'border-[#141413]/30 bg-[#141413]/[0.04]'
                               : 'border-amber-400 bg-amber-50/60'
                           }`}
                         >
@@ -2793,7 +3078,7 @@ export default function App() {
                             <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider font-semibold text-[#141413]">
                               <ShieldCheck
                                 className={`w-3.5 h-3.5 ${
-                                  ndpaConsent ? 'text-[#1D4ED8]' : 'text-amber-600'
+                                  ndpaConsent ? 'text-[#141413]' : 'text-amber-600'
                                 }`}
                               />
                               NDPA &amp; GDPR Data Protection Consent *
@@ -2834,14 +3119,14 @@ export default function App() {
                                   return next;
                                 });
                               }}
-                              className="mt-0.5 w-4 h-4 rounded border-[#8E8C84] text-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8] cursor-pointer shrink-0"
+                              className="mt-0.5 w-4 h-4 rounded border-[#8E8C84] text-[#141413] focus:ring-2 focus:ring-[#141413] cursor-pointer shrink-0"
                             />
                             <span className="leading-relaxed">
                               I consent to having my enquiry stored securely in accordance with the{' '}
                               <button
                                 type="button"
                                 onClick={() => setIsPrivacyModalOpen(true)}
-                                className="underline font-semibold text-[#141413] hover:text-[#1D4ED8] cursor-pointer"
+                                className="underline font-semibold text-[#141413] hover:text-[#575652] cursor-pointer"
                               >
                                 Nigeria Data Protection Act (NDPA) &amp; GDPR Privacy Policy
                               </button>{' '}
@@ -2866,7 +3151,7 @@ export default function App() {
                         <button
                           type="submit"
                           disabled={isSubmittingEnquiry}
-                          className="w-full sm:w-auto px-6 py-3 text-xs font-semibold text-white bg-[#1D4ED8] hover:bg-[#1E40AF] disabled:opacity-50 rounded-lg inline-flex items-center justify-center gap-2 cursor-pointer"
+                          className="w-full sm:w-auto px-6 py-3 text-xs font-semibold text-white bg-[#141413] hover:bg-[#3F3E3A] disabled:opacity-50 rounded-lg inline-flex items-center justify-center gap-2 cursor-pointer"
                         >
                           <Send className="w-3.5 h-3.5" />
                           {isSubmittingEnquiry
@@ -2889,7 +3174,7 @@ export default function App() {
                 className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6"
               >
                 <div className="space-y-1 max-w-xl">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#1D4ED8]">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#575652]">
                     INCLUSION & ACCESSIBILITY DISPATCH
                   </div>
                   <h2 className="text-xl font-display font-bold text-[#141413]">
@@ -2939,7 +3224,7 @@ export default function App() {
                           className={`px-4 py-2.5 text-sm rounded-lg min-w-[240px] outline-none transition-colors ${
                             newsletterStatus === 'error'
                               ? 'bg-red-50/50 border-2 border-red-500 text-[#141413]'
-                              : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#1D4ED8]'
+                              : 'bg-[#FAF9F6] border border-[#E6E4DD] focus:border-[#141413]'
                           }`}
                         />
                         <label className="flex items-center gap-1.5 text-[11px] text-[#575652]">
@@ -2954,7 +3239,7 @@ export default function App() {
                       <button
                         type="submit"
                         disabled={newsletterStatus === 'loading'}
-                        className="px-5 py-2.5 text-xs font-semibold text-white bg-[#141413] hover:bg-[#1D4ED8] disabled:opacity-50 rounded-lg transition-colors cursor-pointer shrink-0 self-start"
+                        className="px-5 py-2.5 text-xs font-semibold text-white bg-[#141413] hover:bg-[#3F3E3A] disabled:opacity-50 rounded-lg transition-colors cursor-pointer shrink-0 self-start"
                       >
                         {newsletterStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}
                       </button>
@@ -2973,12 +3258,12 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Buyer FAQ Section on Enquiries Page */}
+              {/* Buyer FAQ Section on Enquiries Page (Collapsible Dropdown Accordion) */}
               <section
                 aria-labelledby="contact-faq-heading"
-                className="border-t border-[#E6E4DD] pt-12 space-y-8"
+                className="border-t border-[#E6E4DD] pt-12 space-y-6"
               >
-                <div className="space-y-2 max-w-3xl">
+                <div className="space-y-1.5 max-w-2xl">
                   <div className="font-mono text-xs font-semibold uppercase tracking-wider text-[#575652]">
                     BUYER &amp; ORGANIZER FAQ
                   </div>
@@ -2988,25 +3273,56 @@ export default function App() {
                   >
                     Frequently Asked Questions Before Booking
                   </h2>
-                  <p className="text-sm text-[#575652] leading-relaxed">
-                    Direct answers on WCAG 2.2 AA audit timelines, NGO grantmaking accessibility advisory, Nigerian Disability Act compliance, and keynote speaking engagements.
-                  </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {BUYER_FAQ_ITEMS.map((faq, idx) => (
-                    <article
-                      key={idx}
-                      className="rounded-2xl border border-[#E6E4DD] bg-white p-6 space-y-2.5"
-                    >
-                      <h3 className="text-base font-display font-bold text-[#141413] leading-snug">
-                        {faq.question}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-[#3F3E3A] leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </article>
-                  ))}
+                <div className="max-w-4xl divide-y divide-[#E6E4DD] border border-[#E6E4DD] rounded-2xl bg-white overflow-hidden">
+                  {BUYER_FAQ_ITEMS.map((faq, idx) => {
+                    const isOpen = openContactFaqIndex === idx;
+                    return (
+                      <div key={idx} className="transition-colors">
+                        <h3 className="m-0">
+                          <button
+                            type="button"
+                            onClick={() => setOpenContactFaqIndex(isOpen ? null : idx)}
+                            aria-expanded={isOpen}
+                            aria-controls={`contact-faq-panel-${idx}`}
+                            className="w-full px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-4 text-left hover:bg-[#FAF9F6] transition-colors cursor-pointer"
+                          >
+                            <span className="flex items-baseline gap-3.5 pr-2">
+                              <span className="font-mono text-xs font-semibold text-[#575652] tabular-nums shrink-0">
+                                0{idx + 1}
+                              </span>
+                              <span className="text-sm sm:text-base font-display font-bold text-[#141413] leading-snug">
+                                {faq.question}
+                              </span>
+                            </span>
+                            <span
+                              className={`w-7 h-7 rounded-full border border-[#E6E4DD] flex items-center justify-center shrink-0 transition-colors ${
+                                isOpen
+                                  ? 'bg-[#141413] border-[#141413] text-white'
+                                  : 'bg-[#FAF9F6] text-[#141413]'
+                              }`}
+                            >
+                              <ChevronDown
+                                className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                                  isOpen ? 'rotate-180' : ''
+                                }`}
+                              />
+                            </span>
+                          </button>
+                        </h3>
+                        {isOpen && (
+                          <div
+                            id={`contact-faq-panel-${idx}`}
+                            role="region"
+                            className="px-5 sm:px-6 pb-5 pt-1 sm:pl-14 text-xs sm:text-sm text-[#3F3E3A] leading-relaxed border-t border-[#FAF9F6]"
+                          >
+                            {faq.answer}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </section>
             </motion.div>
@@ -3056,7 +3372,7 @@ export default function App() {
           >
             <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#1D4ED8]">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#141413]">
                   NDPA &amp; GDPR Privacy Notice
                 </span>
                 <button
@@ -3076,7 +3392,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => handleSaveCookieConsent('accepted')}
-                  className="rounded-lg bg-[#1D4ED8] px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-[#1E40AF] cursor-pointer"
+                  className="rounded-lg bg-[#141413] px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-[#3F3E3A] cursor-pointer"
                 >
                   Accept All
                 </button>
@@ -3155,7 +3471,7 @@ export default function App() {
                 permanent deletion of any stored enquiry by emailing{' '}
                 <a
                   href="mailto:stephanieegharevba83@gmail.com"
-                  className="text-[#1D4ED8] underline"
+                  className="text-[#141413] font-semibold underline"
                 >
                   stephanieegharevba83@gmail.com
                 </a>

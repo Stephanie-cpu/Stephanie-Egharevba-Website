@@ -952,7 +952,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
         <div className="w-full max-w-md rounded-3xl border border-[#E6E4DD] dark:border-[#262C3A] bg-white dark:bg-[#131722] p-7 sm:p-9 shadow-xl space-y-6">
           <div className="flex items-center justify-between border-b border-[#E6E4DD] dark:border-[#262C3A] pb-5">
             <div className="flex items-center gap-3">
-              <span className="w-11 h-11 rounded-2xl bg-[#141413] dark:bg-[#1D4ED8] text-white flex items-center justify-center shadow-sm">
+              <span className="w-11 h-11 rounded-2xl bg-[#141413] dark:bg-white text-white dark:text-[#141413] flex items-center justify-center shadow-sm">
                 <Lock className="w-5 h-5" />
               </span>
               <div>
@@ -983,7 +983,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
             <button
               type="button"
               onClick={handleGoogleSignIn}
-              className="w-full py-3.5 px-4 rounded-xl bg-[#1D4ED8] hover:bg-[#1E40AF] text-white text-xs sm:text-sm font-semibold transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
+              className="w-full py-3.5 px-4 rounded-xl bg-[#141413] hover:bg-[#3F3E3A] text-white text-xs sm:text-sm font-semibold transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
             >
               <ShieldCheck className="w-4 h-4" />
               <span>Sign In with Google ({BOOTSTRAPPED_ADMIN_EMAIL})</span>
@@ -1017,7 +1017,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                 value={passcodeInput}
                 onChange={(e) => setPasscodeInput(e.target.value)}
                 placeholder="Enter your studio password..."
-                className="w-full px-4 py-3 text-sm rounded-xl border border-[#E6E4DD] dark:border-[#262C3A] bg-[#FAF9F6] dark:bg-[#1C2230] text-[#141413] dark:text-white focus:border-[#1D4ED8] outline-none"
+                className="w-full px-4 py-3 text-sm rounded-xl border border-[#E6E4DD] dark:border-[#262C3A] bg-[#FAF9F6] dark:bg-[#1C2230] text-[#141413] dark:text-white focus:border-[#141413] outline-none"
               />
             </div>
 
@@ -1055,7 +1055,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
       <div className="sticky top-[72px] z-30 bg-[#0B0B0B] text-white border-b border-white/10 shadow-md">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="w-9 h-9 rounded-xl bg-[#1D4ED8] text-white flex items-center justify-center font-serif italic text-lg font-bold">
+            <span className="w-9 h-9 rounded-xl bg-white text-[#0B0B0B] flex items-center justify-center font-serif italic text-lg font-bold">
               se
             </span>
             <div>
@@ -1080,7 +1080,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
               <button
                 type="button"
                 onClick={handleGoogleSignIn}
-                className="px-3.5 py-2 rounded-lg bg-[#1D4ED8] hover:bg-[#1E40AF] text-white text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+                className="px-3.5 py-2 rounded-lg bg-white hover:bg-neutral-200 text-[#0B0B0B] text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-colors"
               >
                 <Cloud className="w-3.5 h-3.5" />
                 <span>Connect Google Cloud Sync</span>
@@ -1175,7 +1175,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
             className="rounded-2xl border border-[#E6E4DD] bg-white p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-sm"
           >
             <div className="flex items-center gap-2 text-xs font-semibold text-[#141413]">
-              <KeyRound className="w-4 h-4 text-[#1D4ED8]" />
+              <KeyRound className="w-4 h-4 text-[#141413]" />
               <span>Update your CMS Studio Passcode:</span>
             </div>
             <div className="flex flex-1 max-w-md items-center gap-2">
@@ -1324,7 +1324,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                       type="button"
                       disabled={isSavingPost}
                       onClick={() => handleSaveBlogPost('published')}
-                      className="px-5 py-2.5 rounded-xl bg-[#1D4ED8] hover:bg-[#1E40AF] text-white text-xs font-semibold inline-flex items-center gap-2 cursor-pointer transition-colors shadow-sm disabled:opacity-50"
+                      className="px-5 py-2.5 rounded-xl bg-[#141413] hover:bg-[#3F3E3A] text-white text-xs font-semibold inline-flex items-center gap-2 cursor-pointer transition-colors shadow-sm disabled:opacity-50"
                     >
                       <Check className="w-4 h-4" />
                       <span>
@@ -1367,7 +1367,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                             value={postTitle}
                             onChange={(e) => setPostTitle(e.target.value)}
                             placeholder="e.g., What Happens When You Unplug Your Mouse for Five Minutes"
-                            className="w-full px-4 py-3 text-base sm:text-lg font-bold rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] focus:border-[#1D4ED8] outline-none"
+                            className="w-full px-4 py-3 text-base sm:text-lg font-bold rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] focus:border-[#141413] outline-none"
                           />
                         </div>
 
@@ -1384,7 +1384,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                             value={postSubtitle}
                             onChange={(e) => setPostSubtitle(e.target.value)}
                             placeholder="A one- or two-sentence summary that hooks the reader..."
-                            className="w-full px-4 py-2.5 text-sm rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] focus:border-[#1D4ED8] outline-none"
+                            className="w-full px-4 py-2.5 text-sm rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] focus:border-[#141413] outline-none"
                           />
                         </div>
 
@@ -1452,14 +1452,14 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                       {/* Cover Photo Manager */}
                       <div className="rounded-2xl border border-[#E6E4DD] bg-[#FAF9F6] p-4 sm:p-5 space-y-4">
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-[#1D4ED8] font-bold">
+                          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-[#141413] font-bold">
                             <ImageIcon className="w-4 h-4" />
                             <span>Cover Photo &amp; Accessible Alt-Text</span>
                           </div>
                           <button
                             type="button"
                             onClick={() => setShowPresetGallery((prev) => !prev)}
-                            className="text-xs font-semibold text-[#1D4ED8] hover:underline cursor-pointer"
+                            className="text-xs font-semibold text-[#141413] hover:underline cursor-pointer"
                           >
                             {showPresetGallery
                               ? 'Hide Photo Library'
@@ -1480,7 +1480,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                                 }}
                                 className={`group relative rounded-xl overflow-hidden border-2 text-left transition-all cursor-pointer ${
                                   postCoverImage === preset.url
-                                    ? 'border-[#1D4ED8] ring-2 ring-[#1D4ED8]/20'
+                                    ? 'border-[#141413] ring-2 ring-[#141413]/20'
                                     : 'border-transparent hover:border-[#141413]'
                                 }`}
                               >
@@ -1585,7 +1585,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                           value={postPullQuote}
                           onChange={(e) => setPostPullQuote(e.target.value)}
                           placeholder="A memorable one-sentence quote highlighted inside the article..."
-                          className="w-full px-4 py-2.5 text-sm italic rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] focus:border-[#1D4ED8] outline-none"
+                          className="w-full px-4 py-2.5 text-sm italic rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] focus:border-[#141413] outline-none"
                         />
                       </div>
 
@@ -1604,7 +1604,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                               onClick={() => insertFormattingSnippet('heading')}
                               className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] hover:border-[#141413] text-[11px] font-semibold text-[#141413] cursor-pointer"
                             >
-                              <Heading2 className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                              <Heading2 className="w-3.5 h-3.5 text-[#141413]" />
                               <span>+ Section Heading (##)</span>
                             </button>
                             <button
@@ -1612,7 +1612,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                               onClick={() => insertFormattingSnippet('callout')}
                               className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-[#E6E4DD] bg-[#FAF9F6] hover:border-[#141413] text-[11px] font-semibold text-[#141413] cursor-pointer"
                             >
-                              <Quote className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                              <Quote className="w-3.5 h-3.5 text-[#141413]" />
                               <span>+ Takeaway Box (&gt;)</span>
                             </button>
                           </div>
@@ -1627,21 +1627,21 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                           placeholder={
                             'Write your essay here...\n\nUse "## Section Heading" on its own line to create a subheading.\n\nUse "> Practical takeaway..." on its own line to create a highlighted callout box.'
                           }
-                          className="w-full px-4 py-3.5 text-sm sm:text-base leading-relaxed rounded-2xl border border-[#E6E4DD] bg-[#FAF9F6] focus:border-[#1D4ED8] outline-none font-sans"
+                          className="w-full px-4 py-3.5 text-sm sm:text-base leading-relaxed rounded-2xl border border-[#E6E4DD] bg-[#FAF9F6] focus:border-[#141413] outline-none font-sans"
                         />
                       </div>
 
                       {/* Key Takeaways Editor ("If You Only Remember Three Things") */}
                       <div className="rounded-2xl border border-[#E6E4DD] bg-[#FAF9F6] p-4 sm:p-5 space-y-3">
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-[#1D4ED8] font-bold">
+                          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-[#141413] font-bold">
                             <ListChecks className="w-4 h-4" />
                             <span>Key Takeaways (“If You Only Remember Three Things”)</span>
                           </div>
                           <button
                             type="button"
                             onClick={() => setPostTakeaways((prev) => [...prev, ''])}
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#1D4ED8] hover:underline cursor-pointer"
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#141413] hover:underline cursor-pointer"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <span>Add Takeaway</span>
@@ -1651,7 +1651,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                         <div className="space-y-2.5">
                           {postTakeaways.map((item, idx) => (
                             <div key={idx} className="flex items-center gap-2">
-                              <span className="font-mono text-xs font-bold text-[#1D4ED8] w-6 shrink-0">
+                              <span className="font-mono text-xs font-bold text-[#575652] w-6 shrink-0">
                                 0{idx + 1}
                               </span>
                               <input
@@ -1694,7 +1694,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                       } rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 space-y-6 shadow-xs max-h-[82vh] overflow-y-auto`}
                     >
                       <div className="flex items-center justify-between border-b border-[#E6E4DD] pb-3">
-                        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#1D4ED8] font-bold">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#575652] font-bold">
                           LIVE READER PREVIEW
                         </span>
                         <span className="font-mono text-[11px] text-[#575652]">
@@ -1703,7 +1703,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                       </div>
 
                       <div className="space-y-4">
-                        <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#1D4ED8] font-semibold">
+                        <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#575652] font-semibold">
                           {livePreviewPost.topic} · {livePreviewPost.locationNote}
                         </div>
                         <h3 className="text-2xl sm:text-3xl font-display font-bold text-[#141413] leading-tight">
@@ -1725,7 +1725,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                       )}
 
                       <blockquote className="rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] p-4 space-y-1">
-                        <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#1D4ED8]">
+                        <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#575652]">
                           A THOUGHT TO SIT WITH
                         </div>
                         <p className="font-serif italic text-sm sm:text-base text-[#141413]">
@@ -1748,7 +1748,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                             ))}
                             {sec.callout && (
                               <div className="rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] p-3.5 text-xs sm:text-sm text-[#141413]">
-                                <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#1D4ED8] block mb-1 font-semibold">
+                                <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#575652] block mb-1 font-semibold">
                                   PRACTICAL TAKEAWAY
                                 </span>
                                 {sec.callout}
@@ -1760,13 +1760,13 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
 
                       {livePreviewPost.takeaways.length > 0 && (
                         <div className="rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] p-4 space-y-2.5">
-                          <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#1D4ED8] font-semibold">
+                          <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#575652] font-semibold">
                             IF YOU ONLY REMEMBER THREE THINGS
                           </div>
                           <ul className="space-y-2">
                             {livePreviewPost.takeaways.map((t, idx) => (
                               <li key={idx} className="flex items-start gap-2 text-xs text-[#3F3E3A]">
-                                <span className="font-mono font-bold text-[#1D4ED8]">
+                                <span className="font-mono font-bold text-[#141413]">
                                   0{idx + 1}
                                 </span>
                                 <span>{t}</span>
@@ -1800,7 +1800,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                     <button
                       type="button"
                       onClick={handleOpenNewBlog}
-                      className="px-5 py-3 rounded-xl bg-[#1D4ED8] hover:bg-[#1E40AF] text-white text-xs sm:text-sm font-semibold inline-flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm shrink-0"
+                      className="px-5 py-3 rounded-xl bg-[#141413] hover:bg-[#3F3E3A] text-white text-xs sm:text-sm font-semibold inline-flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm shrink-0"
                     >
                       <Plus className="w-4 h-4" />
                       <span>Write New Blog Post</span>
@@ -1816,7 +1816,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                         value={blogSearch}
                         onChange={(e) => setBlogSearch(e.target.value)}
                         placeholder="Search blog posts by title, topic, or keyword..."
-                        className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] outline-none focus:border-[#1D4ED8]"
+                        className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] outline-none focus:border-[#141413]"
                       />
                     </div>
 
@@ -1870,7 +1870,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                       <button
                         type="button"
                         onClick={handleOpenNewBlog}
-                        className="px-4 py-2.5 rounded-xl bg-[#1D4ED8] text-white text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer"
+                        className="px-4 py-2.5 rounded-xl bg-[#141413] text-white text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer"
                       >
                         <Plus className="w-4 h-4" />
                         <span>Create Your First Note</span>
@@ -1903,7 +1903,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                                 {post.status === 'published' ? 'Published' : 'Draft'}
                               </span>
 
-                              <span className="font-mono text-[10px] uppercase tracking-wider font-semibold text-[#1D4ED8]">
+                              <span className="font-mono text-[10px] uppercase tracking-wider font-semibold text-[#575652]">
                                 {post.topic}
                               </span>
 
@@ -1912,7 +1912,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                               </span>
 
                               {post.hasCustomEdits && post.isCuratedDefault && (
-                                <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-blue-50 text-[#1D4ED8]">
+                                <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#F2EFE9] text-[#141413]">
                                   Edited
                                 </span>
                               )}
@@ -1933,7 +1933,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                           <button
                             type="button"
                             onClick={() => handleOpenEditBlog(post)}
-                            className="px-4 py-2 rounded-xl bg-[#141413] hover:bg-[#1D4ED8] text-white text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+                            className="px-4 py-2 rounded-xl bg-[#141413] hover:bg-[#3F3E3A] text-white text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-colors"
                           >
                             <Pencil className="w-3.5 h-3.5" />
                             <span>Edit Blog</span>
@@ -2096,7 +2096,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
             <div className="flex justify-end pt-2">
               <button
                 type="submit"
-                className="px-6 py-3 rounded-xl bg-[#141413] hover:bg-[#1D4ED8] text-white text-xs font-semibold uppercase tracking-wider cursor-pointer transition-colors"
+                className="px-6 py-3 rounded-xl bg-[#141413] hover:bg-[#3F3E3A] text-white text-xs font-semibold uppercase tracking-wider cursor-pointer transition-colors"
               >
                 Save Homepage &amp; SEO Settings
               </button>
@@ -2175,7 +2175,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                   />
                 </div>
                 <div>
-                  <label className="block font-mono text-[10px] uppercase tracking-wider text-[#1D4ED8] font-bold mb-1">
+                  <label className="block font-mono text-[10px] uppercase tracking-wider text-[#141413] font-bold mb-1">
                     Mandatory Accessible Alt-Text *
                   </label>
                   <input
@@ -2207,7 +2207,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#141413] hover:bg-[#1D4ED8] text-white text-xs font-semibold inline-flex items-center gap-2 cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-[#141413] hover:bg-[#3F3E3A] text-white text-xs font-semibold inline-flex items-center gap-2 cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Publish Case Study</span>
@@ -2284,7 +2284,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#141413] hover:bg-[#1D4ED8] text-white text-xs font-semibold inline-flex items-center gap-2 cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-[#141413] hover:bg-[#3F3E3A] text-white text-xs font-semibold inline-flex items-center gap-2 cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Publish Press Feature</span>
@@ -2320,7 +2320,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                   <button
                     type="button"
                     onClick={handleGoogleSignIn}
-                    className="px-4 py-2.5 rounded-xl bg-[#1D4ED8] text-white text-xs font-semibold cursor-pointer"
+                    className="px-4 py-2.5 rounded-xl bg-[#141413] text-white text-xs font-semibold cursor-pointer"
                   >
                     Sign In with Google
                   </button>
@@ -2333,7 +2333,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                     <div key={enq.id} className="p-4 space-y-1.5">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="font-bold text-sm text-[#141413]">
-                          {enq.name} · <span className="text-[#1D4ED8]">{enq.organization}</span>
+                          {enq.name} · <span className="text-[#575652]">{enq.organization}</span>
                         </div>
                         <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-[#FAF9F6] border border-[#E6E4DD]">
                           {enq.inquiryType}
@@ -2342,7 +2342,7 @@ export const CmsPortalView: React.FC<CmsPortalViewProps> = ({
                       <p className="text-xs text-[#3F3E3A]">{enq.message}</p>
                       <div className="text-[11px] text-[#737373]">
                         Reply to:{' '}
-                        <a href={`mailto:${enq.email}`} className="text-[#1D4ED8] underline">
+                        <a href={`mailto:${enq.email}`} className="text-[#141413] underline">
                           {enq.email}
                         </a>
                       </div>

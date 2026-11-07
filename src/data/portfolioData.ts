@@ -1265,7 +1265,7 @@ export const STEPHANIE_BOOKS: BookItem[] = [
     subtitle: 'Engineering Digital Products That Leave No One Behind',
     tag: 'DEVELOPER GUIDE',
     selarUrl: 'https://selar.com/codeforeverybody',
-    accentColor: '#2563EB',
+    accentColor: '#141413',
     coverBg: '#F8FAFC',
     coverImageUrl: '/assets/aistudio/stephanie-egharevba-code-for-every-body-accessibility-book.png',
     description:

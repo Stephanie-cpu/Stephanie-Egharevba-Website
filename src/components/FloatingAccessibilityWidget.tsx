@@ -72,7 +72,7 @@ export const FloatingAccessibilityWidget: React.FC<FloatingAccessibilityWidgetPr
           >
             <div className="flex items-center justify-between border-b border-[#E5E4DF] pb-3.5 mb-4">
               <div className="flex items-center gap-2.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1D4ED8] text-white">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#111111] text-white">
                   <Accessibility className="h-4 w-4" />
                 </span>
                 <div>
@@ -108,7 +108,7 @@ export const FloatingAccessibilityWidget: React.FC<FloatingAccessibilityWidgetPr
                   aria-pressed={preferences.theme === 'light'}
                   className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border p-2.5 text-xs font-semibold transition-all cursor-pointer ${
                     preferences.theme === 'light'
-                      ? 'border-[#1D4ED8] bg-[#1D4ED8] text-white'
+                      ? 'border-[#111111] bg-[#111111] text-white'
                       : 'border-[#E5E4DF] bg-[#FAFAF8] text-[#111111] hover:border-[#111111]'
                   }`}
                 >
@@ -123,7 +123,7 @@ export const FloatingAccessibilityWidget: React.FC<FloatingAccessibilityWidgetPr
                   aria-pressed={preferences.theme === 'dark'}
                   className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border p-2.5 text-xs font-semibold transition-all cursor-pointer ${
                     preferences.theme === 'dark'
-                      ? 'border-[#1D4ED8] bg-[#1D4ED8] text-white'
+                      ? 'border-[#111111] bg-[#111111] text-white'
                       : 'border-[#E5E4DF] bg-[#FAFAF8] text-[#111111] hover:border-[#111111]'
                   }`}
                 >
@@ -138,7 +138,7 @@ export const FloatingAccessibilityWidget: React.FC<FloatingAccessibilityWidgetPr
                   aria-pressed={preferences.theme === 'contrast'}
                   className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border p-2.5 text-xs font-semibold transition-all cursor-pointer ${
                     preferences.theme === 'contrast'
-                      ? 'border-[#1D4ED8] bg-[#1D4ED8] text-white'
+                      ? 'border-[#111111] bg-[#111111] text-white'
                       : 'border-[#E5E4DF] bg-[#FAFAF8] text-[#111111] hover:border-[#111111]'
                   }`}
                 >
@@ -170,7 +170,7 @@ export const FloatingAccessibilityWidget: React.FC<FloatingAccessibilityWidgetPr
                     aria-pressed={preferences.fontScale === item.id}
                     className={`rounded-xl border py-2 px-2 text-xs font-semibold transition-all cursor-pointer ${
                       preferences.fontScale === item.id
-                        ? 'border-[#1D4ED8] bg-[#1D4ED8] text-white'
+                        ? 'border-[#111111] bg-[#111111] text-white'
                         : 'border-[#E5E4DF] bg-[#FAFAF8] text-[#111111] hover:border-[#111111]'
                     }`}
                   >
@@ -194,13 +194,13 @@ export const FloatingAccessibilityWidget: React.FC<FloatingAccessibilityWidgetPr
                 className="w-full flex items-center justify-between rounded-xl border border-[#E5E4DF] bg-[#FAFAF8] px-3.5 py-2.5 text-left hover:border-[#111111] transition-colors cursor-pointer"
               >
                 <span className="flex items-center gap-2.5 text-xs font-semibold text-[#111111]">
-                  <Type className="h-4 w-4 text-[#1D4ED8]" />
+                  <Type className="h-4 w-4 text-[#111111]" />
                   <span>Dyslexia-Friendly & Wide Spacing</span>
                 </span>
                 <span
                   className={`flex h-5 w-5 items-center justify-center rounded-md border text-[10px] ${
                     preferences.readableFont
-                      ? 'border-[#1D4ED8] bg-[#1D4ED8] text-white'
+                      ? 'border-[#111111] bg-[#111111] text-white'
                       : 'border-[#D4D2CC] bg-white'
                   }`}
                 >
@@ -220,13 +220,13 @@ export const FloatingAccessibilityWidget: React.FC<FloatingAccessibilityWidgetPr
                 className="w-full flex items-center justify-between rounded-xl border border-[#E5E4DF] bg-[#FAFAF8] px-3.5 py-2.5 text-left hover:border-[#111111] transition-colors cursor-pointer"
               >
                 <span className="flex items-center gap-2.5 text-xs font-semibold text-[#111111]">
-                  <Eye className="h-4 w-4 text-[#1D4ED8]" />
+                  <Eye className="h-4 w-4 text-[#111111]" />
                   <span>Highlight Links & Focus Rings</span>
                 </span>
                 <span
                   className={`flex h-5 w-5 items-center justify-center rounded-md border text-[10px] ${
                     preferences.highlightLinks
-                      ? 'border-[#1D4ED8] bg-[#1D4ED8] text-white'
+                      ? 'border-[#111111] bg-[#111111] text-white'
                       : 'border-[#D4D2CC] bg-white'
                   }`}
                 >
@@ -246,13 +246,13 @@ export const FloatingAccessibilityWidget: React.FC<FloatingAccessibilityWidgetPr
                 className="w-full flex items-center justify-between rounded-xl border border-[#E5E4DF] bg-[#FAFAF8] px-3.5 py-2.5 text-left hover:border-[#111111] transition-colors cursor-pointer"
               >
                 <span className="flex items-center gap-2.5 text-xs font-semibold text-[#111111]">
-                  <Sparkles className="h-4 w-4 text-[#1D4ED8]" />
+                  <Sparkles className="h-4 w-4 text-[#111111]" />
                   <span>Pause Animations & Marquee</span>
                 </span>
                 <span
                   className={`flex h-5 w-5 items-center justify-center rounded-md border text-[10px] ${
                     preferences.reduceMotion
-                      ? 'border-[#1D4ED8] bg-[#1D4ED8] text-white'
+                      ? 'border-[#111111] bg-[#111111] text-white'
                       : 'border-[#D4D2CC] bg-white'
                   }`}
                 >
@@ -279,7 +279,7 @@ export const FloatingAccessibilityWidget: React.FC<FloatingAccessibilityWidgetPr
                     onNavigateToContrastLab();
                     setIsOpen(false);
                   }}
-                  className="font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-[#1D4ED8] hover:underline cursor-pointer"
+                  className="font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-[#111111] hover:underline cursor-pointer"
                 >
                   Open Contrast Lab →
                 </button>
@@ -296,7 +296,7 @@ export const FloatingAccessibilityWidget: React.FC<FloatingAccessibilityWidgetPr
         aria-label="Open Accessibility and Theme Controls"
         aria-expanded={isOpen}
         title="Accessibility & Display Controls (Light/Dark Mode, Text Size, Contrast)"
-        className="group relative flex h-13 w-13 items-center justify-center rounded-full bg-[#1D4ED8] text-white shadow-xl ring-2 ring-white/80 hover:bg-[#1E40AF] hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#60A5FA] transition-all cursor-pointer"
+        className="group relative flex h-13 w-13 items-center justify-center rounded-full bg-[#111111] text-white shadow-xl ring-2 ring-white/80 hover:bg-[#3F3E3A] hover:scale-105 focus:outline-none focus:ring-4 focus:ring-neutral-400 transition-all cursor-pointer"
       >
         <Accessibility className="h-6 w-6" />
         {activeFeaturesCount > 0 && (

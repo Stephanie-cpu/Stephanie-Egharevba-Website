@@ -9,7 +9,7 @@ interface PresetPair {
 
 const PRESETS: PresetPair[] = [
   { name: 'Editorial Ink', fg: '#0F172A', bg: '#F8FAFC' },
-  { name: 'Cobalt CTA', fg: '#FFFFFF', bg: '#1D4ED8' },
+  { name: 'Warm Stone & Ink', fg: '#141413', bg: '#FAF9F6' },
   { name: 'Stark Dark', fg: '#F8FAFC', bg: '#0B0B0B' },
   { name: 'Low Contrast (Fail)', fg: '#94A3B8', bg: '#F1F5F9' },
 ];
@@ -70,7 +70,7 @@ export const AccessibilitySandbox: React.FC = () => {
       {/* Narrative Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div className="space-y-1.5">
-          <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#1D4ED8]">
+          <div className="font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-[#575652]">
             INTERACTIVE ACCESSIBILITY LAB
           </div>
           <h2
@@ -96,7 +96,7 @@ export const AccessibilitySandbox: React.FC = () => {
           <button
             type="button"
             onClick={handleCopyTokens}
-            className="px-4 py-2 text-xs font-semibold text-white bg-[#111111] hover:bg-[#1D4ED8] rounded-full inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-4 py-2 text-xs font-semibold text-white bg-[#111111] hover:bg-[#3F3E3A] rounded-full inline-flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Copy className="w-3.5 h-3.5" />
             <span>{copiedSpec ? 'Copied CSS Tokens' : 'Copy CSS Tokens'}</span>

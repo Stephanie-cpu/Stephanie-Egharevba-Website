@@ -111,8 +111,8 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
               aria-label={isAnimationPaused ? 'Play gallery animation' : 'Pause gallery animation'}
               className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 border transition-all cursor-pointer ${
                 isAnimationPaused
-                  ? 'bg-[#1D4ED8] text-white border-[#1D4ED8]'
-                  : 'bg-white text-[#141413] border-[#E6E4DD] hover:border-[#1D4ED8]'
+                  ? 'bg-[#141413] text-white border-[#141413]'
+                  : 'bg-white text-[#141413] border-[#E6E4DD] hover:border-[#141413]'
               }`}
             >
               {isAnimationPaused ? (
@@ -281,7 +281,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
         className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 space-y-6"
       >
         <div className="space-y-1.5">
-          <div className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#1D4ED8] font-semibold">
+          <div className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#575652] font-semibold">
             FOR CONFERENCE ORGANIZERS, PODCAST HOSTS &amp; MEDIA PARTNERS
           </div>
           <h2
@@ -310,7 +310,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                     setCopiedBio(true);
                     setTimeout(() => setCopiedBio(false), 2400);
                   }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E6E4DD] hover:border-[#1D4ED8] text-xs font-semibold text-[#141413] cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E6E4DD] hover:border-[#141413] text-xs font-semibold text-[#141413] cursor-pointer"
                 >
                   {copiedBio ? (
                     <>
@@ -319,7 +319,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                     </>
                   ) : (
                     <>
-                      <Copy className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                      <Copy className="w-3.5 h-3.5 text-[#141413]" />
                       <span>Copy Bio Text</span>
                     </>
                   )}
@@ -345,7 +345,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                     setCopiedHtml(true);
                     setTimeout(() => setCopiedHtml(false), 2400);
                   }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E6E4DD] hover:border-[#1D4ED8] text-xs font-semibold text-[#141413] cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E6E4DD] hover:border-[#141413] text-xs font-semibold text-[#141413] cursor-pointer"
                 >
                   {copiedHtml ? (
                     <>
@@ -354,7 +354,7 @@ export const PhotoGalleryPressKit: React.FC<PhotoGalleryPressKitProps> = ({
                     </>
                   ) : (
                     <>
-                      <Copy className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                      <Copy className="w-3.5 h-3.5 text-[#141413]" />
                       <span>Copy HTML Link</span>
                     </>
                   )}

@@ -46,7 +46,7 @@ function renderHeader(activeRoute: string): string {
           .map(
             (item) =>
               `<a href="${item.href}" ${item.isCurrent ? 'aria-current="page"' : ''} style="color: ${
-                item.isCurrent ? '#1D4ED8' : item.label === 'Enquiries' ? '#1D4ED8' : '#575652'
+                item.isCurrent ? '#141413' : item.label === 'Enquiries' ? '#141413' : '#575652'
               }; text-decoration: none; font-weight: ${item.isCurrent || item.label === 'Enquiries' ? '600' : '400'};">${
                 item.label
               }</a>`
@@ -61,7 +61,7 @@ function renderHeader(activeRoute: string): string {
 function renderFooter(): string {
   const year = new Date().getFullYear();
   return `
-    <footer style="background-color: #0F172A; color: #F8FAFC; padding: 48px 24px; margin-top: 60px;">
+    <footer style="background-color: #0B0B0B; color: #F8FAFC; padding: 48px 24px; margin-top: 60px;">
       <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 24px;">
           <div>
@@ -71,9 +71,9 @@ function renderFooter(): string {
             </p>
           </div>
           <div style="display: flex; gap: 16px; font-size: 0.875rem;">
-            <a href="https://www.linkedin.com/in/egharevbastephanie" target="_blank" rel="noopener noreferrer" style="color: #60A5FA; text-decoration: none;">LinkedIn</a>
-            <a href="https://www.instagram.com/egharevba_stephanie" target="_blank" rel="noopener noreferrer" style="color: #60A5FA; text-decoration: none;">Instagram</a>
-            <a href="https://sessionize.com/stephanie-egharevba" target="_blank" rel="noopener noreferrer" style="color: #60A5FA; text-decoration: none;">Sessionize</a>
+            <a href="https://www.linkedin.com/in/egharevbastephanie" target="_blank" rel="noopener noreferrer" style="color: #F8FAFC; text-decoration: none;">LinkedIn</a>
+            <a href="https://www.instagram.com/egharevba_stephanie" target="_blank" rel="noopener noreferrer" style="color: #F8FAFC; text-decoration: none;">Instagram</a>
+            <a href="https://sessionize.com/stephanie-egharevba" target="_blank" rel="noopener noreferrer" style="color: #F8FAFC; text-decoration: none;">Sessionize</a>
           </div>
         </div>
         <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.75rem; color: #64748B;">
@@ -166,13 +166,13 @@ function renderHomeContent(): string {
             (book) => `
             <article style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
               <div>
-                <span style="font-size: 0.75rem; font-weight: 600; color: #1D4ED8; text-transform: uppercase;">${book.tag}</span>
+                <span style="font-size: 0.75rem; font-weight: 600; color: #64748B; text-transform: uppercase;">${book.tag}</span>
                 <h3 style="font-size: 1.125rem; font-weight: 700; color: #0F172A; margin: 8px 0 4px 0;">${book.title}</h3>
                 <p style="font-size: 0.875rem; color: #64748B; margin-bottom: 12px;">${book.subtitle}</p>
                 <p style="font-size: 0.875rem; color: #334155; line-height: 1.6;">${book.description}</p>
               </div>
               <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #F1F5F9;">
-                <a href="${book.selarUrl}" target="_blank" rel="noopener noreferrer" style="color: #1D4ED8; font-weight: 600; font-size: 0.875rem; text-decoration: none;">
+                <a href="${book.selarUrl}" target="_blank" rel="noopener noreferrer" style="color: #0F172A; font-weight: 600; font-size: 0.875rem; text-decoration: none;">
                   Get on Selar &rarr;
                 </a>
               </div>
@@ -221,7 +221,7 @@ function renderWorkContent(): string {
               <h2 style="font-size: 1.25rem; font-weight: 700; color: #0F172A; margin: 0 0 8px 0; line-height: 1.25;">
                 ${project.title}
               </h2>
-              <div style="font-size: 0.875rem; color: #1D4ED8; font-weight: 500; margin-bottom: 12px;">
+              <div style="font-size: 0.875rem; color: #475569; font-weight: 500; margin-bottom: 12px;">
                 ${project.subtitle}
               </div>
               <p style="font-size: 0.875rem; color: #475569; line-height: 1.6; margin-bottom: 16px;">
@@ -251,7 +251,7 @@ function renderWorkContent(): string {
 
             <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: monospace; font-size: 0.75rem; color: #64748B;">${project.year}</span>
-              <a href="/work" style="font-size: 0.8125rem; font-weight: 600; color: #1D4ED8; text-decoration: none;">View Case Study &rarr;</a>
+              <a href="/work" style="font-size: 0.8125rem; font-weight: 600; color: #0F172A; text-decoration: none;">View Case Study &rarr;</a>
             </div>
           </article>
         `
@@ -259,8 +259,8 @@ function renderWorkContent(): string {
       </section>
 
       <!-- Signature Interactive Accessibility Contrast Lab Note -->
-      <section aria-label="Interactive WCAG Contrast Lab" style="background: #0F172A; color: #F8FAFC; border-radius: 20px; padding: 36px; margin-bottom: 60px;">
-        <span style="font-family: monospace; font-size: 0.75rem; color: #60A5FA; text-transform: uppercase;">
+      <section aria-label="Interactive WCAG Contrast Lab" style="background: #0B0B0B; color: #F8FAFC; border-radius: 20px; padding: 36px; margin-bottom: 60px;">
+        <span style="font-family: monospace; font-size: 0.75rem; color: #94A3B8; text-transform: uppercase;">
           SIGNATURE CAPABILITY &middot; LIVE LAB
         </span>
         <h2 style="font-size: 1.75rem; font-weight: 700; margin: 8px 0 12px 0;">
@@ -292,7 +292,7 @@ function renderSpeakingContent(): string {
           Keynote addresses, executive fireside chats, and global broadcasts on digital accessibility, AI ethics, and inclusive workforce architecture.
         </p>
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <a href="/?page=contact" style="background: #1D4ED8; color: #ffffff; padding: 10px 22px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
+          <a href="/?page=contact" style="background: #111111; color: #ffffff; padding: 10px 22px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
             Request Speaking Fee &amp; Availability &rarr;
           </a>
         </div>
@@ -310,7 +310,7 @@ function renderSpeakingContent(): string {
               <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000000; border-radius: 10px; overflow: hidden; margin-bottom: 12px;">
                 <iframe src="${video.embedUrl}" title="${video.title}" loading="lazy" style="width: 100%; height: 100%; border: 0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
               </div>
-              <span style="font-size: 0.6875rem; font-family: monospace; color: #1D4ED8; font-weight: 600;">${video.tag}</span>
+              <span style="font-size: 0.6875rem; font-family: monospace; color: #64748B; font-weight: 600;">${video.tag}</span>
               <h3 style="font-size: 1rem; font-weight: 700; color: #0F172A; margin: 4px 0;">${video.title}</h3>
               <p style="font-size: 0.8125rem; color: #64748B; margin: 0;">${video.subtitle}</p>
             </article>
@@ -330,7 +330,7 @@ function renderSpeakingContent(): string {
             <article style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 16px; padding: 24px;">
               <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
                 <div>
-                  <span style="font-size: 0.6875rem; font-family: monospace; background: #EEF2FF; color: #1D4ED8; padding: 2px 8px; border-radius: 9999px; font-weight: 600;">
+                  <span style="font-size: 0.6875rem; font-family: monospace; background: #F1F5F9; color: #0F172A; padding: 2px 8px; border-radius: 9999px; font-weight: 600;">
                     ${item.format}
                   </span>
                   <span style="font-size: 0.8125rem; color: #64748B; margin-left: 8px;">${item.event} &middot; ${item.location}</span>
@@ -365,7 +365,7 @@ function renderStoryContent(): string {
         <h1 style="font-size: 2.75rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; margin: 0 0 12px 0; color: #0F172A;">
           Stephanie Egharevba <span style="font-size: 1.5rem; font-weight: 400; color: #64748B;">Osasumwen</span>
         </h1>
-        <p style="font-size: 1.125rem; font-weight: 600; color: #1D4ED8; margin-bottom: 16px;">
+        <p style="font-size: 1.125rem; font-weight: 600; color: #0F172A; margin-bottom: 16px;">
           Diversity &amp; Inclusion Lead &middot; Disability Inclusion Specialist &middot; Author &amp; Global Speaker
         </p>
         <p style="font-size: 1rem; line-height: 1.65; color: #334155; max-width: 60ch; margin-bottom: 24px;">
@@ -394,24 +394,21 @@ function renderStoryContent(): string {
       <!-- Three Narrative Story Beats -->
       <section aria-label="Narrative Story" style="display: flex; flex-direction: column; gap: 32px; margin-bottom: 60px;">
         <article style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 32px;">
-          <span style="font-family: monospace; font-size: 0.75rem; color: #1D4ED8; font-weight: 600;">01 / ORIGIN</span>
-          <h2 style="font-size: 1.5rem; font-weight: 700; color: #0F172A; margin: 8px 0 16px 0;">A Foundation Built from Lived Reality</h2>
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: #0F172A; margin: 0 0 16px 0;">A Foundation Built from Lived Reality</h2>
           <p style="font-size: 0.9375rem; line-height: 1.75; color: #334155;">
             Born with Osteogenesis Imperfecta (a rare genetic brittle bone condition) in Lagos, Nigeria, Stephanie grew up navigating public and academic institutions that were never built for people with disabilities. That lived reality transformed into a commitment: to eradicate institutional and digital barriers so people with disabilities participate equally in the global digital economy.
           </p>
         </article>
 
         <article style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 32px;">
-          <span style="font-family: monospace; font-size: 0.75rem; color: #1D4ED8; font-weight: 600;">02 / MOMENTUM</span>
-          <h2 style="font-size: 1.5rem; font-weight: 700; color: #0F172A; margin: 8px 0 16px 0;">From Campus Policy to Continental Scale</h2>
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: #0F172A; margin: 0 0 16px 0;">From Campus Policy to Continental Scale</h2>
           <p style="font-size: 0.9375rem; line-height: 1.75; color: #334155;">
             Mobilizing 300+ student developers across Google GDSC and Microsoft Student Ambassador chapters at Yaba College of Technology while advising on campus accommodations quickly expanded to continental advisory roles. As D&amp;I Lead for the Mastercard Foundation Youth Advisory Council Nigeria, she built the 200+ member Alumni Disability Community from zero, moderated the global IDPD broadcast, and deployed computer lab hardware in Ogun State.
           </p>
         </article>
 
         <article style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 32px;">
-          <span style="font-family: monospace; font-size: 0.75rem; color: #1D4ED8; font-weight: 600;">03 / THESIS</span>
-          <h2 style="font-size: 1.5rem; font-weight: 700; color: #0F172A; margin: 8px 0 16px 0;">Disability Is Not the Edge Case</h2>
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: #0F172A; margin: 0 0 16px 0;">Disability Is Not the Edge Case</h2>
           <p style="font-size: 0.9375rem; line-height: 1.75; color: #334155;">
             With over 35 million Nigerians living with a disability (15% of the population), treating accessibility as an afterthought locks out immense human potential and market value. Her work spans technical WCAG auditing for continental platforms like the African Disability Forum, workforce training pipelines at Jobberman, and authored engineering toolkits.
           </p>
@@ -428,7 +425,7 @@ function renderStoryContent(): string {
               <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
                 <div>
                   <h3 style="font-size: 1.125rem; font-weight: 700; color: #0F172A; margin: 0;">${exp.role}</h3>
-                  <div style="font-size: 0.875rem; color: #1D4ED8; font-weight: 600;">${exp.organization} &middot; ${exp.location}</div>
+                  <div style="font-size: 0.875rem; color: #475569; font-weight: 600;">${exp.organization} &middot; ${exp.location}</div>
                 </div>
                 <span style="font-family: monospace; font-size: 0.8125rem; color: #64748B;">${exp.period}</span>
               </div>
@@ -449,7 +446,7 @@ function renderStoryContent(): string {
           ${HONORS_AND_RECOGNITION.map(
             (h) => `
             <div style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 14px; padding: 20px;">
-              <span style="font-family: monospace; font-size: 0.75rem; color: #1D4ED8; font-weight: 600;">${h.year}</span>
+              <span style="font-family: monospace; font-size: 0.75rem; color: #64748B; font-weight: 600;">${h.year}</span>
               <h3 style="font-size: 1rem; font-weight: 700; color: #0F172A; margin: 4px 0;">${h.title}</h3>
               <div style="font-size: 0.8125rem; color: #64748B; margin-bottom: 6px;">${h.issuer}</div>
               <p style="font-size: 0.8125rem; color: #334155; line-height: 1.5; margin: 0;">${h.detail}</p>

@@ -68,7 +68,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
           <div className="col-span-7 bg-white/[0.04] border border-white/10 rounded-xl p-3.5 space-y-1.5 font-mono text-[11px]">
             <div className="flex items-center justify-between text-[#CBD5E1]">
               <span>token.event_a11y</span>
-              <span className="text-[#60A5FA]">enforced</span>
+              <span className="text-[#F8FAFC]">enforced</span>
             </div>
             <div className="flex items-center justify-between text-[#CBD5E1]">
               <span>broadcast.idpd_2024</span>
@@ -93,28 +93,28 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
   if (theme === 'audit') {
     return (
       <div
-        className={`relative overflow-hidden bg-[#0B1120] text-[#F8FAFC] p-6 flex flex-col justify-between select-none ${className}`}
+        className={`relative overflow-hidden bg-[#0B0B0B] text-[#F8FAFC] p-6 flex flex-col justify-between select-none ${className}`}
       >
         <div className="relative z-10 flex items-center justify-between text-[11px] font-mono text-[#94A3B8]">
           <span>RUSHBOX · UI COMPONENT TEARDOWN</span>
-          <span className="text-[#60A5FA]">WCAG 2.2 AA / AAA</span>
+          <span className="text-[#F8FAFC]">WCAG 2.2 AA / AAA</span>
         </div>
 
         {/* Inspected Component Frame with Active Focus Ring & Contrast Badge */}
         <div className="relative z-10 my-auto py-2">
-          <div className="p-3.5 rounded-xl bg-[#111827] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-3.5 rounded-xl bg-[#141413] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 text-[10px] font-mono text-[#93C5FD]">
-                <span className="px-1.5 py-0.5 rounded bg-[#1D4ED8]/30 border border-[#60A5FA]/40">
+              <div className="inline-flex items-center gap-1.5 text-[10px] font-mono text-[#CBD5E1]">
+                <span className="px-1.5 py-0.5 rounded bg-white/10 border border-white/25">
                   :focus-visible
                 </span>
                 <span>tabIndex=0 · role=&quot;button&quot;</span>
               </div>
 
               {/* Simulated Inspected UI Button with 3px Focus Ring */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-white text-[#0B1120] text-xs font-display font-bold ring-[3px] ring-[#60A5FA] ring-offset-2 ring-offset-[#111827]">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-white text-[#0B0B0B] text-xs font-display font-bold ring-[3px] ring-white/60 ring-offset-2 ring-offset-[#141413]">
                 <span>Confirm Shipment</span>
-                <span className="font-mono text-[10px] text-[#1D4ED8]">↵ Enter</span>
+                <span className="font-mono text-[10px] text-[#575652]">↵ Enter</span>
               </div>
             </div>
 
@@ -144,22 +144,22 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
       >
         <div className="relative z-10 flex items-center justify-between text-[11px] font-mono text-[#A1A1AA]">
           <span>AFRICAN DISABILITY FORUM · SPEC</span>
-          <span className="text-[#93C5FD] tabular-nums">CONTRAST ≥ 4.5:1</span>
+          <span className="text-[#E4E4E7] tabular-nums">CONTRAST ≥ 4.5:1</span>
         </div>
 
         <div className="relative z-10 my-auto py-2 grid grid-cols-3 gap-2.5">
           <div className="bg-white/[0.04] border border-white/10 p-3 rounded-xl">
-            <div className="text-[10px] font-mono text-[#93C5FD] mb-0.5">A. CONTRAST</div>
+            <div className="text-[10px] font-mono text-[#D4D4D8] mb-0.5">A. CONTRAST</div>
             <div className="text-base sm:text-lg font-display font-bold tabular-nums">Aa 14.8:1</div>
             <div className="text-[11px] text-[#A1A1AA] mt-0.5">WCAG 2.2 AAA</div>
           </div>
           <div className="bg-white/[0.04] border border-white/10 p-3 rounded-xl">
-            <div className="text-[10px] font-mono text-[#93C5FD] mb-0.5">B. KEYBOARD</div>
+            <div className="text-[10px] font-mono text-[#D4D4D8] mb-0.5">B. KEYBOARD</div>
             <div className="text-base sm:text-lg font-display font-bold">Tab → Focus</div>
             <div className="text-[11px] text-[#A1A1AA] mt-0.5">Zero Focus Traps</div>
           </div>
           <div className="bg-white/[0.04] border border-white/10 p-3 rounded-xl">
-            <div className="text-[10px] font-mono text-[#93C5FD] mb-0.5">C. ASSISTIVE</div>
+            <div className="text-[10px] font-mono text-[#D4D4D8] mb-0.5">C. ASSISTIVE</div>
             <div className="text-base sm:text-lg font-display font-bold">ARIA Tree</div>
             <div className="text-[11px] text-[#A1A1AA] mt-0.5">Semantic Parity</div>
           </div>
@@ -187,15 +187,15 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
         {/* 3-Node Workflow Diagram */}
         <div className="relative z-10 my-auto py-2 grid grid-cols-3 gap-2 items-center">
           <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 space-y-1">
-            <div className="font-mono text-[10px] text-[#60A5FA]">01 / INTAKE</div>
+            <div className="font-mono text-[10px] text-[#CBD5E1]">01 / INTAKE</div>
             <div className="font-display text-xs sm:text-sm font-bold text-white">
               Accessible Training
             </div>
             <div className="text-[10px] text-[#94A3B8]">WCAG Curricula</div>
           </div>
 
-          <div className="p-3 rounded-xl bg-white/[0.04] border border-[#60A5FA]/40 space-y-1">
-            <div className="font-mono text-[10px] text-[#93C5FD]">02 / AUDIT</div>
+          <div className="p-3 rounded-xl bg-white/[0.04] border border-white/25 space-y-1">
+            <div className="font-mono text-[10px] text-[#F8FAFC]">02 / AUDIT</div>
             <div className="font-display text-xs sm:text-sm font-bold text-white">
               Talent Readiness
             </div>
@@ -230,10 +230,10 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
           viewBox="0 0 400 300"
           fill="none"
         >
-          <path d="M 30 250 L 140 90 L 250 190 L 370 60" stroke="#60A5FA" strokeWidth="2" />
+          <path d="M 30 250 L 140 90 L 250 190 L 370 60" stroke="#94A3B8" strokeWidth="2" />
           <circle cx="140" cy="90" r="5" fill="#F8FAFC" />
           <circle cx="250" cy="190" r="5" fill="#F8FAFC" />
-          <circle cx="370" cy="60" r="5" fill="#60A5FA" />
+          <circle cx="370" cy="60" r="5" fill="#94A3B8" />
           <rect
             x="30"
             y="40"
@@ -251,7 +251,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
         </div>
 
         <div className="relative z-10 my-4">
-          <div className="font-mono text-xs text-[#60A5FA] mb-1">inclusive-pr-gate.yml</div>
+          <div className="font-mono text-xs text-[#CBD5E1] mb-1">inclusive-pr-gate.yml</div>
           <div className="font-display text-base sm:text-lg font-semibold leading-snug">
             Disability Rights &amp; Gender Equity Governance Across Regional Programs
           </div>
@@ -272,7 +272,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
     >
       <div className="relative z-10 flex items-center justify-between text-[11px] font-mono text-[#A1A1AA]">
         <span>GOOGLE · MICROSOFT · YABATECH</span>
-        <span className="text-[#93C5FD]">CAMPUS POLICY BLUEPRINT</span>
+        <span className="text-[#E4E4E7]">CAMPUS POLICY BLUEPRINT</span>
       </div>
 
       <div className="relative z-10 my-auto py-2 space-y-1.5 font-mono text-xs">
@@ -282,7 +282,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
         </div>
         <div className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/10">
           <span className="text-[#E4E4E7]">[✓] Microsoft Student Ambassadors</span>
-          <span className="text-[#60A5FA]">100+ Members</span>
+          <span className="text-[#E4E4E7]">100+ Members</span>
         </div>
         <div className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/10">
           <span className="text-[#E4E4E7]">[✓] Student Union Disability Policy</span>

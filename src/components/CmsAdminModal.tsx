@@ -501,7 +501,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
         {/* Top Bar */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E5E4DF] bg-[#0B0B0B] px-6 py-4 text-white">
           <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#1D4ED8] text-white">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-[#0B0B0B]">
               <ShieldCheck className="h-5 w-5" />
             </span>
             <div>
@@ -533,7 +533,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
               <button
                 type="button"
                 onClick={handleGoogleLogin}
-                className="inline-flex items-center gap-2 rounded-lg bg-[#1D4ED8] px-4 py-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-white hover:bg-[#1E40AF] cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-[#0B0B0B] hover:bg-neutral-200 cursor-pointer"
               >
                 <ShieldCheck className="h-4 w-4" />
                 Admin 2FA Sign-In (Google)
@@ -624,7 +624,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
               <button
                 type="button"
                 onClick={handleGoogleLogin}
-                className="shrink-0 rounded-lg bg-[#1D4ED8] px-4 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-white hover:bg-[#1E40AF] cursor-pointer"
+                className="shrink-0 rounded-lg bg-[#111111] px-4 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-white hover:bg-[#3F3E3A] cursor-pointer"
               >
                 Sign In with Google
               </button>
@@ -809,7 +809,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                 <button
                   type="submit"
                   disabled={!isAdminUser}
-                  className="rounded-lg bg-[#111111] px-6 py-3 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-white hover:bg-[#1D4ED8] disabled:opacity-50 transition-colors cursor-pointer"
+                  className="rounded-lg bg-[#111111] px-6 py-3 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-white hover:bg-[#3F3E3A] disabled:opacity-50 transition-colors cursor-pointer"
                 >
                   Save Homepage, SEO & Social Settings
                 </button>
@@ -828,7 +828,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                   <h3 className="font-display text-base font-bold text-[#111111]">
                     Publish New Case Study / Project
                   </h3>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-[#1D4ED8]">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-[#525252]">
                     Alt-Text Required by Schema
                   </span>
                 </div>
@@ -910,7 +910,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                   <div className="sm:col-span-2">
                     <label
                       htmlFor="proj-alt"
-                      className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[#1D4ED8] mb-1"
+                      className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[#111111] mb-1"
                     >
                       Mandatory Accessible Image Alt-Text (WCAG 1.1.1) *
                     </label>
@@ -922,7 +922,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                       value={projImageAlt}
                       onChange={(e) => setProjImageAlt(e.target.value)}
                       placeholder="Describe the image for screen-reader users (required)..."
-                      className="w-full rounded-lg border-2 border-[#1D4ED8]/40 bg-white px-3 py-2 text-sm"
+                      className="w-full rounded-lg border-2 border-[#111111]/40 bg-white px-3 py-2 text-sm"
                     />
                   </div>
                 </div>
@@ -989,7 +989,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                     <button
                       type="submit"
                       disabled={!isAdminUser}
-                      className="inline-flex items-center gap-2 rounded-lg bg-[#111111] px-5 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-white hover:bg-[#1D4ED8] disabled:opacity-50 cursor-pointer"
+                      className="inline-flex items-center gap-2 rounded-lg bg-[#111111] px-5 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-white hover:bg-[#3F3E3A] disabled:opacity-50 cursor-pointer"
                     >
                       <Plus className="h-4 w-4" />
                       Save Project to CMS
@@ -1150,7 +1150,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                   <div>
                     <label
                       htmlFor="art-alt"
-                      className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[#1D4ED8] mb-1"
+                      className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[#111111] mb-1"
                     >
                       Accessible Alt-Text Description *
                     </label>
@@ -1188,7 +1188,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                   <button
                     type="submit"
                     disabled={!isAdminUser}
-                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#111111] px-5 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-white hover:bg-[#1D4ED8] disabled:opacity-50 cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#111111] px-5 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-white hover:bg-[#3F3E3A] disabled:opacity-50 cursor-pointer"
                   >
                     <Plus className="h-4 w-4" />
                     Publish Entry
@@ -1210,7 +1210,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                       <div>
                         <p className="font-display text-sm font-bold text-[#111111]">
                           {art.title}{' '}
-                          <span className="font-mono text-[10px] text-[#1D4ED8]">
+                          <span className="font-mono text-[10px] text-[#525252]">
                             ({art.category} · {art.status})
                           </span>
                         </p>
@@ -1244,7 +1244,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                     Protection Act (NDPA) &amp; GDPR compliance.
                   </p>
                 </div>
-                <div className="font-mono text-xs text-[#1D4ED8]">
+                <div className="font-mono text-xs text-[#525252]">
                   Newsletter Subscribers: {subscribers.length}
                 </div>
               </div>
@@ -1268,7 +1268,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                             <span className="font-display text-base font-bold text-[#111111]">
                               {enq.name}
                             </span>
-                            <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-[#F2F0EB] text-[#1D4ED8]">
+                            <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-[#F2F0EB] text-[#111111]">
                               {enq.inquiryType}
                             </span>
                             <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-neutral-900 text-white">
@@ -1287,7 +1287,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                             href={`mailto:${enq.email}?subject=${encodeURIComponent(
                               `Re: ${enq.inquiryType} — Stephanie Egharevba`
                             )}`}
-                            className="rounded-lg bg-[#1D4ED8] px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-white hover:bg-[#1E40AF]"
+                            className="rounded-lg bg-[#111111] px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-white hover:bg-[#3F3E3A]"
                           >
                             Reply via Email
                           </a>
@@ -1339,7 +1339,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                   <button
                     type="button"
                     onClick={handleExportBackup}
-                    className="inline-flex items-center gap-2 rounded-lg bg-[#111111] px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-white hover:bg-[#1D4ED8] cursor-pointer"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#111111] px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-white hover:bg-[#3F3E3A] cursor-pointer"
                   >
                     <Download className="h-4 w-4" />
                     Export Full CMS Backup (.JSON)
@@ -1383,7 +1383,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                     href="/api/sitemap.xml"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-[#1D4ED8] hover:underline"
+                    className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-[#111111] hover:underline"
                   >
                     View /api/sitemap.xml <ExternalLink className="h-3.5 w-3.5" />
                   </a>
@@ -1391,7 +1391,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                     href="/api/health"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-[#1D4ED8] hover:underline"
+                    className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-[#111111] hover:underline"
                   >
                     View /api/health <ExternalLink className="h-3.5 w-3.5" />
                   </a>
@@ -1404,7 +1404,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
           {activeTab === 'handover' && (
             <div className="space-y-6">
               <div className="rounded-xl border border-[#E5E4DF] bg-[#0B0B0B] p-6 text-white">
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#60A5FA]">
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
                   Developer Architecture & Handover Document
                 </span>
                 <h3 className="font-display text-xl font-bold mt-1">

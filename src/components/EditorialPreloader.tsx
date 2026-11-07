@@ -92,9 +92,9 @@ export const EditorialPreloader: React.FC<EditorialPreloaderProps> = ({
             transition={{ duration: 0.16 }}
             className="flex items-center gap-3 sm:gap-4 px-6 text-white"
           >
-            {/* Subtle Royal Blue Indicator Dot */}
+            {/* Subtle White Indicator Dot */}
             <span
-              className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#1D4ED8] shrink-0 shadow-[0_0_12px_rgba(29,78,216,0.6)]"
+              className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white shrink-0 shadow-[0_0_12px_rgba(255,255,255,0.45)]"
               aria-hidden="true"
             />
             <span className="text-3xl sm:text-5xl md:text-6xl font-display font-bold tracking-tight text-white leading-none">

@@ -243,10 +243,6 @@ html[data-theme="dark"] .text-\[\#64748B\] {
   color: #94A3B8 !important;
 }
 
-html[data-theme="dark"] .text-\[\#1D4ED8\] {
-  color: #60A5FA !important;
-}
-
 html[data-theme="dark"] .border-\[\#E6E4DD\],
 html[data-theme="dark"] .border-\[\#E5E4DF\],
 html[data-theme="dark"] .border-\[\#D4D2CC\],
@@ -291,11 +287,6 @@ html[data-theme="contrast"] .text-neutral-400 {
   color: #FFFFFF !important;
 }
 
-html[data-theme="contrast"] .text-\[\#1D4ED8\],
-html[data-theme="contrast"] .text-\[\#60A5FA\] {
-  color: #FACC15 !important;
-}
-
 html[data-theme="contrast"] .border-\[\#E6E4DD\],
 html[data-theme="contrast"] .border-\[\#E5E4DF\],
 html[data-theme="contrast"] .border-\[\#D4D2CC\],
@@ -311,12 +302,12 @@ html[data-theme="contrast"] .border-neutral-800 {
 
 /* Universal WCAG 2.4.7 Focus Visible & WCAG 2.4.13 Focus Appearance Rings */
 *:focus-visible {
-  outline: 2px solid #1D4ED8 !important;
+  outline: 2px solid #141413 !important;
   outline-offset: 2px !important;
 }
 
 html[data-theme="dark"] *:focus-visible {
-  outline: 2px solid #60A5FA !important;
+  outline: 2px solid #FFFFFF !important;
   outline-offset: 2px !important;
 }
 

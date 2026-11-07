@@ -19,11 +19,11 @@ export default function MyImpactSection({
       aria-labelledby="my-impact-heading"
       className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16"
     >
-      {/* Editorial Header: "MY IMPACT" in bold blue + horizontal accent rule */}
+      {/* Editorial Header: "MY IMPACT" in bold ink-black + horizontal accent rule */}
       <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-10">
         <h2
           id="my-impact-heading"
-          className="text-xl sm:text-2xl font-bold tracking-wider text-[#1D4ED8] dark:text-[#3B82F6] uppercase whitespace-nowrap"
+          className="text-xl sm:text-2xl font-bold tracking-wider text-[#141413] dark:text-white uppercase whitespace-nowrap"
         >
           MY IMPACT &amp; CLIENT ENDORSEMENTS
         </h2>
@@ -31,7 +31,7 @@ export default function MyImpactSection({
           className="flex-1 h-[2px] bg-[#D9DDE2] dark:bg-neutral-800 relative flex items-center justify-end"
           aria-hidden="true"
         >
-          <div className="w-12 sm:w-20 h-[3px] bg-[#1D4ED8] dark:bg-[#3B82F6]" />
+          <div className="w-12 sm:w-20 h-[3px] bg-[#141413] dark:bg-white" />
         </div>
       </div>
 
@@ -58,7 +58,7 @@ export default function MyImpactSection({
               <div className="font-bold text-base text-[#111827] dark:text-white">
                 {item.name}
               </div>
-              <div className="text-xs sm:text-sm font-medium text-[#1D4ED8] dark:text-[#60A5FA] mt-1 leading-snug">
+              <div className="text-xs sm:text-sm font-medium text-[#575652] dark:text-neutral-400 mt-1 leading-snug">
                 {item.shortRole}
               </div>
             </div>
@@ -75,7 +75,7 @@ export default function MyImpactSection({
             onNavigateToImpact();
           }}
           aria-label="Read all client and conference speaker endorsements for Stephanie Egharevba"
-          className="bg-[#2563EB] hover:bg-blue-700 active:scale-95 text-white text-sm sm:text-base font-semibold px-9 py-3 rounded-full transition-all duration-200 shadow-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:ring-offset-2"
+          className="bg-[#111111] hover:bg-[#3F3E3A] active:scale-95 text-white text-sm sm:text-base font-semibold px-9 py-3 rounded-full transition-all duration-200 shadow-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#141413] focus:ring-offset-2"
         >
           Read All Client &amp; Speaker Endorsements
         </a>

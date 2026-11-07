@@ -156,7 +156,7 @@ export default function NavigationDrawer({
               aria-label="Open navigation menu"
               aria-expanded={isOpen}
               aria-controls="navigation-drawer"
-              className="flex flex-col justify-center items-start w-10 h-10 space-y-1.5 text-[#141413] dark:text-white hover:opacity-75 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1D4ED8] rounded-lg cursor-pointer transition-opacity"
+              className="flex flex-col justify-center items-start w-10 h-10 space-y-1.5 text-[#141413] dark:text-white hover:opacity-75 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#141413] dark:focus-visible:ring-white rounded-lg cursor-pointer transition-opacity"
             >
               <span className="w-7 h-[2px] bg-current transition-all" aria-hidden="true" />
               <span className="w-5 h-[2px] bg-current transition-all" aria-hidden="true" />
@@ -170,7 +170,7 @@ export default function NavigationDrawer({
               type="button"
               onClick={() => onNavigate('overview')}
               aria-label="Stephanie Egharevba - Return to Homepage"
-              className="group flex items-center gap-1.5 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1D4ED8] rounded-md transition-opacity hover:opacity-80"
+              className="group flex items-center gap-1.5 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#141413] dark:focus-visible:ring-white rounded-md transition-opacity hover:opacity-80"
             >
               <span className="font-serif italic text-3xl sm:text-4xl text-[#141413] dark:text-white tracking-normal select-none transition-transform duration-200 group-hover:scale-105">
                 se
@@ -188,7 +188,7 @@ export default function NavigationDrawer({
                 onClick={toggleDarkMode}
                 aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                 title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-                className="relative inline-flex items-center h-6.5 w-12 sm:h-7 sm:w-13 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1D4ED8] dark:focus-visible:ring-[#60A5FA] cursor-pointer bg-[#D4D4D8] dark:bg-[#3F3F46] p-0.5 select-none"
+                className="relative inline-flex items-center h-6.5 w-12 sm:h-7 sm:w-13 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#141413] dark:focus-visible:ring-white cursor-pointer bg-[#D4D4D8] dark:bg-[#3F3F46] p-0.5 select-none"
               >
                 <span className="sr-only">
                   {isDarkMode

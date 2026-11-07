@@ -71,12 +71,12 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
       {/* Header section matching editorial tone */}
       <div className="border-b border-[#E6E4DD] dark:border-neutral-800 pb-8 space-y-4">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[#1D4ED8] dark:text-[#60A5FA]">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[#575652] dark:text-neutral-400">
             Endorsements &amp; Peer Reviews
           </span>
           <span className="text-neutral-400 dark:text-neutral-600">·</span>
           <span className="inline-flex items-center gap-1 text-xs font-mono text-neutral-500 dark:text-neutral-400">
-            <Linkedin className="w-3.5 h-3.5 text-[#0A66C2]" />
+            <Linkedin className="w-3.5 h-3.5 text-[#141413] dark:text-neutral-300" />
             Verified on LinkedIn
           </span>
         </div>
@@ -114,7 +114,7 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-4 py-2 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-150 cursor-pointer ${
                   isSelected
-                    ? 'bg-[#1D4ED8] text-white shadow-sm'
+                    ? 'bg-[#141413] text-white dark:bg-white dark:text-[#141413] shadow-sm'
                     : 'bg-[#F3F4F6] text-neutral-700 hover:bg-[#E5E7EB] dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700'
                 }`}
               >
@@ -133,7 +133,7 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search recommendations..."
             aria-label="Search recommendations by name or keyword"
-            className="w-full bg-[#F3F4F6] dark:bg-neutral-800 border border-transparent focus:border-[#1D4ED8] dark:focus:border-[#60A5FA] rounded-full pl-9 pr-4 py-2 text-xs sm:text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 outline-none transition-colors"
+            className="w-full bg-[#F3F4F6] dark:bg-neutral-800 border border-transparent focus:border-[#141413] dark:focus:border-white rounded-full pl-9 pr-4 py-2 text-xs sm:text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 outline-none transition-colors"
           />
         </div>
       </div>
@@ -154,7 +154,7 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
               setSearchQuery('');
               setSelectedCategory('All');
             }}
-            className="mt-4 px-4 py-1.5 text-xs font-medium text-[#1D4ED8] hover:underline"
+            className="mt-4 px-4 py-1.5 text-xs font-medium text-[#141413] dark:text-white hover:underline"
           >
             Clear filters
           </button>
@@ -180,7 +180,7 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
                   <div className="space-y-4">
                     {/* Top Meta: Verified Badge + Date */}
                     <div className="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400">
-                      <span className="inline-flex items-center gap-1.5 font-medium text-[#0A66C2] dark:text-[#60A5FA]">
+                      <span className="inline-flex items-center gap-1.5 font-medium text-[#141413] dark:text-neutral-200">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>Received Recommendation</span>
                       </span>
@@ -202,7 +202,7 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
                           <button
                             type="button"
                             onClick={() => toggleExpand(rec.id)}
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#1D4ED8] dark:text-[#60A5FA] hover:underline cursor-pointer pt-1"
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#141413] dark:text-white hover:underline cursor-pointer pt-1"
                           >
                             <span>Read full recommendation</span>
                             <ChevronDown className="w-3.5 h-3.5" />
@@ -238,7 +238,7 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
                       <h2 className="font-bold text-base text-[#111827] dark:text-white leading-snug">
                         {rec.name}
                       </h2>
-                      <p className="text-xs sm:text-sm text-[#1D4ED8] dark:text-[#60A5FA] font-medium leading-snug">
+                      <p className="text-xs sm:text-sm text-[#575652] dark:text-neutral-400 font-medium leading-snug">
                         {rec.shortRole}
                       </p>
                       <p className="text-[11px] text-neutral-500 dark:text-neutral-400 line-clamp-1 mt-0.5">
@@ -251,7 +251,7 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`View ${rec.name}'s recommendation on Stephanie's LinkedIn profile`}
-                      className="p-2 rounded-full text-neutral-400 hover:text-[#0A66C2] hover:bg-white dark:hover:bg-neutral-800 transition-colors"
+                      className="p-2 rounded-full text-neutral-400 hover:text-[#141413] hover:bg-white dark:hover:bg-neutral-800 transition-colors"
                     >
                       <Linkedin className="w-4 h-4" />
                     </a>
@@ -266,10 +266,10 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
       {/* Collaboration Call to Action Banner */}
       <section
         aria-labelledby="impact-cta-heading"
-        className="rounded-3xl bg-[#0F172A] text-white p-8 sm:p-12 relative overflow-hidden"
+        className="rounded-3xl bg-[#0B0B0B] text-white p-8 sm:p-12 relative overflow-hidden"
       >
         <div className="max-w-2xl space-y-4 relative z-10">
-          <div className="inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-[#60A5FA]">
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-neutral-400">
             <span>LET’S CREATE IMPACT TOGETHER</span>
           </div>
           <h2
@@ -286,7 +286,7 @@ export function ImpactView({ onNavigate, reduceMotion = false }: ImpactViewProps
             <button
               type="button"
               onClick={() => onNavigate('contact')}
-              className="bg-[#2563EB] hover:bg-blue-600 active:scale-95 text-white font-medium text-sm px-6 py-3 rounded-full transition-all inline-flex items-center gap-2 cursor-pointer shadow-sm"
+              className="bg-white hover:bg-neutral-200 active:scale-95 text-[#0B0B0B] font-semibold text-sm px-6 py-3 rounded-full transition-all inline-flex items-center gap-2 cursor-pointer shadow-sm"
             >
               <span>Get in Touch</span>
               <ArrowRight className="w-4 h-4" />

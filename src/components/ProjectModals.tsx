@@ -77,7 +77,7 @@ export const ProjectLightboxModal: React.FC<ProjectLightboxProps> = ({
           )}
 
           <div className="space-y-2 border-b border-[#E6E4DD] pb-6">
-            <div className="text-xs font-mono text-[#1D4ED8]">{project.role}</div>
+            <div className="text-xs font-mono text-[#575652]">{project.role}</div>
             <h2
               id="modal-project-title"
               className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]"
@@ -104,7 +104,7 @@ export const ProjectLightboxModal: React.FC<ProjectLightboxProps> = ({
               <ul className="space-y-1.5">
                 {project.impactMetrics.map((metric, idx) => (
                   <li key={idx} className="text-sm text-[#141413] flex items-start gap-2">
-                    <span className="font-mono text-xs text-[#1D4ED8] pt-0.5">0{idx + 1}</span>
+                    <span className="font-mono text-xs text-[#141413] font-semibold pt-0.5">0{idx + 1}</span>
                     <span>{metric}</span>
                   </li>
                 ))}
@@ -143,7 +143,7 @@ export const ProjectLightboxModal: React.FC<ProjectLightboxProps> = ({
               onClose();
               onInquireAboutProject(title);
             }}
-            className="px-4 py-2.5 text-xs font-medium text-white bg-[#1D4ED8] hover:bg-[#1E40AF] rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+            className="px-4 py-2.5 text-xs font-medium text-white bg-[#141413] hover:bg-[#3F3E3A] rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer"
           >
             Enquire About Similar Work
             <ArrowUpRight className="w-3.5 h-3.5" />
@@ -202,7 +202,7 @@ export const SpeakingReaderModal: React.FC<SpeakingReaderModalProps> = ({ item, 
 
         <div className="p-5 sm:p-8 overflow-y-auto space-y-5">
           <div className="space-y-1.5 border-b border-[#E6E4DD] pb-5">
-            <div className="text-xs font-mono text-[#1D4ED8]">
+            <div className="text-xs font-mono text-[#575652]">
               {item.event} · {item.location}
             </div>
             <h2
@@ -226,7 +226,7 @@ export const SpeakingReaderModal: React.FC<SpeakingReaderModalProps> = ({ item, 
             <ul className="space-y-1.5">
               {item.keyTakeaways.map((takeaway, idx) => (
                 <li key={idx} className="text-sm text-[#3F3E3A] flex items-start gap-2">
-                  <span className="font-mono text-xs text-[#1D4ED8] pt-0.5">0{idx + 1}.</span>
+                  <span className="font-mono text-xs text-[#141413] font-semibold pt-0.5">0{idx + 1}.</span>
                   <span>{takeaway}</span>
                 </li>
               ))}
@@ -242,7 +242,7 @@ export const SpeakingReaderModal: React.FC<SpeakingReaderModalProps> = ({ item, 
               onClose();
               onBookTopic(title);
             }}
-            className="px-4 py-2.5 text-xs font-medium text-white bg-[#1D4ED8] hover:bg-[#1E40AF] rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+            className="px-4 py-2.5 text-xs font-medium text-white bg-[#141413] hover:bg-[#3F3E3A] rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer"
           >
             Book This Talk
             <ArrowUpRight className="w-3.5 h-3.5" />
@@ -444,7 +444,7 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = ({ isOpen, onClos
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-xs font-medium text-white bg-[#1D4ED8] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 text-xs font-medium text-white bg-[#141413] hover:bg-[#3F3E3A] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               Save Project
