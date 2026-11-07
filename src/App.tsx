@@ -252,8 +252,9 @@ export default function App() {
     }
   });
 
-  // Work page filter
+  // Work page filter & expandable case study state
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>('All');
+  const [expandedWorkProjectId, setExpandedWorkProjectId] = useState<string | null>(null);
 
   // Speaking page filter
   const [selectedSpeakingFormat, setSelectedSpeakingFormat] = useState<
@@ -1715,7 +1716,7 @@ export default function App() {
           )}
 
           {/* ================================================================= */}
-          {/* PAGE 2: WORK (EXECUTIVE EDITORIAL DOSSIER & CASE STUDIES)         */}
+          {/* PAGE 2: WORK (MINIMALIST EDITORIAL INDEX)                         */}
           {/* ================================================================= */}
           {activePage === 'work' && (
             <motion.div
@@ -1724,64 +1725,24 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: EASE_EDITORIAL }}
-              className="space-y-0"
+              className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-14 sm:space-y-20"
             >
-              {/* 1. Executive Dark Hero Banner */}
-              <section className="bg-[#0B0B0B] text-white border-b border-white/10">
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-12 pb-10 sm:pt-16 sm:pb-14">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-                    <div className="lg:col-span-8 space-y-4">
-                      <div className="font-mono text-xs text-[#94A3B8] tracking-wide">
-                        Selected Work · Technical Audits · D&amp;I Advisory
-                      </div>
-                      <h1
-                        className="font-display font-bold tracking-tight text-white leading-[1.08]"
-                        style={{ fontSize: 'clamp(2.25rem, 5vw, 3.5rem)' }}
-                      >
-                        Case Studies &amp; WCAG Audits
-                      </h1>
-                      <p className="text-base sm:text-lg text-[#CBD5E1] leading-relaxed max-w-[58ch]">
-                        Engineering accessible digital platforms, auditing continental web portals
-                        against WCAG 2.1 / 2.2 AA standards, and scaling inclusive workforce
-                        pipelines across Africa.
-                      </p>
-                    </div>
-
-                    <div className="lg:col-span-4 flex lg:justify-end">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleInquireWithContext(
-                            'WCAG 2.2 Platform Audit & D&I Advisory',
-                            'WCAG Accessibility Audit'
-                          )
-                        }
-                        aria-label="Commission a WCAG 2.2 platform audit or D&I strategy advisory"
-                        className="group min-h-[44px] px-6 py-3.5 text-xs sm:text-sm font-semibold text-[#0B0B0B] bg-white hover:bg-[#E2E8F0] rounded-full transition-colors inline-flex items-center justify-center gap-2.5 w-full sm:w-fit cursor-pointer whitespace-nowrap shrink-0"
-                      >
-                        <span>Commission an Audit or Advisory</span>
-                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                      </button>
-                    </div>
+              {/* 1. Minimalist Header + Filter Tabs */}
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#E6E4DD] pb-6">
+                <div className="space-y-1">
+                  <div className="text-xs font-mono uppercase tracking-wider text-[#575652]">
+                    SELECTED WORK (0{filteredProjects.length})
                   </div>
+                  <h1 className="text-3xl sm:text-5xl font-display font-bold tracking-tight text-[#141413]">
+                    Work &amp; Audits
+                  </h1>
                 </div>
-              </section>
 
-              {/* 2. Filter Bar & Editorial Dossier Index */}
-              <section className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-10">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E6E4DD]">
-                  <div className="flex items-center gap-2 text-xs text-[#575652]">
-                    <span className="font-semibold text-[#141413]">Filter by Practice Area</span>
-                    <span aria-hidden="true">·</span>
-                    <span className="font-mono tabular-nums">
-                      Showing {filteredProjects.length} of {allProjects.length} engagements
-                    </span>
-                  </div>
-
+                <div className="flex flex-wrap items-center gap-2">
                   <div
                     role="group"
                     aria-label="Filter projects by category"
-                    className="flex flex-wrap items-center gap-1 p-1 bg-[#F2EFE9] rounded-xl w-fit border border-[#E6E4DD]"
+                    className="flex flex-wrap items-center gap-1 p-1 bg-[#F2EFE9] rounded-xl border border-[#E6E4DD]"
                   >
                     {(
                       ['All', 'WCAG & Accessibility', 'D&I Strategy', 'Workforce & Tech'] as const
@@ -1792,9 +1753,8 @@ export default function App() {
                           key={cat}
                           type="button"
                           onClick={() => setSelectedCategory(cat)}
-                          aria-label={`Filter case studies by ${cat}`}
                           aria-pressed={isActive}
-                          className={`min-h-[38px] px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                          className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer ${
                             isActive
                               ? 'bg-white text-[#141413] shadow-xs font-semibold'
                               : 'text-[#575652] hover:text-[#141413]'
@@ -1805,281 +1765,163 @@ export default function App() {
                       );
                     })}
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={() => navigateTo('contact')}
+                    className="px-4 py-2 text-xs font-semibold text-white bg-[#141413] hover:bg-[#3F3E3A] rounded-xl transition-colors cursor-pointer"
+                  >
+                    Work With Me
+                  </button>
                 </div>
+              </div>
 
-                {/* Editorial Case Study Rows */}
-                <div className="divide-y divide-[#E6E4DD]">
-                  <AnimatePresence mode="popLayout">
-                    {filteredProjects.map((project) => {
-                      return (
-                        <motion.article
-                          layout
-                          key={project.id}
-                          initial={{ opacity: 0, y: 14 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.3, ease: EASE_EDITORIAL }}
-                          className="py-10 first:pt-2 last:pb-2 group"
-                        >
-                          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                            {/* Left/Main Column (7 cols): Title, Summary & Challenge / Intervention */}
-                            <div className="lg:col-span-7 space-y-5">
-                              <div className="space-y-2">
-                                <div className="text-xs text-[#575652]">
-                                  {project.organization} · {project.role} · {project.year}
-                                </div>
-                                <h2 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#141413] leading-snug">
-                                  {project.title}
-                                </h2>
-                                <p className="text-sm text-[#3F3E3A] leading-relaxed">
-                                  {project.summary}
-                                </p>
-                              </div>
+              {/* 2. Minimalist Interactive Ledger (1 Line Per Project, Click to Expand) */}
+              <section aria-label="Selected Projects Index" className="divide-y divide-[#E6E4DD] border-b border-[#E6E4DD]">
+                {filteredProjects.map((project, idx) => {
+                  const isExpanded = expandedWorkProjectId === project.id;
+                  return (
+                    <div key={project.id} className="transition-colors">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedWorkProjectId(isExpanded ? null : project.id)
+                        }
+                        aria-expanded={isExpanded}
+                        className="w-full py-5 sm:py-6 grid grid-cols-12 gap-3 sm:gap-6 items-center text-left hover:bg-[#F2EFE9]/50 px-2 sm:px-3 rounded-xl transition-colors cursor-pointer group"
+                      >
+                        {/* Index */}
+                        <span className="col-span-2 sm:col-span-1 font-mono text-xs text-[#575652] tabular-nums">
+                          0{idx + 1}
+                        </span>
 
-                              {/* Structured Barrier & Audit Fix Grid */}
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-[#E6E4DD]">
-                                <div className="space-y-1.5">
-                                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#141413]">
-                                    The Accessibility Barrier
-                                  </h3>
-                                  <p className="text-xs text-[#575652] leading-relaxed">
-                                    {project.challenge}
-                                  </p>
-                                </div>
-                                <div className="space-y-1.5">
-                                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#141413]">
-                                    What I Audited &amp; Fixed
-                                  </h3>
-                                  <p className="text-xs text-[#575652] leading-relaxed">
-                                    {project.intervention}
-                                  </p>
-                                </div>
-                              </div>
+                        {/* Client / Organization */}
+                        <span className="col-span-10 sm:col-span-3 text-xs sm:text-sm font-semibold text-[#575652] truncate">
+                          {project.organization}
+                        </span>
+
+                        {/* Project Title */}
+                        <span className="col-span-12 sm:col-span-5 text-base sm:text-lg font-display font-bold text-[#141413] group-hover:underline underline-offset-4">
+                          {project.title}
+                        </span>
+
+                        {/* Category & Toggle Symbol */}
+                        <span className="col-span-12 sm:col-span-3 flex items-center justify-between sm:justify-end gap-4 text-xs font-mono text-[#575652]">
+                          <span>{project.year}</span>
+                          <span className="w-7 h-7 rounded-full border border-[#E6E4DD] flex items-center justify-center text-sm font-mono text-[#141413] group-hover:border-[#141413] transition-colors">
+                            {isExpanded ? '−' : '+'}
+                          </span>
+                        </span>
+                      </button>
+
+                      {/* Compact 3-Column Spec Sheet on Click */}
+                      {isExpanded && (
+                        <div className="px-2 sm:px-3 pb-6 pt-2 grid grid-cols-1 md:grid-cols-12 gap-6 text-xs border-t border-[#FAF9F6]">
+                          <div className="md:col-span-1 hidden md:block" />
+
+                          <div className="md:col-span-3 space-y-1">
+                            <div className="font-mono text-[11px] uppercase tracking-wider text-[#575652]">
+                              Role &amp; Practice
                             </div>
+                            <div className="font-semibold text-[#141413] text-sm">
+                              {project.role}
+                            </div>
+                            <div className="text-[#575652]">{project.category}</div>
+                          </div>
 
-                            {/* Right Column (5 cols): The Measurable Impact, Deliverables & Action */}
-                            <div className="lg:col-span-5 w-full bg-white border border-[#E6E4DD] rounded-2xl p-5 sm:p-6 space-y-5">
-                              <div className="space-y-2.5">
-                                <h3 className="text-xs font-bold uppercase tracking-wider text-[#141413]">
-                                  The Measurable Impact
-                                </h3>
-                                <ul className="space-y-2">
-                                  {project.impactMetrics.map((metric, mIdx) => (
-                                    <li
-                                      key={mIdx}
-                                      className="text-xs text-[#3F3E3A] flex items-start gap-2 leading-relaxed"
-                                    >
-                                      <span className="font-mono text-[11px] font-semibold text-[#141413] shrink-0">
-                                        0{mIdx + 1}.
-                                      </span>
-                                      <span>{metric}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-
-                              <div className="pt-3.5 border-t border-[#E6E4DD] space-y-1.5">
-                                <div className="text-[11px] font-semibold text-[#575652]">
-                                  Deliverables
-                                </div>
-                                <p className="text-xs text-[#3F3E3A] leading-relaxed">
-                                  {project.deliverables.join(' · ')}
-                                </p>
-                              </div>
-
-                              <div className="pt-3 border-t border-[#E6E4DD] flex items-center justify-end gap-3">
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    handleInquireWithContext(
-                                      project.title,
-                                      project.category === 'WCAG & Accessibility'
-                                        ? 'WCAG Accessibility Audit'
-                                        : 'D&I Strategy Advisory'
-                                    )
-                                  }
-                                  aria-label={`Enquire about work similar to ${project.title}`}
-                                  className="text-xs font-semibold text-[#141413] hover:underline inline-flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0"
+                          <div className="md:col-span-5 space-y-2">
+                            <div className="font-mono text-[11px] uppercase tracking-wider text-[#575652]">
+                              Key Result
+                            </div>
+                            <p className="text-[#141413] text-sm leading-relaxed">
+                              {project.impactMetrics[0]}
+                            </p>
+                            <div className="flex flex-wrap gap-1.5 pt-1">
+                              {project.deliverables.map((deliv, dIdx) => (
+                                <span
+                                  key={dIdx}
+                                  className="px-2.5 py-1 rounded bg-[#F2EFE9] text-[11px] text-[#3F3E3A]"
                                 >
-                                  <span>Enquire About Similar Work</span>
-                                  <ArrowRight className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
+                                  {deliv}
+                                </span>
+                              ))}
                             </div>
                           </div>
-                        </motion.article>
-                      );
-                    })}
-                  </AnimatePresence>
-                </div>
+
+                          <div className="md:col-span-3 flex md:justify-end items-end">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleInquireWithContext(
+                                  project.title,
+                                  project.category === 'WCAG & Accessibility'
+                                    ? 'WCAG Accessibility Audit'
+                                    : 'D&I Strategy Advisory'
+                                )
+                              }
+                              className="px-4 py-2 text-xs font-semibold text-white bg-[#141413] hover:bg-[#3F3E3A] rounded-lg transition-colors cursor-pointer"
+                            >
+                              Enquire About Similar Work
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </section>
 
-              {/* 3. How Stephanie Audits & Advises (3-Step Methodology) */}
-              <section className="border-t border-b border-[#E6E4DD] bg-white py-12 sm:py-16">
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-8">
-                  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                    <div className="space-y-1">
-                      <div className="font-mono text-xs text-[#575652]">
-                        Engagement Methodology
-                      </div>
-                      <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]">
-                        How Audits &amp; Strategy Engagements Work
+              {/* 3. Compact 3-Column Services Strip */}
+              <section aria-label="Services" className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {CORE_SERVICE_PILLARS.map((service, idx) => (
+                  <div
+                    key={service.id}
+                    className="p-6 rounded-2xl bg-white border border-[#E6E4DD] flex flex-col justify-between gap-6"
+                  >
+                    <div className="space-y-2">
+                      <div className="font-mono text-xs text-[#575652]">0{idx + 1}</div>
+                      <h2 className="text-lg font-display font-bold text-[#141413]">
+                        {service.title}
                       </h2>
+                      <p className="text-xs text-[#575652] leading-relaxed">
+                        {service.leadSummary}
+                      </p>
                     </div>
+
                     <button
                       type="button"
-                      onClick={() => navigateTo('contact')}
-                      aria-label="Book a discovery call with Stephanie"
-                      className="text-xs font-semibold text-[#141413] hover:text-[#575652] inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+                      onClick={() =>
+                        handleInquireWithContext(service.title, service.enquiryType)
+                      }
+                      className="text-xs font-semibold text-[#141413] hover:underline underline-offset-4 text-left cursor-pointer w-fit"
                     >
-                      <span>Schedule a Discovery Session</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      Book Service →
                     </button>
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 pt-2">
-                    <div className="space-y-2.5 pr-2">
-                      <div className="font-mono text-xs font-semibold text-[#575652]">
-                        01. Diagnostic &amp; Assistive Teardown
-                      </div>
-                      <h3 className="text-base font-display font-bold text-[#141413]">
-                        WCAG 2.1 / 2.2 Level AA Evaluation
-                      </h3>
-                      <p className="text-xs sm:text-sm text-[#575652] leading-relaxed">
-                        Manual screen-reader testing, keyboard navigation tree verification,
-                        semantic DOM inspection, and color contrast auditing across core user flows.
-                      </p>
-                    </div>
-
-                    <div className="space-y-2.5 pr-2 md:border-l md:border-[#E6E4DD] md:pl-6">
-                      <div className="font-mono text-xs font-semibold text-[#575652]">
-                        02. Remediation &amp; Policy Architecture
-                      </div>
-                      <h3 className="text-base font-display font-bold text-[#141413]">
-                        Prioritized Engineering &amp; D&amp;I Playbooks
-                      </h3>
-                      <p className="text-xs sm:text-sm text-[#575652] leading-relaxed">
-                        Actionable ticket roadmaps for frontend and UX teams paired with statutory
-                        disability accommodation policies for HR and executive leadership.
-                      </p>
-                    </div>
-
-                    <div className="space-y-2.5 pr-2 md:border-l md:border-[#E6E4DD] md:pl-6">
-                      <div className="font-mono text-xs font-semibold text-[#575652]">
-                        03. Verification &amp; Team Enablement
-                      </div>
-                      <h3 className="text-base font-display font-bold text-[#141413]">
-                        CI/CD Guardrails &amp; Inclusive Hiring
-                      </h3>
-                      <p className="text-xs sm:text-sm text-[#575652] leading-relaxed">
-                        Hands-on workshops for product engineers and recruiters to sustain
-                        accessibility compliance and place qualified talent with disabilities.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </section>
 
-              {/* 4. Dedicated Service Deep-Dive Sub-Sections (300+ Words Each) */}
-              <section
-                aria-label="Dedicated Accessibility and Inclusion Services"
-                className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16 space-y-8 border-b border-[#E6E4DD]"
-              >
-                <div className="space-y-2 max-w-3xl">
-                  <div className="font-mono text-xs font-semibold uppercase tracking-wider text-[#575652]">
-                    DEDICATED SERVICE OFFERINGS
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]">
-                    WCAG Auditing, NGO Program Advisory &amp; Keynote Speaking
-                  </h2>
-                  <p className="text-sm sm:text-base text-[#575652] leading-relaxed">
-                    Comprehensive scope, methodology, and deliverables for engineering leaders, startup founders, and international development programs.
-                  </p>
-                </div>
-
-                <div className="space-y-6">
-                  {CORE_SERVICE_PILLARS.map((service) => (
-                    <article
-                      key={service.id}
-                      className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 space-y-5"
-                    >
-                      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 border-b border-[#E6E4DD] pb-4">
-                        <div className="space-y-1">
-                          <div className="font-mono text-xs font-semibold uppercase tracking-wider text-[#575652]">
-                            {service.kicker}
-                          </div>
-                          <h3 className="text-xl sm:text-2xl font-display font-bold text-[#141413]">
-                            {service.title}
-                          </h3>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleInquireWithContext(service.title, service.enquiryType)
-                          }
-                          className="px-5 py-2.5 text-xs font-semibold text-white bg-[#141413] hover:bg-[#3F3E3A] rounded-full transition-colors inline-flex items-center gap-2 w-fit cursor-pointer shrink-0"
-                        >
-                          <span>{service.ctaLabel}</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-
-                      <div className="space-y-3.5 text-sm sm:text-[15px] text-[#3F3E3A] leading-relaxed">
-                        {service.paragraphs.map((para, pIdx) => (
-                          <p key={pIdx}>{para}</p>
-                        ))}
-                      </div>
-
-                      <div className="pt-3 border-t border-[#E6E4DD] space-y-2">
-                        <div className="text-xs font-semibold uppercase tracking-wider text-[#141413]">
-                          Included Deliverables
-                        </div>
-                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                          {service.deliverables.map((deliv, dIdx) => (
-                            <li
-                              key={dIdx}
-                              className="text-xs text-[#3F3E3A] flex items-start gap-2"
-                            >
-                              <CheckCircle2 className="w-3.5 h-3.5 text-[#141413] shrink-0 mt-0.5" />
-                              <span>{deliv}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </section>
-
-              {/* 5. Signature Interactive WCAG Contrast Lab */}
-              <div
-                id="contrast-lab-section"
-                className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16"
-              >
+              {/* 4. Live WCAG Contrast Tester */}
+              <div id="contrast-lab-section" className="pt-6 border-t border-[#E6E4DD]">
                 <AccessibilitySandbox />
               </div>
 
-              {/* 6. Buyer Frequently Asked Questions (Collapsible Dropdown Accordion + FAQPage Schema) */}
+              {/* 5. Compact Collapsible FAQ */}
               <section
                 id="faq"
                 aria-labelledby="work-faq-heading"
                 itemScope
                 itemType="https://schema.org/FAQPage"
-                className="max-w-[1200px] mx-auto px-4 sm:px-6 pb-16 sm:pb-24 space-y-6"
+                className="pt-6 border-t border-[#E6E4DD] space-y-4"
               >
-                <div className="space-y-1.5 max-w-2xl">
-                  <div className="font-mono text-xs font-semibold uppercase tracking-wider text-[#575652]">
-                    FREQUENTLY ASKED QUESTIONS
-                  </div>
-                  <h2
-                    id="work-faq-heading"
-                    className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#141413]"
-                  >
-                    Common Questions About WCAG Audits &amp; Inclusion Advisory
-                  </h2>
-                </div>
+                <h2
+                  id="work-faq-heading"
+                  className="text-xl sm:text-2xl font-display font-bold tracking-tight text-[#141413]"
+                >
+                  FAQ
+                </h2>
 
-                <div className="max-w-4xl divide-y divide-[#E6E4DD] border border-[#E6E4DD] rounded-2xl bg-white overflow-hidden">
+                <div className="divide-y divide-[#E6E4DD] border-y border-[#E6E4DD]">
                   {BUYER_FAQ_ITEMS.map((faq, idx) => {
                     const isOpen = openWorkFaqIndex === idx;
                     return (
@@ -2088,7 +1930,6 @@ export default function App() {
                         itemScope
                         itemProp="mainEntity"
                         itemType="https://schema.org/Question"
-                        className="transition-colors"
                       >
                         <h3 className="m-0">
                           <button
@@ -2096,31 +1937,21 @@ export default function App() {
                             onClick={() => setOpenWorkFaqIndex(isOpen ? null : idx)}
                             aria-expanded={isOpen}
                             aria-controls={`work-faq-panel-${idx}`}
-                            className="w-full px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-4 text-left hover:bg-[#FAF9F6] transition-colors cursor-pointer"
+                            className="w-full py-4 flex items-center justify-between gap-4 text-left hover:opacity-75 transition-opacity cursor-pointer"
                           >
-                            <span className="flex items-baseline gap-3.5 pr-2">
-                              <span className="font-mono text-xs font-semibold text-[#575652] tabular-nums shrink-0">
+                            <span className="flex items-baseline gap-3">
+                              <span className="font-mono text-xs text-[#575652] tabular-nums shrink-0">
                                 0{idx + 1}
                               </span>
                               <span
                                 itemProp="name"
-                                className="text-sm sm:text-base font-display font-bold text-[#141413] leading-snug"
+                                className="text-sm sm:text-base font-display font-bold text-[#141413]"
                               >
                                 {faq.question}
                               </span>
                             </span>
-                            <span
-                              className={`w-7 h-7 rounded-full border border-[#E6E4DD] flex items-center justify-center shrink-0 transition-colors ${
-                                isOpen
-                                  ? 'bg-[#141413] border-[#141413] text-white'
-                                  : 'bg-[#FAF9F6] text-[#141413]'
-                              }`}
-                            >
-                              <ChevronDown
-                                className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                                  isOpen ? 'rotate-180' : ''
-                                }`}
-                              />
+                            <span className="font-mono text-sm text-[#141413] shrink-0">
+                              {isOpen ? '−' : '+'}
                             </span>
                           </button>
                         </h3>
@@ -2133,7 +1964,7 @@ export default function App() {
                           itemType="https://schema.org/Answer"
                           className={`${
                             isOpen ? 'block' : 'hidden'
-                          } px-5 sm:px-6 pb-5 pt-1 sm:pl-14 text-xs sm:text-sm text-[#3F3E3A] leading-relaxed border-t border-[#FAF9F6]`}
+                          } pb-4 pl-7 text-xs sm:text-sm text-[#575652] leading-relaxed max-w-3xl`}
                         >
                           <p itemProp="text" className="m-0">
                             {faq.answer}
