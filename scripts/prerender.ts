@@ -12,6 +12,7 @@ import {
   PUBLICATIONS_AND_FEATURES,
   CV_PDF_URL,
   STEPHANIE_PORTRAITS,
+  BUYER_FAQ_ITEMS,
 } from '../src/data/portfolioData';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -591,6 +592,32 @@ async function runSSG() {
     customized = customized.replace(
       /<meta property="og:url" content="[\s\S]*?" \/>/i,
       `<meta property="og:url" content="${route.canonical}" />`
+    );
+
+    // Customize FAQPage JSON-LD schema with route-specific URL for Home (/) and Work (/work)
+    const faqSchemaPayload = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      '@id': `${route.canonical.replace(/\/$/, '') || 'https://stephanieegharevba.com'}/#faq`,
+      url: route.canonical,
+      name:
+        route.path === '/work'
+          ? 'Common Questions About WCAG Audits & Inclusion Advisory'
+          : 'Frequently Asked Questions — WCAG Accessibility Audits & Inclusion Advisory',
+      mainEntity: BUYER_FAQ_ITEMS.map((f) => ({
+        '@type': 'Question',
+        '@id': `${route.canonical.replace(/\/$/, '') || 'https://stephanieegharevba.com'}/#${f.id}`,
+        name: f.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.answer,
+        },
+      })),
+    };
+
+    customized = customized.replace(
+      /<script id="faq-schema-jsonld" type="application\/ld\+json">[\s\S]*?<\/script>/i,
+      `<script id="faq-schema-jsonld" type="application/ld+json">\n${JSON.stringify(faqSchemaPayload, null, 2)}\n    </script>`
     );
 
     // Ensure <div id="root"></div> remains clean for React client rendering

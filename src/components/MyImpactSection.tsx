@@ -25,7 +25,7 @@ export default function MyImpactSection({
           id="my-impact-heading"
           className="text-xl sm:text-2xl font-bold tracking-wider text-[#141413] dark:text-white uppercase whitespace-nowrap"
         >
-          MY IMPACT &amp; CLIENT ENDORSEMENTS
+          MY IMPACT
         </h2>
         <div
           className="flex-1 h-[2px] bg-[#D9DDE2] dark:bg-neutral-800 relative flex items-center justify-end"

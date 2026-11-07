@@ -293,6 +293,7 @@ export default function App() {
   const [newsletterErrorMessage, setNewsletterErrorMessage] = useState('');
 
   // Collapsible FAQ state (collapsed by default to save space)
+  const [openHomeFaqIndex, setOpenHomeFaqIndex] = useState<number | null>(null);
   const [openWorkFaqIndex, setOpenWorkFaqIndex] = useState<number | null>(null);
   const [openContactFaqIndex, setOpenContactFaqIndex] = useState<number | null>(null);
 
@@ -556,8 +557,14 @@ export default function App() {
     const faqNode = {
       '@type': 'FAQPage',
       '@id': `${fullPageUrl}#faq`,
+      url: fullPageUrl,
+      name:
+        activePage === 'work'
+          ? 'Common Questions About WCAG Audits & Inclusion Advisory'
+          : 'Frequently Asked Questions — WCAG Accessibility Audits & Inclusion Advisory',
       mainEntity: BUYER_FAQ_ITEMS.map((f) => ({
         '@type': 'Question',
+        '@id': `${fullPageUrl}#${f.id}`,
         name: f.question,
         acceptedAnswer: {
           '@type': 'Answer',
@@ -569,6 +576,19 @@ export default function App() {
     schemaEl.textContent = JSON.stringify({
       '@context': 'https://schema.org',
       '@graph': [personNode, ...serviceNodes, ...bookNodes, faqNode],
+    });
+
+    // Dedicated top-level FAQPage JSON-LD script for Home, Work, and Enquiries pages
+    let faqSchemaEl = document.getElementById('faq-schema-jsonld') as HTMLScriptElement | null;
+    if (!faqSchemaEl) {
+      faqSchemaEl = document.createElement('script');
+      faqSchemaEl.id = 'faq-schema-jsonld';
+      faqSchemaEl.type = 'application/ld+json';
+      document.head.appendChild(faqSchemaEl);
+    }
+    faqSchemaEl.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      ...faqNode,
     });
   }, [activePage]);
 
@@ -1499,8 +1519,8 @@ export default function App() {
                     </p>
                   </div>
 
-                  {/* YouTube Video Showcase Frame (Reduced Width Only) */}
-                  <div className="w-full max-w-[640px] aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-[#141413] border border-[#E6E4DD] shadow-sm">
+                  {/* YouTube Video Showcase Frame (Increased Width & Centered in the Middle) */}
+                  <div className="w-full max-w-[860px] mx-auto aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-[#141413] border border-[#E6E4DD] shadow-sm">
                     <iframe
                       width="560"
                       height="315"
@@ -1514,173 +1534,18 @@ export default function App() {
                     />
                   </div>
 
-                  {/* Primary CTA Button + Expandable Webinar Sign-Up Drawer */}
-                  <div className="space-y-4">
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setIsWebinarSignupOpen((prev) => !prev);
-                          setWebinarStatus('idle');
-                        }}
-                        aria-expanded={isWebinarSignupOpen}
-                        className="px-7 py-3.5 text-xs sm:text-sm font-bold text-white bg-[#141413] hover:bg-[#3F3E3A] active:scale-[0.99] rounded-xl transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
-                      >
-                        <Calendar className="w-4 h-4" />
-                        <span>Sign Up to Be on My Next Webinar</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-
-                      <a
-                        href="https://bwbhq.vercel.app/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Explore Build Without Barriers platform website (opens in new tab)"
-                        className="px-6 py-3.5 text-xs sm:text-sm font-semibold text-[#141413] bg-white hover:bg-[#F2EFE9] border border-[#E6E4DD] rounded-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <span>Explore Build Without Barriers</span>
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    </div>
-
-                    {/* Inline Webinar Registration Drawer */}
-                    <AnimatePresence>
-                      {isWebinarSignupOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.2 }}
-                          className="rounded-2xl border border-[#E6E4DD] bg-white p-6 sm:p-8 shadow-xs max-w-3xl"
-                        >
-                          {webinarStatus === 'success' ? (
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                              <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
-                                <div className="space-y-1">
-                                  <h3 className="text-base font-display font-bold text-[#141413]">
-                                    You’re on the list for the next webinar!
-                                  </h3>
-                                  <p className="text-xs sm:text-sm text-[#575652]">
-                                    We’ve saved your registration and will email you the live session link and calendar invite as soon as the next cohort date goes live.
-                                  </p>
-                                </div>
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setIsWebinarSignupOpen(false);
-                                  setWebinarStatus('idle');
-                                }}
-                                className="px-4 py-2 text-xs font-semibold text-[#141413] border border-[#E6E4DD] rounded-lg hover:border-[#141413] cursor-pointer shrink-0 self-start sm:self-center"
-                              >
-                                Close
-                              </button>
-                            </div>
-                          ) : (
-                            <form onSubmit={handleWebinarSignupSubmit} className="space-y-4">
-                              <div className="flex items-center justify-between gap-4">
-                                <div>
-                                  <h3 className="text-base sm:text-lg font-display font-bold text-[#141413]">
-                                    Reserve Your Spot on the Next Live Webinar
-                                  </h3>
-                                  <p className="text-xs text-[#575652]">
-                                    Enter your details below to receive the calendar invite and session materials.
-                                  </p>
-                                </div>
-                                <button
-                                  type="button"
-                                  onClick={() => setIsWebinarSignupOpen(false)}
-                                  aria-label="Close webinar registration form"
-                                  className="p-1.5 text-[#575652] hover:text-[#141413] rounded-lg cursor-pointer"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
-
-                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <div>
-                                  <label
-                                    htmlFor="webinar-reg-name"
-                                    className="block font-mono text-[10px] uppercase tracking-wider text-[#575652] mb-1 font-semibold"
-                                  >
-                                    Full Name *
-                                  </label>
-                                  <input
-                                    id="webinar-reg-name"
-                                    type="text"
-                                    required
-                                    value={webinarName}
-                                    onChange={(e) => setWebinarName(e.target.value)}
-                                    placeholder="Your name"
-                                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] text-[#141413] focus:border-[#141413] outline-none"
-                                  />
-                                </div>
-
-                                <div>
-                                  <label
-                                    htmlFor="webinar-reg-email"
-                                    className="block font-mono text-[10px] uppercase tracking-wider text-[#575652] mb-1 font-semibold"
-                                  >
-                                    Email Address *
-                                  </label>
-                                  <input
-                                    id="webinar-reg-email"
-                                    type="email"
-                                    required
-                                    value={webinarEmail}
-                                    onChange={(e) => setWebinarEmail(e.target.value)}
-                                    placeholder="you@company.com"
-                                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] text-[#141413] focus:border-[#141413] outline-none"
-                                  />
-                                </div>
-
-                                <div>
-                                  <label
-                                    htmlFor="webinar-reg-role"
-                                    className="block font-mono text-[10px] uppercase tracking-wider text-[#575652] mb-1 font-semibold"
-                                  >
-                                    Role / Organization
-                                  </label>
-                                  <input
-                                    id="webinar-reg-role"
-                                    type="text"
-                                    value={webinarRole}
-                                    onChange={(e) => setWebinarRole(e.target.value)}
-                                    placeholder="e.g., Product Designer, Founder"
-                                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-[#E6E4DD] bg-[#FAF9F6] text-[#141413] focus:border-[#141413] outline-none"
-                                  />
-                                </div>
-                              </div>
-
-                              {webinarStatus === 'error' && webinarErrorMsg && (
-                                <p role="alert" className="text-xs font-medium text-red-600">
-                                  {webinarErrorMsg}
-                                </p>
-                              )}
-
-                              <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-                                <span className="text-[11px] text-[#575652]">
-                                  Zero spam · Unsubscribe anytime
-                                </span>
-                                <button
-                                  type="submit"
-                                  disabled={webinarStatus === 'loading'}
-                                  className="px-6 py-2.5 rounded-xl bg-[#141413] hover:bg-[#3F3E3A] text-white text-xs font-semibold inline-flex items-center gap-2 cursor-pointer disabled:opacity-50"
-                                >
-                                  <span>
-                                    {webinarStatus === 'loading'
-                                      ? 'Registering...'
-                                      : 'Confirm My Webinar Spot'}
-                                  </span>
-                                  <ArrowRight className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
-                            </form>
-                          )}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                  {/* Single Primary CTA Button Linking to Build Without Barriers (Centered with Video) */}
+                  <div className="w-full max-w-[860px] mx-auto pt-1 flex justify-center">
+                    <a
+                      href="https://bwbhq.vercel.app/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Sign up to be on Stephanie's next webinar on Build Without Barriers (opens in new tab)"
+                      className="px-7 py-3.5 text-xs sm:text-sm font-bold text-white bg-[#141413] hover:bg-[#3F3E3A] active:scale-[0.99] rounded-xl transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
+                    >
+                      <span>Sign Up to Be on My Next Webinar</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
                   </div>
                 </div>
               </motion.section>
@@ -1766,7 +1631,7 @@ export default function App() {
                 </div>
               </motion.section>
 
-              {/* SECTION 5: MY IMPACT (TESTIMONIALS & ENDORSEMENTS) */}
+              {/* SECTION 5: MY IMPACT */}
               <MyImpactSection
                 onNavigateToImpact={() => navigateTo('impact')}
                 reduceMotion={a11yPrefs.reduceMotion}
@@ -2119,9 +1984,12 @@ export default function App() {
                 <AccessibilitySandbox />
               </div>
 
-              {/* 6. Buyer Frequently Asked Questions (Collapsible Dropdown Accordion) */}
+              {/* 6. Buyer Frequently Asked Questions (Collapsible Dropdown Accordion + FAQPage Schema) */}
               <section
+                id="faq"
                 aria-labelledby="work-faq-heading"
+                itemScope
+                itemType="https://schema.org/FAQPage"
                 className="max-w-[1200px] mx-auto px-4 sm:px-6 pb-16 sm:pb-24 space-y-6"
               >
                 <div className="space-y-1.5 max-w-2xl">
@@ -2140,7 +2008,13 @@ export default function App() {
                   {BUYER_FAQ_ITEMS.map((faq, idx) => {
                     const isOpen = openWorkFaqIndex === idx;
                     return (
-                      <div key={idx} className="transition-colors">
+                      <div
+                        key={faq.id}
+                        itemScope
+                        itemProp="mainEntity"
+                        itemType="https://schema.org/Question"
+                        className="transition-colors"
+                      >
                         <h3 className="m-0">
                           <button
                             type="button"
@@ -2153,7 +2027,10 @@ export default function App() {
                               <span className="font-mono text-xs font-semibold text-[#575652] tabular-nums shrink-0">
                                 0{idx + 1}
                               </span>
-                              <span className="text-sm sm:text-base font-display font-bold text-[#141413] leading-snug">
+                              <span
+                                itemProp="name"
+                                className="text-sm sm:text-base font-display font-bold text-[#141413] leading-snug"
+                              >
                                 {faq.question}
                               </span>
                             </span>
@@ -2172,15 +2049,21 @@ export default function App() {
                             </span>
                           </button>
                         </h3>
-                        {isOpen && (
-                          <div
-                            id={`work-faq-panel-${idx}`}
-                            role="region"
-                            className="px-5 sm:px-6 pb-5 pt-1 sm:pl-14 text-xs sm:text-sm text-[#3F3E3A] leading-relaxed border-t border-[#FAF9F6]"
-                          >
+                        <div
+                          id={`work-faq-panel-${idx}`}
+                          role="region"
+                          hidden={!isOpen}
+                          itemScope
+                          itemProp="acceptedAnswer"
+                          itemType="https://schema.org/Answer"
+                          className={`${
+                            isOpen ? 'block' : 'hidden'
+                          } px-5 sm:px-6 pb-5 pt-1 sm:pl-14 text-xs sm:text-sm text-[#3F3E3A] leading-relaxed border-t border-[#FAF9F6]`}
+                        >
+                          <p itemProp="text" className="m-0">
                             {faq.answer}
-                          </div>
-                        )}
+                          </p>
+                        </div>
                       </div>
                     );
                   })}
