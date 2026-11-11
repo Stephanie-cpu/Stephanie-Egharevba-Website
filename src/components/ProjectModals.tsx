@@ -116,7 +116,7 @@ export const ProjectLightboxModal: React.FC<ProjectLightboxProps> = ({
               <ul className="space-y-1.5">
                 {project.deliverables.map((item, idx) => (
                   <li key={idx} className="text-sm text-[#3F3E3A] flex items-start gap-2">
-                    <span className="font-mono text-xs text-[#575652]">—</span>
+                    <span className="font-mono text-xs text-[#575652]">·</span>
                     <span>{item}</span>
                   </li>
                 ))}

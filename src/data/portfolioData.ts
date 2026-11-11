@@ -38,7 +38,7 @@ export const RECOMMENDATIONS_DATA: RecommendationItem[] = [
   {
     id: 'lidia-pretorius',
     name: 'Lidia Pretorius',
-    role: 'Disability Inclusion Strategist | Programme Design & Implementation | Coaching & Facilitation | Helping leaders move inclusion from policy into practice — in Africa and beyond',
+    role: 'Disability Inclusion Strategist | Programme Design & Implementation | Coaching & Facilitation | Helping leaders move inclusion from policy into practice in Africa and beyond',
     shortRole: 'Disability Inclusion Strategist & Mentor',
     relationship: 'Stephanie’s Mentor & Strategic Inclusion Collaborator',
     date: 'January 29, 2026',
@@ -47,7 +47,7 @@ export const RECOMMENDATIONS_DATA: RecommendationItem[] = [
     highlightQuote:
       'You don’t often encounter young digital inclusion activists who can move so seamlessly between technical accessibility, lived reality, and strategic application. Stephanie is one of those rare people.',
     fullQuote:
-      'You don’t often encounter young digital inclusion activists who can move so seamlessly between technical accessibility, lived reality, and strategic application. Stephanie is one of those rare people.\n\nThe clarity with which she translates complex accessibility and digital inclusion issues into practical, engaging, and immediately usable language is genuinely exceptional. Her work doesn’t just inform, it mobilises. Her posts were compelling enough to move me from reader to inbox to a discovery conversation and, very quickly, into active collaboration.\n\nWhat stood out immediately was not only her technical grasp but also her work ethic, intentionality, and systems awareness. We are already structuring collaboration across several digital inclusion fronts within my own work, and exploring extending this into the work of ecosystem partners — a pace and depth of engagement that speaks to both her credibility and her professionalism.\n\nStephanie is not only a strong emerging voice in digital inclusion. She is a practitioner, a translator, and a bridge-builder. If you are working anywhere near diversity and inclusion, accessibility, inclusive technology, or digital equity, she is someone to watch, support, and collaborate with.',
+      'You don’t often encounter young digital inclusion activists who can move so seamlessly between technical accessibility, lived reality, and strategic application. Stephanie is one of those rare people.\n\nThe clarity with which she translates complex accessibility and digital inclusion issues into practical, engaging, and immediately usable language is genuinely exceptional. Her work doesn’t just inform, it mobilises. Her posts were compelling enough to move me from reader to inbox to a discovery conversation and, very quickly, into active collaboration.\n\nWhat stood out immediately was not only her technical grasp but also her work ethic, intentionality, and systems awareness. We are already structuring collaboration across several digital inclusion fronts within my own work, and exploring extending this into the work of ecosystem partners, a pace and depth of engagement that speaks to both her credibility and her professionalism.\n\nStephanie is not only a strong emerging voice in digital inclusion. She is a practitioner, a translator, and a bridge-builder. If you are working anywhere near diversity and inclusion, accessibility, inclusive technology, or digital equity, she is someone to watch, support, and collaborate with.',
   },
   {
     id: 'ijaodola-tope-kareem',
@@ -105,7 +105,7 @@ export const RECOMMENDATIONS_DATA: RecommendationItem[] = [
   {
     id: 'amanda-jaiyeola',
     name: 'Amanda Jaiyeola',
-    role: 'Founder, Achèo Koncept | Amanda Jaiyeola Foundation | Bureau of Representatives (BOR), Afrikan Youth Business Council — West Africa | Creative Director',
+    role: 'Founder, Achèo Koncept | Amanda Jaiyeola Foundation | Bureau of Representatives (BOR), Afrikan Youth Business Council, West Africa | Creative Director',
     shortRole: 'Founder, Amanda Jaiyeola Foundation & Achèo Koncept',
     relationship: 'Worked on the same team with Stephanie',
     date: 'September 8, 2024',
@@ -176,8 +176,8 @@ export const CORE_SERVICE_PILLARS: ServicePillarItem[] = [
       'Comprehensive manual and automated WCAG 2.2 Level AA/AAA accessibility audits for web platforms, fintech apps, and NGO portals across Nigeria, West Africa, and global markets.',
     paragraphs: [
       'Automated accessibility scanners catch less than 30% of real-world usability barriers. As a dedicated digital accessibility consultant in Nigeria and Africa, Stephanie Egharevba conducts deep, code-level WCAG audit services that combine manual assistive technology testing (NVDA, VoiceOver, TalkBack, and switch-navigation) with structural DOM, ARIA, and keyboard focus-tree evaluations.',
-      'For high-growth fintechs, SaaS startups, commercial banks, and enterprise product teams, an inaccessible checkout flow, KYC verification screen, or onboarding form silently locks out over 15% of the population—more than 35 million Nigerians and 1.3 billion people globally living with disabilities. Mobile app accessibility testing and responsive web evaluations uncover the exact friction points where screen-reader users get trapped in modal dialogs, where low-contrast typography fails under bright outdoor sunlight, and where custom UI components lack semantic labels.',
-      'Every WCAG 2.2 AA audit engagement concludes with a developer-ready Engineering Remediation Roadmap rather than a vague compliance PDF. Product managers, UI/UX designers, and frontend engineers receive prioritized ticket specifications—organized into Critical Blockers, High-Impact UX Fixes, and Design System Guardrails—complete with semantic HTML/ARIA code patterns, contrast ratio calculations, Nigerian Disability Act (NCPWD) alignment notes, and a post-remediation verification walkthrough to certify compliance.',
+      'For high-growth fintechs, SaaS startups, commercial banks, and enterprise product teams, an inaccessible checkout flow, KYC verification screen, or onboarding form silently locks out over 15% of the population (more than 35 million Nigerians and 1.3 billion people globally living with disabilities). Mobile app accessibility testing and responsive web evaluations uncover the exact friction points where screen-reader users get trapped in modal dialogs, where low-contrast typography fails under bright outdoor sunlight, and where custom UI components lack semantic labels.',
+      'Every WCAG 2.2 AA audit engagement concludes with a developer-ready Engineering Remediation Roadmap rather than a vague compliance PDF. Product managers, UI/UX designers, and frontend engineers receive prioritized ticket specifications organized into Critical Blockers, High-Impact UX Fixes, and Design System Guardrails, complete with semantic HTML/ARIA code patterns, contrast ratio calculations, Nigerian Disability Act (NCPWD) alignment notes, and a post-remediation verification walkthrough to certify compliance.',
     ],
     deliverables: [
       'Full WCAG 2.1 / 2.2 Level AA Technical Audit Report',
@@ -204,7 +204,7 @@ export const CORE_SERVICE_PILLARS: ServicePillarItem[] = [
       'Strategic disability inclusion advisory helping international foundations, NGOs, and corporate talent ecosystems design accessible grantmaking programs, inclusive learning portals, and equitable employment pipelines.',
     paragraphs: [
       'Philanthropic foundations, development agencies, and impact organizations invest millions of dollars into youth employment, digital skills fellowships, and entrepreneurship grants across Africa. Yet when the application portal, learning management system (LMS), or event format is inaccessible, qualified young people with disabilities are filtered out before the program even begins.',
-      'Drawing from her leadership as Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria—where she founded and scaled the 200+ member Alumni Disability Community—and her work across Jobberman Nigeria and the Mastercard Foundation Talent Corp initiative, Stephanie serves as a trusted disability inclusion strategy consultant for institutional programs. She helps organizations move from well-intentioned diversity statements to measurable, operational inclusion.',
+      'Drawing from her leadership as Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria, where she founded and scaled the 200+ member Alumni Disability Community, and her work across Jobberman Nigeria and the Mastercard Foundation Talent Corp initiative, Stephanie serves as a trusted disability inclusion strategy consultant for institutional programs. She helps organizations move from well-intentioned diversity statements to measurable, operational inclusion.',
       'Advisory engagements cover end-to-end inclusive digital design for NGOs and accessible grantmaking programs: auditing fellowship application forms so screen-reader and motor-impaired applicants are not disqualified by visual CAPTCHAs or timed tests; establishing clear workplace and academic accommodation policies; training program officers and partner employers on disability etiquette and bias-free interviewing; and building self-sustaining peer networks that retain talent with disabilities long after onboarding.',
     ],
     deliverables: [
@@ -232,10 +232,10 @@ export const CORE_SERVICE_PILLARS: ServicePillarItem[] = [
     paragraphs: [
       'Ranked in the Top 3% of Global Speakers on Sessionize and recognized among ALX Nigeria’s Top 100 Women in Tech, Stephanie Egharevba is a sought-after AI accessibility keynote speaker and disability inclusion speaker in Africa. Having delivered plenaries, fireside chats, and broadcasts for the InAble Inclusive Africa Conference, Mastercard Foundation global broadcasts, TechCabal Moonshot, InnovateAI Lagos, DataFest Africa, and AISEN, she brings rare dual fluency: lived experience with Osteogenesis Imperfecta paired with hands-on Computer Science and WCAG auditing expertise.',
       'As artificial intelligence reshapes banking, education, healthcare, and hiring across emerging markets, organizations face a pivotal choice: allow AI interfaces to automate historical exclusion at scale, or engineer multi-modal, accessible AI products that expand human capability. Stephanie’s keynotes challenge founders, software engineers, policymakers, and educators to rethink how products and institutions are built.',
-      'Every keynote or executive workshop is tailored to the host audience—whether addressing 3,000+ developers and students at a national technology summit, briefing bank executives on the commercial market case for serving 35+ million Nigerians with disabilities, or facilitating a live 5-minute keyboard and screen-reader teardown with product engineering teams.',
+      'Every keynote or executive workshop is tailored to the host audience, whether addressing 3,000+ developers and students at a national technology summit, briefing bank executives on the commercial market case for serving 35+ million Nigerians with disabilities, or facilitating a live 5-minute keyboard and screen-reader teardown with product engineering teams.',
     ],
     deliverables: [
-      'Flagship Keynote: Disability Is Not the Problem—Design Is the Problem',
+      'Flagship Keynote: Disability Is Not the Problem, Design Is the Problem',
       'AI & Tech Plenary: Auditing AI Interfaces & Digital Products for Human Inclusion',
       'Executive Briefing: Why Inaccessible Products Lock Out 15% of the African Market',
       'Hands-On Engineering Workshop: Building WCAG 2.2 AA Accessible Software from Sprint Zero',
@@ -281,7 +281,7 @@ export const BUYER_FAQ_ITEMS: BuyerFaqItem[] = [
     category: 'Compliance',
     question: 'Why do Nigerian fintechs and digital products need to comply with the Nigerian Disability Act?',
     answer:
-      'The Discrimination Against Persons with Disabilities (Prohibition) Act 2018 and the National Commission for Persons with Disabilities (NCPWD) mandate equitable access to public services, banking, telecommunications, education, and employment—which increasingly operate through digital apps. Beyond regulatory compliance, over 35 million Nigerians (15%+ of the population) live with a disability; making your mobile and web platforms accessible unlocks an underserved market while improving usability for all customers in low-bandwidth or bright-sunlight conditions.',
+      'The Discrimination Against Persons with Disabilities (Prohibition) Act 2018 and the National Commission for Persons with Disabilities (NCPWD) mandate equitable access to public services, banking, telecommunications, education, and employment, which increasingly operate through digital apps. Beyond regulatory compliance, over 35 million Nigerians (15%+ of the population) live with a disability; making your mobile and web platforms accessible unlocks an underserved market while improving usability for all customers in low-bandwidth or bright-sunlight conditions.',
   },
   {
     id: 'faq-booking-speaking',
@@ -408,7 +408,7 @@ export const STEPHANIE_PORTRAITS: PortraitAsset[] = [
     id: 'portrait-executive-emerald',
     src: '/assets/aistudio/stephanie-egharevba-digital-accessibility-consultant-portrait.jpg',
     title: 'Executive Studio Portrait',
-    caption: 'Stephanie Egharevba — Digital Accessibility Consultant, WCAG Strategist, and Diversity & Inclusion Lead in Lagos, Nigeria.',
+    caption: 'Stephanie Egharevba, Digital Accessibility Consultant, WCAG Strategist, and Diversity & Inclusion Lead in Lagos, Nigeria.',
     attireAndMood: 'Emerald blazer · Charcoal backdrop',
     orientation: 'three-quarter',
     resolutionLabel: 'Press Portrait · 3:4',
@@ -418,7 +418,7 @@ export const STEPHANIE_PORTRAITS: PortraitAsset[] = [
     id: 'portrait-sky-blazer-close',
     src: '/assets/aistudio/stephanie-egharevba-disability-inclusion-speaker-headshot.jpg',
     title: 'Speaker Headshot (Sky Blazer)',
-    caption: 'Stephanie Egharevba — Disability Inclusion Speaker in Africa and Top 3% Global Speaker on Sessionize.',
+    caption: 'Stephanie Egharevba, Disability Inclusion Speaker in Africa and Top 3% Global Speaker on Sessionize.',
     attireAndMood: 'Powder-blue blazer · Neutral backdrop',
     orientation: 'portrait',
     resolutionLabel: 'Headshot · 3:4',
@@ -733,71 +733,71 @@ export const CORE_COMPETENCIES: string[] = [
 export const INITIAL_PROJECTS: ProjectItem[] = [
   {
     id: 'rushbox-wcag-audit',
-    title: 'Rushbox WCAG 2.2 AA Platform Audit & Remediation',
+    title: 'WCAG 2.2 AA Platform Audit & Remediation',
     subtitle: 'End-to-End Web & Mobile Accessibility Teardown, Keyboard Navigation & Inclusive MVP Engineering',
     category: 'WCAG & Accessibility',
-    year: '2025 — 2026',
-    organization: 'Rushbox',
+    year: '2025 - 2026',
+    organization: 'Digital Product & Logistics MVP',
     role: 'Digital Accessibility Consultant & WCAG Auditor',
     visualTheme: 'audit',
     summary:
-      'Partnered with Rushbox’s founding and engineering team during MVP iteration to audit core web and mobile user journeys against WCAG 2.1 / 2.2 Level AA standards, eliminating keyboard traps, screen-reader blockers, and contrast failures before scale.',
+      'Partnered with the founding and engineering team during MVP iteration to audit core web and mobile user journeys against WCAG 2.1 / 2.2 Level AA standards, eliminating keyboard traps, screen-reader blockers, and contrast failures before scale.',
     challenge:
       'Customers with physical, visual, and cognitive disabilities encountered critical usability blockers across onboarding, navigation, and checkout flows: custom interactive controls lacked ARIA roles and focus indicators, modal dialogs trapped keyboard-only users, form inputs failed to announce validation errors to screen readers, and secondary UI text fell below the 4.5:1 WCAG contrast threshold.',
     intervention:
-      'Conducted a comprehensive manual and automated WCAG 2.2 Level AA teardown using keyboard-only walkthroughs and screen readers (NVDA and VoiceOver). Re-architected the DOM heading hierarchy (single H1, logical H2/H3 landmarks), replaced non-semantic div buttons with keyboard-accessible controls, engineered high-visibility :focus-visible rings, connected inline form error states via aria-describedby, and delivered a prioritized engineering remediation roadmap.',
+      'Conducted a comprehensive manual and automated WCAG 2.2 Level AA teardown using keyboard-only walkthroughs and screen readers (NVDA and VoiceOver). Re-architected the DOM heading hierarchy, replaced non-semantic div buttons with keyboard-accessible controls, engineered high-visibility :focus-visible rings, connected inline form error states via aria-describedby, and delivered a prioritized engineering remediation roadmap.',
     impactMetrics: [
       '100% of critical keyboard focus traps and unlabeled interactive controls resolved across MVP core flows',
       'Achieved WCAG 2.2 AA contrast parity (≥ 4.5:1 body text, ≥ 3:1 UI components) across light and dark surfaces',
-      'Embedded a repeatable accessibility engineering checklist directly into Rushbox’s frontend sprint workflow'
+      'Embedded a repeatable accessibility engineering checklist directly into the frontend sprint workflow'
     ],
     deliverables: [
       'WCAG 2.2 Level AA Technical Audit Report',
-      'Screen-Reader & Keyboard Navigation Tree Remediation Specs',
+      'Screen-Reader & Keyboard Navigation Remediation Specs',
       'Inclusive UX & Frontend Engineering Playbook'
     ]
   },
   {
     id: 'mastercard-yac-nigeria',
-    title: 'Mastercard Foundation Alumni Disability Community & Inclusive Program Architecture',
-    subtitle: 'Scaling a 200+ Member Disability Network, Accessible Event Standards & Ogun State Tech Lab Infrastructure',
+    title: 'Alumni Disability Community & Inclusive Program Architecture',
+    subtitle: 'Scaling a 200+ Member Disability Network, Accessible Event Standards & Tech Lab Infrastructure',
     category: 'D&I Strategy',
-    year: '2024 — 2025',
-    organization: 'Mastercard Foundation Youth Advisory Council Nigeria',
+    year: '2024 - 2025',
+    organization: 'National Youth Advisory Council',
     role: 'Diversity & Inclusion Lead',
     visualTheme: 'council',
     summary:
-      'Designed and scaled institutional disability inclusion across the Mastercard Foundation Youth Advisory Council in Nigeria—founding the 200+ member Alumni Disability Community from zero, authoring accessible program standards, and delivering assistive computer lab hardware.',
+      'Designed and scaled institutional disability inclusion across a national youth advisory ecosystem, founding a 200+ member Alumni Disability Community from zero, authoring accessible program standards, and delivering assistive computer lab hardware.',
     challenge:
-      'Young graduates and scholars with disabilities across Nigeria were navigating fellowship transitions, career placement, and leadership events in isolation—facing inconsistent event accommodations, inaccessible digital registration forms, and a lack of structured peer mentorship.',
+      'Young graduates and scholars with disabilities across Nigeria were navigating fellowship transitions, career placement, and leadership events in isolation, facing inconsistent event accommodations, inaccessible digital registration forms, and a lack of structured peer mentorship.',
     intervention:
-      'Audited and redesigned council communication and event workflows to mandate live captioning, sign language interpretation, accessible venue vetting, and screen-reader friendly digital outreach. Founded the Alumni Disability Community from scratch to unite 200+ young professionals with disabilities, moderated the globally broadcast 2024 International Day of Persons with Disabilities (IDPD) panel, and directed an Ogun State secondary school infrastructure project delivering desktop computers and backup power.',
+      'Audited and redesigned communication and event workflows to mandate live captioning, sign language interpretation, accessible venue vetting, and screen-reader friendly digital outreach. Founded the Alumni Disability Community from scratch to unite 200+ young professionals with disabilities and directed an Ogun State secondary school infrastructure project delivering desktop computers and backup power.',
     impactMetrics: [
-      'Scaled the Mastercard Foundation Alumni Disability Community from 0 to 200+ active members nationwide',
+      'Scaled the Alumni Disability Community from 0 to 200+ active members nationwide',
       'Established mandatory accessibility standards adopted across national youth summits, roundtables, and digital broadcasts',
       'Delivered fully equipped computer lab hardware, backup power, and digital literacy training to students in Ogun State'
     ],
     deliverables: [
       'Accessible Grantmaking & Event Inclusion Standards',
       '200+ Member Alumni Disability Peer & Mentorship Network',
-      'Ogun State School Computer Lab & Backup Power Deployment'
+      'School Computer Lab & Backup Power Deployment'
     ]
   },
   {
     id: 'jobberman-mastercard-workforce',
-    title: 'Jobberman & Mastercard Foundation Inclusive Workforce Pipeline',
+    title: 'Inclusive Workforce & Talent Placement Pipeline',
     subtitle: 'Accessible Candidate Onboarding, Learning Module Audits & Corporate Placement across West Africa',
     category: 'Workforce & Tech',
-    year: '2026 — Present',
-    organization: 'Jobberman Nigeria & Mastercard Foundation Talent Corp',
-    role: 'Associate Engagement Officer & Talent Corp Ambassador',
+    year: '2026 - Present',
+    organization: 'Regional Workforce Initiative',
+    role: 'Associate Engagement Officer & Inclusion Advisor',
     visualTheme: 'fintech',
     summary:
       'Embedding WCAG digital accessibility and disability inclusion into regional workforce readiness programs, candidate assessment portals, and corporate job placements across West Africa.',
     challenge:
       'Skilled job seekers with physical and sensory disabilities across West Africa frequently dropped out of digital training cohorts and corporate recruitment funnels due to inaccessible learning modules, timed visual assessments, and employer misconceptions around workplace accommodations.',
     intervention:
-      'Audited candidate onboarding and digital training journeys to remove sensory and motor friction for applicants with disabilities. Partnered with corporate hiring managers to institute practical accommodation policies, accessible interview workflows, and targeted talent placement under the Mastercard Foundation Project Initiative.',
+      'Audited candidate onboarding and digital training journeys to remove sensory and motor friction for applicants with disabilities. Partnered with corporate hiring managers to institute practical accommodation policies, accessible interview workflows, and targeted talent placement.',
     impactMetrics: [
       'Deployed accessible learning and candidate evaluation standards across regional workforce training cohorts',
       'Removed onboarding and assessment friction for youth with physical, visual, and hearing disabilities',
@@ -811,11 +811,11 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
   },
   {
     id: 'client-africa-disability-gender',
-    title: 'Client Africa Disability Rights & Gender Equity Governance',
+    title: 'Disability Rights & Gender Equity Governance',
     subtitle: 'Inclusive NGO Program Design, Accessible Community Outreach & GESI Policy Integration',
     category: 'D&I Strategy',
-    year: '2024 — 2025',
-    organization: 'Client Africa',
+    year: '2024 - 2025',
+    organization: 'Social Impact & NGO Advisory',
     role: 'Head of Disability & Gender Equality',
     visualTheme: 'clent',
     summary:
@@ -837,23 +837,23 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
   },
   {
     id: 'google-microsoft-yabatech-communities',
-    title: 'Google GDSC, Microsoft Ambassadors & Yabatech Campus Accessibility Reform',
+    title: 'Campus Accessibility Reform & 300+ Student Developer Ecosystem',
     subtitle: 'Mobilizing 300+ Student Developers & Securing Institutional Academic Accommodations',
     category: 'Workforce & Tech',
-    year: '2023 — 2024',
-    organization: 'Google · Microsoft · Yaba College of Technology',
-    role: 'GDSC Lead, Microsoft Ambassador Lead & Special Adviser on Disability',
+    year: '2023 - 2024',
+    organization: 'Campus Tech & Policy Leadership',
+    role: 'Student Developer Lead & Special Adviser on Disability',
     visualTheme: 'policy',
     summary:
-      'Built and led a 300+ member inclusive campus developer ecosystem across Google and Microsoft student chapters while spearheading statutory examination and physical accessibility reforms at Yaba College of Technology.',
+      'Built and led a 300+ member inclusive campus developer ecosystem while spearheading statutory examination and physical accessibility reforms in higher education.',
     challenge:
       'Students with disabilities faced physical lecture-hall barriers, lack of examination accommodations, and exclusion from technical software engineering bootcamps and hackathons.',
     intervention:
-      'Audited campus workshop formats and student portals to ensure barrier-free participation, grew the Google Developer Student Club (200+ members) and Microsoft Student Ambassadors chapter (100+ members), and negotiated directly with senior college administration as Special Adviser to the Student Union President to institutionalize academic and physical accommodations.',
+      'Audited campus workshop formats and student portals to ensure barrier-free participation, grew inclusive student developer chapters to 300+ members, and negotiated directly with senior college administration as Special Adviser to the Student Union President to institutionalize academic and physical accommodations.',
     impactMetrics: [
-      'Mobilized 300+ student developers across Google GDSC (200+) and Microsoft Student Ambassador (100+) chapters',
+      'Mobilized 300+ student developers across inclusive campus engineering chapters',
       'Secured formal examination accommodations and physical accessibility pathways for students with disabilities',
-      'Connected disabled and female student builders to regional ecosystems including DataFest Africa and CHAOSS Africa'
+      'Connected disabled and female student builders to regional open-source and data ecosystems'
     ],
     deliverables: [
       'Institutional Campus Disability Accommodation Policy Framework',
@@ -931,7 +931,7 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     highlights: [
       'Founded and scaled the Alumni Disability Community from 0 to 200+ active members across Nigeria.',
       'Moderated the globally broadcast 2024 International Day of Persons with Disabilities (IDPD) panel for the Mastercard Foundation.',
-      'Directed the Ogun State secondary school infrastructure project—delivering desktop computers, backup power, and hands-on digital literacy.'
+      'Directed the Ogun State secondary school infrastructure project, delivering desktop computers, backup power, and hands-on digital literacy.'
     ]
   },
   {

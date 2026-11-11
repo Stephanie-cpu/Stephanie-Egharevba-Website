@@ -120,10 +120,10 @@ function renderHomeContent(): string {
           STEPHANIE’S STORY
         </p>
         <blockquote style="font-size: 1.75rem; font-weight: 700; color: #0F172A; margin: 0 0 16px 0; line-height: 1.2;">
-          &ldquo;Disability is not the problem&mdash;design is the problem.&rdquo;
+          &ldquo;Disability is not the problem, design is the problem.&rdquo;
         </blockquote>
         <p style="font-size: 1rem; line-height: 1.7; color: #334155; max-width: 60ch; margin-bottom: 24px;">
-          Born with Osteogenesis Imperfecta in Lagos, Stephanie leads disability inclusion, WCAG platform auditing, and workforce programs across the Mastercard Foundation, Jobberman, Google, and Microsoft ecosystems.
+          Born with Osteogenesis Imperfecta in Lagos, Stephanie turns lived experience and technical expertise into action, leading disability inclusion strategy, WCAG platform auditing, and inclusive workforce programs across Africa and beyond.
         </p>
         <div style="display: flex; gap: 14px; flex-wrap: wrap;">
           <a href="/story" style="background: #111111; color: #ffffff; padding: 10px 20px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
@@ -369,9 +369,6 @@ function renderStoryContent(): string {
         <p style="font-size: 1.125rem; font-weight: 600; color: #0F172A; margin-bottom: 16px;">
           Diversity &amp; Inclusion Lead &middot; Disability Inclusion Specialist &middot; Author &amp; Global Speaker
         </p>
-        <p style="font-size: 1rem; line-height: 1.65; color: #334155; max-width: 60ch; margin-bottom: 24px;">
-          Architecting disability inclusion policies, WCAG 2.2 AA/AAA platform audits, and inclusive talent pipelines across the Mastercard Foundation, Jobberman, Microsoft, and Google ecosystems.
-        </p>
 
         <!-- Action Bar -->
         <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;">
@@ -603,7 +600,7 @@ async function runSSG() {
       name:
         route.path === '/work'
           ? 'Common Questions About WCAG Audits & Inclusion Advisory'
-          : 'Frequently Asked Questions — WCAG Accessibility Audits & Inclusion Advisory',
+          : 'Frequently Asked Questions: WCAG Accessibility Audits & Inclusion Advisory',
       mainEntity: BUYER_FAQ_ITEMS.map((f) => ({
         '@type': 'Question',
         '@id': `${route.canonical.replace(/\/$/, '') || 'https://www.stephanieegharevba.com'}/#${f.id}`,

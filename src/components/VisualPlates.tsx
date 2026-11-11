@@ -30,7 +30,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
     );
   }
 
-  // CARD 1: Mastercard Foundation — Community Growth Metrics (0 to 200+ Members) & Policy Framework Tokens
+  // CARD 1: Mastercard Foundation: Community Growth Metrics (0 to 200+ Members) & Policy Framework Tokens
   if (theme === 'council') {
     return (
       <div
@@ -89,7 +89,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
     );
   }
 
-  // CARD 2: Rushbox — Visual UI Component Teardown with Focus Ring Indicator & Contrast Score
+  // CARD 2: Rushbox: Visual UI Component Teardown with Focus Ring Indicator & Contrast Score
   if (theme === 'audit') {
     return (
       <div
@@ -136,7 +136,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
     );
   }
 
-  // CARD 3: African Disability Forum — WCAG Spec Sheet (Contrast, Keyboard Tree, Screen Reader)
+  // CARD 3: African Disability Forum: WCAG Spec Sheet (Contrast, Keyboard Tree, Screen Reader)
   if (theme === 'toolkit') {
     return (
       <div
@@ -173,7 +173,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
     );
   }
 
-  // CARD 4: Jobberman Pipeline — 3-Step Workforce Workflow Diagram (Intake -> Audit -> Placement)
+  // CARD 4: Jobberman Pipeline: 3-Step Workforce Workflow Diagram (Intake -> Audit -> Placement)
   if (theme === 'fintech') {
     return (
       <div
@@ -219,7 +219,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
     );
   }
 
-  // CARD 5: Client Africa — GitHub Workflow Snippet (inclusive-pr-gate.yml)
+  // CARD 5: Client Africa: GitHub Workflow Snippet (inclusive-pr-gate.yml)
   if (theme === 'clent') {
     return (
       <div
@@ -265,7 +265,7 @@ export const EditorialVisualPlate: React.FC<VisualPlateProps> = ({
     );
   }
 
-  // CARD 6: Campus Blueprint — Structured Policy Checklist Card (Google · Microsoft · Yabatech)
+  // CARD 6: Campus Blueprint: Structured Policy Checklist Card (Google · Microsoft · Yabatech)
   return (
     <div
       className={`relative overflow-hidden bg-[#18181B] text-[#FAFAFA] p-6 flex flex-col justify-between select-none ${className}`}

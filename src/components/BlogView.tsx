@@ -87,7 +87,7 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
       'Every year, philanthropic foundations and international NGOs launch multi-million-dollar youth employment and digital skills programs across Africa. Yet many struggle to recruit and retain participants with disabilities because the digital infrastructure of the program itself was never audited for accessibility.',
     externalUrl: 'https://substack.com/@theunbiasproject',
     takeaways: [
-      'Audit grant and fellowship application forms against WCAG 2.2 Level AA before opening applications—removing visual puzzle CAPTCHAs, unlabeled PDF uploads, and inaccessible date pickers.',
+      'Audit grant and fellowship application forms against WCAG 2.2 Level AA before opening applications, removing visual puzzle CAPTCHAs, unlabeled PDF uploads, and inaccessible date pickers.',
       'Build a dedicated reasonable accommodation budget line (5%–7% of program delivery costs) for sign language interpretation, live captioning, screen-reader compatible learning materials, and mobility stipends.',
       'Treat disabled alumni and youth advisory councils as co-designers of the program architecture rather than post-launch survey respondents.',
     ],
@@ -144,7 +144,7 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
     externalUrl: 'https://substack.com/@theunbiasproject',
     takeaways: [
       'Retrofitting accessibility into a digital platform after launch costs up to 6x–10x more than embedding WCAG 2.2 AA requirements into initial procurement RFPs.',
-      'Inaccessible candidate assessments create false negatives—filtering out qualified software engineers, analysts, and creatives simply because the test UI broke their screen reader.',
+      'Inaccessible candidate assessments create false negatives, filtering out qualified software engineers, analysts, and creatives simply because the test UI broke their screen reader.',
       'Requiring a verified WCAG 2.2 AA audit before final vendor sign-off protects grant capital and ensures donor-funded infrastructure serves 100% of the target population.',
     ],
     sections: [
@@ -166,8 +166,8 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
       {
         heading: 'How Broken Assessment Tools Create False Negatives',
         paragraphs: [
-          'In my workforce advisory work, one of the most painful patterns I witness is talented young Nigerians with disabilities failing automated pre-employment screening tests—not because they lack the technical or analytical skill, but because the assessment timer does not pause for screen readers, or the multiple-choice radio buttons are unlabelled div elements.',
-          'When we audit and remediate those candidate journeys, completion rates rise across the board—not only for candidates with disabilities, but also for applicants on low-bandwidth mobile connections and older smartphones. Accessible engineering makes every dollar of grant funding work harder.',
+          'In my workforce advisory work, one of the most painful patterns I witness is talented young Nigerians with disabilities failing automated pre-employment screening tests, not because they lack the technical or analytical skill, but because the assessment timer does not pause for screen readers, or the multiple-choice radio buttons are unlabelled div elements.',
+          'When we audit and remediate those candidate journeys, completion rates rise across the board, not only for candidates with disabilities, but also for applicants on low-bandwidth mobile connections and older smartphones. Accessible engineering makes every dollar of grant funding work harder.',
         ],
       },
     ],
@@ -186,12 +186,12 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
     coverImageAlt:
       'Stephanie Egharevba conducting live screen-reader and mobile app accessibility testing with software engineers',
     pullQuote:
-      'When a banking app or payment checkout in Lagos fails WCAG 2.2 AA standards, it does not just fail a technical audit—it locks millions of customers out of financial independence.',
+      'When a banking app or payment checkout in Lagos fails WCAG 2.2 AA standards, it does not just fail a technical audit. It locks millions of customers out of financial independence.',
     excerpt:
       'Building a fintech, edtech, or e-commerce product for Nigeria, Kenya, or pan-African markets? Use this field-tested WCAG 2.2 Level AA engineering checklist to make your mobile and web interfaces usable for every customer.',
     externalUrl: 'https://substack.com/@theunbiasproject',
     takeaways: [
-      'Enforce a minimum 4.5:1 contrast ratio for normal text and 3:1 for UI components and icons—essential for both low-vision users and customers using smartphones in bright tropical sunlight.',
+      'Enforce a minimum 4.5:1 contrast ratio for normal text and 3:1 for UI components and icons, essential for both low-vision users and customers using smartphones in bright tropical sunlight.',
       'Ensure all interactive tap targets measure at least 44x44 CSS pixels (exceeding WCAG 2.2 Target Size Minimum) so users with motor tremors or one-handed grip can transact without mis-taps.',
       'Provide multi-modal alternatives for biometric KYC (such as "blink twice" or "turn head rapidly" liveness checks) so blind and motor-impaired users can open bank accounts independently.',
     ],
@@ -199,7 +199,7 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
       {
         paragraphs: [
           'African fintechs have built some of the fastest, most resilient payment infrastructure in the world. Yet when I conduct mobile app accessibility testing and WCAG 2.2 AA audits across regional banking, savings, and logistics apps, the same five barriers repeatedly block users with disabilities from completing basic transactions.',
-          'Here is the practical WCAG 2.2 Level AA checklist I share with founders, product designers, and frontend engineers—designed specifically for the realities of mobile-first African product teams.',
+          'Here is the practical WCAG 2.2 Level AA checklist I share with founders, product designers, and frontend engineers, designed specifically for the realities of mobile-first African product teams.',
         ],
       },
       {
@@ -213,7 +213,7 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
         heading: '2. Color Contrast & Sunlight Legibility (WCAG 1.4.3 & 1.4.11)',
         paragraphs: [
           'Pale grey placeholder text on a white input background might look sleek on a calibrated MacBook Pro inside an air-conditioned studio in Victoria Island, but it is unreadable to low-vision users and invisible outdoors under bright midday glare on a budget Android screen.',
-          'Set your design system tokens so body text maintains at least a 4.5:1 contrast ratio against its surface, large headings maintain at least 3:1, and active input borders or status icons maintain at least 3:1 contrast. Never use red or green color alone to indicate whether a transfer succeeded or failed—always include a clear text label and icon.',
+          'Set your design system tokens so body text maintains at least a 4.5:1 contrast ratio against its surface, large headings maintain at least 3:1, and active input borders or status icons maintain at least 3:1 contrast. Never use red or green color alone to indicate whether a transfer succeeded or failed; always include a clear text label and icon.',
         ],
         callout:
           'Interactive Tool: You can test your exact brand hex codes against WCAG 2.2 AA and AAA mathematical thresholds using the live Contrast Lab on my Work page (/work).',
@@ -221,7 +221,7 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
       {
         heading: '3. Keyboard Focus, Screen-Reader Labels & PIN Pads (WCAG 2.4.7, 2.5.8 & 4.1.2)',
         paragraphs: [
-          'Icon-only buttons—like the "Copy account number" icon, the "Hide balance" eye toggle, or the top-right "Close modal" X—are the most common culprits in TalkBack and VoiceOver audits. Without an explicit aria-label, a screen reader simply announces "Unlabelled button."',
+          'Icon-only buttons, such as the "Copy account number" icon, the "Hide balance" eye toggle, or the top-right "Close modal" X, are the most common culprits in TalkBack and VoiceOver audits. Without an explicit aria-label, a screen reader simply announces "Unlabelled button."',
           'Similarly, custom numeric PIN pads and OTP inputs must announce each digit clearly, support focus-visible outlines for keyboard and switch-device users, and respect WCAG 2.2 Success Criterion 3.3.8 (Accessible Authentication) by allowing password managers or paste functionality where appropriate.',
         ],
       },
@@ -246,9 +246,9 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
       'Many Nigerian founders and executives assume accessibility laws only apply to US or European companies under the ADA or European Accessibility Act. Here is what the Nigerian Disability Act and NCPWD mean for banks, telecoms, employers, and digital platforms operating in Nigeria.',
     externalUrl: 'https://substack.com/@theunbiasproject',
     takeaways: [
-      'Nigeria’s Discrimination Against Persons with Disabilities (Prohibition) Act 2018 mandates equitable access to public services, banking, education, telecommunications, and employment—domains now delivered primarily through web and mobile apps.',
+      'Nigeria’s Discrimination Against Persons with Disabilities (Prohibition) Act 2018 mandates equitable access to public services, banking, education, telecommunications, and employment, domains now delivered primarily through web and mobile apps.',
       'The Act’s five-year transitional grace period has expired, empowering the National Commission for Persons with Disabilities (NCPWD) and courts to enforce compliance and penalties.',
-      'Beyond legal risk, serving the 15%+ of Nigerians living with disabilities—and their households—unlocks massive commercial loyalty and international partnership eligibility.',
+      'Beyond legal risk, serving the 15%+ of Nigerians living with disabilities and their households unlocks massive commercial loyalty and international partnership eligibility.',
     ],
     sections: [
       {
@@ -260,8 +260,8 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
       {
         heading: 'What the Nigerian Disability Act Means in a Digital-First Economy',
         paragraphs: [
-          'The Act prohibits discrimination against persons with disabilities across public infrastructure, transportation, healthcare, education, telecommunications, banking, and employment—and mandates a 5% employment quota for persons with disabilities in public organizations.',
-          'In 2026, where does banking happen in Nigeria? On mobile apps and USSD/web portals. Where does university registration and workforce training happen? On EdTech platforms. Where does job recruitment happen? On digital applicant tracking systems. When a bank’s mobile app or an employer’s recruitment portal is inaccessible to screen-reader or motor-impaired citizens, it creates an unlawful barrier to the exact services protected by the Act—especially now that the statutory five-year transitional moratoria have elapsed.',
+          'The Act prohibits discrimination against persons with disabilities across public infrastructure, transportation, healthcare, education, telecommunications, banking, and employment, and mandates a 5% employment quota for persons with disabilities in public organizations.',
+          'In 2026, where does banking happen in Nigeria? On mobile apps and USSD/web portals. Where does university registration and workforce training happen? On EdTech platforms. Where does job recruitment happen? On digital applicant tracking systems. When a bank’s mobile app or an employer’s recruitment portal is inaccessible to screen-reader or motor-impaired citizens, it creates an unlawful barrier to the exact services protected by the Act, especially now that the statutory five-year transitional moratoria have elapsed.',
         ],
         callout:
           'Need a structured compliance roadmap? My Accessibility Made Easy Toolkit and executive briefing "Is Your Product Excluding 15% of Nigerians?" break down WCAG 2.2 AA and NCPWD alignment step by step.',
@@ -270,7 +270,7 @@ export const CURATED_BLOG_POSTS: BlogPost[] = [
         heading: 'Global Procurement & The 35-Million-Person Market Case',
         paragraphs: [
           'Even beyond domestic regulation, Nigerian startups scaling across Africa or bidding for contracts with international development organizations, multinational enterprises, and EU/UK/US partners face strict vendor accessibility vetting. If your SaaS product cannot demonstrate WCAG 2.1 / 2.2 Level AA conformance, your sales team is disqualified during enterprise procurement.',
-          'Most importantly, the World Health Organization and national estimates indicate that over 35 million Nigerians—more than 15% of our population—live with a disability. When you audit your platform, fix your keyboard navigation and contrast ratios, and train your engineering team to build inclusively, you are not doing charity. You are opening your business to millions of loyal customers and world-class talent.',
+          'Most importantly, the World Health Organization and national estimates indicate that over 35 million Nigerians (more than 15% of our population) live with a disability. When you audit your platform, fix your keyboard navigation and contrast ratios, and train your engineering team to build inclusively, you are not doing charity. You are opening your business to millions of loyal customers and world-class talent.',
         ],
       },
     ],
@@ -630,7 +630,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
     const mappedCms: BlogPost[] = cmsArticles.map((art) => ({
       id: `cms-${art.id}`,
       slug: art.id,
-      title: art.title.replace(/—/g, ' · '),
+      title: art.title.split('\u2014').join(' · '),
       subtitle: `${art.publisher} · ${art.category}`,
       topic:
         art.category.toLowerCase().includes('wcag') ||
@@ -640,8 +640,8 @@ export const BlogView: React.FC<BlogViewProps> = ({
       publishedAt: art.year,
       readingTime: '4 min read',
       locationNote: `${art.publisher} · Dispatch`,
-      pullQuote: art.excerpt.replace(/—/g, ', '),
-      excerpt: art.excerpt.replace(/—/g, ', '),
+      pullQuote: art.excerpt.split('\u2014').join(', '),
+      excerpt: art.excerpt.split('\u2014').join(', '),
       externalUrl: art.externalUrl && art.externalUrl !== '#' ? art.externalUrl : undefined,
       takeaways: [
         `Published via ${art.publisher} (${art.year}).`,
@@ -650,7 +650,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
       sections: [
         {
           paragraphs: [
-            art.excerpt.replace(/—/g, ', '),
+            art.excerpt.split('\u2014').join(', '),
             'Have thoughts or want to explore how this applies to your team or product? Reach out directly or read more on The Unbias Project Substack.',
           ],
         },

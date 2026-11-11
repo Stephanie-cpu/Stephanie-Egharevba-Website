@@ -1285,7 +1285,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                         <div className="flex items-center gap-2">
                           <a
                             href={`mailto:${enq.email}?subject=${encodeURIComponent(
-                              `Re: ${enq.inquiryType} — Stephanie Egharevba`
+                              `Re: ${enq.inquiryType} | Stephanie Egharevba`
                             )}`}
                             className="rounded-lg bg-[#111111] px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-white hover:bg-[#3F3E3A]"
                           >
@@ -1408,7 +1408,7 @@ export const CmsAdminModal: React.FC<CmsAdminModalProps> = ({
                   Developer Architecture & Handover Document
                 </span>
                 <h3 className="font-display text-xl font-bold mt-1">
-                  Stephanie Egharevba — Portfolio Backend & Compliance Specification
+                  Stephanie Egharevba: Portfolio Backend & Compliance Specification
                 </h3>
                 <p className="text-xs text-neutral-300 mt-2 leading-relaxed">
                   All 7 pillars of your backend brief are implemented in this full-stack application

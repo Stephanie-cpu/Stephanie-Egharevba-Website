@@ -225,7 +225,7 @@ export const AccessibilitySandbox: React.FC = () => {
 
           <div className="my-4 space-y-1.5">
             <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight">
-              Disability is not the problem—design is the problem.
+              Disability is not the problem, design is the problem.
             </h3>
             <p className="text-xs sm:text-sm opacity-90">
               Live WCAG 2.2 contrast check for body text (4.5:1) and large headings (3.0:1).

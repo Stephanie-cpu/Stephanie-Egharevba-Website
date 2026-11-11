@@ -219,7 +219,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
   }, [activeMode, expandedRoleIds]);
 
   const handleCopySignatureQuote = () => {
-    navigator.clipboard?.writeText(`“${SIGNATURE_QUOTE}” — Stephanie Egharevba`);
+    navigator.clipboard?.writeText(`“${SIGNATURE_QUOTE}” - Stephanie Egharevba`);
     setCopiedQuote(true);
     setTimeout(() => setCopiedQuote(false), 2400);
   };
@@ -288,17 +288,6 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                 Global Speaker
               </p>
             </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.1, ease: EASE_EDITORIAL }}
-              className="text-sm sm:text-[16px] text-[#334155] leading-relaxed pt-0.5"
-            >
-              Architecting disability inclusion policies, WCAG 2.2 AA/AAA platform audits, and
-              inclusive talent pipelines across the Mastercard Foundation, Jobberman, Microsoft, and
-              Google ecosystems.
-            </motion.p>
           </div>
 
           {/* Clean Top Action Bar: Preview PDF, Download CV (PDF), Book Advisory */}
@@ -403,8 +392,9 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                 <div className="space-y-4 text-base sm:text-[17px] text-[#334155] leading-[1.75]">
                   <p>
                     Growing up in Lagos with Osteogenesis Imperfecta meant navigating physical
-                    spaces that were never built with my body in mind—lecture halls without ramps,
-                    inaccessible public transit, and buildings that treated mobility as a privilege.
+                    spaces that were never built with my body in mind, including lecture halls
+                    without ramps, inaccessible public transit, and buildings that treated mobility
+                    as a privilege.
                   </p>
                   <p>
                     When I entered Computer Science, I discovered that software engineers were
@@ -413,7 +403,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                     quietly locking out millions of capable users. That realization anchored my
                     life’s work:{' '}
                     <strong className="font-semibold text-[#0F172A]">
-                      disability is not the problem—unexamined design is the problem.
+                      disability is not the problem, unexamined design is the problem.
                     </strong>
                   </p>
                 </div>
@@ -457,7 +447,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                       VERIFIED IMPACT METRICS
                     </span>
                     <span className="font-mono text-[11px] font-semibold text-[#0F172A]">
-                      2023 — 2026
+                      2023 - 2026
                     </span>
                   </div>
 
@@ -513,7 +503,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
 
                 <div className="space-y-4 text-base sm:text-[17px] text-[#334155] leading-[1.75]">
                   <p>
-                    What started as organizing student developers at Yaba College of Technology—leading{' '}
+                    What started as organizing student developers at Yaba College of Technology, leading{' '}
                     <strong className="font-semibold text-[#0F172A]">
                       200+ members in the Google Developer Student Club
                     </strong>{' '}
@@ -521,7 +511,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                     <strong className="font-semibold text-[#0F172A]">
                       100+ Microsoft Student Ambassadors
                     </strong>{' '}
-                    while advising the Student Union President on campus accommodations—rapidly
+                    while advising the Student Union President on campus accommodations, rapidly
                     evolved into a continental mandate.
                   </p>
                   <p>
@@ -560,8 +550,8 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
 
                 <div className="space-y-4 text-base sm:text-[17px] text-[#334155] leading-[1.75]">
                   <p>
-                    I do not do soft charity work. When over 30 million Nigerians—more than 15% of
-                    the population—live with a disability, treating accessibility as an optional CSR
+                    I do not do soft charity work. When over 30 million Nigerians (more than 15% of
+                    the population) live with a disability, treating accessibility as an optional CSR
                     gesture is both an engineering failure and a massive commercial blind spot.
                   </p>
                   <p>

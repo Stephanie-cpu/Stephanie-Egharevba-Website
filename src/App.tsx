@@ -96,7 +96,7 @@ const DEFAULT_BOOKING_CALENDAR_URL = 'https://calendar.app.google/HMDVYAq5z6Ydyw
 
 const DEFAULT_SITE_SETTINGS: CmsSiteSettings = {
   heroTagline: 'DIVERSITY & INCLUSION LEAD · SPEAKER · AUTHOR',
-  heroQuote: 'Disability is not the problem—design is the problem.',
+  heroQuote: 'Disability is not the problem, design is the problem.',
   heroSubtext:
     'Scaling digital accessibility, inclusive systems, and global talent pipelines.',
   seoTitle: 'Stephanie Egharevba | Digital Accessibility Consultant',
@@ -142,7 +142,7 @@ function getInitialPage(): PageId {
 }
 
 const APPROVED_100_WORD_BIO =
-  'Stephanie Osasumwen Egharevba is a Nigerian Diversity & Inclusion Leader, Disability Inclusion Specialist, and Public Speaker based in Lagos. Ranked in the Top 3% of Global Speakers on Sessionize and named among ALX Nigeria’s Top 100 Women in Tech (2025), she serves as Associate Engagement Officer at Jobberman Nigeria and Talent Corp Ambassador for the Mastercard Foundation Project Initiative. Previously Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria—where she founded the 200+ member Alumni Disability Community—she audits digital platforms against WCAG usability standards for Rushbox and enterprise clients.';
+  'Stephanie Osasumwen Egharevba is a Nigerian Diversity & Inclusion Leader, Disability Inclusion Specialist, and Public Speaker based in Lagos. Ranked in the Top 3% of Global Speakers on Sessionize and named among ALX Nigeria’s Top 100 Women in Tech (2025), she serves as Associate Engagement Officer at Jobberman Nigeria and Talent Corp Ambassador for the Mastercard Foundation Project Initiative. Previously Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria, where she founded the 200+ member Alumni Disability Community, she audits digital platforms against WCAG usability standards for Rushbox and enterprise clients.';
 
 const DEFAULT_A11Y_PREFS: AccessibilityPreferences = {
   theme: 'light',
@@ -245,7 +245,7 @@ export default function App() {
   // Local + CMS Combined Projects
   const [localProjects, setLocalProjects] = useState<ProjectItem[]>(() => {
     try {
-      const saved = localStorage.getItem('stephanie_portfolio_projects_v8');
+      const saved = localStorage.getItem('stephanie_portfolio_projects_v10');
       return saved ? JSON.parse(saved) : INITIAL_PROJECTS;
     } catch {
       return INITIAL_PROJECTS;
@@ -354,6 +354,7 @@ export default function App() {
           setSiteSettings((prev) => ({
             ...prev,
             ...data,
+            heroQuote: (data.heroQuote || prev.heroQuote).replace(/\s*—\s*/g, ', '),
             linkedinUrl: data.linkedinUrl || DEFAULT_LINKEDIN_URL,
             instagramUrl: data.instagramUrl || DEFAULT_INSTAGRAM_URL,
             substackUrl: data.substackUrl || DEFAULT_SUBSTACK_URL,
@@ -608,7 +609,7 @@ export default function App() {
       name:
         activePage === 'work'
           ? 'Common Questions About WCAG Audits & Inclusion Advisory'
-          : 'Frequently Asked Questions — WCAG Accessibility Audits & Inclusion Advisory',
+          : 'Frequently Asked Questions: WCAG Accessibility Audits & Inclusion Advisory',
       mainEntity: BUYER_FAQ_ITEMS.map((f) => ({
         '@type': 'Question',
         '@id': `${fullPageUrl}#${f.id}`,
@@ -641,7 +642,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('stephanie_portfolio_projects_v8', JSON.stringify(localProjects));
+      localStorage.setItem('stephanie_portfolio_projects_v9', JSON.stringify(localProjects));
     } catch {
       // ignore
     }
@@ -1115,7 +1116,7 @@ export default function App() {
       <main id="main-content" className="flex-1 pt-[72px]">
         <AnimatePresence mode="wait">
           {/* ================================================================= */}
-          {/* PAGE 1: HOME (EXECUTIVE EDITORIAL HERO — AEONIK TRIAL)            */}
+          {/* PAGE 1: HOME (EXECUTIVE EDITORIAL HERO - AEONIK TRIAL)            */}
           {/* ================================================================= */}
           {activePage === 'overview' && (
             <motion.div
@@ -1293,9 +1294,10 @@ export default function App() {
                     </h2>
 
                     <p className="font-sans text-[15px] sm:text-[18px] text-[#334155] leading-[1.65] max-w-[54ch]">
-                      Born with Osteogenesis Imperfecta in Lagos, Stephanie leads disability
-                      inclusion, WCAG platform auditing, and workforce programs across the
-                      Mastercard Foundation, Jobberman, Google, and Microsoft ecosystems.
+                      Born with Osteogenesis Imperfecta in Lagos, Stephanie turns lived experience
+                      and technical expertise into action, leading disability inclusion strategy,
+                      WCAG platform auditing, and inclusive workforce programs across Africa and
+                      beyond.
                     </p>
 
                     <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-6">
@@ -1326,7 +1328,7 @@ export default function App() {
                 </div>
               </motion.section>
 
-              {/* SECTION 3: "WHAT STEPHANIE DOES" — BESPOKE EDITORIAL PRACTICE CARDS */}
+              {/* SECTION 3: "WHAT STEPHANIE DOES" - BESPOKE EDITORIAL PRACTICE CARDS */}
               <motion.section
                 initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 36 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -1396,7 +1398,7 @@ export default function App() {
                         </h3>
                         <p className="text-[14px] sm:text-[15px] text-[#475569] leading-relaxed">
                           End-to-end WCAG 2.1 and 2.2 Level AA accessibility auditing for web and
-                          mobile platforms—uncovering keyboard focus traps, screen-reader barriers,
+                          mobile platforms, uncovering keyboard focus traps, screen-reader barriers,
                           and shipping remediated user journeys across Nigeria and Africa.
                         </p>
                       </div>
@@ -2530,7 +2532,7 @@ export default function App() {
                       </p>
 
                       <div className="bg-[#FAF9F6] border border-[#E6E4DD] rounded-xl p-4 font-mono text-xs text-[#272725] whitespace-pre-wrap">
-                        {`REF: ${submittedInquiry.referenceId}\nTO: stephanieegharevba83@gmail.com\nSUBJECT: ${submittedInquiry.engagementType} — ${submittedInquiry.organization}\nFROM: ${submittedInquiry.name} (${submittedInquiry.email})\nTIMELINE: ${submittedInquiry.timeline}${submittedInquiry.budgetRange ? `\nBUDGET TIER: ${submittedInquiry.budgetRange}` : ''}\n\n${submittedInquiry.message}`}
+                        {`REF: ${submittedInquiry.referenceId}\nTO: stephanieegharevba83@gmail.com\nSUBJECT: ${submittedInquiry.engagementType} | ${submittedInquiry.organization}\nFROM: ${submittedInquiry.name} (${submittedInquiry.email})\nTIMELINE: ${submittedInquiry.timeline}${submittedInquiry.budgetRange ? `\nBUDGET TIER: ${submittedInquiry.budgetRange}` : ''}\n\n${submittedInquiry.message}`}
                       </div>
 
                       <div className="flex flex-wrap items-center gap-3">
@@ -2554,7 +2556,7 @@ export default function App() {
 
                         <a
                           href={`mailto:stephanieegharevba83@gmail.com?subject=${encodeURIComponent(
-                            `[${submittedInquiry.referenceId}] ${submittedInquiry.engagementType} — ${submittedInquiry.organization}`
+                            `[${submittedInquiry.referenceId}] ${submittedInquiry.engagementType} | ${submittedInquiry.organization}`
                           )}&body=${encodeURIComponent(submittedInquiry.message)}`}
                           className="px-4 py-2.5 text-xs font-medium text-[#141413] bg-[#FAF9F6] border border-[#E6E4DD] rounded-lg inline-flex items-center gap-1.5"
                         >
