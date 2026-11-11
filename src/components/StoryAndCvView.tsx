@@ -523,7 +523,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                     across <strong className="font-semibold text-[#0F172A]">Jobberman Nigeria</strong>{' '}
                     and the{' '}
                     <strong className="font-semibold text-[#0F172A]">
-                      Mastercard Foundation Project Initiative
+                      Mastercard Foundation Associate Program
                     </strong>
                     , I design inclusive workforce pipelines that connect young talents with
                     disabilities to long-term corporate roles across West Africa.
@@ -826,7 +826,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                   <Award className="w-6 h-6 text-[#0F172A] hidden sm:block" />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   {HONORS_AND_RECOGNITION.map((honor) => (
                     <div
                       key={honor.id}

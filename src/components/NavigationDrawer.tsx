@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Linkedin, Instagram, Mail, ArrowUpRight } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Linkedin, Instagram, Mail, ArrowUpRight } from 'lucide-react';
 import { PageId } from '../data/portfolioData';
 
 interface NavItem {
@@ -42,6 +43,7 @@ export default function NavigationDrawer({
   substackUrl = 'https://substack.com/@theunbiasproject',
 }: NavigationDrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -132,6 +134,10 @@ export default function NavigationDrawer({
     };
   }, [isOpen]);
 
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   const handleClose = () => {
     setIsOpen(false);
     triggerRef.current?.focus();
@@ -147,49 +153,100 @@ export default function NavigationDrawer({
       {/* Fixed Top Header Bar (Left Hamburger, Center Monogram Logo, Right On/Off Switch & "Let's Talk" Button) */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-[#FAF9F6]/95 dark:bg-[#0B0D13]/95 backdrop-blur-md border-b border-[#E6E4DD]/70 dark:border-[#262C3A]/70 transition-colors duration-200">
         <div className="max-w-[1280px] mx-auto flex items-center justify-between px-4 sm:px-8 py-3.5 sm:py-4">
-          {/* Left: Animated Hamburger Menu Trigger */}
+          {/* Left: Clean Borderless 3-Bar Elastic Bow-Pop Hamburger Trigger */}
           <div className="flex items-center">
-            <button
+            <motion.button
               ref={triggerRef}
               type="button"
-              onClick={() => setIsOpen((prev) => !prev)}
+              onClick={handleToggle}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              whileTap={{ scale: 0.84 }}
+              animate={{
+                scale: isOpen ? [1, 0.78, 1.16, 0.95, 1] : [1, 1.08, 1],
+                rotate: isOpen ? [0, -10, 90] : 0,
+              }}
+              transition={{
+                duration: 0.48,
+                ease: [0.34, 1.56, 0.64, 1],
+              }}
               aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={isOpen}
               aria-controls="navigation-drawer"
-              className={`group relative flex flex-col justify-center items-start w-11 h-11 px-2 text-[#141413] dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#141413] dark:focus-visible:ring-white rounded-full cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-[#141413]/5 dark:hover:bg-white/10 active:scale-75 ${
-                isOpen ? 'rotate-180 scale-105 bg-[#141413]/8 dark:bg-white/15' : 'rotate-0 scale-100'
-              }`}
+              className="group relative flex items-center justify-center w-11 h-11 -ml-2 text-[#141413] dark:text-white cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#141413] dark:focus-visible:ring-white rounded-full"
             >
-              <span className="relative w-7 h-4 flex flex-col justify-between items-start">
-                {/* Top bar */}
-                <span
-                  aria-hidden="true"
-                  className={`h-[2.2px] bg-current rounded-full origin-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+              <span
+                aria-hidden="true"
+                className="relative w-7 h-5 flex flex-col justify-center items-start"
+              >
+                {/* Top Bar: Collapses to center first, then snaps to +45deg with spring overshoot */}
+                <motion.span
+                  initial={false}
+                  animate={
                     isOpen
-                      ? 'w-6 translate-y-[6.8px] rotate-45'
-                      : 'w-7 translate-y-0 rotate-0 group-hover:w-4 group-hover:translate-x-1'
-                  }`}
+                      ? {
+                          y: [-6.5, 0, 0],
+                          rotate: [0, 0, 45],
+                          width: [28, 18, 24],
+                          x: [0, 3, 2],
+                        }
+                      : isHovered
+                        ? { y: -6.5, rotate: 0, width: [28, 18, 28], x: [0, 4, 0] }
+                        : { y: -6.5, rotate: 0, width: 28, x: 0 }
+                  }
+                  transition={
+                    isOpen
+                      ? { duration: 0.44, times: [0, 0.42, 1], ease: [0.34, 1.56, 0.64, 1] }
+                      : { duration: 0.38, ease: [0.34, 1.56, 0.64, 1] }
+                  }
+                  className="absolute h-[2.2px] bg-current rounded-full origin-center"
                 />
-                {/* Middle bar */}
-                <span
-                  aria-hidden="true"
-                  className={`h-[2.2px] bg-current rounded-full transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+
+                {/* Middle Bar: Elastic squeeze-and-pop vanish on open, playful stretch on hover */}
+                <motion.span
+                  initial={false}
+                  animate={
                     isOpen
-                      ? 'w-0 opacity-0 translate-x-3 scale-0'
-                      : 'w-4.5 opacity-100 translate-x-0 scale-100 group-hover:w-7'
-                  }`}
+                      ? {
+                          scaleX: [1, 1.35, 0],
+                          opacity: [1, 1, 0],
+                          x: [0, -2, 0],
+                        }
+                      : isHovered
+                        ? { scaleX: 1, width: [18, 28, 22], opacity: 1, x: [0, 2, 0] }
+                        : { scaleX: 1, width: 18, opacity: 1, x: 0 }
+                  }
+                  transition={{
+                    duration: 0.36,
+                    ease: [0.34, 1.56, 0.64, 1],
+                  }}
+                  className="absolute h-[2.2px] bg-current rounded-full origin-left"
                 />
-                {/* Bottom bar */}
-                <span
-                  aria-hidden="true"
-                  className={`h-[2.2px] bg-current rounded-full origin-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+
+                {/* Bottom Bar: Collapses to center first, then snaps to -45deg with spring overshoot */}
+                <motion.span
+                  initial={false}
+                  animate={
                     isOpen
-                      ? 'w-6 -translate-y-[6.8px] -rotate-45'
-                      : 'w-6 translate-y-0 rotate-0 group-hover:w-5 group-hover:translate-x-0.5'
-                  }`}
+                      ? {
+                          y: [6.5, 0, 0],
+                          rotate: [0, 0, -45],
+                          width: [23, 18, 24],
+                          x: [0, 3, 2],
+                        }
+                      : isHovered
+                        ? { y: 6.5, rotate: 0, width: [23, 28, 23], x: [0, 2, 0] }
+                        : { y: 6.5, rotate: 0, width: 23, x: 0 }
+                  }
+                  transition={
+                    isOpen
+                      ? { duration: 0.44, times: [0, 0.42, 1], ease: [0.34, 1.56, 0.64, 1] }
+                      : { duration: 0.38, delay: isHovered ? 0.05 : 0, ease: [0.34, 1.56, 0.64, 1] }
+                  }
+                  className="absolute h-[2.2px] bg-current rounded-full origin-center"
                 />
               </span>
-            </button>
+            </motion.button>
           </div>
 
           {/* Center: Elegant Signature Monogram / Brand Logo */}
@@ -251,7 +308,7 @@ export default function NavigationDrawer({
 
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 z-50 bg-black/55 backdrop-blur-xs transition-opacity duration-400 delay-75 motion-reduce:transition-none ${
+        className={`fixed inset-0 z-50 bg-black/55 backdrop-blur-xs transition-opacity duration-400 delay-150 motion-reduce:transition-none ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={handleClose}
@@ -267,24 +324,33 @@ export default function NavigationDrawer({
         aria-label="Site Navigation"
         aria-hidden={!isOpen}
         style={{ backgroundColor: '#0A0A0A', color: '#FFFFFF' }}
-        className={`fixed top-0 right-0 z-50 h-[100dvh] w-[88vw] sm:w-[65vw] lg:w-[60vw] max-w-[840px] bg-neutral-950 text-white px-8 sm:px-14 md:px-16 py-5 sm:py-6 flex flex-col justify-between shadow-2xl transition-transform duration-500 delay-75 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none overflow-hidden ${
+        className={`fixed top-0 right-0 z-50 h-[100dvh] w-[88vw] sm:w-[65vw] lg:w-[60vw] max-w-[840px] bg-neutral-950 text-white px-8 sm:px-14 md:px-16 py-5 sm:py-6 flex flex-col justify-between shadow-2xl transition-transform duration-500 delay-150 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none overflow-hidden ${
           isOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'
         }`}
       >
-        {/* Top-Left Close Button & Theme Toggle (Matches Reference Layout) */}
+        {/* Top-Left Animated Close Button & Theme Toggle */}
         <div className="flex items-center justify-between shrink-0">
-          <button
+          <motion.button
             ref={closeButtonRef}
             type="button"
             onClick={handleClose}
             tabIndex={isOpen ? 0 : -1}
             aria-label="Close navigation menu"
-            className={`w-10 h-10 -ml-2 flex items-center justify-center text-neutral-300 hover:text-white hover:rotate-90 hover:scale-110 active:scale-75 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-full ${
-              isOpen ? 'rotate-0 scale-100 delay-150' : '-rotate-90 scale-50'
-            }`}
+            whileHover={{ scale: 1.14, rotate: 90 }}
+            whileTap={{ scale: 0.82 }}
+            animate={
+              isOpen
+                ? { scale: [0.6, 1.15, 1], rotate: [-45, 15, 0], opacity: 1 }
+                : { scale: 0.6, rotate: -45, opacity: 0 }
+            }
+            transition={{ duration: 0.45, delay: isOpen ? 0.22 : 0, ease: [0.34, 1.56, 0.64, 1] }}
+            className="relative w-10 h-10 -ml-2 flex items-center justify-center rounded-full text-neutral-300 hover:text-white cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
-            <X className="w-7 h-7 stroke-[1.5]" aria-hidden="true" />
-          </button>
+            <span aria-hidden="true" className="relative w-6 h-6 flex items-center justify-center">
+              <span className="absolute w-6 h-[2px] bg-current rounded-full rotate-45" />
+              <span className="absolute w-6 h-[2px] bg-current rounded-full -rotate-45" />
+            </span>
+          </motion.button>
 
           {toggleDarkMode && (
             <button

@@ -127,10 +127,7 @@ function renderHomeContent(): string {
         </p>
         <div style="display: flex; gap: 14px; flex-wrap: wrap;">
           <a href="/story" style="background: #111111; color: #ffffff; padding: 10px 20px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
-            Read Full Story &amp; CV &rarr;
-          </a>
-          <a href="${CV_PDF_URL}" download="Stephanie_Egharevba_CV.pdf" style="color: #0F172A; text-decoration: none; font-weight: 600; font-size: 0.875rem; padding: 10px 0;">
-            Download CV (PDF)
+            See Stephanie Egharevba&apos;s Journey &rarr;
           </a>
         </div>
       </section>

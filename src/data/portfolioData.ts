@@ -871,25 +871,25 @@ export const PROFESSIONAL_EXPERIENCE: ExperienceItem[] = [
     organization: 'Jobberman Nigeria',
     location: 'Lagos',
     summary:
-      'Delivering Mastercard Foundation workforce training, career readiness, and job transitions across West Africa.',
+      'Collaborating with a dedicated team to place over 3,500 Mastercard Associates across Nigeria, Ghana, The Gambia, Sierra Leone, and Liberia.',
     highlights: [
-      'Collaborate directly with the Mastercard Foundation delivery team to scale equitable workforce training pipelines across West Africa.',
-      'Spearhead end-to-end talent readiness, candidate assessment, and employer transitions into sustainable long-term roles.',
-      'Audit candidate onboarding journeys to remove friction for job seekers with physical and sensory disabilities.'
+      'Collaborate with a dedicated team to place over 3,500 Mastercard Associates across Nigeria, Ghana, The Gambia, Sierra Leone, and Liberia.',
+      'Developed and implemented training programs to mentor associates for successful integration into their roles.',
+      'Fostered a culture of continuous learning and professional development within the organization.'
     ]
   },
   {
     id: 'exp-talent-corp',
     period: 'Feb 2026 – Present',
     role: 'Talent Corp Ambassador',
-    organization: 'Mastercard Foundation Project Initiative',
+    organization: 'Mastercard Foundation Associate Program',
     location: 'West Africa',
     summary:
-      'Driving disability inclusion frameworks, accessible training modules, and corporate placement for youth with disabilities.',
+      'Collaborated with the Mastercard Foundation Project Team to train, develop, and place young talents in meaningful job roles across West Africa.',
     highlights: [
-      'Embed universal WCAG accessibility standards into regional training curricula and candidate evaluation workflows.',
-      'Facilitate targeted corporate job placements for young professionals with disabilities across partner employers.',
-      'Advise hiring managers on workplace accommodation policy and inclusive onboarding standards.'
+      'Collaborated with the Mastercard Foundation Project Team to train and develop young talents in West Africa.',
+      'Focused on placing these talents in meaningful job roles as associates, enhancing their career prospects.',
+      'Engaged in strategic planning and execution of training programs tailored to the needs of the local job market.'
     ]
   },
   {
@@ -1023,13 +1023,6 @@ export const HONORS_AND_RECOGNITION: HonorItem[] = [
     year: '2025',
     issuer: 'ALX Nigeria',
     detail: 'Recognized among Nigeria’s 100 most impactful women shaping software engineering, policy, and digital inclusion.'
-  },
-  {
-    id: 'honor-mcf-delegate',
-    title: 'Mastercard Foundation Global Delegate',
-    year: '2024',
-    issuer: 'Mastercard Foundation',
-    detail: 'Selected to represent Nigerian youth and lead continental conversations on disability-inclusive workforce systems.'
   },
   {
     id: 'honor-special-adviser',

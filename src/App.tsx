@@ -142,7 +142,7 @@ function getInitialPage(): PageId {
 }
 
 const APPROVED_100_WORD_BIO =
-  'Stephanie Osasumwen Egharevba is a Nigerian Diversity & Inclusion Leader, Disability Inclusion Specialist, and Public Speaker based in Lagos. Ranked in the Top 3% of Global Speakers on Sessionize and named among ALX Nigeria’s Top 100 Women in Tech (2025), she serves as Associate Engagement Officer at Jobberman Nigeria and Talent Corp Ambassador for the Mastercard Foundation Project Initiative. Previously Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria, where she founded the 200+ member Alumni Disability Community, she audits digital platforms against WCAG usability standards for Rushbox and enterprise clients.';
+  'Stephanie Osasumwen Egharevba is a Nigerian Diversity & Inclusion Leader, Disability Inclusion Specialist, and Public Speaker based in Lagos. Ranked in the Top 3% of Global Speakers on Sessionize and named among ALX Nigeria’s Top 100 Women in Tech (2025), she serves as Associate Engagement Officer at Jobberman Nigeria and Talent Corp Ambassador for the Mastercard Foundation Associate Program. Previously Diversity & Inclusion Lead for the Mastercard Foundation Youth Advisory Council Nigeria, where she founded the 200+ member Alumni Disability Community, she audits digital platforms against WCAG usability standards for Rushbox and enterprise clients.';
 
 const DEFAULT_A11Y_PREFS: AccessibilityPreferences = {
   theme: 'light',
@@ -1307,21 +1307,11 @@ export default function App() {
                           e.preventDefault();
                           navigateTo('cv');
                         }}
-                        aria-label="Read Stephanie Egharevba's executive biography and CV"
-                        className="group px-7 py-3.5 text-sm font-semibold text-white bg-[#111111] hover:bg-[#3F3E3A] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
+                        aria-label="See Stephanie Egharevba's journey and executive CV"
+                        className="group px-7 py-3.5 text-sm font-semibold text-white bg-[#111111] hover:bg-[#3F3E3A] active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm w-fit"
                       >
-                        <span>Read Stephanie Egharevba&apos;s CV</span>
+                        <span>See Stephanie Egharevba&apos;s Journey</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                      </a>
-
-                      <a
-                        href={CV_PDF_URL}
-                        download="Stephanie_Egharevba_CV.pdf"
-                        aria-label="Download Stephanie Egharevba's official CV in PDF format"
-                        className="text-sm font-semibold text-[#0F172A] hover:text-[#475569] transition-colors inline-flex items-center justify-center sm:justify-start gap-2 py-2"
-                      >
-                        <Download className="w-4 h-4 text-[#64748B]" />
-                        <span>Download Stephanie&apos;s Executive CV (PDF)</span>
                       </a>
                     </div>
                   </motion.div>
