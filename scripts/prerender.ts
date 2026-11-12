@@ -398,7 +398,7 @@ function renderStoryContent(): string {
         <article style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 32px;">
           <h2 style="font-size: 1.5rem; font-weight: 700; color: #0F172A; margin: 0 0 16px 0;">From Campus Policy to Continental Scale</h2>
           <p style="font-size: 0.9375rem; line-height: 1.75; color: #334155;">
-            Mobilizing 300+ student developers across Google GDSC and Microsoft Student Ambassador chapters at Yaba College of Technology while advising on campus accommodations quickly expanded to continental advisory roles. As D&amp;I Lead for the Mastercard Foundation Youth Advisory Council Nigeria, she built the 200+ member Alumni Disability Community from zero, moderated the global IDPD broadcast, and deployed computer lab hardware in Ogun State.
+            Mobilizing 300+ student developers across Google GDSC and Microsoft Student Ambassador chapters at Yaba College of Technology while advising on campus accommodations quickly expanded to continental advisory roles. As D&amp;I Lead for the Mastercard Foundation Youth Advisory Council Nigeria, she built the 200+ member Alumni Disability Community from zero. Today, across Jobberman Nigeria and the Mastercard Foundation Associate Program, she collaborates on training, mentoring, and placing over 3,500 young talents into meaningful associate roles across Nigeria, Ghana, The Gambia, Sierra Leone, and Liberia.
           </p>
         </article>
 

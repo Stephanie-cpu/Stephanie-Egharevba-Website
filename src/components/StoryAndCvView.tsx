@@ -327,7 +327,7 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
             className="inline-flex flex-wrap sm:flex-nowrap p-1.5 rounded-2xl bg-[#F1F5F9] border border-[#E2E8F0] gap-1 w-full sm:w-auto"
           >
             {[
-              { id: 'story' as const, label: 'Editorial Story' },
+              { id: 'story' as const, label: 'My Story' },
               { id: 'cv' as const, label: 'Complete CV / Timeline' },
             ].map((tab) => {
               const isSelected = activeMode === tab.id;
@@ -525,8 +525,9 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                     <strong className="font-semibold text-[#0F172A]">
                       Mastercard Foundation Associate Program
                     </strong>
-                    , I design inclusive workforce pipelines that connect young talents with
-                    disabilities to long-term corporate roles across West Africa.
+                    , I collaborate on training, mentoring, and placing over 3,500 young talents
+                    into meaningful associate roles across Nigeria, Ghana, The Gambia, Sierra Leone,
+                    and Liberia, fostering continuous learning and long-term career growth.
                   </p>
                 </div>
               </div>
