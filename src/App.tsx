@@ -306,6 +306,8 @@ export default function App() {
   const [webinarStatus, setWebinarStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [webinarErrorMsg, setWebinarErrorMsg] = useState('');
   const [isWebinarVideoPlaying, setIsWebinarVideoPlaying] = useState(false);
+  const [isWebinarArrowActive, setIsWebinarArrowActive] = useState(false);
+  const [webinarArrowPulse, setWebinarArrowPulse] = useState(0);
   const webinarIframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const handlePlayWebinarVideo = () => {
@@ -1535,16 +1537,94 @@ export default function App() {
                 className="bg-[#FAF9F6] py-10 sm:py-14 border-y border-[#E6E4DD]"
               >
                 <div className="max-w-[1200px] mx-auto px-4 sm:px-6 space-y-6">
-                  {/* Top Editorial Header Row (Screenshot Layout: WEBINARS + Horizontal Progress Line with Accent Bar) */}
+                  {/* Top Editorial Header Row (Screenshot Layout: WEBINARS + Horizontal Progress Line with Interactive Arrow Accent Bar) */}
                   <div className="flex items-center gap-6 sm:gap-12">
                     <span className="text-2xl sm:text-3xl font-display font-bold uppercase tracking-tight text-[#141413] shrink-0">
                       WEBINARS
                     </span>
-                    <div
-                      aria-hidden="true"
-                      className="flex-1 h-[2px] bg-[#E6E4DD] flex items-center justify-end"
-                    >
-                      <span className="w-12 sm:w-20 h-[3px] bg-[#141413]" />
+                    <div className="flex-1 h-[2px] bg-[#E6E4DD] relative flex items-center justify-end">
+                      <motion.a
+                        href="https://bwbhq.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onMouseEnter={() => setIsWebinarArrowActive(true)}
+                        onMouseLeave={() => setIsWebinarArrowActive(false)}
+                        onFocus={() => setIsWebinarArrowActive(true)}
+                        onBlur={() => setIsWebinarArrowActive(false)}
+                        onClick={() => {
+                          setIsWebinarArrowActive(true);
+                          setWebinarArrowPulse((prev) => prev + 1);
+                        }}
+                        aria-label="Sign up for the next webinar on Build Without Barrier (opens in a new tab)"
+                        whileTap={{ scale: 0.92 }}
+                        animate={
+                          webinarArrowPulse > 0
+                            ? {
+                                x: [0, -8, 8, 0],
+                              }
+                            : { x: isWebinarArrowActive ? 4 : 0 }
+                        }
+                        transition={{
+                          duration: 0.45,
+                          ease: [0.34, 1.56, 0.64, 1],
+                        }}
+                        className="group relative py-4 pl-6 -mr-1 flex items-center justify-end cursor-pointer focus:outline-none"
+                      >
+                        <motion.span
+                          transition={{ type: 'spring', stiffness: 420, damping: 20 }}
+                          className="relative block w-12 sm:w-20 h-[3px] bg-[#141413] rounded-full transition-transform duration-300 group-hover:scale-x-105 origin-right"
+                        >
+                          {/* Top Arrowhead Wing */}
+                          <motion.span
+                            initial={false}
+                            animate={
+                              isWebinarArrowActive
+                                ? {
+                                    width: 14,
+                                    rotate: 38,
+                                    opacity: 1,
+                                    x: 1,
+                                    y: -0.5,
+                                  }
+                                : {
+                                    width: 0,
+                                    rotate: 0,
+                                    opacity: 0,
+                                    x: 0,
+                                    y: 0,
+                                  }
+                            }
+                            transition={{ type: 'spring', stiffness: 460, damping: 18 }}
+                            style={{ transformOrigin: '100% 50%' }}
+                            className="absolute right-0 top-0 h-[3px] bg-[#141413] rounded-full"
+                          />
+
+                          {/* Bottom Arrowhead Wing */}
+                          <motion.span
+                            initial={false}
+                            animate={
+                              isWebinarArrowActive
+                                ? {
+                                    width: 14,
+                                    rotate: -38,
+                                    opacity: 1,
+                                    x: 1,
+                                    y: 0.5,
+                                  }
+                                : {
+                                    width: 0,
+                                    rotate: 0,
+                                    opacity: 0,
+                                    x: 0,
+                                    y: 0,
+                                  }
+                            }
+                            transition={{ type: 'spring', stiffness: 460, damping: 18 }}
+                            style={{ transformOrigin: '100% 50%' }}
+                            className="absolute right-0 bottom-0 h-[3px] bg-[#141413] rounded-full"
+                          />
+                        </motion.span>
+                      </motion.a>
                     </div>
                   </div>
 
