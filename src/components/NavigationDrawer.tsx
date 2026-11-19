@@ -410,8 +410,34 @@ export default function NavigationDrawer({
           </ul>
         </nav>
 
+        {/* Subtle Signature Cartoon Illustration Tucked in Bottom-Right Corner */}
+        <motion.div
+          aria-hidden="true"
+          initial={false}
+          animate={
+            isOpen
+              ? { opacity: 0.95, y: 0, scale: 1, rotate: 0 }
+              : { opacity: 0, y: 18, scale: 0.86, rotate: 6 }
+          }
+          whileHover={{ y: -5, rotate: -4, scale: 1.06 }}
+          transition={{
+            duration: 0.5,
+            delay: isOpen ? 0.24 : 0,
+            ease: [0.34, 1.56, 0.64, 1],
+          }}
+          className="absolute right-6 sm:right-12 md:right-16 bottom-24 sm:bottom-20 w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 select-none z-10 pointer-events-auto"
+        >
+          <span className="absolute inset-2 rounded-full bg-white/[0.07] blur-xl pointer-events-none" />
+          <img
+            src="/assets/aistudio/Untitled_design_aedf6123.png"
+            alt=""
+            loading="lazy"
+            className="relative w-full h-full object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.65)]"
+          />
+        </motion.div>
+
         {/* Bottom Hairline Divider & Name + Social Icons Row */}
-        <div className="pt-4 border-t border-white/15 shrink-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="relative z-20 pt-4 border-t border-white/15 shrink-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <span className="text-xs sm:text-sm font-medium uppercase tracking-[0.14em] text-neutral-300">
             STEPHANIE EGHAREVBA
           </span>

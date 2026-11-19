@@ -616,9 +616,23 @@ export const StoryAndCvView: React.FC<StoryAndCvViewProps> = ({
                     “{SIGNATURE_QUOTE}”
                   </blockquote>
 
-                  <div className="pt-3 border-t border-[#E2E8F0] flex items-center justify-between text-xs text-[#64748B]">
-                    <span className="font-semibold text-[#0F172A]">Stephanie Egharevba</span>
-                    <span className="font-mono text-[11px]">WCAG 2.2 AA / AAA</span>
+                  <div className="pt-3 border-t border-[#E2E8F0] flex items-center justify-between gap-3 text-xs text-[#64748B]">
+                    <div className="flex items-center gap-2.5">
+                      <motion.div
+                        whileHover={{ scale: 1.12, rotate: -6 }}
+                        transition={{ type: 'spring', stiffness: 420, damping: 16 }}
+                        className="w-10 h-10 rounded-full bg-[#F2EFE9] border border-[#E2E8F0] p-1 flex items-center justify-center shrink-0 overflow-hidden shadow-xs"
+                      >
+                        <img
+                          src="/assets/aistudio/Untitled_design_aedf6123.png"
+                          alt="Illustrated badge of Stephanie Egharevba"
+                          loading="lazy"
+                          className="w-full h-full object-contain"
+                        />
+                      </motion.div>
+                      <span className="font-semibold text-[#0F172A]">Stephanie Egharevba</span>
+                    </div>
+                    <span className="font-mono text-[11px] shrink-0">WCAG 2.2 AA / AAA</span>
                   </div>
                 </div>
               </div>

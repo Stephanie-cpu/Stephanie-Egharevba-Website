@@ -190,7 +190,7 @@ export default function App() {
   const [showPreloader, setShowPreloader] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
     try {
-      const alreadyPlayed = sessionStorage.getItem('stephanie_intro_played_v1');
+      const alreadyPlayed = sessionStorage.getItem('stephanie_intro_played_v2');
       if (alreadyPlayed) return false;
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         return false;
@@ -204,7 +204,7 @@ export default function App() {
   const handlePreloaderComplete = () => {
     setShowPreloader(false);
     try {
-      sessionStorage.setItem('stephanie_intro_played_v1', 'true');
+      sessionStorage.setItem('stephanie_intro_played_v2', 'true');
     } catch {
       // ignore
     }
@@ -1784,6 +1784,72 @@ export default function App() {
                 onNavigateToImpact={() => navigateTo('impact')}
                 reduceMotion={a11yPrefs.reduceMotion}
               />
+
+              {/* SECTION 6: PERSONAL SIGN-OFF WITH CARTOON ILLUSTRATION */}
+              <motion.section
+                initial={a11yPrefs.reduceMotion ? false : { opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
+                aria-label="Connect with Stephanie"
+                className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-4 pb-16 sm:pb-24"
+              >
+                <div className="relative overflow-hidden rounded-3xl bg-[#F2EFE9] dark:bg-[#161922] border border-[#E6E4DD] dark:border-neutral-800 px-6 py-10 sm:px-12 sm:py-14">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10 items-center">
+                    {/* Left: Editorial Sign-Off Copy & CTA */}
+                    <div className="md:col-span-7 lg:col-span-8 space-y-4 text-center md:text-left order-2 md:order-1">
+                      <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-[#575652] dark:text-neutral-400">
+                        SAY HELLO
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold tracking-tight text-[#141413] dark:text-white leading-[1.12]">
+                        Have a stage, product, or big idea in mind?
+                      </h2>
+                      <p className="text-sm sm:text-base text-[#575652] dark:text-neutral-300 leading-relaxed max-w-[52ch] mx-auto md:mx-0">
+                        Whether you are booking a keynote, auditing a digital platform, or building
+                        a more inclusive team, I would love to hear from you.
+                      </p>
+                      <div className="pt-2 flex justify-center md:justify-start">
+                        <a
+                          href="/enquiries"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigateTo('contact');
+                          }}
+                          className="group px-7 py-3.5 text-sm font-semibold text-white bg-[#141413] hover:bg-[#3F3E3A] dark:bg-white dark:text-[#141413] dark:hover:bg-neutral-200 active:scale-[0.98] rounded-full transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-sm"
+                        >
+                          <span>Start a Conversation</span>
+                          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Right: Stephanie's Transparent Cartoon Illustration */}
+                    <div className="md:col-span-5 lg:col-span-4 flex justify-center md:justify-end order-1 md:order-2">
+                      <motion.div
+                        whileHover={
+                          a11yPrefs.reduceMotion
+                            ? undefined
+                            : { y: -6, rotate: -3, scale: 1.04 }
+                        }
+                        whileTap={
+                          a11yPrefs.reduceMotion
+                            ? undefined
+                            : { scale: 0.94, rotate: 3 }
+                        }
+                        transition={{ type: 'spring', stiffness: 360, damping: 18 }}
+                        className="relative w-44 h-44 sm:w-52 sm:h-52 lg:w-56 lg:h-56 select-none cursor-pointer"
+                      >
+                        <img
+                          src="/assets/aistudio/Untitled_design_aedf6123.png"
+                          alt="Illustrated cartoon portrait of Stephanie Egharevba smiling in her wheelchair wearing a white blazer"
+                          loading="lazy"
+                          className="w-full h-full object-contain drop-shadow-[0_14px_24px_rgba(20,20,19,0.12)]"
+                        />
+                      </motion.div>
+                    </div>
+                  </div>
+                </div>
+              </motion.section>
             </motion.div>
           )}
 
